@@ -1,0 +1,44 @@
+<%= render @bracket %>
+
+<script type="text/javascript">
+
+
+  var game_transitions = []; //hash of game id => [next game_id, slot (1 or 2)]
+  var game_to_pick = []; //game_id => this bracket pick id
+  <% Game.all.each do |g| %>
+    game_to_pick[<%= g.id %>] = <%= @bracket.picks.find_by_game_id(g.id).id %>;
+    <% unless g.next_game.blank? %>
+      game_transitions[<%= g.id %>] = [<%= g.next_game.id %>, <%= g.next_slot %>];
+    <% end %>
+  <% end %>
+
+
+
+    $('.slot').click(function () {
+        var parent_node = $(this).offsetParent();
+
+        var current_game_id = parseInt(parent_node[0].id.replace('match', ''));
+        var next_game_id = game_transitions[current_game_id][0];
+        var next_slot = game_transitions[current_game_id][1];
+
+        var team_id = -1;
+        var classList = $(this).attr('class').split(/\s+/);
+        $.each( classList, function(index, item){
+            if (item.substring(0, 4) == 'team') {
+                team_id = parseInt(item.replace('team',''));
+            }
+        });
+
+        var slot_node = $("div#match" + next_game_id + " > .slot" + next_slot);
+
+        slot_node.html($(this).html());
+        slot_node.attr('class', 'slot slot' + next_slot + ' team' + team_id);
+
+        $.ajax({
+            url: '/picks/' + game_to_pick[current_game_id],
+            type: 'POST',
+            data: { _method: 'PUT', pick: {team_id: team_id}}
+
+        });
+    });
+</script>

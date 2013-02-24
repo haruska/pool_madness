@@ -1,0 +1,26 @@
+<h3>Brackets</h3>
+<div class="span8">
+  <table class="table table-condensed">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @brackets.each do |bracket| %>
+        <tr>
+          <td><%= link_to bracket.name, bracket %></td>
+          <td><%= link_to "Change Picks", edit_bracket_path(bracket), :class => 'btn btn-mini' %></td>
+          <td><%= link_to "Delete bracket", bracket_path(bracket), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-mini' %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <div>
+    <%= link_to "New Bracket Entry", brackets_path, :method => :post, :class => 'btn btn-mini' %>
+  </div>
+
+</div>

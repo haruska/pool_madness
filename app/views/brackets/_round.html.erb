@@ -1,0 +1,19 @@
+<div id="round<%=round_num%>" class="round">
+  <h3>
+    Round <%= round_num %> (2012 NCAA Men's Basketball Tournament)
+  </h3>
+  <% if round_num < 5 %>
+      <% Team::REGIONS.each_with_index do |region, region_num| %>
+          <div class="region region<%= region_num + 1 %>">
+            <h4 class="region<%= region_num + 1 %>">
+              <%= region %>
+            </h4>
+            <%= render :partial => 'game_set', :locals => {:games => Game.round_for(round_num, region), :bracket => (bracket ||= nil)} %>
+          </div>
+      <% end %>
+  <% else %>
+      <div class="region">
+        <%= render :partial => 'game_set', :locals => {:games => Game.round_for(round_num, nil), :bracket => (bracket ||= nil)} %>
+      </div>
+  <% end %>
+</div>

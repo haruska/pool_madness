@@ -6,6 +6,13 @@ class Ability
     if user.has_role? :admin
       can :manage, :all
     end
+
+    if user.id.present?
+      can :manage, Bracket, :user_id => user.id
+      can :update, Pick, :bracket => { :user_id => user.id }
+    end
+
+
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
