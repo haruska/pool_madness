@@ -5,12 +5,21 @@
 
 <div class="form-actions">
   <%= link_to "Save", @bracket, :class => 'btn btn-primary' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              @bracket,
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
-</div>
+  <%= link_to( t('.destroy', :default => t("helpers.links.destroy")),
+               @bracket,
+               :method => 'delete',
+               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+               :class => 'btn btn-danger') if can?(:destroy, @bracket) %>
+
+  <div class="pull-right">
+    <% if @bracket.paid? %>
+        Paid: $10.00
+    <% else %>
+
+        <%= render :partial => 'charges/form', :locals => {:bracket_id => @bracket.id, :user_id => @bracket.user.id} %>
+
+    <% end %>
+  </div>
 
 <script type="text/javascript">
   var game_transitions = []; //hash of game id => [next game_id, slot (1 or 2)]

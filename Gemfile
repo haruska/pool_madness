@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 ruby '1.9.2'
 
 gem 'heroku'
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 gem 'rails', '3.2.12'
 

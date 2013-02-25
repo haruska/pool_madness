@@ -12,6 +12,8 @@ class Ability
       can :update, Pick, :bracket => { :user_id => user.id }
     end
 
+    cannot :destroy, Bracket.paid
+
 
     # Define abilities for the passed in user here. For example:
     #

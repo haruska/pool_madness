@@ -11,14 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130225001050) do
+ActiveRecord::Schema.define(:version => 20130225144632) do
 
   create_table "brackets", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "stripe_charge_id"
   end
 
+  add_index "brackets", ["stripe_charge_id"], :name => "index_brackets_on_stripe_charge_id"
   add_index "brackets", ["user_id"], :name => "index_brackets_on_user_id"
 
   create_table "games", :force => true do |t|
@@ -95,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20130225001050) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.string   "stripe_customer_id"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

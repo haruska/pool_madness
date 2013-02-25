@@ -11,4 +11,15 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 
   has_many :brackets
+
+  def stripe_customer
+    if self.stripe_customer_id.present?
+      Stripe::Customer.retrieve(self.stripe_customer_id)
+    else
+      customer = Stripe::Customer.create(:email => self.email)
+      self.stripe_customer_id = customer.id
+      self.save!
+      customer
+    end
+  end
 end
