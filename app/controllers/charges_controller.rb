@@ -26,6 +26,6 @@ class ChargesController < ApplicationController
     redirect_to bracket, :notice => "Payment of $10.00 was successful."
 
   rescue Stripe::CardError => e
-    redirect_to bracket, :error => e.message
+    redirect_to bracket, :alert => e.message
   end
 end
