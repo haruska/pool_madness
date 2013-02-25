@@ -1,6 +1,18 @@
 source 'https://rubygems.org'
+ruby '1.9.2'
+
+gem 'heroku'
+
 gem 'rails', '3.2.12'
-gem 'sqlite3'
+
+group :development, :test do
+  gem 'sqlite3'
+end
+
+group :production do
+  gem 'pg'
+end
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
@@ -17,6 +29,7 @@ gem "capybara", ">= 2.0.2", :group => :test
 gem "factory_girl_rails", ">= 4.2.0", :group => [:development, :test]
 gem "bootstrap-sass", ">= 2.3.0.0"
 gem "devise", ">= 2.2.3"
+gem 'devise_invitable'
 gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.2.0"
 gem "simple_form", ">= 2.0.4"

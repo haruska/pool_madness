@@ -1,8 +1,18 @@
+<h3 class="pagination-centered" style="color: #c52000"><%= "Editing #{@bracket.user.name}'s Bracket" %></h3>
+
+
 <%= render @bracket %>
 
+<div class="form-actions">
+  <%= link_to "Save", @bracket, :class => 'btn btn-primary' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              @bracket,
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>
+
 <script type="text/javascript">
-
-
   var game_transitions = []; //hash of game id => [next game_id, slot (1 or 2)]
   var game_to_pick = []; //game_id => this bracket pick id
   <% Game.all.each do |g| %>
@@ -13,13 +23,10 @@
   <% end %>
 
 
-
     $('.slot').click(function () {
         var parent_node = $(this).offsetParent();
 
         var current_game_id = parseInt(parent_node[0].id.replace('match', ''));
-        var next_game_id = game_transitions[current_game_id][0];
-        var next_slot = game_transitions[current_game_id][1];
 
         var team_id = -1;
         var classList = $(this).attr('class').split(/\s+/);
@@ -29,10 +36,26 @@
             }
         });
 
+        //championship
+        if(game_transitions[current_game_id] === undefined) {
+            $('#slot127').removeClass('final_pick');
+            $('#slot128').removeClass('final_pick');
+            $('#slot127').removeClass('selected');
+            $('#slot128').removeClass('selected');
+          $(this).attr('class', classList.join(' ') + ' final_pick selected');
+        }
+
+        else {
+        var next_game_id = game_transitions[current_game_id][0];
+        var next_slot = game_transitions[current_game_id][1];
+
+
+
         var slot_node = $("div#match" + next_game_id + " > .slot" + next_slot);
 
         slot_node.html($(this).html());
         slot_node.attr('class', 'slot slot' + next_slot + ' team' + team_id);
+        }
 
         $.ajax({
             url: '/picks/' + game_to_pick[current_game_id],
@@ -42,3 +65,4 @@
         });
     });
 </script>
+

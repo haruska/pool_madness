@@ -1,1 +1,12 @@
+<h3 class="pagination-centered"><%= "#{@bracket.user.name}'s Bracket" %></h3>
+
 <%= render @bracket %>
+
+<div class="form-actions">
+  <%= link_to "Edit", edit_bracket_path(@bracket), :class => 'btn btn-primary' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              @bracket,
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>

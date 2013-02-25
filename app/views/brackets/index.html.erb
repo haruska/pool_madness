@@ -1,5 +1,6 @@
 <h3>Brackets</h3>
-<div class="span8">
+<div class="span12">
+  <% if @brackets.present? %>
   <table class="table table-condensed">
     <thead>
     <tr>
@@ -18,9 +19,9 @@
     <% end %>
     </tbody>
   </table>
-
-  <div>
-    <%= link_to "New Bracket Entry", brackets_path, :method => :post, :class => 'btn btn-mini' %>
+    <% end %>
+  <div class="pagination-centered">
+    <%= link_to "New Bracket Entry", brackets_path, :method => :post, :class => 'btn btn-primary' %>
   </div>
 
 </div>
