@@ -1,22 +1,39 @@
-<h3 class="pagination-centered"><%= "#{@bracket.user.name}'s Bracket" %></h3>
+<h3 class="pagination-centered"><%= "#{@bracket.name} Bracket" %></h3>
 
 <%= render @bracket %>
 
 <div class="form-actions">
-  <%= link_to "Edit", edit_bracket_path(@bracket), :class => 'btn btn-primary' %>
-  <%= link_to( t('.destroy', :default => t("helpers.links.destroy")),
-              @bracket,
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger') if can?(:destroy, @bracket) %>
+  <%= link_to('Edit Picks', edit_bracket_path(@bracket), :class => 'btn btn-primary') if can?(:edit, @bracket) %>
+  <%= link_to('Delete Bracket', @bracket, :method => 'delete', :data => { :confirm => 'Are you sure?' }, :class => 'btn btn-danger') if can?(:destroy, @bracket) %>
 
   <div class="pull-right">
-  <% if @bracket.paid? %>
-    Paid: $10.00
-  <% else %>
-
+    <% if @bracket.paid? %>
+        Paid: $10.00
+    <% else %>
         <%= render :partial => 'charges/form', :locals => {:bracket_id => @bracket.id, :user_id => @bracket.user.id} %>
-
-  <% end %>
-    </div>
+    <% end %>
+  </div>
 </div>
+
+<% unless @bracket.paid? %>
+<!-- Modal -->
+<div id="payModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="payModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="payModalLabel">Unpaid Bracket Entry</h3>
+  </div>
+  <div class="modal-body">
+    <p>This bracket entry is marked unpaid. <strong>All unpaid brackets will be removed from the pool Thursday at Noon</strong>.</p>
+    <p>Note: you can still edit your bracket right up until tip off Thursday, even after you pay the entry fee.</p>
+  </div>
+  <div class="modal-footer">
+    <span data-dismiss="modal"><%= render :partial => 'charges/form', :locals => {:bracket_id => @bracket.id, :user_id => @bracket.user.id} %></span>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#payModal").modal("show");
+    });
+</script>
+<% end %>

@@ -1,20 +1,37 @@
 <h3>Brackets</h3>
 <div class="span12">
   <% if @brackets.present? %>
-  <table class="table table-condensed">
+  <p><strong>*All brackets in pool will be displayed after tournament start</strong></p>
+  <table data-provides="rowlink" class="table table-condensed table-striped table-bordered">
     <thead>
     <tr>
-      <th>Name</th>
-      <th></th>
-      <th></th>
+      <th rowspan="3">Name</th>
+      <th rowspan="3">Paid?</th>
+      <th colspan="4">Final Four</th>
+      <th rowspan="3"></th>
+    </tr>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2">Championship Game</th>
+    </tr>
+    <tr>
+      <th colspan="3"></th>
+      <th>Winner</th>
     </tr>
     </thead>
     <tbody>
     <% @brackets.each do |bracket| %>
-        <tr>
+        <tr class="<%= "error" unless bracket.paid? %>">
           <td><%= link_to bracket.name, bracket %></td>
-          <td><%= link_to "Change Picks", edit_bracket_path(bracket), :class => 'btn btn-mini' %></td>
-          <td><%= link_to "Delete bracket", bracket_path(bracket), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-mini' %></td>
+          <td><%= bracket.paid? ? "Paid" : "<strong>UNPAID</strong>".html_safe %></td>
+          <% Game.round_for(5).each do |game| %>
+            <td><%= bracket.picks.where(:game_id => game.id).first.first_team.try(:name) %></td>
+            <td><%= bracket.picks.where(:game_id => game.id).first.second_team.try(:name) %></td>
+          <% end %>
+          <td class="nolink">
+            <%= link_to("Change Picks", edit_bracket_path(bracket), :class => 'btn btn-mini btn-primary') if can?(:edit, bracket) %>
+            <%= link_to("Delete bracket", bracket_path(bracket), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-mini btn-danger') if can?(:destroy, bracket) %>
+          </td>
         </tr>
     <% end %>
     </tbody>
