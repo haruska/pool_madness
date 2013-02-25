@@ -8,6 +8,7 @@ class Ability
     end
 
     if user.id.present?
+      can :manage, User, :id => user.id
       can :manage, Bracket, :user_id => user.id
       can :update, Pick, :bracket => { :user_id => user.id }
     end
