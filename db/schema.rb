@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130225144632) do
+ActiveRecord::Schema.define(:version => 20130225232206) do
 
   create_table "brackets", :force => true do |t|
     t.integer  "user_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.string   "stripe_charge_id"
+    t.integer  "tie_breaker"
   end
 
   add_index "brackets", ["stripe_charge_id"], :name => "index_brackets_on_stripe_charge_id"

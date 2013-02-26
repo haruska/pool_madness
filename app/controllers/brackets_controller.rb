@@ -9,6 +9,14 @@ class BracketsController < ApplicationController
     end
   end
 
+  def update
+    if @bracket.update_attributes(params[:bracket])
+      render :nothing => true
+    else
+      render :nothing => true, :status => 400
+    end
+  end
+
   def destroy
     @bracket.destroy
     redirect_to root_path, :notice => 'Bracket Destroyed'

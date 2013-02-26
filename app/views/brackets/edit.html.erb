@@ -9,6 +9,12 @@
 
 <%= render @bracket %>
 
+
+<div id="tie-breaker-form" class="input-append">
+  <%= text_field_tag :tie_breaker, @bracket.tie_breaker, :size => 4, :id => 'tie-breaker-text-field' %>
+  <button id="tie-breaker-submit-button" class="btn" type="button">Save Tie Breaker</button>
+</div>
+
 <div class="form-actions">
   <%= link_to 'Done', @bracket, :class => 'btn btn-primary' %>
 </div>
@@ -23,6 +29,29 @@
     <% end %>
   <% end %>
 
+  $(document).ready(function() {
+     var form = $('#tie-breaker-form');
+      form.hide();
+      form.appendTo($('#tie-breaker'));
+  });
+
+    $('#tie-breaker-static').click(function() {
+        $(this).hide();
+        $('#tie-breaker-form').show();
+    });
+
+  $('#tie-breaker-submit-button').click(function() {
+      var tie_breaker_score = $('#tie-breaker-text-field')[0].value;
+
+      $.ajax({
+          url: '/brackets/<%= @bracket.id %>',
+          type: 'POST',
+          data: {_method: 'PUT', bracket: {tie_breaker: tie_breaker_score}}
+      });
+
+      $('#tie-breaker-form').hide();
+      $('#tie-breaker-static').html("Tie Breaker: " + tie_breaker_score).show();
+  });
 
     $('.slot').click(function () {
         var parent_node = $(this).offsetParent();

@@ -12,5 +12,5 @@ PoolMadness::Application.routes.draw do
   end
 
   resources :picks, :only => [:update]
-  resources :brackets, :except => [:new, :update]
+  resources :brackets, :except => [:new]
 end

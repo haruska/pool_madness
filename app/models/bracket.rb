@@ -6,6 +6,8 @@ class Bracket < ActiveRecord::Base
 
   scope :paid, where("stripe_charge_id is not NULL")
 
+  attr_accessible :tie_breaker
+
   def only_bracket_for_user?
     self.user.brackets.size == 1
   end
