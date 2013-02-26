@@ -20,6 +20,17 @@ class Bracket < ActiveRecord::Base
     self.stripe_charge_id.present?
   end
 
+  def sorted_four
+    champ_pick = self.picks.where(:game_id => Game.championship.id).first
+    four = [champ_pick.team, champ_pick.first_team, champ_pick.second_team]
+    four << self.picks.where(:game_id => champ_pick.game.game_one_id).first.first_team
+    four << self.picks.where(:game_id => champ_pick.game.game_one_id).first.second_team
+    four << self.picks.where(:game_id => champ_pick.game.game_two_id).first.first_team
+    four << self.picks.where(:game_id => champ_pick.game.game_two_id).first.second_team
+
+    four.compact.uniq.reverse
+  end
+
   private
 
   def create_all_picks

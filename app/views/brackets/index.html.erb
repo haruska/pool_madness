@@ -8,6 +8,7 @@
       <th rowspan="3">Name</th>
       <th rowspan="3">Paid?</th>
       <th colspan="4">Final Four</th>
+      <th rowspan="3">Tiebreaker</th>
       <th rowspan="3"></th>
     </tr>
     <tr>
@@ -24,10 +25,13 @@
         <tr class="rowlink <%= "error" unless bracket.paid? %>">
           <td><%= link_to bracket.name, bracket %></td>
           <td><%= bracket.paid? ? "Paid" : "<strong>UNPAID</strong>".html_safe %></td>
-          <% Game.round_for(5).each do |game| %>
-            <td><%= bracket.picks.where(:game_id => game.id).first.first_team.try(:name) %></td>
-            <td><%= bracket.picks.where(:game_id => game.id).first.second_team.try(:name) %></td>
+          <% bracket.sorted_four.each do |team| %>
+              <td><%= team.name %></td>
           <% end %>
+          <% (4 - bracket.sorted_four.size).times do %>
+              <td></td>
+          <% end %>
+          <td><%= bracket.tie_breaker %></td>
           <td class="nolink">
             <%= link_to("Change Picks", edit_bracket_path(bracket), :class => 'btn btn-mini btn-primary') if can?(:edit, bracket) %>
             <%= link_to("Delete bracket", bracket_path(bracket), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-mini btn-danger') if can?(:destroy, bracket) %>
