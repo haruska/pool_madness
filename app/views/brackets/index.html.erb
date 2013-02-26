@@ -2,27 +2,19 @@
 <div class="span12">
   <% if @brackets.present? %>
   <p><strong>*All brackets in pool will be displayed after tournament start</strong></p>
-  <table data-provides="rowlink" class="table table-condensed table-striped table-bordered">
+  <table data-provides="rowlink" class="table table-condensed table-striped">
     <thead>
     <tr>
-      <th rowspan="3">Name</th>
-      <th rowspan="3">Paid?</th>
-      <th colspan="4">Final Four</th>
-      <th rowspan="3">Tiebreaker</th>
-      <th rowspan="3"></th>
-    </tr>
-    <tr>
-      <th colspan="2"></th>
-      <th colspan="2">Championship Game</th>
-    </tr>
-    <tr>
-      <th colspan="3"></th>
-      <th>Winner</th>
+      <th>Name</th>
+      <th>Paid?</th>
+      <th colspan="4">Final Four (sorted)</th>
+      <th>Tie</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
     <% @brackets.each do |bracket| %>
-        <tr class="rowlink <%= "error" unless bracket.paid? %>">
+        <tr class="<%= "error" unless bracket.paid? %>">
           <td><%= link_to bracket.name, bracket %></td>
           <td><%= bracket.paid? ? "Paid" : "<strong>UNPAID</strong>".html_safe %></td>
           <% bracket.sorted_four.each do |team| %>
