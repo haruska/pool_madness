@@ -41,7 +41,7 @@
     });
 
   $('#tie-breaker-submit-button').click(function() {
-      var tie_breaker_score = $('#tie-breaker-text-field')[0].value;
+      var tie_breaker_score = parseInt($('#tie-breaker-text-field')[0].value);
 
       $.ajax({
           url: '/brackets/<%= @bracket.id %>',
