@@ -21,7 +21,7 @@
     </thead>
     <tbody>
     <% @brackets.each do |bracket| %>
-        <tr class="<%= "error" unless bracket.paid? %>">
+        <tr class="rowlink <%= "error" unless bracket.paid? %>">
           <td><%= link_to bracket.name, bracket %></td>
           <td><%= bracket.paid? ? "Paid" : "<strong>UNPAID</strong>".html_safe %></td>
           <% Game.round_for(5).each do |game| %>

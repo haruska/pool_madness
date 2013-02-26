@@ -5,7 +5,7 @@
  </style>
 <% end %>
 
-<h3 class="pagination-centered" style="color: #c52000"><%= "Editing #{@bracket.user.name}'s Bracket" %></h3>
+<h3 class="pagination-centered" style="color: #c52000"><%= "Editing #{@bracket.name} Bracket" %></h3>
 
 <%= render @bracket %>
 
@@ -33,6 +33,11 @@
      var form = $('#tie-breaker-form');
       form.hide();
       form.appendTo($('#tie-breaker'));
+
+      <% if @bracket.tie_breaker.blank? %>
+      $('#tie-breaker-static').hide();
+      $('#tie-breaker-form').show();
+      <% end %>
   });
 
     $('#tie-breaker-static').click(function() {
