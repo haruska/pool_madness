@@ -1,12 +1,11 @@
 class Bracket < ActiveRecord::Base
   has_many :picks, :dependent => :destroy
+  has_one :charge
   belongs_to :user
 
   after_create :create_all_picks
 
-  scope :paid, where("stripe_charge_id is not NULL")
-
-  attr_accessible :tie_breaker
+  attr_accessible :tie_breaker, :pending_payment
 
   def only_bracket_for_user?
     self.user.brackets.size == 1
@@ -17,7 +16,7 @@ class Bracket < ActiveRecord::Base
   end
 
   def paid?
-    self.stripe_charge_id.present?
+    self.charge.present? || self.pending_payment?
   end
 
   def sorted_four

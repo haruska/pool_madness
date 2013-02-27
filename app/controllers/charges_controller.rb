@@ -1,31 +1,36 @@
 class ChargesController < ApplicationController
-  load_and_authorize_resource :user
+  load_and_authorize_resource :user, :except => [:create]
+  load_and_authorize_resource :charge, :through => :user, :shallow => true, :except => [:create]
 
   def index
-    @charges = Stripe::Charge.all(:customer => @user.stripe_customer.id, :count => 100).data
   end
 
   def create
-    bracket = Bracket.find(params[:bracket_id])
+    if params[:secret] == ENV['BITCOIN_CALLBACK_SECRET']
+      order = JSON::parse(request.body)['order']
+      if order['status'] == 'completed'
+        charge = Charge.new
+        charge.order_id = order['id']
+        charge.completed_at = Time.parse(order['completed_at'])
+        charge.amount = order['total_native']['cents'].to_i
+        charge.transaction_hash = order['transaction']['hash']
 
-    customer = @user.stripe_customer
+        bracket = Bracket.find_by_id(order['custom'])
+        if bracket.present?
+          charge.bracket = bracket
+        else
+          logger.error("Received order that was payment from non-existent bracket id: #{order['id']}")
+        end
 
-    customer.card = params[:stripeToken]
-    customer.save
+        charge.save!
 
-    charge = Stripe::Charge.create(
-        :customer    => customer.id,
-        :amount      => 1000, #Amount in cents ($10.00)
-        :description => "id: #{bracket.id}",
-        :currency    => 'usd'
-    )
+      else
+        logger.error("Received canceled order #{order['id']} for bracket id: #{order['custom']}")
+      end
 
-    bracket.stripe_charge_id = charge.id
-    bracket.save
-
-    redirect_to bracket, :notice => "Payment of $10.00 was successful."
-
-  rescue Stripe::CardError => e
-    redirect_to bracket, :alert => e.message
+      render :nothing => true, :status => 200
+    else
+      render :nothing => true, :status => 404
+    end
   end
 end

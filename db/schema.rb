@@ -11,18 +11,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130225232206) do
+ActiveRecord::Schema.define(:version => 20130227045323) do
 
   create_table "brackets", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.string   "stripe_charge_id"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.string   "charge_id"
     t.integer  "tie_breaker"
+    t.boolean  "pending_payment", :default => false, :null => false
   end
 
-  add_index "brackets", ["stripe_charge_id"], :name => "index_brackets_on_stripe_charge_id"
+  add_index "brackets", ["charge_id"], :name => "index_brackets_on_stripe_charge_id"
   add_index "brackets", ["user_id"], :name => "index_brackets_on_user_id"
+
+  create_table "charges", :force => true do |t|
+    t.string   "order_id"
+    t.datetime "completed_at"
+    t.integer  "amount"
+    t.text     "transaction_hash"
+    t.integer  "bracket_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "charges", ["bracket_id"], :name => "index_charges_on_bracket_id", :unique => true
 
   create_table "games", :force => true do |t|
     t.integer  "team_one_id"

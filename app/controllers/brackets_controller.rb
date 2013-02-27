@@ -11,6 +11,7 @@ class BracketsController < ApplicationController
 
   def update
     if @bracket.update_attributes(params[:bracket])
+      flash[:notice] = "Thank you. Your bitcoin payment is being processed." if params[:bracket][:pending_payment]
       render :nothing => true
     else
       render :nothing => true, :status => 400
