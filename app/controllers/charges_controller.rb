@@ -11,7 +11,7 @@ class ChargesController < ApplicationController
       if order['status'] == 'completed'
         charge = Charge.new
         charge.order_id = order['id']
-        charge.completed_at = Time.parse(order['completed_at'])
+        charge.completed_at = Time.parse(order['completed_at']) rescue nil
         charge.amount = order['total_native']['cents'].to_i
         charge.transaction_hash = order['transaction']['hash']
 

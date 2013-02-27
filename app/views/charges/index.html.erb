@@ -6,21 +6,14 @@
         <tr>
           <th>Date</th>
           <th>Description</th>
-          <th>Card Type</th>
-          <th>Last 4 CC</th>
-          <th>Exp</th>
           <th>Amount</th>
         </tr>
         </thead>
         <tbody>
         <% @charges.each do |charge| %>
-          <% bracket = Bracket.find_by_stripe_charge_id(charge.id) %>
             <tr>
-              <td><%= Time.at(charge.created).to_s(:usa) %></td>
-              <td>Pool Entry: <%= link_to bracket.name, bracket %></td>
-              <td><%= charge.card.type %></td>
-              <td>...<%= charge.card.last4 %></td>
-              <td><%= charge.card.exp_month %>/<%= charge.card.exp_year %></td>
+              <td><%= charge.completed_at.to_s(:usa) %></td>
+              <td>Pool Entry: link_to(charge.bracket.name, charge.bracket) %></td>
               <td><%= number_to_currency(charge.amount / 100.0) %></td>
             </tr>
         <% end %>
