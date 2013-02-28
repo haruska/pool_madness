@@ -4,6 +4,7 @@ PoolMadness::Application.routes.draw do
   end
 
   root :to => "home#index"
+  match '/subscribe', :to => "home#subscribe"
 
   devise_for :users, :path => 'auth', :path_names => {:sign_in => 'login', :sign_up => 'signup'}
 

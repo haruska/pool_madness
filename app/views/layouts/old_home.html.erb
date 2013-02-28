@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>March Madness Office Pool Management - Pool Madness</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Pool Madness" %>">
+    <%= stylesheet_link_tag "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <link href="/stylesheets/woody-landing.css" rel="stylesheet">
+    <%= csrf_meta_tags %>
+    <%= yield(:head) %>
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+<%= yield %>
+            </div>
+</div><!--end container-->
+
+</body>
+</html>
