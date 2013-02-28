@@ -7,7 +7,10 @@ class ChargesController < ApplicationController
 
   def create
     if params[:secret] == ENV['BITCOIN_CALLBACK_SECRET']
-      order = JSON::parse(request.body.read)['order']
+      body = request.body.read
+      puts body
+      order = JSON::parse(body)['order']
+      
       if order['status'] == 'completed'
         charge = Charge.new
         charge.order_id = order['id']
