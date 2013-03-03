@@ -3,8 +3,18 @@ PoolMadness::Application.routes.draw do
     root :to => 'brackets#index'
   end
 
+  namespace :admin do
+    resources :brackets do
+      member do
+        put :promise_to_pay
+        put :mark_paid
+      end
+    end
+  end
+
   root :to => "home#index"
-  match '/subscribe', :to => "home#subscribe"
+  match '/subscribe', :to => "home#subscribe", :as => 'subscribe'
+  match '/payments', :to => "home#payments", :as => 'payments'
 
   devise_for :users, :path => 'auth', :path_names => {:sign_in => 'login', :sign_up => 'signup'}
 

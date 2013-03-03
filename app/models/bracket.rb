@@ -1,11 +1,32 @@
 class Bracket < ActiveRecord::Base
   has_many :picks, :dependent => :destroy
-  has_one :charge
+  has_one  :charge
+
   belongs_to :user
+  belongs_to :payment_collector, :class_name => 'User'
 
   after_create :create_all_picks
 
-  attr_accessible :tie_breaker, :pending_payment
+  attr_accessible :tie_breaker
+
+  state_machine :payment_state, :initial => :unpaid do
+    state :unpaid
+    state :promised
+    state :pending
+    state :paid
+
+    event :promise_made do
+      transition :unpaid => :promised
+    end
+
+    event :bitcoin_payment_submited do
+      transition [:unpaid, :promised] => :pending
+    end
+
+    event :payment_received do
+      transition all => :paid
+    end
+  end
 
   def only_bracket_for_user?
     self.user.brackets.size == 1
@@ -15,8 +36,8 @@ class Bracket < ActiveRecord::Base
     self.only_bracket_for_user? ? self.user.name : "#{self.user.name} #{self.user.brackets.collect(&:id).index(self.id) + 1}"
   end
 
-  def paid?
-    self.charge.present? || self.pending_payment?
+  def complete?
+    self.picks.where(:team_id => nil).first.blank? && self.tie_breaker.present?
   end
 
   def sorted_four

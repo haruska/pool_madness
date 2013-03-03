@@ -1,0 +1,45 @@
+<h3>Brackets</h3>
+<div class="span12">
+  <% if @brackets.present? %>
+      <table data-provides="rowlink" class="table table-condensed table-striped">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Payment Status</th>
+          <th>Completed</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @brackets.each do |bracket| %>
+          <tr>
+            <td><%= link_to bracket.name, bracket %></td>
+            <td>
+              <% if bracket.unpaid? %>
+                  <%= link_to "Promise to Pay", promise_to_pay_admin_bracket_path(bracket), :method => :put, :class =>'btn btn-mini' %>
+              <% elsif bracket.promised? %>
+                  Promised to pay <%= current_user.name %>
+              <% elsif bracket.pending? %>
+                  Bitcoin payment pending
+              <% elsif bracket.paid? %>
+                  Paid to <%= bracket.payment_collector.name %>
+              <% end %>
+            </td>
+            <td>
+              <%= bracket.complete? %>
+            </td>
+            <td class="nolink">
+              <%= link_to("Change Picks", edit_bracket_path(bracket), :class => 'btn btn-mini btn-primary') if can?(:edit, bracket) %>
+              <%= link_to("Delete bracket", bracket_path(bracket), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-mini btn-danger') if can?(:destroy, bracket) %>
+              <%= link_to "Mark paid", mark_paid_admin_bracket_path(bracket), :method => :put, :class => 'btn btn-mini'  unless bracket.paid? %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+  <% end %>
+  <div class="pagination-centered">
+    <%= link_to "New Bracket Entry", brackets_path, :method => :post, :class => 'btn btn-primary' %>
+  </div>
+
+</div>

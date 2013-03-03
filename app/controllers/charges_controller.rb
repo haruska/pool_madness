@@ -3,6 +3,7 @@ class ChargesController < ApplicationController
   load_and_authorize_resource :charge, :through => :user, :shallow => true, :except => [:create]
 
   def index
+    @pending_brackets = @user.brackets.where(:payment_state => 'pending').all
   end
 
   def create

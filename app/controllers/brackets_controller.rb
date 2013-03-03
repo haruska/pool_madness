@@ -10,16 +10,21 @@ class BracketsController < ApplicationController
   end
 
   def update
-    if @bracket.update_attributes(params[:bracket])
-      flash[:notice] = "Thank you. Your bitcoin payment is being processed." if params[:bracket][:pending_payment]
-      render :nothing => true
-    else
-      render :nothing => true, :status => 400
+    status = 200
+
+    if params[:bracket][:pending_payment]
+      @bracket.bitcoin_payment_submited!
+      flash[:notice] = "Thank you. Your bitcoin payment is being processed."
+    elsif !@bracket.update_attributes(params[:bracket])
+      status = 400
     end
+
+    render :nothing => true, :status => status
   end
 
   def destroy
     @bracket.destroy
     redirect_to root_path, :notice => 'Bracket Destroyed'
   end
+
 end

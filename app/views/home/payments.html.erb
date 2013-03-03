@@ -1,0 +1,78 @@
+<% content_for :sidebar do %>
+    <ul class="nav nav-list bs-docs-sidenav affix">
+      <li><a href="#overview"><i class="icon-chevron-right"></i> Overview</a></li>
+      <li><a href="#cash"><i class="icon-chevron-right"></i> Cash in Person</a></li>
+      <li><a href="#bitcoin"><i class="icon-chevron-right"></i> Bitcoin</a></li>
+      <li><a href="#popmoney"><i class="icon-chevron-right">></i> PopMoney</a></li>
+      <li><a href="#check"><i class="icon-chevron-right"></i> Check by Mail</a></li>
+    </ul>
+<% end %>
+
+<section id="overview">
+  <div class="page-header">
+    <h1>Types of Payment</h1>
+  </div>
+  <p>
+    Each bracket entry in the pool has a $10 entry fee. Ways to pay online are limited for the pool because payments
+    for basketball pools are against the Terms of Service of most credit cards and processors. The four options are
+    described in detail below.
+  </p>
+  <p>
+    A lot of these methods assume trust that the proverbial "check is in the mail". We're all friends here. Filling out
+    a bracket assumes you've agreed to pay the entry fee before the tournament starts. In some circumstances that's not
+    possible. Therefore, <strong>if you need extra time you must make arrangements with a pool administrator</strong>.
+    Failure to make good on the arrangement will result in removal of the bracket from the pool and potential ban from
+    future pools.
+  </p>
+</section>
+<section id="cash">
+  <h2>Cash</h2>
+  <p>
+    Cash in person is by far the easiest option if you'll see one of the pool administrators before the tournament starts.
+    Note that because of lack of payment by some entries last year, <strong>you must pay an admin in person before tip
+    off or your entry will be voided.</strong>
+  </p>
+</section>
+<section id="bitcoin">
+  <h2>Bitcoin</h2>
+  <p>
+    Bitcoin is an electronic currency that makes cash transactions easy and fee free on the internet. This is the only
+    form of electronic payment accepted on Pool Madness.
+  </p>
+  <p>
+    The process of funding a Bitcoin account is similar to PayPal.
+  <ol>
+    <li>Get a bitcoin wallet. We recommend <%= link_to "Coinbase", "http://coinbase.com" %></li>
+    <li>Link your checking account to your Coinbase account</li>
+    <li>Peform a standard checking account transfer to Coinbase (4 day hold)</li>
+    <% if current_user.brackets.try(:size) == 1 %>
+        <li><%= link_to "Pay for your bracket with Bitcoin", current_user.brackets.first %></li>
+    <% else %>
+        <li>Select "Pay with Bitcoin" on <%= link_to "your brackets", brackets_path %> page</li>
+    <% end %>
+  </ol>
+  </p>
+  <p>
+    Having a bitcoin account also makes it easy to collect any winnings from the pool. We can deposit money into your
+    account within minutes of the tournament ending.
+  </p>
+  <p>
+    <strong>If you need time for your transfer to coinbase to complete let one of the admins know and we'll mark you as paid.</strong>
+  </p>
+</section>
+<section id="popmoney">
+  <h2>PopMoney</h2>
+  <p>
+    We have the ability to accept funds with <%= link_to "PopMoney", "http://popmoney.com" %>. Check to see if your bank
+    is a member of the network. If so, send payment to <strong>jason@haruska.com</strong>. Be sure to email Jason and
+    let him know to expect payment so he can mark you as paid.
+  </p>
+</section>
+<section id="check">
+  <h2>Check</h2>
+  <p>
+    If none of the options work for you, you can always mail a check. Again let Jason know you're doing this so he can
+    mark you as paid. Please send the check to:
+  <blockquote>Jason Haruska<br />624 W Schubert Ave #1W<br />Chicago, IL 60614</blockquote>
+  </p>
+</section>

@@ -22,7 +22,14 @@
       <div class="container">
         <div class="content">
            <div class="row">
+             <% if content_for? :sidebar %>
+                 <div class="span3 bs-docs-sidebar">
+                   <%= yield :sidebar %>
+                 </div>
+                 <div class="span9">
+                   <% else %>
             <div class="span12">
+              <% end %>
               <%= render 'layouts/messages' %>
               <%= yield %>
             </div>

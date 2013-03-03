@@ -6,7 +6,6 @@
     <thead>
     <tr>
       <th>Name</th>
-      <th>Paid?</th>
       <th colspan="4">Final Four (sorted)</th>
       <th>Tie</th>
       <th></th>
@@ -14,9 +13,7 @@
     </thead>
     <tbody>
     <% @brackets.each do |bracket| %>
-        <tr class="<%= "error" unless bracket.paid? %>">
           <td><%= link_to bracket.name, bracket %></td>
-          <td><%= bracket.paid? ? "Paid" : "<strong>UNPAID</strong>".html_safe %></td>
           <% bracket.sorted_four.each do |team| %>
               <td><%= team.name %></td>
           <% end %>

@@ -11,19 +11,32 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130227045323) do
+ActiveRecord::Schema.define(:version => 20130303145148) do
 
   create_table "brackets", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
     t.string   "charge_id"
     t.integer  "tie_breaker"
-    t.boolean  "pending_payment", :default => false, :null => false
+    t.string   "payment_state",        :default => "unpaid", :null => false
+    t.integer  "payment_collector_id"
   end
 
   add_index "brackets", ["charge_id"], :name => "index_brackets_on_stripe_charge_id"
+  add_index "brackets", ["payment_collector_id"], :name => "index_brackets_on_payment_collector_id"
+  add_index "brackets", ["payment_state"], :name => "index_brackets_on_payment_state"
   add_index "brackets", ["user_id"], :name => "index_brackets_on_user_id"
+
+  create_table "cash_payments", :force => true do |t|
+    t.integer  "bracket_id",    :null => false
+    t.integer  "pool_admin_id", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "cash_payments", ["bracket_id"], :name => "index_cash_payments_on_bracket_id", :unique => true
+  add_index "cash_payments", ["pool_admin_id"], :name => "index_cash_payments_on_pool_admin_id"
 
   create_table "charges", :force => true do |t|
     t.string   "order_id"

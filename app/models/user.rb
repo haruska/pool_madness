@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 
   has_many :brackets
+  has_many :brackets_to_pay, :class_name => 'Bracket', :foreign_key => 'payment_collector_id'
+
   has_many :charges, :through => :brackets
 
 end
