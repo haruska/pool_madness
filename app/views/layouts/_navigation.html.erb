@@ -3,7 +3,8 @@
 <% if user_signed_in? %>
     <ul class="nav">
       <li><%= link_to "Brackets", brackets_path %></li>
-      <li><%= link_to "How to Pay", payments_path %></li>
+      <li><%= link_to "Rules and Scoring", rules_path %></li>
+      <li><%= link_to "Types of Payment", payments_path %></li>
       <% if current_user.has_role? :admin %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>

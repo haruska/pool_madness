@@ -1,0 +1,49 @@
+<h1>Rules and Scoring</h1>
+
+<div class="span6 offset2">
+<h2>Pool Settings</h2>
+
+<dl class="dl-horizontal">
+  <dt>Entry Amount</dt>
+  <dd>$10.00</dd>
+  <dt>Tiebreaker</dt>
+  <dd>Points in final game</dd>
+  <dt>Seed reward?</dt>
+  <dd>No</dd>
+  <dt>Entry Deadline</dt>
+  <dd>Thursday, March 21, 2013 at 12:00pm Eastern</dd>
+</dl>
+
+<h2>Prizes</h2>
+
+<dl class="dl-horizontal">
+  <dt>First Place</dt>
+  <dd>70%</dd>
+  <dt>Second Place</dt>
+  <dd>20%</dd>
+  <dt>Third Place</dt>
+  <dd>10%</dd>
+</dl>
+
+<h2>Scoring</h2>
+
+<table class="table table-condensed table-striped">
+  <thead><tr><th>Round</th><th>Points per Game</th></tr></thead>
+  <tbody>
+  <tr><td>First</td><td>1</td></tr>
+  <tr><td>Second</td><td>2</td></tr>
+  <tr><td>Third</td><td>3</td></tr>
+  <tr><td>Fourth</td><td>5</td></tr>
+  <tr><td>Fifth</td><td>8</td></tr>
+  <tr><td>Sixth</td><td>13</td></tr>
+  </tbody>
+</table>
+
+<h2>Administrators</h2>
+
+<ul>
+  <% User.with_role(:admin).each do |user| %>
+    <li><%= mail_to user.email, user.name %></li>
+  <% end %>
+</ul>
+    </div>
