@@ -8,6 +8,7 @@
       <th>Name</th>
       <th colspan="4">Final Four (sorted)</th>
       <th>Tie</th>
+      <th>Status</th>
       <th></th>
     </tr>
     </thead>
@@ -21,10 +22,7 @@
               <td></td>
           <% end %>
           <td><%= bracket.tie_breaker %></td>
-          <td class="nolink">
-            <%= link_to("Change Picks", edit_bracket_path(bracket), :class => 'btn btn-mini btn-primary') if can?(:edit, bracket) %>
-            <%= link_to("Delete bracket", bracket_path(bracket), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-mini btn-danger') if can?(:destroy, bracket) %>
-          </td>
+          <td><%= status_to_label(bracket.status) %></td>
         </tr>
     <% end %>
     </tbody>

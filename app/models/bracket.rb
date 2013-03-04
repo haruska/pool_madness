@@ -28,6 +28,16 @@ class Bracket < ActiveRecord::Base
     end
   end
 
+  def status
+    if !self.complete?
+      :incomplete
+    elsif self.unpaid?
+      :unpaid
+    else
+      :ok
+    end
+  end
+
   def only_bracket_for_user?
     self.user.brackets.size == 1
   end
