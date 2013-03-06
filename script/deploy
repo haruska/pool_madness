@@ -6,7 +6,7 @@ else
     heroku_env=staging
 fi
 
-if [ $heroku_env -eq staging ]; then
+if [ $heroku_env = staging ]; then
     branch=staging
     heroku_app=pool-madness-staging
 else
