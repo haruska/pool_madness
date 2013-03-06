@@ -126,6 +126,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
+    rack-timeout (0.0.3)
     rails (3.2.12)
       actionmailer (= 3.2.12)
       actionpack (= 3.2.12)
@@ -227,6 +228,7 @@ DEPENDENCIES
   libv8 (>= 3.11.8)
   pg
   quiet_assets (>= 1.0.1)
+  rack-timeout
   rails (= 3.2.12)
   rolify (>= 3.2.0)
   rspec-rails (>= 2.12.2)
