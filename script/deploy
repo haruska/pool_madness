@@ -3,9 +3,9 @@
 bundle exec rake assets:precompile
 git add .
 git ci -m"precompile assets for heroku"
-git push heroku master
-bundle exec rake figaro:heroku
-heroku run rake db:migrate
+git push staging master
+bundle exec rake figaro:heroku --remote staging
+heroku run rake db:migrate --remote staging
 
 git rm -r public/assets
 git ci -m"remove precomiled assets post deploy"
