@@ -4,7 +4,7 @@ bundle exec rake assets:precompile
 git add .
 git ci -m"precompile assets for heroku"
 git push staging unicorn:master #push local unicorn branch to staging/master
-bundle exec rake figaro:heroku --remote staging
+bundle exec rake figaro:heroku[pool-madness-staging]
 heroku run rake db:migrate --remote staging
 
 git rm -r public/assets
