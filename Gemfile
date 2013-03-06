@@ -1,25 +1,26 @@
 source 'https://rubygems.org'
-ruby '1.9.2'
-
-gem 'heroku'
+ruby '1.9.3'
 
 gem 'rails', '3.2.12'
 
 group :development, :test do
   gem 'sqlite3'
+  gem "thin", ">= 1.5.0"
 end
 
 group :production do
   gem 'pg'
+  gem 'unicorn'
 end
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
+  gem "therubyracer", ">= 0.11.3", :require => "v8"
 end
+
 gem 'jquery-rails'
-gem "thin", ">= 1.5.0"
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
 gem "database_cleaner", ">= 0.9.1", :group => :test
 gem "email_spec", ">= 1.4.0", :group => :test
@@ -38,5 +39,4 @@ gem "figaro", ">= 0.5.3"
 gem "better_errors", ">= 0.6.0", :group => :development
 gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri_19, :rbx]
 gem "libv8", ">= 3.11.8"
-gem "therubyracer", ">= 0.11.3", :group => :assets, :platform => :ruby, :require => "v8"
 gem "state_machine"
