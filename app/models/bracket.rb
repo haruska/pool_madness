@@ -50,6 +50,10 @@ class Bracket < ActiveRecord::Base
     self.picks.where(:team_id => nil).first.blank? && self.tie_breaker.present?
   end
 
+  def incomplete?
+    !complete?
+  end
+
   def sorted_four
     champ_pick = self.picks.where(:game_id => Game.championship.id).first
     four = [champ_pick.team, champ_pick.first_team, champ_pick.second_team]
