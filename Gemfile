@@ -21,6 +21,7 @@ group :assets do
   gem "therubyracer", ">= 0.11.3", :require => "v8"
 end
 
+gem 'newrelic_rpm'
 gem 'jquery-rails'
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
 gem "database_cleaner", ">= 0.9.1", :group => :test
