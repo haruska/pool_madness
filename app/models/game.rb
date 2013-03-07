@@ -29,6 +29,16 @@ class Game < ActiveRecord::Base
     [0, next_game.game_one_id, next_game.game_two_id].index(self.id)
   end
 
+  def round
+    round = 6 #championship
+    n = self.next_game
+    while n.present?
+      round -= 1
+      n = n.next_game
+    end
+    round
+  end
+
   def self.championship
     game = Game.first
     game = game.next_game while game.next_game.present?

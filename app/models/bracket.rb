@@ -54,6 +54,14 @@ class Bracket < ActiveRecord::Base
     !complete?
   end
 
+  def possible_points
+    self.picks.collect(&:possible_points).sum
+  end
+
+  def points
+    self.picks.collect(&:points).sum
+  end
+
   def sorted_four
     champ_pick = self.picks.where(:game_id => Game.championship.id).first
     four = [champ_pick.team, champ_pick.first_team, champ_pick.second_team]
