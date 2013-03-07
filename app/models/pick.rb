@@ -7,6 +7,12 @@ class Pick < ActiveRecord::Base
 
   attr_accessible :game_id, :team_id
 
+  #TODO: belongs in a sweeper
+  after_update do |pick|
+    Rails.cache.delete("views/bracket-show-#{pick.bracket_id}")
+  end
+
+
   def first_team
     if self.game.game_one.present?
       self.bracket.picks.where(:game_id => self.game.game_one_id).first.try(:team)

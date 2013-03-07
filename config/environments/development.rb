@@ -11,7 +11,7 @@ PoolMadness::Application.configure do
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
-  config.action_controller.perform_caching = false
+  config.action_controller.perform_caching = true
 
   # ActionMailer Config
   config.action_mailer.default_url_options = { :host => 'mm:3000' }
@@ -31,6 +31,10 @@ PoolMadness::Application.configure do
   }
 
 
+  #config.action_dispatch.rack_cache = {
+  #    metastore:   "redis://localhost:6379/1/metastore",
+  #    entitystore: "redis://localhost:6379/1/entitystore"
+  #}
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log

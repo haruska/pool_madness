@@ -20,7 +20,11 @@
     </div>
 <% end %>
 
-<%= render @bracket %>
+<% content_for(:body_class) { "bracket standings" } %>
+
+<% cache("bracket-show-#{@bracket.id}") do %>
+  <%= render @bracket %>
+<% end %>
 
 <div class="form-actions">
   <%= link_to('Edit Picks', edit_bracket_path(@bracket), :class => 'btn btn-primary') if can?(:edit, @bracket) %>

@@ -1,35 +1,19 @@
+
 <h3>Brackets (<%= Bracket.count %> total)</h3>
 <div class="span12">
-  <% if @brackets.present? %>
-  <p><strong>*All brackets in pool will be displayed after tournament start</strong></p>
-  <table data-provides="rowlink" class="table table-condensed table-striped">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="4">Final Four (sorted)</th>
-      <th>Tie</th>
-      <th>Status</th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @brackets.each do |bracket| %>
-          <td><%= link_to bracket.name, bracket %></td>
-          <% bracket.sorted_four.each do |team| %>
-              <td><%= team.name %></td>
-          <% end %>
-          <% (4 - bracket.sorted_four.size).times do %>
-              <td></td>
-          <% end %>
-          <td><%= bracket.tie_breaker %></td>
-          <td><%= status_to_label(bracket.status) %></td>
-        </tr>
-    <% end %>
-    </tbody>
-  </table>
-    <% end %>
-  <div class="pagination-centered">
-    <%= link_to "New Bracket Entry", brackets_path, :method => :post, :class => 'btn btn-primary' %>
-  </div>
+  <% if Pool.started? %>
+      <% cache('all_brackets') do %>
+        <%= render :partial => 'brackets/brackets', :locals => {:brackets => @brackets} %>
+      <% end %>
+  <% else %>
+    <p><strong>*All brackets in pool will be displayed after tournament start</strong></p>
+      <%= render :partial => 'brackets/brackets', :locals => {:brackets => @brackets} %>
+  <% end %>
+
+  <% if can? :create, Bracket %>
+    <div class="pagination-centered">
+      <%= link_to "New Bracket Entry", brackets_path, :method => :post, :class => 'btn btn-primary' %>
+    </div>
+  <% end %>
 
 </div>

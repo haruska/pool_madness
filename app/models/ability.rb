@@ -9,11 +9,17 @@ class Ability
 
     if user.id.present?
       can :manage, User, :id => user.id
-      can :manage, Bracket, :user_id => user.id
-      can :update, Pick, :bracket => { :user_id => user.id }
-    end
 
-    cannot :destroy, Bracket.where('id IN (select bracket_id from charges)')
+      if Pool.started?
+        can :view, Bracket
+        cannot :create, Bracket
+        cannot :edit, Bracket
+      else
+        can :manage, Bracket, :user_id => user.id
+        can :update, Pick, :bracket => { :user_id => user.id }
+        cannot :destroy, Bracket.where('id IN (select bracket_id from charges)')
+      end
+    end
 
 
     # Define abilities for the passed in user here. For example:

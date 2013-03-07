@@ -1,6 +1,13 @@
 class BracketsController < ApplicationController
   load_and_authorize_resource
 
+  def index
+    if Pool.started? && !Rails.cache.exist?('views/all_brackets')
+      @brackets.sort_by! {|x| [x.points, x.possible_points]}
+      @brackets.reverse!
+    end
+  end
+
   def create
     if @bracket.save
       redirect_to edit_bracket_path(@bracket)

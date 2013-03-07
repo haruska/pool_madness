@@ -3,6 +3,7 @@ ruby '1.9.3'
 
 gem 'rack-timeout'
 gem 'rails', '3.2.12'
+gem 'redis-rails'
 
 group :development, :test do
   gem 'sqlite3'

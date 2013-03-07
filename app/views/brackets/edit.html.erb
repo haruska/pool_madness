@@ -7,6 +7,7 @@
 
 <h3 class="pagination-centered" style="color: #c52000"><%= "Editing #{@bracket.name} Bracket" %></h3>
 
+<% content_for(:body_class) { "bracket standings" } %>
 <%= render @bracket %>
 
 

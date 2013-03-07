@@ -9,6 +9,11 @@ class Bracket < ActiveRecord::Base
 
   attr_accessible :tie_breaker
 
+  #TODO: belongs in a sweeper
+  after_update do |bracket|
+    Rails.cache.delete("views/bracket-show-#{bracket.id}")
+  end
+
   state_machine :payment_state, :initial => :unpaid do
     state :unpaid
     state :promised
