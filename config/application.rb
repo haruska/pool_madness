@@ -61,7 +61,7 @@ module PoolMadness
     # like if you have constraints or database-specific column types
     # config.active_record.schema_format = :sql
 
-    config.cache_store = :redis_store, "#{ENV['REDISTOGO_URL']}0/cache", { expires_in: 90.minutes }
+    #config.cache_store = :redis_store, "#{ENV['REDISTOGO_URL']}0/cache", { expires_in: 90.minutes }
 
     # Enforce whitelist mode for mass assignment.
     # This will create an empty whitelist of attributes available for mass-assignment for all models
