@@ -3,7 +3,7 @@
 #PoolMadness::Application.config.session_store :cookie_store, key: '_pool_madness_session'
 
 # config/initializers/session_store.rb
-PoolMadness::Application.config.session_store :redis_store
+PoolMadness::Application.config.session_store :redis_store, :servers => "#{ENV['REDIS_URL']}/2/session"
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
