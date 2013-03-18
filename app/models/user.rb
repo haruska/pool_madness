@@ -15,6 +15,10 @@ class User < ActiveRecord::Base
 
   has_many :charges, :through => :brackets
 
+  after_create do |user|
+    user.welcome_message unless user.invitation_token.present?
+  end
+
   def stripe_customer
     if self.stripe_customer_id.present?
       Stripe::Customer.retrieve(self.stripe_customer_id)
@@ -31,8 +35,6 @@ class User < ActiveRecord::Base
     welcome_message
     super
   end
-
-  private
 
   def welcome_message
     UserMailer.welcome_message(self).deliver
