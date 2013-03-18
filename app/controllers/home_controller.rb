@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
 
+  before_filter :ensure_logged_in, :only => [:rules, :payments]
+
   def index
   end
 
@@ -8,7 +10,18 @@ class HomeController < ApplicationController
     redirect_to root_path, :notice => "Thank you for your interest. We'll contact you when the beta is ready."
   end
 
+  def rules
+  end
+
   def payments
-    redirect_to root_path && return if current_user.blank?
+  end
+
+  def ensure_logged_in
+    if current_user.blank?
+      redirect_to root_path
+      false
+    else
+      true
+    end
   end
 end

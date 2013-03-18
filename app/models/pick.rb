@@ -7,12 +7,6 @@ class Pick < ActiveRecord::Base
 
   attr_accessible :game_id, :team_id
 
-  #TODO: belongs in a sweeper
-  after_update do |pick|
-    Rails.cache.delete("views/bracket-show-#{pick.bracket_id}")
-  end
-
-
   def first_team
     if self.game.game_one.present?
       self.bracket.picks.where(:game_id => self.game.game_one_id).first.try(:team)
@@ -31,7 +25,7 @@ class Pick < ActiveRecord::Base
 
   def points
     if self.team.present? && self.game.winner.present? && self.team == self.game.winner
-      POINTS_PER_ROUND[self.game.round]
+      POINTS_PER_ROUND[self.game.round] + self.team.seed
     else
       0
     end
@@ -39,7 +33,7 @@ class Pick < ActiveRecord::Base
 
   def possible_points
     if self.game.winner.blank? && self.team.try(:still_playing?)
-      POINTS_PER_ROUND[self.game.round]
+      POINTS_PER_ROUND[self.game.round] + self.team.seed
     else
       self.points
     end

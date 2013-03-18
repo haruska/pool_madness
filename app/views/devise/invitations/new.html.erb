@@ -1,5 +1,7 @@
 <h2><%= t "devise.invitations.new.header" %></h2>
 
+<p>You can now invite friends and family to join the bracket pool. Simply enter their full name and email address below.</p>
+
 <%= simple_form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f| %>
   <%= devise_error_messages! %>
 

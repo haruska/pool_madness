@@ -15,4 +15,26 @@ class User < ActiveRecord::Base
 
   has_many :charges, :through => :brackets
 
+  def stripe_customer
+    if self.stripe_customer_id.present?
+      Stripe::Customer.retrieve(self.stripe_customer_id)
+    else
+      customer = Stripe::Customer.create(:email => self.email)
+      self.stripe_customer_id = customer.id
+      self.save!
+      customer
+    end
+  end
+
+  # devise_invitable accept_invitation! method overriden
+  def accept_invitation!
+    welcome_message
+    super
+  end
+
+  private
+
+  def welcome_message
+    UserMailer.welcome_message(self).deliver
+  end
 end

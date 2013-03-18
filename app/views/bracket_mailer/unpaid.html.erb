@@ -1,0 +1,14 @@
+<p>Hello <%= @user.name %>,</p>
+
+<p>
+  Just a reminder that your bracket is not paid. All unpaid brackets <b>will be deleted at tip off tomorrow</b>. There
+are <%= link_to 'plenty of ways', payments_url %> to get your $10 in including credit card.
+</p>
+<p>
+  Just head to your <%= link_to 'bracket detail page', bracket_url(@bracket) %> and click "Pay by Credit Card".
+</p>
+
+<p>
+  Thanks,<br/>
+  John, Jason and Chris Haruska
+</p>

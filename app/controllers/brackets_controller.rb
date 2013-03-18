@@ -1,11 +1,22 @@
 class BracketsController < ApplicationController
   load_and_authorize_resource
 
+  caches_action :index, :layout => false, :cache_path => :index_cache_path.to_proc
+  caches_action :show,  :layout => false, :cache_path => Proc.new {|c| "/brackets/#{c.params[:id]}"}
+  cache_sweeper :bracket_sweeper, :only => [:update, :destroy]
+
+  layout 'bracket', :except => :index
+
   def index
-    if Pool.started? && !Rails.cache.exist?('views/all_brackets')
+    if Pool.started?
       @brackets.sort_by! {|x| [x.points, x.possible_points]}
       @brackets.reverse!
+    else
+      @brackets.sort_by! {|x| [[:ok, :unpaid, :incomplete].index(x.status), x.name]}
     end
+  end
+
+  def show
   end
 
   def create
@@ -17,16 +28,18 @@ class BracketsController < ApplicationController
   end
 
   def update
-    status = 200
-
     if params[:bracket][:pending_payment]
       @bracket.bitcoin_payment_submited!
       flash[:notice] = "Thank you. Your bitcoin payment is being processed."
-    elsif !@bracket.update_attributes(params[:bracket])
-      status = 400
+      render :nothing => true
+    else
+      if @bracket.update_attributes(params[:bracket])
+        redirect_to @bracket, :notice => 'Bracket Saved'
+      else
+        flash.now[:alert] = 'Problem saving bracket. Please try again'
+        render :edit
+      end
     end
-
-    render :nothing => true, :status => status
   end
 
   def destroy
@@ -34,4 +47,11 @@ class BracketsController < ApplicationController
     redirect_to root_path, :notice => 'Bracket Destroyed'
   end
 
+  def index_cache_path
+    if Pool.started?
+      '/public/brackets'
+    else
+      current_user.has_role?(:admin) ? '/admin/brackets' : "/public/brackets/#{current_user.id}"
+    end
+  end
 end

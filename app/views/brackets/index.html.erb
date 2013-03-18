@@ -1,14 +1,11 @@
 
 <h3>Brackets (<%= Bracket.count %> total)</h3>
 <div class="span12">
-  <% if Pool.started? %>
-      <% cache('all_brackets') do %>
-        <%= render :partial => 'brackets/brackets', :locals => {:brackets => @brackets} %>
-      <% end %>
-  <% else %>
+  <% unless Pool.started? %>
     <p><strong>*All brackets in pool will be displayed after tournament start</strong></p>
-      <%= render :partial => 'brackets/brackets', :locals => {:brackets => @brackets} %>
   <% end %>
+
+  <%= render :partial => 'brackets/brackets', :locals => {:brackets => @brackets} %>
 
   <% if can? :create, Bracket %>
     <div class="pagination-centered">

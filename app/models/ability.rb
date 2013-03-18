@@ -9,11 +9,13 @@ class Ability
 
     if user.id.present?
       can :manage, User, :id => user.id
+      can [:index, :read], Charge, :bracket => {:user_id => user.id}
+      can :read, Game
 
       if Pool.started?
-        can :view, Bracket
-        cannot :create, Bracket
-        cannot :edit, Bracket
+        can :read, Bracket
+        cannot [:create, :update], Bracket
+        cannot :destroy, Bracket unless user.has_role?(:admin)
       else
         can :manage, Bracket, :user_id => user.id
         can :update, Pick, :bracket => { :user_id => user.id }

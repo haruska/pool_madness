@@ -1,4 +1,4 @@
-<h3>Bitcoin Payments</h3>
+<h3>Payments</h3>
 <div class="span12">
   <% if @pending_brackets.present? %>
       <h4>Pending</h4>
@@ -21,8 +21,10 @@
         </tbody>
       </table>
   <% end %>
+
+
   <% if @charges.present? %>
-          <h4>Completed</h4>
+          <h4>Bitcoin</h4>
       <table class="table table-condensed table-striped">
         <thead>
         <tr>
@@ -42,7 +44,38 @@
         </tbody>
       </table>
   <% end %>
-  <% if !@charges.present? && !@pending_brackets.present? %>
+
+
+  <% if @stripes.present? %>
+      <h4>Credit Card</h4>
+        <table class="table table-condensed table-striped">
+          <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Card Type</th>
+            <th>Last 4 CC</th>
+            <th>Exp</th>
+            <th>Amount</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @stripes.each do |charge| %>
+              <% bracket = Bracket.find_by_stripe_charge_id(charge.id) %>
+              <tr>
+                <td><%= Time.at(charge.created).to_s(:usa) %></td>
+                <td>Pool Entry: <%= bracket.present? ? link_to(bracket.name, bracket) : 'Unknown' %></td>
+                <td><%= charge.card.type %></td>
+                <td>...<%= charge.card.last4 %></td>
+                <td><%= charge.card.exp_month %>/<%= charge.card.exp_year %></td>
+                <td><%= number_to_currency(charge.amount / 100.0) %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+    <% end %>
+
+  <% if !@charges.present? && !@pending_brackets.present? && !@stripes.present? %>
     <p>No payments recorded. <%= link_to "Pay for your bracket entries", brackets_path %>.</p>
   <% end %>
 </div>

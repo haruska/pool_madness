@@ -1,0 +1,18 @@
+<p>Hello <%= @user.name %>,</p>
+
+<p>
+  You're all set for the March Madness pool. Your bracket is all filled out, paid, and ready to go for tip off.
+  You can see or make last minute changes to your brackets at:
+</p>
+
+<p>
+  <%= link_to brackets_url, brackets_url %>
+</p>
+
+<p>
+  We've also added the ability for you to invite other people. Just click "invite people" on the top right of the site
+  or forward them this link: <%= link_to ENV['SIGNUP_LINK'], ENV['SIGNUP_LINK'] %>
+</p>
+
+<p>Good Luck,<br/>
+  John, Jason and Chris Haruska</p>

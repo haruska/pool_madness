@@ -4,9 +4,9 @@ class Team < ActiveRecord::Base
   EAST = 'East'
   MIDWEST = 'Midwest'
 
-  REGIONS = [SOUTH, WEST, EAST, MIDWEST]
+  REGIONS = [MIDWEST, WEST, SOUTH, EAST]
 
-  attr_accessible :region, :seed, :name
+  attr_accessible :region, :seed, :name, :score_team_id
 
   validates :name, :uniqueness => true, :length => {:maximum => 15}
 
@@ -28,5 +28,9 @@ class Team < ActiveRecord::Base
       game = game.next_game
     end
     true
+  end
+
+  def eliminated?
+    !still_playing?
   end
 end

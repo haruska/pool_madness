@@ -43,3 +43,8 @@ gem "better_errors", ">= 0.6.0", :group => :development
 gem "binding_of_caller", ">= 0.7.1", :group => :development, :platforms => [:mri_19, :rbx]
 gem "libv8", ">= 3.11.8"
 gem "state_machine"
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+gem 'memcachier'
+gem 'dalli'
+gem 'sidekiq'
+gem 'httparty'

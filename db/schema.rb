@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130307024103) do
+ActiveRecord::Schema.define(:version => 20130315023854) do
 
   create_table "brackets", :force => true do |t|
     t.integer  "user_id"
@@ -21,22 +21,14 @@ ActiveRecord::Schema.define(:version => 20130307024103) do
     t.integer  "tie_breaker"
     t.string   "payment_state",        :default => "unpaid", :null => false
     t.integer  "payment_collector_id"
+    t.string   "stripe_charge_id"
+    t.string   "name"
   end
 
   add_index "brackets", ["charge_id"], :name => "index_brackets_on_stripe_charge_id"
   add_index "brackets", ["payment_collector_id"], :name => "index_brackets_on_payment_collector_id"
   add_index "brackets", ["payment_state"], :name => "index_brackets_on_payment_state"
   add_index "brackets", ["user_id"], :name => "index_brackets_on_user_id"
-
-  create_table "cash_payments", :force => true do |t|
-    t.integer  "bracket_id",    :null => false
-    t.integer  "pool_admin_id", :null => false
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-  end
-
-  add_index "cash_payments", ["bracket_id"], :name => "index_cash_payments_on_bracket_id", :unique => true
-  add_index "cash_payments", ["pool_admin_id"], :name => "index_cash_payments_on_pool_admin_id"
 
   create_table "charges", :force => true do |t|
     t.string   "order_id"
@@ -93,15 +85,17 @@ ActiveRecord::Schema.define(:version => 20130307024103) do
   add_index "roles", ["resource_type"], :name => "index_roles_on_resource_type"
 
   create_table "teams", :force => true do |t|
-    t.string   "name",       :null => false
-    t.integer  "seed",       :null => false
-    t.string   "region",     :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name",          :null => false
+    t.integer  "seed",          :null => false
+    t.string   "region",        :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "score_team_id"
   end
 
   add_index "teams", ["name"], :name => "index_teams_on_name", :unique => true
   add_index "teams", ["region", "seed"], :name => "index_teams_on_region_and_seed", :unique => true
+  add_index "teams", ["score_team_id"], :name => "index_teams_on_score_team_id", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "email",                                :default => "", :null => false

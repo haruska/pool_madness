@@ -26,5 +26,10 @@ PoolMadness::Application.routes.draw do
   resources :charges, :only => [:create]
 
   resources :picks, :only => [:update]
-  resources :brackets, :except => [:new]
+
+  resources :brackets, :except => [:new] do
+    resources :stripes, :only => [:create]
+  end
+
+  resources :games
 end

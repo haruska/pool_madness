@@ -42,6 +42,7 @@ PoolMadness::Application.configure do
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
   #config.cache_store = :redis_store, "#{ENV['REDISTOGO_URL']}/0/cache", { expires_in: 90.minutes }
+  config.cache_store = :dalli_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -62,7 +63,7 @@ PoolMadness::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.action_mailer.default_url_options = { :host => 'pool-madness.herokuapp.com' }
+  config.action_mailer.default_url_options = { :host => 'madness.herokuapp.com' }
   # ActionMailer Config
   # Setup for production - deliveries, no errors raised
   config.action_mailer.delivery_method = :smtp
@@ -71,14 +72,13 @@ PoolMadness::Application.configure do
   config.action_mailer.default :charset => "utf-8"
 
   config.action_mailer.smtp_settings = {
-      :address              => "smtp.gmail.com",
-      :port                 => 587,
-      :user_name            => ENV['GMAIL_USERNAME'],
-      :password             => ENV['GMAIL_PASSWORD'],
-      :authentication       => 'plain',
-      :enable_starttls_auto => true
+      :address   => "smtp.mandrillapp.com",
+      :port      => 587, # ports 587 and 2525 are also supported with STARTTLS
+      :enable_starttls_auto => true, # detects and uses STARTTLS
+      :user_name => ENV['MANDRILL_USERNAME'],
+      :password  => ENV['MANDRILL_APIKEY'], # SMTP password is any valid API key
+      :authentication => 'login' # Mandrill supports 'plain' or 'login'
   }
-
 
 
   # Log the query plan for queries taking more than this (works

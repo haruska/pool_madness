@@ -3,8 +3,7 @@
     <h1>Types of Payment</h1>
   </div>
   <p>
-    Each bracket entry in the pool has a $10 entry fee. Payments for basketball pools are against the Terms of Service
-    of most credit cards and processors. The options are described in detail below.
+    Each bracket entry in the pool has a $10 entry fee. The options are described in detail below.
   </p>
   <p>
     These methods assume trust that the proverbial "check is in the mail". We're all friends here. Filling out
@@ -21,6 +20,13 @@
     <strong>you must pay an admin in person before tip off or your entry will be voided.</strong>
   </p>
 </section>
+<section id="credit-card">
+  <h2>Credit Card</h2>
+  <p>
+    We accept all major credit cards. Note, the processing company charges us $0.61 per bracket which we add to the
+    amount charged. Just select "Pay with Credit Card" on <%= link_to "your brackets", brackets_path %> page.
+  </p>
+</section>
 <section id="bitcoin">
   <h2>Bitcoin</h2>
   <p>
@@ -31,13 +37,9 @@
     The process of funding a Bitcoin account is similar to PayPal.
   <ol>
     <li>Get a bitcoin wallet. We recommend <%= link_to "Coinbase", "http://coinbase.com" %></li>
-    <li>Link your checking account to your Coinbase account</li>
-    <li>Peform a standard checking account transfer to Coinbase (4 day hold)</li>
-    <% if current_user.brackets.try(:size) == 1 %>
-        <li><%= link_to "Pay for your bracket with Bitcoin", current_user.brackets.first %></li>
-    <% else %>
-        <li>Select "Pay with Bitcoin" on <%= link_to "your brackets", brackets_path %> page</li>
-    <% end %>
+    <li>Link your bank account to your Coinbase account</li>
+    <li><%= link_to 'Buy bitcoin', 'https://coinbase.com/buys' %> with your Coinbase account (4 day hold)</li>
+    <li>Select "Pay with Bitcoin" on <%= link_to "your brackets", brackets_path %> detail page</li>
   </ol>
   </p>
   <p>
@@ -48,10 +50,9 @@
     <strong>If you need time for your transfer to coinbase to complete let one of the admins know and we'll mark you as paid.</strong>
   </p>
 </section>
-<section id="check">
-  <h2>Check</h2>
+<section id="paypay">
+  <h2>Paypal</h2>
   <p>
-    Mail a check if none of the other options work for you. Again, let a pool administrator know you're doing this
-    so they can mark you as paid.
+    If you wish to pay by PayPal, just email an administrator and they'll send you a payment request to complete on PayPal.
   </p>
 </section>

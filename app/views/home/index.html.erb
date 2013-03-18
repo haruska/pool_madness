@@ -1,24 +1,15 @@
 <% content_for :head do %>
     <link href="/stylesheets/woody-landing.css" rel="stylesheet">
     <!-- Google Web Font-->
-    <link href='http://fonts.googleapis.com/css?family=Dosis:300,400,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Dosis:300,400,600' rel='stylesheet' type='text/css'>
     <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 <% end %>
 
 <div id="box" class="span7 offset2">
-  <h1><span class="bold">Pool Madness</span> is coming soon</h1>
-  <h2>For dead simple office pool management</h2>
-
-  <h3>Find out when it launches by giving us your email address.</h3>
-
-  <div id="signup">
-    <%= form_tag subscribe_path, :id => 'form', :class => 'form-inline' do %>
-      <%= text_field_tag :email, params[:email], :id => 'email', :class => 'input-xlarge email', :placeholder => "Your email address" %>
-      <%= submit_tag 'Submit' %>
-    <% end %>
-      <small>* We won't spam you or give out your email for any reason</small>
-  </div>
+  <h1 class="bold">Pool Madness
+  <h1>NCAA March Madness</h1>
+  <h3>Private pool. <%= link_to 'Login Now', new_user_session_path %> or <%= mail_to ENV['ADMIN_EMAIL'], 'Email Us' %></h3>
   <h5><small>&copy; 2013 Pool Madness</small></h5>
 </div>

@@ -7,12 +7,14 @@ class Bracket < ActiveRecord::Base
 
   after_create :create_all_picks
 
-  attr_accessible :tie_breaker
+  attr_accessible :tie_breaker, :name
 
-  #TODO: belongs in a sweeper
-  after_update do |bracket|
-    Rails.cache.delete("views/bracket-show-#{bracket.id}")
+  before_validation do |bracket|
+    bracket.tie_breaker = nil if bracket.tie_breaker.to_i <= 0
+    bracket.name = bracket.default_name if bracket.name.blank?
   end
+
+  validates :name, :uniqueness => true, :presence => true
 
   state_machine :payment_state, :initial => :unpaid do
     state :unpaid
@@ -47,12 +49,18 @@ class Bracket < ActiveRecord::Base
     self.user.brackets.size == 1
   end
 
-  def name
-    self.only_bracket_for_user? ? self.user.name : "#{self.user.name} #{self.user.brackets.collect(&:id).index(self.id) + 1}"
+  def default_name
+    default_name = self.user.name
+    i = 1
+    while Bracket.find_by_name(default_name).present?
+      default_name = "#{self.user.name} #{i}"
+      i += 1
+    end
+    default_name
   end
 
   def complete?
-    self.picks.where(:team_id => nil).first.blank? && self.tie_breaker.present?
+    self.picks.where(:team_id => nil).first.blank? && self.picks.where(:team_id => -1).first.blank? && self.tie_breaker.present?
   end
 
   def incomplete?
