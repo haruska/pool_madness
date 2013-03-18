@@ -6,12 +6,14 @@ gem 'rails', '3.2.12'
 gem 'redis-rails'
 
 group :development, :test do
-  gem 'sqlite3'
   gem "thin", ">= 1.5.0"
 end
 
-group :production do
   gem 'pg'
+gem 'sqlite3'
+gem 'taps'
+
+group :production do
   gem 'unicorn'
 end
 
