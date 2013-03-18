@@ -9,9 +9,7 @@ group :development, :test do
   gem "thin", ">= 1.5.0"
 end
 
-  gem 'pg'
-gem 'sqlite3'
-gem 'taps'
+gem 'pg'
 
 group :production do
   gem 'unicorn'
