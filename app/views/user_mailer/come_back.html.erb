@@ -1,0 +1,40 @@
+<p>Hello <%= @user.name %>,</p>
+
+<p>
+  March Madness is all set and ready to have your bracket filled out! Your email address and password were transferred
+  over from the Big Ten Tournament pool, it's just a new URL. If you forgot your password, don't worry. Just click "Forgot
+  Password" and we'll send you a new one.
+</p>
+
+<p>
+  <b>Site URL</b>: <%= link_to brackets_url, brackets_url %><br />
+  <b>Username</b>: <%= @user.email %><br />
+  <b>Password</b>: What you filled in on the site.
+</p>
+
+<p>You can get to your brackets anytime by returning to the site, clicking login, and filling out your credentials.</p>
+
+<p>Some useful links:</p>
+<ul>
+  <li><%= link_to 'Rules and Scoring', rules_url %></li>
+  <li><%= link_to 'Payment Types', payments_url %></li>
+  <li><%= link_to 'Forgotten Password', new_user_password_url %></li>
+</ul>
+
+<p>
+  You can continue to update your brackets until tip off on Thursday, even after you pay the entry fee. After Thursday,
+  they will be locked in.
+</p>
+
+<p>
+  If you plan on paying cash in person, <b>please let an administrator know</b> so they can mark you as paid. Any brackets
+  unpaid at tip off will be removed from the pool.
+</p>
+
+<p>
+  Before the tournament starts, you can only see the brackets you've personally filled out. After tip off, all brackets
+  will be available for viewing. Simply go back to the site (<%= root_url %>) and login to see them all.
+</p>
+
+<p>Good Luck,<br/>
+  John, Jason and Chris Haruska</p>

@@ -15,4 +15,9 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail(:to => "\"#{user.name}\" <#{user.email}>", :subject => "Thanks for your bracket entry")
   end
+
+  def come_back(user)
+    @user = user
+    mail(:to => "\"#{user.name}\" <#{user.email}>", :subject => "Fill out your March Madness Bracket!")
+  end
 end
