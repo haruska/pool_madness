@@ -3,12 +3,12 @@
 if [ $1 ]; then
     heroku_env=$1
 else
-    heroku_env=staging
+    heroku_env=madness
 fi
 
-if [ $heroku_env = staging ]; then
-    branch=staging
-    heroku_app=pool-madness-staging
+if [ $heroku_env = madness ]; then
+    branch=madness
+    heroku_app=madness
 else 
   if [ $heroku_env = bigten ]; then
     branch=big_ten
