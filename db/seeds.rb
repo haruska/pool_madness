@@ -18,77 +18,77 @@ puts 'user: ' << user.name
 user.add_role :admin
 
 {
-    Team::SOUTH => [
-        'Kentucky',
+    Team::MIDWEST => [
+        'Louisville',
         'Duke',
-        'Baylor',
-        'Indiana',
-        'Wichita St',
-        'UNLV',
-        'Notre Dame',
-        'Iowa St',
-        'Connecticut',
-        'Xavier',
-        'Colorado',
-        'VCU',
-        'New Mexico St',
-        'S Dakota St',
-        'Lehigh',
-        'Western Ky'
+        'Michigan St',
+        'St Louis',
+        'Oklahoma St',
+        'Memphis',
+        'Creighton',
+        'Colorado St',
+        'Missouri',
+        'Cincinnati',
+        'Play-In MW11',
+        'Oregon',
+        'New Mex St',
+        'Valparaiso',
+        'Albany',
+        'Play-In MW16'
     ],
     Team::WEST => [
-        'Michigan St',
-        'Missouri',
-        'Marquette',
-        'Louisville',
-        'New Mexico',
-        'Murray St',
-        'Forida',
-        'Memphis',
-        'Saint Louis',
-        'Virginia',
-        'Colorado St',
-        'Long Beach St',
-        'Davidson',
-        'BYU',
-        'Norfolk St',
-        'LIU Brooklyn'
-    ],
-    Team::EAST => [
-        'Syracuse',
-        'Ohio St',
-        'Florida St',
-        'Wisconsin',
-        'Vanderbilt',
-        'Cincinnati',
         'Gonzaga',
+        'Ohio St',
+        'New Mexico',
         'Kansas St',
-        'Southern Miss',
-        'West Virginia',
-        'Texas',
+        'Wisconsin',
+        'Arizona',
+        'Notre Dame',
+        'Pittsburgh',
+        'Wichita St',
+        'Iowa St',
+        'Belmont',
+        'Ole Miss',
+        'Play-In W13',
         'Harvard',
-        'Montana',
-        'St Bonaventure',
-        'Loyola (MD)',
-        'UNC Asheville'
+        'Iona',
+        'Southern U'
     ],
-    Team::MIDWEST => [
-        'North Carolina',
+    Team::SOUTH => [
         'Kansas',
         'Georgetown',
+        'Florida',
         'Michigan',
-        'Temple',
+        'VCU',
+        'UCLA',
         'San Diego St',
-        "St Mary's (CA)",
-        'Creighton',
-        'Alabama',
-        'Purdue',
-        'N Carolina St',
-        'South Fla',
-        'Ohio',
-        'Belmont',
-        'Detroit',
-        'Vermont'
+        'N Carolina',
+        'Villanova',
+        'Oklahoma',
+        'Minnesota',
+        'Akron',
+        'S Dakota St',
+        'NW State',
+        'Fla Gulf Coast',
+        'W Kentucky'
+    ],
+    Team::EAST => [
+        'Indiana',
+        'Miami (FL)',
+        'Marquette',
+        'Syracuse',
+        'UNLV',
+        'Butler',
+        'Illinois',
+        'NC State',
+        'Temple',
+        'Colorado',
+        'Bucknell',
+        'California',
+        'Montana',
+        'Davidson',
+        'Pacific',
+        'Play-In E16'
     ]
 }.each do |region, team_names|
   team_names.each_with_index do |name, i|
@@ -138,15 +138,3 @@ champ_two = Game.create :game_one => game_one, :game_two => game_two
 
 #Championship
 Game.create :game_one => champ_one, :game_two => champ_two
-
-
-3.times do |i|
-  bracket = Bracket.new
-  bracket.user = user
-  bracket.save!
-
-  bracket.picks.each do |pick|
-    pick.team = [pick.first_team, pick.second_team][rand(2)]
-    pick.save!
-  end
-end
