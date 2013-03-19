@@ -10,6 +10,7 @@ class GameObserver < ActiveRecord::Observer
 
     Bracket.all.each do |bracket|
       expire_action "/brackets/#{bracket.id}"
+      expire_action "/brackets/#{bracket.id}/printable"
       expire_action "/public/brackets/#{bracket.user.id}"
     end
   end

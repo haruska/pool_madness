@@ -20,6 +20,7 @@
     </div>
 <% end %>
 
+
 <%= render @bracket %>
 
 <div class="form-actions">
@@ -32,6 +33,12 @@
     <% else %>
         <%= link_to 'Pay with Bitcoin', 'https://coinbase.com/checkouts/625548a208757aa2f1b709600e12e5ef', :class => "bitcoin-pay btn btn-primary" %>
         <%= link_to 'Pay with Credit Card', bracket_stripes_path(@bracket), :class => 'btn btn-primary stripe-pay' %>
+    <% end %>
+  </div>
+
+  <div class="pagination-centered">
+    <%= link_to printable_bracket_path(@bracket), :target => '_new' do %>
+        <i class="icon-print"></i> Printable
     <% end %>
   </div>
 </div>
