@@ -50,7 +50,7 @@ table.gridtable td.title {
 }
 #bracket {
   margin-top: 15px;
-  height: 1000px;
+  height: 1050px;
   position: relative;
 }
 #bracket .round {
@@ -80,6 +80,12 @@ table.gridtable td.title {
 #bracket #round6 {
   left: 395px;
   width: 150px;
+}
+
+#bracket #championship {
+  left:  395px;
+  width:  150px;
+  top:  535px;
 }
 #bracket .round .region1 .match, #bracket .round .region2 .match {
   left: 0px;
@@ -122,28 +128,28 @@ table.gridtable td.title {
   top: 350px;
 }
 #bracket #round1 .region2 .m1, #bracket #round1 .region4 .m1 {
-  top: 550px;
-}
-#bracket #round1 .region2 .m2, #bracket #round1 .region4 .m2 {
   top: 600px;
 }
-#bracket #round1 .region2 .m3, #bracket #round1 .region4 .m3 {
+#bracket #round1 .region2 .m2, #bracket #round1 .region4 .m2 {
   top: 650px;
 }
-#bracket #round1 .region2 .m4, #bracket #round1 .region4 .m4 {
+#bracket #round1 .region2 .m3, #bracket #round1 .region4 .m3 {
   top: 700px;
 }
-#bracket #round1 .region2 .m5, #bracket #round1 .region4 .m5 {
+#bracket #round1 .region2 .m4, #bracket #round1 .region4 .m4 {
   top: 750px;
 }
-#bracket #round1 .region2 .m6, #bracket #round1 .region4 .m6 {
+#bracket #round1 .region2 .m5, #bracket #round1 .region4 .m5 {
   top: 800px;
 }
-#bracket #round1 .region2 .m7, #bracket #round1 .region4 .m7 {
+#bracket #round1 .region2 .m6, #bracket #round1 .region4 .m6 {
   top: 850px;
 }
-#bracket #round1 .region2 .m8, #bracket #round1 .region4 .m8 {
+#bracket #round1 .region2 .m7, #bracket #round1 .region4 .m7 {
   top: 900px;
+}
+#bracket #round1 .region2 .m8, #bracket #round1 .region4 .m8 {
+  top: 950px;
 }
 #bracket #round2 .match {
   height: 40px;
@@ -162,16 +168,16 @@ table.gridtable td.title {
   top: 300px;
 }
 #bracket #round2 .region2 .m1, #bracket #round2 .region4 .m1 {
-  top: 550px;
+  top: 600px;
 }
 #bracket #round2 .region2 .m2, #bracket #round2 .region4 .m2 {
-  top: 650px;
+  top: 700px;
 }
 #bracket #round2 .region2 .m3, #bracket #round2 .region4 .m3 {
-  top: 750px;
+  top: 800px;
 }
 #bracket #round2 .region2 .m4, #bracket #round2 .region4 .m4 {
-  top: 850px;
+  top: 900px;
 }
 #bracket #round3 .match {
   height: 90px;
@@ -184,10 +190,10 @@ table.gridtable td.title {
   top: 200px;
 }
 #bracket #round3 .region2 .m1, #bracket #round3 .region4 .m1 {
-  top: 550px;
+  top: 600px;
 }
 #bracket #round3 .region2 .m2, #bracket #round3 .region4 .m2 {
-  top: 750px;
+  top: 800px;
 }
 #bracket #round4 .match {
   height: 190px;
@@ -197,10 +203,10 @@ table.gridtable td.title {
   top: 0;
 }
 #bracket #round4 .region2 .m1, #bracket #round4 .region4 .m1 {
-  top: 550px;
+  top: 600px;
 }
 #bracket #round5 .match {
-  height: 90px;
+  height: 75px;
   top: 425px;
 }
 #bracket #round5 .m1 {
@@ -212,8 +218,8 @@ table.gridtable td.title {
   border-right: none;
 }
 #bracket #round6 .match {
-  height: 90px;
-  top: 425px;
+  height: 75px;
+  top: 415px;
   border: none;
   width: 150px;
   padding: 0;
@@ -224,17 +230,48 @@ table.gridtable td.title {
   line-height: 25px;
   padding: 0 10px 0 6px;
 }
-#bracket #round6 .selected {
-  font-size: 16px;
-  background: #D7E8F0;
-}
+
 #bracket #round6 .slot1 {
   border-bottom: 1px solid #666;
   top: 22px;
 }
 #bracket #round6 .slot2 {
   top: 48px;
+  text-align: right;
 }
+
+
+#bracket #championship .box {
+  height: 75px;
+  //top: 600px;
+  border: none;
+  width: 150px;
+  padding: 0;
+}
+
+#bracket #championship .square {
+  font-size: 13px;
+  height: 25px;
+  line-height: 25px;
+  padding: 0 10px 0 6px;
+}
+
+#bracket #championship .square1 {
+  border: 2px solid #666;
+  top: 22px;
+  text-align: center;
+  font-weight: bolder;
+}
+#bracket #championship .square2 {
+  top: 40px;
+  text-align: center;
+  font-size:  16px;
+  font-weight: bold;
+  padding: 0;
+}
+
+
+
 #bracket #round6 strong, #bracket #round6 strong span.seed, #bracket #round6 strong span.score {
   color: #c52000;
 }
@@ -245,7 +282,7 @@ table.gridtable td.title {
   display: block;
   position: absolute;
   left: 170px;
-  top: 165px;
+  top: 170px;
   width: 150px;
 }
 #bracket #round1 .region3 h4, #bracket #round1 .region4 h4 {
@@ -254,7 +291,7 @@ table.gridtable td.title {
   text-align: right;
 }
 #bracket #round1 .region2 h4, #bracket #round1 .region4 h4 {
-  top: 715px;
+  top: 770px;
 }
 #bracket .match .slot {
   margin: 0;
@@ -298,4 +335,8 @@ table.gridtable td.title {
 }
 #bracket strike a {
   color: #666;
+}
+
+#tie-breaker {
+  padding-top:  1000px;
 }

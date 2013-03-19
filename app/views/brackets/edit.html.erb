@@ -34,6 +34,8 @@
     <% end %>
   <% end %>
 
+  var champ_game_id = <%= Game.championship.id %>;
+
   $(document).ready(function() {
       $('#tie-breaker-static').hide();
   });
@@ -56,13 +58,22 @@
 
         //championship
         if(transition === undefined) {
-            $('#slot127').removeClass('final_pick');
-            $('#slot128').removeClass('final_pick');
-            $('#slot127').removeClass('selected');
-            $('#slot128').removeClass('selected');
-          $(this).attr('class', classList.join(' ') + ' final_pick selected');
-        }
 
+            var slot_node = $(".square1");
+
+            slot_node.html($(this).html());
+
+            //remove any old teamID classes
+            var defunctClassList = slot_node.attr('class').split(/\s+/);
+            $.each( defunctClassList, function(index, item){
+                if (item.substring(0, 4) == 'team') {
+                    slot_node.removeClass(item);
+                }
+            });
+
+            //add this teamID
+            slot_node.addClass("team" + team_id);
+        }
         else {
 
 
@@ -85,6 +96,7 @@
 
             if(defunct_team_id > 0 && defunct_team_id != team_id) {
               clearSelection(current_game_id, next_game_id, defunct_team_id);
+              clearChampionship(defunct_team_id);
             }
 
 
@@ -121,12 +133,29 @@
             });
 
             if(game_transitions[from_game_id] === undefined) {
-                slot_node.removeClass('final_pick');
-                slot_node.removeClass('selected');
+                clearChampionship(team_id);
             }
             else {
               clearSelection(from_game_id, game_transitions[from_game_id][0], team_id);
             }
+        }
+    }
+
+    function clearChampionship(team_id) {
+        var champ_node = $("div#championship > div.box > p.team" + team_id);
+        if(champ_node[0] === undefined) {
+            return;
+        }
+        else {
+            champ_node.html(' ');
+            champ_node.removeClass("team" + team_id);
+
+            $.ajax({
+                url: '/picks/' + game_to_pick[champ_game_id],
+                type: 'POST',
+                data: { _method: 'PUT', pick: {team_id: -1}}
+
+            });
         }
     }
 </script>
