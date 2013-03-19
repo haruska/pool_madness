@@ -37,7 +37,7 @@
     <% (1..6).to_a.each do |round_num| %>
         <%= render :partial => 'round', :locals => {:round_num => round_num, :bracket => (bracket ||= nil)} %>
     <% end %>
-    <div id="tie-breaker" class="pagination-centered" style="padding-top: 950px;"><span id="tie-breaker-static">Tie Breaker: <%= bracket.tie_breaker || 'None' %></span></div>
+    <div id="tie-breaker" class="pagination-centered"><span id="tie-breaker-static">Tie Breaker: <%= bracket.tie_breaker || 'None' %></span></div>
   </div>
 
 </div>
