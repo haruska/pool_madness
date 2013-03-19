@@ -28,6 +28,7 @@ PoolMadness::Application.routes.draw do
   resources :picks, :only => [:update]
 
   resources :brackets, :except => [:new] do
+    get 'printable', :on => :member
     resources :stripes, :only => [:create]
   end
 
