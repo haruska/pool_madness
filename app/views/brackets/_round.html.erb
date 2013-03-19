@@ -17,3 +17,69 @@
       </div>
   <% end %>
 </div>
+
+<% if round_num == 6 %>
+    <% game = Game.championship %>
+    <% pick = bracket.present? ? bracket.picks.where(:game_id => game.id).first : nil %>
+    <% team = pick.try(:team) || game.winner %>
+
+
+    <div id="championship" class="round">
+      <div class="box">
+        <p class="square square1 <%= team.present? ? "team#{team.id}" : nil %>">
+
+
+
+          <% if team.present? %>
+    <% if pick.present? %>
+        <% if game.winner.present? %>
+          <% if game.winner == team %>
+                    <strong>
+                <% else %>
+                    <strike>
+                <% end %>
+            <% elsif team.eliminated? %>
+                <strike>
+            <% end %>
+
+    <% else #pick.blank? %>
+        <% if game.winner.present? %>
+          <% if game.winner == team %>
+            <strong>
+          <% else %>
+            <strike>
+          <% end %>
+        <% end %>
+    <% end %>
+
+
+    <%= team.name %>
+
+
+    <% if pick.present? %>
+        <% if game.winner.present? %>
+            <% if game.winner == team %>
+                </strong>
+            <% else %>
+                </strike>
+            <% end %>
+        <% elsif team.eliminated? %>
+            </strike>
+        <% end %>
+    <% else #pick.blank? %>
+        <% if game.winner.present? %>
+            <% if game.winner == team %>
+                </strong>
+            <% else %>
+                </strike>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>
+
+</p>
+<p class="square square2">CHAMPION</p>
+    </div>
+</div>
+
+<% end %>

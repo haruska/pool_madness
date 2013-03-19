@@ -2,7 +2,7 @@
 <% second_team = pick.try(:second_team) || game.second_team %>
 
 <div id="match<%= game.id %>" class="match m<%= i+1 %>">
-  <p <% if game == Game.championship %>id="slot127"<% end %> class="slot slot1 <%= "team#{first_team.id}" if first_team.present? %> <% if game == Game.championship && pick.try(:first_team) == pick.try(:team) && pick.try(:team).present? %>final_pick selected<% end %>">
+  <p <% if game == Game.championship %>id="slot127"<% end %> class="slot slot1 <%= "team#{first_team.id}" if first_team.present? %>">
 
     <% if first_team.present? %>
 
@@ -87,7 +87,7 @@
   </p>
 
 
-  <p <% if game == Game.championship %>id="slot128"<% end %>class="slot slot2 <%= "team#{second_team.id}" if second_team.present? %> <% if game == Game.championship && pick.try(:second_team) == pick.try(:team) && pick.try(:team).present? %>final_pick selected<% end %>">
+  <p <% if game == Game.championship %>id="slot128"<% end %>class="slot slot2 <%= "team#{second_team.id}" if second_team.present? %>">
 
     <% if second_team.present? %>
 
