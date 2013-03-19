@@ -3,10 +3,11 @@ class BracketsController < ApplicationController
 
   caches_action :index, :layout => false, :cache_path => :index_cache_path.to_proc
   caches_action :show,  :layout => false, :cache_path => Proc.new {|c| "/brackets/#{c.params[:id]}"}
-  caches_action :printable, :layout => false, :cache_path => Proc.new {|c| "/brackets/#{c.params[:id]}/printable"}
+  caches_action :printable, :cache_path => Proc.new {|c| "/brackets/#{c.params[:id]}/printable"}
   cache_sweeper :bracket_sweeper, :only => [:update, :destroy]
 
-  layout 'bracket', :except => :index
+  layout 'bracket', :except => [:index, :printable]
+  layout false, :only => [:printable]
 
   def index
     if Pool.started?
@@ -21,7 +22,6 @@ class BracketsController < ApplicationController
   end
 
   def printable
-    render :layout => false
   end
 
   def create
