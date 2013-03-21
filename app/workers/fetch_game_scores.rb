@@ -1,4 +1,4 @@
-class UpdateScores
+class FetchGameScores
   include Sidekiq::Worker
 
   def perform

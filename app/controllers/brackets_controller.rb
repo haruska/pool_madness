@@ -5,8 +5,6 @@ class BracketsController < ApplicationController
   caches_action :show,  :layout => false, :cache_path => Proc.new {|c| "/brackets/#{c.params[:id]}"}
   #caches_action :printable, :layout => false, :cache_path => Proc.new {|c| "/brackets/#{c.params[:id]}/printable"}
 
-  cache_sweeper :bracket_sweeper, :only => [:update, :destroy]
-
   layout 'bracket', :except => [:index]
 
 
