@@ -1,5 +1,4 @@
 class StripesController < ApplicationController
-  cache_sweeper :bracket_sweeper, :only => [:create]
 
   def create
     bracket = Bracket.find(params[:bracket_id])

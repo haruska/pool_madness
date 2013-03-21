@@ -35,9 +35,12 @@
   <!-- Bracket -->
   <div id="bracket">
     <% (1..6).to_a.each do |round_num| %>
-        <%= render :partial => 'round', :locals => {:round_num => round_num, :bracket => (bracket ||= nil)} %>
+        <%= render :partial => 'brackets/round', :locals => {:round_num => round_num, :bracket => (bracket ||= nil)} %>
     <% end %>
+
+    <% if bracket.present? %>
     <div id="tie-breaker" class="pagination-centered"><span id="tie-breaker-static">Tie Breaker: <%= bracket.tie_breaker || 'None' %></span></div>
+        <% end %>
   </div>
 
 </div>

@@ -8,12 +8,12 @@
             <h4 class="region<%= region_num + 1 %>">
               <%= region %>
             </h4>
-            <%= render :partial => 'game_set', :locals => {:games => Game.round_for(round_num, region), :bracket => (bracket ||= nil)} %>
+            <%= render :partial => 'brackets/game_set', :locals => {:games => Game.round_for(round_num, region), :bracket => (bracket ||= nil)} %>
           </div>
       <% end %>
   <% else %>
       <div class="region">
-        <%= render :partial => 'game_set', :locals => {:games => Game.round_for(round_num, nil), :bracket => (bracket ||= nil)} %>
+        <%= render :partial => 'brackets/game_set', :locals => {:games => Game.round_for(round_num, nil), :bracket => (bracket ||= nil)} %>
       </div>
   <% end %>
 </div>

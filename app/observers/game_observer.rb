@@ -2,11 +2,10 @@ class GameObserver < ActiveRecord::Observer
   observe Game
 
   def after_update(game)
+    BracketScores.perform_async
+
     expire_action "/admin/games"
     expire_action "/public/games"
-
-    expire_action "/admin/brackets"
-    expire_action "/public/brackets"
 
     Bracket.all.each do |bracket|
       expire_action "/brackets/#{bracket.id}"

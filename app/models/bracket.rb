@@ -7,7 +7,7 @@ class Bracket < ActiveRecord::Base
 
   after_create :create_all_picks
 
-  attr_accessible :tie_breaker, :name
+  attr_accessible :tie_breaker, :name, :points, :possible_points
 
   before_validation do |bracket|
     bracket.tie_breaker = nil if bracket.tie_breaker.to_i <= 0
@@ -67,12 +67,12 @@ class Bracket < ActiveRecord::Base
     !complete?
   end
 
-  def possible_points
-    self.picks.collect(&:possible_points).sum
+  def calculate_possible_points
+    self.update_attribute(:possible_points, self.picks.collect(&:possible_points).sum)
   end
 
-  def points
-    self.picks.collect(&:points).sum
+  def calculate_points
+    self.update_attribute(:points, self.picks.collect(&:points).sum)
   end
 
   def sorted_four
