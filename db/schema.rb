@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130318132921) do
+ActiveRecord::Schema.define(:version => 20130320212905) do
 
   create_table "brackets", :force => true do |t|
     t.integer  "user_id"
@@ -23,11 +23,15 @@ ActiveRecord::Schema.define(:version => 20130318132921) do
     t.integer  "payment_collector_id"
     t.string   "stripe_charge_id"
     t.string   "name"
+    t.integer  "points",               :default => 0,        :null => false
+    t.integer  "possible_points",      :default => 0,        :null => false
   end
 
   add_index "brackets", ["charge_id"], :name => "index_brackets_on_stripe_charge_id"
   add_index "brackets", ["payment_collector_id"], :name => "index_brackets_on_payment_collector_id"
   add_index "brackets", ["payment_state"], :name => "index_brackets_on_payment_state"
+  add_index "brackets", ["points"], :name => "index_brackets_on_points"
+  add_index "brackets", ["possible_points"], :name => "index_brackets_on_possible_points"
   add_index "brackets", ["user_id"], :name => "index_brackets_on_user_id"
 
   create_table "charges", :force => true do |t|

@@ -1,8 +1,6 @@
 class Admin::BracketsController < ApplicationController
   before_filter :ensure_admin
 
-  cache_sweeper :bracket_sweeper, :except => :index
-
   def index
     if params[:payment_state]
       @brackets = Bracket.where(:payment_state => params[:payment_state]).all

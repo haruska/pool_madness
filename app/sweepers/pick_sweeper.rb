@@ -6,7 +6,6 @@ class PickSweeper < ActionController::Caching::Sweeper
 
     # Expire the index page now that we added a new product
     expire_action "/brackets/#{bracket.id}"
-    expire_action "/brackets/#{bracket.id}/printable"
     expire_action "/admin/brackets"
     expire_action "/public/brackets"
     expire_action "/public/brackets/#{bracket.user.id}"
