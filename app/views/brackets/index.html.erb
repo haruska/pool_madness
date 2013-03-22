@@ -7,7 +7,7 @@
 
   <%= render :partial => 'brackets/brackets', :locals => {:brackets => @brackets} %>
 
-  <% if can? :create, Bracket %>
+  <% if can?(:create, Bracket) && !Pool.started? %>
     <div class="pagination-centered">
       <%= link_to "New Bracket Entry", brackets_path, :method => :post, :class => 'btn btn-primary' %>
     </div>
