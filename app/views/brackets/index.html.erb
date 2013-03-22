@@ -24,9 +24,9 @@
   function user_bracket_highlight() {
       $.ajax({
         url: '/brackets/current_user_bracket_ids.json',
-        success: function(data, textStatus, jqXHR) {
-            for(var i = 0; i < data.length; i++) {
-                highlight_bracket(data[i]);
+        success: function(in_data, s, j) {
+            for(var i = 0; i < in_data.length; i++) {
+                highlight_bracket(in_data[i]);
             }
         }
       })
