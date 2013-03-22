@@ -29,6 +29,7 @@ PoolMadness::Application.routes.draw do
 
   resources :brackets, :except => [:new] do
     get 'printable', :on => :member
+    get 'current_user_bracket_ids', :on => :collection
     resources :stripes, :only => [:create]
   end
 

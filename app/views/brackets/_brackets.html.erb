@@ -21,7 +21,7 @@
   </thead>
   <tbody>
   <% brackets.each do |bracket| %>
-      <tr>
+      <tr id="bracket-row-<%= bracket.id %>">
         <td><%= link_to bracket.name, bracket %></td>
 
         <% if Pool.started? %>
