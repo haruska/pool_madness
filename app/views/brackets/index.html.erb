@@ -19,6 +19,7 @@
 <script type="text/javascript">
   function highlight_bracket(bracket_id) {
     $('#bracket-row-' + bracket_id).addClass('current-bracket-row');
+    $('#bracket-row-' + bracket_id).find('td').addClass('current-bracket-row');
   }
 
   function user_bracket_highlight() {
