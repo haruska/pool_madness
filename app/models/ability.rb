@@ -14,7 +14,7 @@ class Ability
 
       if Pool.started?
         can :read, Bracket
-        cannot [:create, :update], Bracket unless user.has_role?(:admin)
+        cannot [:create, :update], Bracket
         cannot :destroy, Bracket unless user.has_role?(:admin)
       else
         can :manage, Bracket, :user_id => user.id
