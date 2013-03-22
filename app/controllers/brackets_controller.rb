@@ -1,5 +1,5 @@
 class BracketsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:current_user_bracket_ids]
 
   caches_action :index, :layout => false, :cache_path => :index_cache_path.to_proc
   caches_action :show,  :layout => false, :cache_path => Proc.new {|c| "/brackets/#{c.params[:id]}"}
