@@ -52,6 +52,11 @@ class BracketsController < ApplicationController
     redirect_to root_path, :notice => 'Bracket Destroyed'
   end
 
+  def current_user_bracket_ids
+    ids = current_user.brackets.select(:id).all.collect(&:id)
+    render :json => ids.to_json
+  end
+
   def index_cache_path
     if Pool.started?
       '/public/brackets'
