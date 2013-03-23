@@ -22,7 +22,15 @@
   <tbody>
   <% brackets.each do |bracket| %>
       <tr id="bracket-row-<%= bracket.id %>">
-        <td><%= link_to bracket.name, bracket %></td>
+        <td>
+          <%= link_to bracket do %>
+            <% if bracket.name =~ /#{Regexp.escape(bracket.user.name)}/ %>
+              <%= bracket.name %>
+            <% else %>
+              <abbr title="<%= bracket.user.name %>"><%= bracket.name %></abbr>
+            <% end %>
+          <% end %>
+         </td>
 
         <% if Pool.started? %>
             <td><%= bracket.points %></td>

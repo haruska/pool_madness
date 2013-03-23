@@ -1,4 +1,12 @@
-<h3 class="pagination-centered"><%= "#{@bracket.name} Bracket" %></h3>
+<h3 class="pagination-centered">
+  <% if @bracket.name =~ /#{Regexp.escape(@bracket.user.name)}/ %>
+      <%= @bracket.name %>
+  <% else %>
+      <abbr title="<%= @bracket.user.name %>"><%= @bracket.name %></abbr>
+  <% end %>
+
+  Bracket
+</h3>
 
 <% if @bracket.incomplete? %>
     <div class="alert alert-block fade in">
