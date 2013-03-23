@@ -341,7 +341,13 @@ table.gridtable td.title {
   padding-top:  1000px;
 }
 
-.current-bracket-row {
+table.table-striped tbody tr.current-bracket-row:nth-child(odd) td {
   background: #D6F5FF;
   background-color: #D6F5FF;
 }
+
+table.table-striped tbody tr.current-bracket-row td {
+  background: #D6F5FF;
+  background-color: #D6F5FF;
+}
+//.table-striped tbody tr.highlight:nth-child(odd) td
