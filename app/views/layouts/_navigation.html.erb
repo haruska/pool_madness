@@ -4,6 +4,7 @@
     <ul class="nav">
       <li><%= link_to "Brackets", brackets_path %></li>
       <% if Pool.started? %>
+        <li><%= link_to "Final Possibilities", possible_path %></li>
         <li><%= link_to "Game Results", games_path %></li>
       <% end %>
       <li><%= link_to "Rules and Scoring", rules_path %></li>

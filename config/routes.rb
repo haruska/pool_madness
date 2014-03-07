@@ -1,6 +1,8 @@
 PoolMadness::Application.routes.draw do
+  root :to => "home#index"
+
   authenticated :user do
-    root :to => 'brackets#index'
+    root :to => 'home#whatif'
   end
 
   namespace :admin do
@@ -12,10 +14,10 @@ PoolMadness::Application.routes.draw do
     end
   end
 
-  root :to => "home#index"
   match '/subscribe', :to => "home#subscribe", :as => 'subscribe'
   match '/payments', :to => "home#payments", :as => 'payments'
   match '/rules', :to => "home#rules", :as =>'rules'
+  match '/final_possibilities', :to => 'home#whatif', :as => 'possible'
 
   devise_for :users, :path => 'auth', :path_names => {:sign_in => 'login', :sign_up => 'signup'}
 
