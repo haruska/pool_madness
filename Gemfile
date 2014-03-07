@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
-ruby '1.9.3'
+ruby '2.0.0'
 
 gem 'rack-timeout'
-gem 'rails', '3.2.12'
+gem 'rails', '< 4.0'
 gem 'redis-rails'
 
 group :development, :test do
