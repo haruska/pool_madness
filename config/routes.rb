@@ -2,7 +2,8 @@ PoolMadness::Application.routes.draw do
   root :to => "home#index"
 
   authenticated :user do
-    root :to => 'home#whatif'
+    root :to => 'brackets#index'
+    #root :to => 'home#whatif'
   end
 
   namespace :admin do

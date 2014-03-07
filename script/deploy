@@ -1,12 +1,34 @@
 #/bin/bash
+if [ $1 ]; then
+  heroku_env=$1
+else
+  heroku_env=staging
+fi
+
+if [ $heroku_env = production ]; then
+  heroku_app=madness
+  branch=master
+else 
+  if [ $heroku_env = bigten ]; then
+    heroku_app=bigten
+    branch=master
+  else
+    if [ $heroku_env = bigten_staging ]; then
+      heroku_app=bigten-staging
+      branch=staging
+    else
+      heroku_app=madness-staging
+      branch=staging
+    fi
+  fi
+fi
 
 bundle exec rake assets:precompile
 git add .
 git ci -m"precompile assets for heroku"
-#git push -f staging madness:master
-git push heroku madness:master
-bundle exec rake figaro:heroku #[madness-staging]
-heroku run rake db:migrate # --remote madness-staging --app madness-staging
+git push -f heroku ${branch}:master
+bundle exec rake figaro:heroku [${heroku_app}]
+heroku run rake db:migrate --remote $heroku_app --app $heroku_app
 
 #git rm -r public/assets
 #git ci -m"remove precomiled assets post deploy"
