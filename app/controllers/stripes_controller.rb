@@ -1,4 +1,10 @@
 class StripesController < ApplicationController
+  load_and_authorize_resource :user, :except => [:create]
+
+  def index
+    @pending_brackets = @user.brackets.where(:payment_state => 'pending').all
+    @stripes = Stripe::Charge.all(:customer => @user.stripe_customer.id, :count => 100).data
+  end
 
   def create
     bracket = Bracket.find(params[:bracket_id])

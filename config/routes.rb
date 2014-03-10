@@ -24,10 +24,8 @@ PoolMadness::Application.routes.draw do
   devise_for :users, :path => 'auth', :path_names => {:sign_in => 'login', :sign_up => 'signup'}
 
   resources :users do
-    resources :charges, :only => [:index]
+    resources :stripes, :only => [:index]
   end
-
-  resources :charges, :only => [:create]
 
   resources :picks, :only => [:update]
 

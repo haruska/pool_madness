@@ -5,7 +5,7 @@ module Admin::BracketsHelper
     elsif bracket.payment_collector.present?
       bracket.payment_collector.name
     else
-      'Coinbase'
+      'Unknown'
     end
   end
 end
