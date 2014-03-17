@@ -1,6 +1,6 @@
 class PossibleOutcome < ActiveRecord::Base
   # attr_accessible :title, :body
-  has_many :possible_games
+  has_many :possible_games, :dependent => :destroy
 
   def championship
     possible_game = self.possible_games.first
@@ -30,14 +30,13 @@ class PossibleOutcome < ActiveRecord::Base
   def self.update_all
     PossibleOutcome.destroy_all
     PossibleGame.destroy_all
-    PossibleOutcome.generate_all_outcomes
-    
+
     Bracket.all.each do |bracket|
       bracket.best_possible = 10000
       bracket.save!
     end
 
-    PossibleOutcome.all.each do |po|
+    generate_all_outcomes do |po|
       po.update_brackets_best_possible
     end
   end
@@ -62,7 +61,13 @@ class PossibleOutcome < ActiveRecord::Base
     (0..games_mask).each do |slot_bits|
       if slot_bits & already_played_mask == winners
         #valid slot_bits
-        generate_outcome(slot_bits)
+        if block_given?
+          possible_outcome = generate_outcome(slot_bits)
+          yield possible_outcome
+          possible_outcome.destroy
+        else
+          generate_outcome(slot_bits)
+        end
       end
     end
   end
