@@ -54,7 +54,7 @@ class Game < ActiveRecord::Base
   def self.round_for(round_number, region=nil)
     case round_number
       when 5
-        [Game.championship.game_one, Game.championship.game_two]
+        [Game.championship.game_two, Game.championship.game_one]
       when 6
         [Game.championship]
       when 1
