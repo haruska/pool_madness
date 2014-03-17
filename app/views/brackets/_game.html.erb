@@ -1,95 +1,11 @@
-<% second_team = pick.try(:second_team) || game.second_team %>
 <% first_team = pick.try(:first_team) || game.first_team %>
+<% second_team = pick.try(:second_team) || game.second_team %>
 
 <div id="match<%= game.id %>" class="match m<%= i+1 %>">
-  <p <% if game == Game.championship %>id="slot127"<% end %> class="slot slot1 <%= "team#{second_team.id}" if second_team.present? %>">
-
-    <% if second_team.present? %>
-
-
-
-
-        <% if pick.present? %>
-            <% game_two = pick.game.game_two %>
-            <% if game_two.present? %>
-                <% prev_pick = Pick.where(:bracket_id => pick.bracket_id, :game_id => game_two.id).first %>
-
-                <% if game_two.winner.present? %>
-                    <% if game_two.winner == prev_pick.team %>
-                        <strong>
-                    <% else %>
-                        <strike>
-                    <% end %>
-                <% elsif second_team.eliminated? %>
-                    <strike>
-                <% end %>
-            <% end %>
-        <% else #pick.blank? %>
-
-            <% if game.winner.present? %>
-                <% if game.winner == second_team %>
-                    <strong>
-                <% else %>
-                    <strike>
-                <% end %>
-            <% end %>
-
-
-        <% end %>
-
-
-
-
-
-
-        <span class="seed"><%= second_team.seed %></span>
-        <%= second_team.name %>
-        <% if game.score_one.present? && pick.blank? %><em class="score"><%= game.score_one %></em><% end %>
-
-
-
-
-        <% if pick.present? %>
-            <% game_two = pick.game.game_two %>
-            <% if game_two.present? %>
-                <% prev_pick = Pick.where(:bracket_id => pick.bracket_id, :game_id => game_two).first %>
-
-                <% if game_two.winner.present? %>
-                    <% if game_two.winner == prev_pick.team %>
-                        </strong>
-                    <% else %>
-                        </strike>
-                    <% end %>
-                <% elsif second_team.eliminated? %>
-                    </strike>
-                <% end %>
-            <% end %>
-        <% else #pick.blank? %>
-
-
-
-
-            <% if game.winner.present? %>
-                <% if game.winner != second_team %>
-                    </strike>
-                <% else %>
-                    </strong>
-                <% end %>
-            <% end %>
-        <% end %>
-
-
-
-
-    <% end %>
-
-
-  </p>
-
-
-  <p <% if game == Game.championship %>id="slot128"<% end %>class="slot slot2 <%= "team#{first_team.id}" if first_team.present? %>">
+  <p <% if game == Game.championship %>id="slot127"<% end %> class="slot slot1 <%= "team#{first_team.id}" if first_team.present? %>">
 
     <% if first_team.present? %>
+
 
 
 
@@ -123,9 +39,13 @@
 
 
 
+
+
+
         <span class="seed"><%= first_team.seed %></span>
         <%= first_team.name %>
-        <% if game.score_two.present? && pick.blank? %><em class="score"><%= game.score_two %></em><% end %>
+        <% if game.score_one.present? && pick.blank? %><em class="score"><%= game.score_one %></em><% end %>
+
 
 
 
@@ -151,6 +71,86 @@
 
             <% if game.winner.present? %>
                 <% if game.winner != first_team %>
+                    </strike>
+                <% else %>
+                    </strong>
+                <% end %>
+            <% end %>
+        <% end %>
+
+
+
+
+    <% end %>
+
+
+  </p>
+
+
+  <p <% if game == Game.championship %>id="slot128"<% end %>class="slot slot2 <%= "team#{second_team.id}" if second_team.present? %>">
+
+    <% if second_team.present? %>
+
+
+
+        <% if pick.present? %>
+            <% game_two = pick.game.game_two %>
+            <% if game_two.present? %>
+                <% prev_pick = Pick.where(:bracket_id => pick.bracket_id, :game_id => game_two.id).first %>
+
+                <% if game_two.winner.present? %>
+                    <% if game_two.winner == prev_pick.team %>
+                        <strong>
+                    <% else %>
+                        <strike>
+                    <% end %>
+                <% elsif second_team.eliminated? %>
+                    <strike>
+                <% end %>
+            <% end %>
+        <% else #pick.blank? %>
+
+            <% if game.winner.present? %>
+                <% if game.winner == second_team %>
+                    <strong>
+                <% else %>
+                    <strike>
+                <% end %>
+            <% end %>
+
+
+        <% end %>
+
+
+
+        <span class="seed"><%= second_team.seed %></span>
+        <%= second_team.name %>
+        <% if game.score_two.present? && pick.blank? %><em class="score"><%= game.score_two %></em><% end %>
+
+
+
+        <% if pick.present? %>
+            <% game_two = pick.game.game_two %>
+            <% if game_two.present? %>
+                <% prev_pick = Pick.where(:bracket_id => pick.bracket_id, :game_id => game_two).first %>
+
+                <% if game_two.winner.present? %>
+                    <% if game_two.winner == prev_pick.team %>
+                        </strong>
+                    <% else %>
+                        </strike>
+                    <% end %>
+                <% elsif second_team.eliminated? %>
+                    </strike>
+                <% end %>
+            <% end %>
+        <% else #pick.blank? %>
+
+
+
+
+            <% if game.winner.present? %>
+                <% if game.winner != second_team %>
                     </strike>
                 <% else %>
                     </strong>
