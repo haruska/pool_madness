@@ -9,6 +9,11 @@ class Admin::BracketsController < ApplicationController
     end
   end
 
+  def update_outcomes
+    UpdatePossibleOutcomes.perform_async
+    redirect_to brackets_path, :notice => "Outcomes calculation performing"
+  end
+
   def mark_paid
     @bracket = Bracket.find(params[:id])
 

@@ -1,7 +1,6 @@
 <p>Hello <%= @resource.name %>,</p>
 
-<p><%= @resource.invited_by.present? ? @resource.invited_by.name : 'Someone' %> has invited you to fill out your March Madness
-  bracket at <%= link_to 'Pool Madness', root_url %>. You can accept it through the link below.</p>
+<p><%= @resource.invited_by.present? ? @resource.invited_by.name : 'Someone' %> has invited you to fill out your <%= ENV['TOURNEY_NAME'] %> bracket at <%= link_to 'Pool Madness', root_url %>. You can accept it through the link below.</p>
 
 <p><%= link_to 'Accept invitation', accept_invitation_url(@resource, :invitation_token => @resource.invitation_token) %></p>
 

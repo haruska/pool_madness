@@ -23,9 +23,11 @@ class Pick < ActiveRecord::Base
     end
   end
 
-  def points
-    if self.team.present? && self.game.winner.present? && self.team == self.game.winner
-      POINTS_PER_ROUND[self.game.round] + self.team.seed
+  def points(possible_game=nil)
+    this_game = possible_game || self.game
+
+    if self.team.present? && this_game.winner.present? && self.team == this_game.winner
+      POINTS_PER_ROUND[this_game.round] + self.team.seed
     else
       0
     end
@@ -38,4 +40,5 @@ class Pick < ActiveRecord::Base
       self.points
     end
   end
+
 end

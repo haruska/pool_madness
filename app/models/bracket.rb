@@ -19,15 +19,10 @@ class Bracket < ActiveRecord::Base
   state_machine :payment_state, :initial => :unpaid do
     state :unpaid
     state :promised
-    state :pending
     state :paid
 
     event :promise_made do
       transition :unpaid => :promised
-    end
-
-    event :bitcoin_payment_submited do
-      transition [:unpaid, :promised] => :pending
     end
 
     event :payment_received do

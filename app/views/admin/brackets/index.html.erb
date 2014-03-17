@@ -19,8 +19,6 @@
                   <%= link_to "Promise to Pay", promise_to_pay_admin_bracket_path(bracket), :method => :put, :class =>'btn btn-mini' %>
               <% elsif bracket.promised? %>
                   Promised to pay <%= paid_to?(bracket) %>
-              <% elsif bracket.pending? %>
-                  Bitcoin payment pending
               <% elsif bracket.paid? %>
                   Paid to <%= paid_to?(bracket) %>
               <% end %>

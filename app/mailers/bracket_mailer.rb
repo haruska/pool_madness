@@ -1,5 +1,5 @@
 class BracketMailer < ActionMailer::Base
-  default from: "\"Haruska Pool Madness\" <#{ENV['ADMIN_EMAIL']}>"
+  default from: "\"#{ENV['ADMIN_NAME']}\" <#{ENV['ADMIN_EMAIL']}>"
 
   def unpaid(bracket)
     @bracket = bracket

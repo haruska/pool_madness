@@ -1,7 +1,7 @@
 <p>Hello <%= @user.name %>,</p>
 
 <p>
-  You're all set for the March Madness pool. Your bracket is all filled out, paid, and ready to go for tip off.
+  You're all set for the <%= ENV['TOURNEY_NAME'] %> pool. Your bracket is all filled out, paid, and ready to go for tip off.
   You can see or make last minute changes to your brackets at:
 </p>
 
@@ -14,5 +14,5 @@
   or forward them this link: <%= link_to ENV['SIGNUP_LINK'], ENV['SIGNUP_LINK'] %>
 </p>
 
-<p>Good Luck,<br/>
-  John, Jason and Chris Haruska</p>
+<p>Good Luck!</p>
+

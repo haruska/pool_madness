@@ -5,6 +5,9 @@ gem 'rack-timeout'
 gem 'rails', '< 4.0'
 gem 'redis-rails'
 
+gem 'google_drive'
+gem 'active_attr'
+
 group :development, :test do
   gem "thin", ">= 1.5.0"
 end

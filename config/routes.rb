@@ -13,6 +13,9 @@ PoolMadness::Application.routes.draw do
         put :promise_to_pay
         put :mark_paid
       end
+      collection do
+        get :update_outcomes
+      end
     end
   end
 

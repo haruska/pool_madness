@@ -1,5 +1,5 @@
 class Newsletter < ActionMailer::Base
-  default from: "admin@pool-madness.com"
+  default from: "\"#{ENV['ADMIN_NAME']}\" <#{ENV['ADMIN_EMAIL']}>"
 
   def home_page_email(email_entered)
     @email_entered = email_entered

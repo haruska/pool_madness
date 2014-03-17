@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default from: "\"Haruska Pool Madness\" <#{ENV['ADMIN_EMAIL']}>"
+  default from: "\"#{ENV['ADMIN_NAME']}\" <#{ENV['ADMIN_EMAIL']}>"
 
   def welcome_message(user)
     @user = user
@@ -8,7 +8,7 @@ class UserMailer < ActionMailer::Base
 
   def last_chance(user)
     @user = user
-    mail(:to => "\"#{user.name}\" <#{user.email}>", :subject => "Last Chance to fill out a March Madness Bracket")
+    mail(:to => "\"#{user.name}\" <#{user.email}>", :subject => "Last Chance to fill out a #{ENV['TOURNEY_NAME']} Bracket")
   end
 
   def all_set(user)
@@ -18,6 +18,6 @@ class UserMailer < ActionMailer::Base
 
   def come_back(user)
     @user = user
-    mail(:to => "\"#{user.name}\" <#{user.email}>", :subject => "Fill out your March Madness Bracket!")
+    mail(:to => "\"#{user.name}\" <#{user.email}>", :subject => "Fill out your #{ENV['TOURNEY_NAME']} Bracket!")
   end
 end
