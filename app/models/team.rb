@@ -4,7 +4,7 @@ class Team < ActiveRecord::Base
   EAST = 'East'
   MIDWEST = 'Midwest'
 
-  REGIONS = [MIDWEST, WEST, SOUTH, EAST]
+  REGIONS = [SOUTH, EAST, WEST, MIDWEST]
 
   attr_accessible :region, :seed, :name, :score_team_id
 

@@ -17,11 +17,11 @@ class PossibleOutcome < ActiveRecord::Base
       when 1
         sort_order = [1, 8, 5, 4, 6, 3, 7, 2]
 
-        teams = (region.present? ? Team.where(:region => region) : Team
+        teams = region.present? ? Team.where(:region => region) : Team
         team_ids = teams.where(:seed => sort_order).select(:id).collect(&:id)
         game_ids = Game.where(:team_one_id => team_ids).select(:id).all.collect(&:id)
 
-	self.possible_games.where(:game_id => game_ids).sort_by {|x| sort_order.index(x.first_team.seed)}
+        self.possible_games.where(:game_id => game_ids).sort_by {|x| sort_order.index(x.first_team.seed)}
       else
         round_for(round_number - 1, region).collect(&:next_game).uniq
     end
