@@ -9,6 +9,8 @@ class PickSweeper < ActionController::Caching::Sweeper
     expire_action "/admin/brackets"
     expire_action "/public/brackets"
     expire_action "/public/brackets/#{bracket.user.id}"
+
+    Rails.cache.delete("sorted_four_#{bracket.id}")
   end
 
 end

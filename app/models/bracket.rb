@@ -71,14 +71,18 @@ class Bracket < ActiveRecord::Base
   end
 
   def sorted_four
-    champ_pick = self.picks.where(:game_id => Game.championship.id).first
-    four = [champ_pick.team, champ_pick.first_team, champ_pick.second_team]
-    four << self.picks.where(:game_id => champ_pick.game.game_one_id).first.first_team
-    four << self.picks.where(:game_id => champ_pick.game.game_one_id).first.second_team
-    four << self.picks.where(:game_id => champ_pick.game.game_two_id).first.first_team
-    four << self.picks.where(:game_id => champ_pick.game.game_two_id).first.second_team
+    team_ids = Rails.cache.fetch("sorted_four_#{self.id}") do
+      champ_pick = self.picks.where(:game_id => Game.championship.id).first
+      four = [champ_pick.team, champ_pick.first_team, champ_pick.second_team]
+      four << self.picks.where(:game_id => champ_pick.game.game_one_id).first.first_team
+      four << self.picks.where(:game_id => champ_pick.game.game_one_id).first.second_team
+      four << self.picks.where(:game_id => champ_pick.game.game_two_id).first.first_team
+      four << self.picks.where(:game_id => champ_pick.game.game_two_id).first.second_team
 
-    four.compact.uniq.reverse
+      four.compact.uniq.reverse.collect(&:id)
+    end
+
+    Team.where(:id => team_ids).all.sort_by {|x| team_ids.index(x.id)}
   end
 
   private

@@ -5,6 +5,7 @@ class BracketObserver < ActiveRecord::Observer
     expire_action "/public/brackets"
     expire_action "/admin/brackets"
     expire_action "/public/brackets/#{bracket.user.id}"
+    Rails.cache.delete("sorted_four_#{bracket.id}")
   end
 
   def after_update(bracket)
@@ -14,6 +15,7 @@ class BracketObserver < ActiveRecord::Observer
       expire_action "/brackets/#{bracket.id}"
       expire_action "/admin/brackets"
       expire_action "/public/brackets/#{bracket.user.id}"
+      Rails.cache.delete("sorted_four_#{bracket.id}")
     end
   end
 
@@ -22,6 +24,7 @@ class BracketObserver < ActiveRecord::Observer
     expire_action "/brackets/#{bracket.id}"
     expire_action "/admin/brackets"
     expire_action "/public/brackets/#{bracket.user.id}"
+    Rails.cache.delete("sorted_four_#{bracket.id}")
   end
 
   private
