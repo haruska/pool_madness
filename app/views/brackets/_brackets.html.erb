@@ -28,7 +28,7 @@
         <td>
           <%= link_to bracket do %>
             <% if Pool.start_eliminating? && bracket.best_possible > 2 %>*<% end %>
-            <% if Pool.started? %><%= i + 1 %>.
+            <% if Pool.started? %><%= i + 1 %>. <% end %>
             <% if bracket.name =~ /#{Regexp.escape(bracket.user.name)}/ %>
               <%= bracket.name %>
             <% else %>
