@@ -4,7 +4,7 @@ class FetchGameScores
   def perform
     res = HTTParty.get('http://scores.pool-madness.com:8888/index.json')
 
-    res.select {|g| g['time'] == 'Final' }.each do |r|
+    res.select {|g| g['time'] =~ /Final/ }.each do |r|
       ids = [r['home_team']['team_id'], r['away_team']['team_id']]
 
       game = Game.all.select {|g| ids.include?(g.first_team.try(:score_team_id))  && ids.include?(g.second_team.try(:score_team_id))}.first
