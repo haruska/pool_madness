@@ -5,7 +5,7 @@ def parsed
 end
 
 def parsed_find(str)
-  par = parsed.select {|x| x['home_team']['full_name'] =~ /#{str}/ || x['away_team']['full_name'] =~ /#{str}/}
+  par = @parsed.select {|x| x['home_team']['full_name'] =~ /#{str}/ || x['away_team']['full_name'] =~ /#{str}/}
 
   ret = {}
   par.each do |x| 
