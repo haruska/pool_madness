@@ -23,11 +23,12 @@
   </tr>
   </thead>
   <tbody>
-  <% brackets.each do |bracket| %>
+  <% brackets.each_with_index do |bracket, i| %>
       <tr id="bracket-row-<%= bracket.id %>">
         <td>
           <%= link_to bracket do %>
             <% if Pool.start_eliminating? && bracket.best_possible > 2 %>*<% end %>
+            <% if Pool.started? %><%= i + 1 %>.
             <% if bracket.name =~ /#{Regexp.escape(bracket.user.name)}/ %>
               <%= bracket.name %>
             <% else %>
