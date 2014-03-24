@@ -42,6 +42,18 @@ class PossibleOutcome < ActiveRecord::Base
   end
 
   def self.generate_all_outcomes
+    generate_all_slot_bits do |slot_bits|
+      if block_given?
+        possible_outcome = generate_outcome(slot_bits)
+        yield possible_outcome
+        possible_outcome.destroy
+      else
+        generate_outcome(slot_bits)
+      end
+    end
+  end
+
+  def self.generate_all_slot_bits
     already_played_games = Game.where('score_one > 0').order(:id).all
     to_play_games = Game.where('id NOT IN (?)', already_played_games.collect(&:id)).order(:id).all
 
@@ -56,19 +68,16 @@ class PossibleOutcome < ActiveRecord::Base
     to_play_games_mask = 1
     to_play_games.size.times {|i| to_play_games_mask |= 1 << i}
 
+    collected_slot_bits = []
     (0..to_play_games_mask).each do |to_play_bits|
       slot_bits = (already_played_winners_mask << to_play_games.size) | to_play_bits
-      if block_given?
-        possible_outcome = generate_outcome(slot_bits)
-        yield possible_outcome
-        possible_outcome.destroy
-      else
-        generate_outcome(slot_bits)
-      end
+      block_given? ? yield(slot_bits) : collected_slot_bits << slot_bits
     end
+
+    block_given? ? nil : collected_slot_bits
   end
 
-  def generate_outcome(slot_bits)
+  def self.generate_outcome(slot_bits)
     games = Game.where('score_one > 0').order(:id).all
     games += Game.where('id NOT IN (?)', games.collect(&:id)).order(:id).all
 
@@ -100,14 +109,13 @@ class PossibleOutcome < ActiveRecord::Base
     sorted_brackets = self.sorted_brackets
 
     third_place_index = 2
-    third_place_points = sorted_brackets[third_place_index][0][1]
-    while sorted_brackets[third_place_index+1][0][1] == third_place_points
+    third_place_points = sorted_brackets[third_place_index][1]
+    while sorted_brackets[third_place_index+1][1] == third_place_points
       third_place_index += 1
     end
 
     sorted_brackets[0..third_place_index].each_with_index do |br, i|
-      bracket_id, points = *br
-      bracket = Bracket.find(bracket_id)
+      bracket, points = *br
       index = sorted_brackets.index {|x, y| y == points}
       if bracket.best_possible > index
         bracket.best_possible = index
@@ -122,11 +130,11 @@ class PossibleOutcome < ActiveRecord::Base
       pg_hash[possible_game.game_id] = possible_game
     end
 
-    result = Bracket.all.collect do |bracket|
+    result = Bracket.includes(:picks).all.collect do |bracket|
       points = bracket.picks.collect do |pick|
-        pick.points(pg_hash[pick.game_id])
+        pg_hash[pick.game_id].points_for_pick(pick.team_id)
       end.sum
-      [bracket.id, points]
+      [bracket, points]
     end
 
     result.sort_by(&:last).reverse
