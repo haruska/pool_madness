@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:haruska/active_attr.git
+  remote: https://github.com/haruska/active_attr.git
   revision: 1afc1bcdd4d28abaa9ee3facbf36337f9d1534d4
   specs:
     active_attr (0.8.2)
