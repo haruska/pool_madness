@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140314194909) do
+ActiveRecord::Schema.define(:version => 20140324164454) do
 
   create_table "brackets", :force => true do |t|
     t.integer  "user_id"
@@ -93,9 +93,12 @@ ActiveRecord::Schema.define(:version => 20140314194909) do
   add_index "possible_games", ["possible_outcome_id"], :name => "index_possible_games_on_possible_outcome_id"
 
   create_table "possible_outcomes", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+    t.integer  "slot_bits",  :limit => 8, :null => false
   end
+
+  add_index "possible_outcomes", ["slot_bits"], :name => "index_possible_outcomes_on_slot_bits", :unique => true
 
   create_table "roles", :force => true do |t|
     t.string   "name"

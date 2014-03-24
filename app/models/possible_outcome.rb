@@ -2,6 +2,8 @@ class PossibleOutcome < ActiveRecord::Base
   # attr_accessible :title, :body
   has_many :possible_games, :dependent => :destroy
 
+  attr_accessible :slot_bits
+
   def championship
     possible_game = self.possible_games.first
     possible_game = possible_game.next_game while possible_game.next_game.present?
@@ -81,7 +83,7 @@ class PossibleOutcome < ActiveRecord::Base
     games = Game.where('score_one > 0').order(:id).all
     games += Game.where('id NOT IN (?)', games.collect(&:id)).order(:id).all
 
-    possible_outcome = self.create
+    possible_outcome = self.create(:slot_bits => slot_bits)
     games.each_with_index do |game, i|
       team_one_winner = slot_bits & (1 << i) == 0
       score_one, score_two = team_one_winner ?  [2, 1] : [1, 2]

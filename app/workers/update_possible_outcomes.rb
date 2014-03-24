@@ -2,18 +2,18 @@ class UpdatePossibleOutcomes
   include Sidekiq::Worker
 
   def perform
-  	PossibleOutcome.update_all
-  	expire_action "/public/brackets"
+    PossibleOutcome.destroy_all
+    PossibleGame.destroy_all
+
+    Bracket.all.each do |bracket|
+      bracket.best_possible = 10000
+      bracket.save!
+    end
+
+    PossibleOutcome.generate_all_slot_bits do |slot_bits|
+      CalculatePossibleOutcome.perform_async(slot_bits)
+    end
   end
 
-  private
-
-  def controller
-    @controller ||= ActionController::Base.new
-  end
-
-  def expire_action(action)
-    controller.send(:expire_action, action)
-  end
 end
 
