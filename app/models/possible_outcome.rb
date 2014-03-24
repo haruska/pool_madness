@@ -1,8 +1,16 @@
-class PossibleOutcome < ActiveRecord::Base
-  # attr_accessible :title, :body
-  has_many :possible_games, :dependent => :destroy
+class PossibleOutcome
+  include ActiveAttr::Model
 
-  attr_accessible :slot_bits
+  attribute :slot_bits
+  attribute :brackets
+  attribute :teams
+  attribute :possible_games, :type => Hash
+
+  def create_possible_game(game_hash)
+    possible_game = PossibleGame.new(game_hash.merge(:possible_outcome => self))
+    self.possible_games ||= {}
+    self.possible_games[possible_game.game.id] = possible_game
+  end
 
   def championship
     possible_game = self.possible_games.first
@@ -23,36 +31,26 @@ class PossibleOutcome < ActiveRecord::Base
         team_ids = teams.where(:seed => sort_order).select(:id).collect(&:id)
         game_ids = Game.where(:team_one_id => team_ids).select(:id).all.collect(&:id)
 
-        self.possible_games.where(:game_id => game_ids).sort_by {|x| sort_order.index(x.first_team.seed)}
+        games = []
+        game_ids.each {|x| games << self.possible_games[x]}
+        games.sort_by {|x| sort_order.index(x.first_team.seed)}
       else
         round_for(round_number - 1, region).collect(&:next_game).uniq
     end
   end
 
-  def self.update_all
-    PossibleOutcome.destroy_all
-    PossibleGame.destroy_all
+  def self.generate_cached_opts
+    games = Game.where('score_one > 0').order(:id).all
+    games += Game.where('id NOT IN (?)', games.collect(&:id)).order(:id).all
 
-    Bracket.all.each do |bracket|
-      bracket.best_possible = 10000
-      bracket.save!
+    brackets = Bracket.includes(:picks).all
+
+    teams = {}
+    Team.all.each do |team|
+      teams[team.id] = team
     end
 
-    generate_all_outcomes do |po|
-      po.update_brackets_best_possible
-    end
-  end
-
-  def self.generate_all_outcomes
-    generate_all_slot_bits do |slot_bits|
-      if block_given?
-        possible_outcome = generate_outcome(slot_bits)
-        yield possible_outcome
-        possible_outcome.destroy
-      else
-        generate_outcome(slot_bits)
-      end
-    end
+    { :games => games, :brackets => brackets, :teams => teams }
   end
 
   def self.generate_all_slot_bits
@@ -79,29 +77,21 @@ class PossibleOutcome < ActiveRecord::Base
     block_given? ? nil : collected_slot_bits
   end
 
-  def self.generate_outcome(slot_bits)
-    games = Game.where('score_one > 0').order(:id).all
-    games += Game.where('id NOT IN (?)', games.collect(&:id)).order(:id).all
+  def self.generate_outcome(slot_bits, opts={})
+    if opts[:games]
+      games = opts[:games]
+    else
+      games = Game.where('score_one > 0').order(:id).all
+      games += Game.where('id NOT IN (?)', games.collect(&:id)).order(:id).all
+    end
 
-    possible_outcome = self.create(:slot_bits => slot_bits)
+
+    possible_outcome = self.new(:slot_bits => slot_bits, :brackets => opts[:brackets], :teams => opts[:teams])
+
     games.each_with_index do |game, i|
       team_one_winner = slot_bits & (1 << i) == 0
       score_one, score_two = team_one_winner ?  [2, 1] : [1, 2]
-      
-      possible_outcome.possible_games.create :game_id => game.id, :score_one => score_one, :score_two => score_two
-    end
-
-    possible_outcome.possible_games.each do |possible_game|
-      game = possible_game.game
-      game_one_id = nil
-      game_two_id = nil
-      if game.game_one_id.present?
-        possible_game.game_one_id = possible_outcome.possible_games.find_by_game_id(game.game_one_id).id
-      end
-      if game.game_two_id.present?
-        possible_game.game_two_id = possible_outcome.possible_games.find_by_game_id(game.game_two_id).id
-      end
-      possible_game.save!
+      possible_outcome.create_possible_game :game => game, :score_one => score_one, :score_two => score_two
     end
 
     possible_outcome
@@ -127,14 +117,11 @@ class PossibleOutcome < ActiveRecord::Base
   end
 
   def sorted_brackets
-    pg_hash = {}
-    possible_games.each do |possible_game|
-      pg_hash[possible_game.game_id] = possible_game
-    end
+    self.brackets ||= Bracket.includes(:picks).all
 
-    result = Bracket.includes(:picks).all.collect do |bracket|
+    result = self.brackets.collect do |bracket|
       points = bracket.picks.collect do |pick|
-        pg_hash[pick.game_id].points_for_pick(pick.team_id)
+        possible_games[pick.game_id].points_for_pick(pick.team_id)
       end.sum
       [bracket, points]
     end

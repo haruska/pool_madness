@@ -6,7 +6,7 @@ gem 'rails', '< 4.0'
 gem 'redis-rails'
 
 gem 'google_drive'
-gem 'active_attr'
+gem 'active_attr', :git => 'git@github.com:haruska/active_attr.git'
 
 group :development, :test do
   gem "thin", ">= 1.5.0"

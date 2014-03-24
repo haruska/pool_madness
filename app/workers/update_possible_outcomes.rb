@@ -2,18 +2,14 @@ class UpdatePossibleOutcomes
   include Sidekiq::Worker
 
   def perform
-    PossibleOutcome.destroy_all
-    PossibleGame.destroy_all
-
-    Bracket.all.each do |bracket|
-      bracket.best_possible = 10000
-      bracket.save!
+    Sidekiq.redis do |redis|
+      PossibleOutcome.generate_all_slot_bits do |sb|
+        redis.lpush(CalculatePossibleOutcome::LIST_KEY, sb)
+      end
     end
 
-    PossibleOutcome.generate_all_slot_bits do |slot_bits|
-      CalculatePossibleOutcome.perform_async(slot_bits)
-    end
+    4.times { CalculatePossibleOutcome.perform_async }
   end
-
+  
 end
 

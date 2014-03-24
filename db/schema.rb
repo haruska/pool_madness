@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140324164454) do
+ActiveRecord::Schema.define(:version => 20140324220949) do
 
   create_table "brackets", :force => true do |t|
     t.integer  "user_id"
@@ -76,29 +76,6 @@ ActiveRecord::Schema.define(:version => 20140324164454) do
   add_index "picks", ["bracket_id"], :name => "index_picks_on_bracket_id"
   add_index "picks", ["game_id"], :name => "index_picks_on_game_id"
   add_index "picks", ["team_id"], :name => "index_picks_on_team_id"
-
-  create_table "possible_games", :force => true do |t|
-    t.integer  "possible_outcome_id", :null => false
-    t.integer  "game_id",             :null => false
-    t.integer  "game_one_id"
-    t.integer  "game_two_id"
-    t.integer  "score_one",           :null => false
-    t.integer  "score_two",           :null => false
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
-  end
-
-  add_index "possible_games", ["game_id"], :name => "index_possible_games_on_game_id"
-  add_index "possible_games", ["possible_outcome_id", "game_id"], :name => "index_possible_games_on_possible_outcome_id_and_game_id", :unique => true
-  add_index "possible_games", ["possible_outcome_id"], :name => "index_possible_games_on_possible_outcome_id"
-
-  create_table "possible_outcomes", :force => true do |t|
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
-    t.integer  "slot_bits",  :limit => 8, :null => false
-  end
-
-  add_index "possible_outcomes", ["slot_bits"], :name => "index_possible_outcomes_on_slot_bits", :unique => true
 
   create_table "roles", :force => true do |t|
     t.string   "name"

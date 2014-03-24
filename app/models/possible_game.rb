@@ -1,39 +1,43 @@
-class PossibleGame < ActiveRecord::Base
-  # attr_accessible :title, :body
-  belongs_to :possible_outcome
-  belongs_to :game
+class PossibleGame
+  include ActiveAttr::Model
 
-  belongs_to :game_one, :class_name => PossibleGame
-  belongs_to :game_two, :class_name => PossibleGame
+  attribute :possible_outcome
+  attribute :game
+  attribute :score_one
+  attribute :score_two
 
-  delegate :team_one, :team_two, :to => :game
+  delegate :team_one_id, :team_two_id, :game_one_id, :game_two_id, :to => :game
 
-  attr_accessible :game_id, :score_one, :score_two, :game_one_id, :game_two_id
+  def siblings_hash
+    self.possible_outcome.possible_games
+  end
 
-  after_destroy do |possible_game|
-    Rails.cache.delete("possible_game_first_team_#{self.id}")
-    Rails.cache.delete("possible_game_second_team_#{self.id}")
-    Rails.cache.delete("possible_game_round_#{self.id}")
+  def siblings
+    siblings_hash.values
+  end
+
+  def game_one
+    siblings_hash[self.game_one_id]
+  end
+
+  def game_two
+    siblings_hash[self.game_two_id]
   end
 
   def first_team
-    Rails.cache.fetch("possible_game_first_team_#{self.id}") do
-      self.game.team_one || self.game_one.winner
-    end
+    @first_team ||= self.game.team_one || self.game_one.winner
   end
 
   def second_team
-    Rails.cache.fetch("possible_game_second_team_#{self.id}") do
-      self.game.team_two || self.game_two.winner
-    end
+    @second_team ||= self.game.team_two || self.game_two.winner
   end
 
   def winner
-    score_one > score_two ? first_team : second_team
+    @winner ||= score_one > score_two ? first_team : second_team
   end
 
   def next_game
-    PossibleGame.where(:game_one_id => self.id).first || PossibleGame.where(:game_two_id => self.id).first
+    siblings.find {|x| [x.game_one_id, x.game_two_id].include?(game.id)}
   end
 
   def points_for_pick(team_id)
@@ -46,14 +50,17 @@ class PossibleGame < ActiveRecord::Base
   end
 
   def round
-    Rails.cache.fetch("possible_game_round_#{self.id}") do
-      round = 6 #championship
-      n = self.next_game
-      while n.present?
-        round -= 1
-        n = n.next_game
-      end
-      round
+    @round ||= nil
+
+    return @round unless @round.nil?
+
+    @round = 6 #championship
+    n = self.next_game
+    while n.present?
+      @round -= 1
+      n = n.next_game
     end
+
+    @round
   end
 end

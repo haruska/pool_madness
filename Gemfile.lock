@@ -1,4 +1,12 @@
 GIT
+  remote: git@github.com:haruska/active_attr.git
+  revision: 1afc1bcdd4d28abaa9ee3facbf36337f9d1534d4
+  specs:
+    active_attr (0.8.2)
+      activemodel (>= 3.0.2, < 4.1)
+      activesupport (>= 3.0.2, < 4.1)
+
+GIT
   remote: https://github.com/stripe/stripe-ruby
   revision: 637d5899f614a6f4d0fa2147f9b3b8b1c8b39b28
   specs:
@@ -23,9 +31,6 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
-    active_attr (0.8.2)
-      activemodel (>= 3.0.2, < 4.1)
-      activesupport (>= 3.0.2, < 4.1)
     activemodel (3.2.17)
       activesupport (= 3.2.17)
       builder (~> 3.0.0)
@@ -274,7 +279,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_attr
+  active_attr!
   better_errors (>= 0.6.0)
   binding_of_caller (>= 0.7.1)
   bootstrap-sass (< 3.0.0)
