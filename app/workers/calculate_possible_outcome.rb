@@ -8,7 +8,7 @@ class CalculatePossibleOutcome
 
     bits = pop_bits
     while !bits.nil?
-      PossibleOutcome.generate_outcome(bits, opts).update_brackets_best_possible
+      PossibleOutcome.generate_outcome(bits.to_i, opts).update_brackets_best_possible
       bits = pop_bits
     end
   end
