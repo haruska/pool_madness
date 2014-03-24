@@ -8,7 +8,11 @@ class CalculatePossibleOutcome
 
     bits = pop_bits
     while !bits.nil?
-      PossibleOutcome.generate_outcome(bits.to_i, opts).update_brackets_best_possible
+
+      Rails.logger.info Benchmark.bm do |bm|
+        bm.report(:possible_outcome) { PossibleOutcome.generate_outcome(bits.to_i, opts).update_brackets_best_possible }
+      end
+
       bits = pop_bits
     end
   end
