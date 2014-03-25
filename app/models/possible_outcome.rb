@@ -13,7 +13,7 @@ class PossibleOutcome
   end
 
   def championship
-    possible_game = self.possible_games.first
+    possible_game = self.possible_games.values.first
     possible_game = possible_game.next_game while possible_game.next_game.present?
     possible_game
   end
@@ -60,8 +60,9 @@ class PossibleOutcome
     already_played_winners_mask = 0
 
     already_played_games.each_with_index do |game, i|
+      slot_index = already_played_games.size - i - 1
       if game.score_one < game.score_two
-        already_played_winners_mask |= 1 << i
+        already_played_winners_mask |= 1 << slot_index
       end
     end
 
@@ -89,7 +90,8 @@ class PossibleOutcome
     possible_outcome = self.new(:slot_bits => slot_bits, :brackets => opts[:brackets], :teams => opts[:teams])
 
     games.each_with_index do |game, i|
-      team_one_winner = slot_bits & (1 << i) == 0
+      slot_index = games.size - i - 1
+      team_one_winner = slot_bits & (1 << slot_index) == 0
       score_one, score_two = team_one_winner ?  [2, 1] : [1, 2]
       possible_outcome.create_possible_game :game => game, :score_one => score_one, :score_two => score_two
     end
