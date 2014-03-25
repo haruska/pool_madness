@@ -20,4 +20,9 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail(:to => "\"#{user.name}\" <#{user.email}>", :subject => "Fill out your #{ENV['TOURNEY_NAME']} Bracket!")
   end
+
+  def sweet_sixteen(user)
+    @user = user
+    mail(:to => "\"#{user.name}\" <#{user.email}>", :subject => "Brackets eliminated and second chance sweet-16 pool")
+  end
 end

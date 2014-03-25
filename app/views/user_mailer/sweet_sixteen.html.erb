@@ -1,0 +1,31 @@
+<p>Hello <%= @user.name %>,</p>
+
+<p>
+  That was a crazy first weekend of basketball. We've posted the best possible position for all brackets on the site.
+  Sadly, this means a great deal of brackets are already eliminated. You can check on everyone's brackets at
+  <%= link_to brackets_url, brackets_url %>.
+</p>
+
+<p>
+  The good news is we're running a <b>new Sweet 16 Pool</b> this year. Newfound love for Dayton? Have 'em run the field.
+  Head over to <%= ENV['SIGNUP_LINK'] %> and fill out your sweet 16 bracket before tipoff Thursday! We expect first prize
+  to potentially reach $1000.00!
+</p>
+
+<p>
+Same rules as the main pool with the exception of payment. To ease the Admins' lives, this pool will be credit card only.
+We removed the old surcharge. Everyone will be charged a flat $10 per bracket. Any fees we do incur will be taken
+out of the winnings before distributing. It should make everything a bit smoother.
+</p>
+
+<p>Some useful links:</p>
+<p>
+  <b>Sweet 16 Pool Signup:</b> <%= ENV['SIGNUP_LINK'] %><br />
+  <b>Main pool URL</b>: <%= link_to brackets_url, brackets_url %>
+</p>
+
+<p>Just a reminder, you can get to your brackets anytime by returning to the site, clicking login, and filling out your credentials.</p>
+
+<p>Good luck,<br />
+  Your Friendly Pool Admins
+</p>
