@@ -8,8 +8,8 @@
 
 <p>
   The good news is we're running a <b>new Sweet 16 Pool</b> this year. Newfound love for Dayton? Have 'em run the field.
-  Head over to <%= ENV['SIGNUP_LINK'] %> and fill out your sweet 16 bracket before tipoff Thursday! We expect first prize
-  to potentially reach $1000.00!
+  Head over to <%= link_to 'http://bit.ly/sweet16-signup', 'http://bit.ly/sweet16-signup' %> and fill out your sweet 16
+  bracket before tipoff Thursday! We expect first prize to potentially reach $1000.00!
 </p>
 
 <p>
@@ -20,7 +20,7 @@ out of the winnings before distributing. It should make everything a bit smoothe
 
 <p>Some useful links:</p>
 <p>
-  <b>Sweet 16 Pool Signup:</b> <%= ENV['SIGNUP_LINK'] %><br />
+  <b>Sweet 16 Pool Signup:</b> <%= link_to 'http://bit.ly/sweet16-signup', 'http://bit.ly/sweet16-signup' %><br />
   <b>Main pool URL</b>: <%= link_to brackets_url, brackets_url %>
 </p>
 
