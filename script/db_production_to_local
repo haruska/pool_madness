@@ -1,0 +1,8 @@
+#!/bin/bash
+
+dropdb madness_prod
+createdb madness_prod
+heroku pgbackups:capture -a madness
+curl -o prod.dump `heroku pgbackups:url -a madness`
+pg_restore -d madness_prod prod.dump
+
