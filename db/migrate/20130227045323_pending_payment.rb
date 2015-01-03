@@ -1,6 +1,6 @@
 class PendingPayment < ActiveRecord::Migration
   def up
-    add_column :brackets, :pending_payment, :boolean, :default => false, :null => false
+    add_column :brackets, :pending_payment, :boolean, default: false, null: false
   end
 
   def down

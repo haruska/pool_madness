@@ -1,7 +1,7 @@
 class GameObserver < ActiveRecord::Observer
   observe Game
 
-  def after_update(game)
+  def after_update(_game)
     BracketScores.perform_async
 
     expire_action "/admin/games"

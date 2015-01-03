@@ -5,6 +5,6 @@ class PicksController < ApplicationController
 
   def update
     @pick.update_attributes(params[:pick])
-    render :nothing => true
+    render nothing: true
   end
 end

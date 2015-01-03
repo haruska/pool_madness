@@ -10,6 +10,6 @@ class CreateCharges < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :charges, :bracket_id, :unique => true
+    add_index :charges, :bracket_id, unique: true
   end
 end

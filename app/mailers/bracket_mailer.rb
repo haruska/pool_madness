@@ -4,12 +4,12 @@ class BracketMailer < ActionMailer::Base
   def unpaid(bracket)
     @bracket = bracket
     @user = bracket.user
-    mail(:to => "\"#{@user.name}\" <#{@user.email}>", :subject => "Unpaid Bracket: #{bracket.name}")
+    mail(to: "\"#{@user.name}\" <#{@user.email}>", subject: "Unpaid Bracket: #{bracket.name}")
   end
 
   def incomplete(bracket)
     @bracket = bracket
     @user = bracket.user
-    mail(:to => "\"#{@user.name}\" <#{@user.email}>", :subject => "Incomplete Bracket: #{bracket.name}")
+    mail(to: "\"#{@user.name}\" <#{@user.email}>", subject: "Incomplete Bracket: #{bracket.name}")
   end
 end

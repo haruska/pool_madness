@@ -8,8 +8,8 @@ class Ability
     end
 
     if user.id.present?
-      can :manage, User, :id => user.id
-      can [:index, :read], Charge, :bracket => {:user_id => user.id}
+      can :manage, User, id: user.id
+      can [:index, :read], Charge, bracket: { user_id: user.id }
       can :read, Game
 
       if Pool.started?
@@ -17,12 +17,11 @@ class Ability
         cannot [:create, :update], Bracket
         cannot :destroy, Bracket unless user.has_role?(:admin)
       else
-        can :manage, Bracket, :user_id => user.id
-        can :update, Pick, :bracket => { :user_id => user.id }
-        cannot :destroy, Bracket.where('id IN (select bracket_id from charges)')
+        can :manage, Bracket, user_id: user.id
+        can :update, Pick, bracket: { user_id: user.id }
+        cannot :destroy, Bracket.where("id IN (select bracket_id from charges)")
       end
     end
-
 
     # Define abilities for the passed in user here. For example:
     #

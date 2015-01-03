@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  rescue_from CanCan::AccessDenied do |exception|
+  rescue_from CanCan::AccessDenied do |_exception|
     if user_signed_in?
       flash[:error] = "Not authorized to view this page"
       session[:user_return_to] = nil
@@ -12,7 +12,5 @@ class ApplicationController < ActionController::Base
       session[:user_return_to] = request.url
       redirect_to new_user_session_path
     end
-
   end
-
 end

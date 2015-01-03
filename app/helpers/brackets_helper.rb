@@ -9,7 +9,7 @@ module BracketsHelper
       when :incomplete
         out += 'important">Incomplete'
     end
-    out += '</span>'
+    out += "</span>"
     out.html_safe
   end
 end

@@ -1,0 +1,65 @@
+AllCops:
+  Include:
+    - Rakefile
+    - Gemfile
+    - config.ru
+  Exclude:
+    - tmp/**/*
+    - db/**/*
+    - bin/**/*
+    - config/unicorn.rb
+    - spec/support/feature_helper.rb
+    - scripts/**/*
+    - spec/teaspoon_env.rb
+  RunRailsCops: true
+
+Style/AlignParameters:
+  Enabled: false
+
+Lint/SpaceBeforeFirstArg:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Lint/UnusedMethodArgument:
+  Enabled: false
+
+Lint/UselessAssignment:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false 
+
+Style/Documentation:
+  Enabled: false
+
+Style/SpaceAroundEqualsInParameterDefault:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Rails/HasAndBelongsToMany:
+  Enabled: false

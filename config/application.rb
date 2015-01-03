@@ -1,25 +1,22 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path("../boot", __FILE__)
 
-require 'rails/all'
-require 'benchmark'
+require "rails/all"
+require "benchmark"
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  Bundler.require(*Rails.groups(assets: %w(development test)))
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
 
 module PoolMadness
   class Application < Rails::Application
-
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
-      
       g.test_framework :rspec, fixture: true
-      g.fixture_replacement :factory_girl, dir: 'spec/factories'
-      
-      
+      g.fixture_replacement :factory_girl, dir: "spec/factories"
+
       g.view_specs false
       g.helper_specs false
     end
@@ -31,7 +28,6 @@ module PoolMadness
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
     config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/sweepers #{config.root}/app/observers)
-
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -63,7 +59,7 @@ module PoolMadness
     # like if you have constraints or database-specific column types
     # config.active_record.schema_format = :sql
 
-    #config.cache_store = :redis_store, "#{ENV['REDISTOGO_URL']}0/cache", { expires_in: 90.minutes }
+    # config.cache_store = :redis_store, "#{ENV['REDISTOGO_URL']}0/cache", { expires_in: 90.minutes }
 
     # Enforce whitelist mode for mass assignment.
     # This will create an empty whitelist of attributes available for mass-assignment for all models
@@ -78,6 +74,6 @@ module PoolMadness
     config.assets.initialize_on_precompile = false
 
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
+    config.assets.version = "1.0"
   end
 end

@@ -1,13 +1,13 @@
 class CalculatePossibleOutcome
   include Sidekiq::Worker
 
-  LIST_KEY = 'possible_outcome_bits_list'
+  LIST_KEY = "possible_outcome_bits_list"
 
   def perform
     opts = PossibleOutcome.generate_cached_opts
 
     bits = pop_bits
-    while !bits.nil?
+    until bits.nil?
 
       if rand(5) == 0
         output = Benchmark.measure do
@@ -18,7 +18,6 @@ class CalculatePossibleOutcome
       else
         PossibleOutcome.generate_outcome(bits.to_i, opts).update_brackets_best_possible
       end
-
 
       bits = pop_bits
     end
@@ -31,5 +30,4 @@ class CalculatePossibleOutcome
     end
     bits
   end
-
 end

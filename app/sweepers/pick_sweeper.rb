@@ -12,5 +12,4 @@ class PickSweeper < ActionController::Caching::Sweeper
 
     Rails.cache.delete("sorted_four_#{bracket.id}")
   end
-
 end

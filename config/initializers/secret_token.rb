@@ -5,5 +5,5 @@
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
 
-#You can generate a new one using `rake secret`
-PoolMadness::Application.config.secret_token = ENV['SECRET_TOKEN']
+# You can generate a new one using `rake secret`
+PoolMadness::Application.config.secret_token = ENV["SECRET_TOKEN"]

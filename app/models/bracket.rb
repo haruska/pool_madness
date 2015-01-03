@@ -1,9 +1,9 @@
 class Bracket < ActiveRecord::Base
-  has_many :picks, :dependent => :destroy
-  has_one  :charge
+  has_many :picks, dependent: :destroy
+  has_one :charge
 
   belongs_to :user
-  belongs_to :payment_collector, :class_name => 'User'
+  belongs_to :payment_collector, class_name: "User"
 
   after_create :create_all_picks
 
@@ -14,15 +14,15 @@ class Bracket < ActiveRecord::Base
     bracket.name = bracket.default_name if bracket.name.blank?
   end
 
-  validates :name, :uniqueness => true, :presence => true
+  validates :name, uniqueness: true, presence: true
 
-  state_machine :payment_state, :initial => :unpaid do
+  state_machine :payment_state, initial: :unpaid do
     state :unpaid
     state :promised
     state :paid
 
     event :promise_made do
-      transition :unpaid => :promised
+      transition unpaid: :promised
     end
 
     event :payment_received do
@@ -41,21 +41,21 @@ class Bracket < ActiveRecord::Base
   end
 
   def only_bracket_for_user?
-    self.user.brackets.size == 1
+    user.brackets.size == 1
   end
 
   def default_name
-    default_name = self.user.name
+    default_name = user.name
     i = 1
     while Bracket.find_by_name(default_name).present?
-      default_name = "#{self.user.name} #{i}"
+      default_name = "#{user.name} #{i}"
       i += 1
     end
     default_name
   end
 
   def complete?
-    self.picks.where(:team_id => nil).first.blank? && self.picks.where(:team_id => -1).first.blank? && self.tie_breaker.present?
+    picks.where(team_id: nil).first.blank? && picks.where(team_id: -1).first.blank? && tie_breaker.present?
   end
 
   def incomplete?
@@ -63,31 +63,31 @@ class Bracket < ActiveRecord::Base
   end
 
   def calculate_possible_points
-    self.update_attribute(:possible_points, self.picks.collect(&:possible_points).sum)
+    update_attribute(:possible_points, picks.collect(&:possible_points).sum)
   end
 
   def calculate_points
-    self.update_attribute(:points, self.picks.collect(&:points).sum)
+    update_attribute(:points, picks.collect(&:points).sum)
   end
 
   def sorted_four
-    team_ids = Rails.cache.fetch("sorted_four_#{self.id}") do
-      champ_pick = self.picks.where(:game_id => Game.championship.id).first
+    team_ids = Rails.cache.fetch("sorted_four_#{id}") do
+      champ_pick = picks.where(game_id: Game.championship.id).first
       four = [champ_pick.team, champ_pick.first_team, champ_pick.second_team]
-      four << self.picks.where(:game_id => champ_pick.game.game_one_id).first.first_team
-      four << self.picks.where(:game_id => champ_pick.game.game_one_id).first.second_team
-      four << self.picks.where(:game_id => champ_pick.game.game_two_id).first.first_team
-      four << self.picks.where(:game_id => champ_pick.game.game_two_id).first.second_team
+      four << picks.where(game_id: champ_pick.game.game_one_id).first.first_team
+      four << picks.where(game_id: champ_pick.game.game_one_id).first.second_team
+      four << picks.where(game_id: champ_pick.game.game_two_id).first.first_team
+      four << picks.where(game_id: champ_pick.game.game_two_id).first.second_team
 
       four.compact.uniq.reverse.collect(&:id)
     end
 
-    Team.where(:id => team_ids).all.sort_by {|x| team_ids.index(x.id)}
+    Team.where(id: team_ids).all.sort_by { |x| team_ids.index(x.id) }
   end
 
   private
 
   def create_all_picks
-    Game.all.each { |game| self.picks.create(:game_id => game.id) }
+    Game.all.each { |game| picks.create(game_id: game.id) }
   end
 end

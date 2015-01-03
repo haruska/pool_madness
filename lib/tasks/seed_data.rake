@@ -1,11 +1,11 @@
 namespace :seed_data do
-  desc "Generate scores for every game"
-  task :random_scores => :environment do
+  desc 'Generate scores for every game'
+  task random_scores: :environment do
     Game.all.each { |game| random_score(game) }
   end
 
-  desc "Clear all scores"
-  task :clear_scores => :environment do
+  desc 'Clear all scores'
+  task clear_scores: :environment do
     Game.all.each do |game|
       game.score_one = nil
       game.score_two = nil
@@ -13,9 +13,9 @@ namespace :seed_data do
     end
   end
 
-  desc "Fill in first two rounds of games with scores"
-  task :random_scores_partial => :environment do
-    [1,2].each { |round| Game.round_for(round).each { |game| random_score(game) } }
+  desc 'Fill in first two rounds of games with scores'
+  task random_scores_partial: :environment do
+    [1, 2].each { |round| Game.round_for(round).each { |game| random_score(game) } }
   end
 
   def random_score(game)

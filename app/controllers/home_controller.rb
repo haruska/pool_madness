@@ -1,13 +1,12 @@
 class HomeController < ApplicationController
-
-  before_filter :ensure_logged_in, :only => [:rules, :payments]
+  before_action :ensure_logged_in, only: [:rules, :payments]
 
   def index
   end
 
   def subscribe
     Newsletter.home_page_email(params[:email]).deliver
-    redirect_to root_path, :notice => "Thank you for your interest. We'll contact you when the beta is ready."
+    redirect_to root_path, notice: "Thank you for your interest. We'll contact you when the beta is ready."
   end
 
   def rules

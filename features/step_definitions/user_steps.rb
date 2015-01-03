@@ -1,19 +1,19 @@
 ### UTILITY METHODS ###
 
 def create_visitor
-  @visitor ||= { :name => "Testy McUserton", :email => "example@example.com",
-    :password => "changeme", :password_confirmation => "changeme" }
+  @visitor ||= { name: "Testy McUserton", email: "example@example.com",
+                 password: "changeme", password_confirmation: "changeme" }
 end
 
 def find_user
-  @user ||= User.first conditions: {:email => @visitor[:email]}
+  @user ||= User.first conditions: { email: @visitor[:email] }
 end
 
 def create_unconfirmed_user
   create_visitor
   delete_user
   sign_up
-  visit '/users/sign_out'
+  visit "/users/sign_out"
 end
 
 def create_user
@@ -23,31 +23,31 @@ def create_user
 end
 
 def delete_user
-  @user ||= User.first conditions: {:email => @visitor[:email]}
+  @user ||= User.first conditions: { email: @visitor[:email] }
   @user.destroy unless @user.nil?
 end
 
 def sign_up
   delete_user
-  visit '/users/sign_up'
-  fill_in "Name", :with => @visitor[:name]
-  fill_in "Email", :with => @visitor[:email]
-  fill_in "user_password", :with => @visitor[:password]
-  fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
+  visit "/users/sign_up"
+  fill_in "Name", with: @visitor[:name]
+  fill_in "Email", with: @visitor[:email]
+  fill_in "user_password", with: @visitor[:password]
+  fill_in "user_password_confirmation", with: @visitor[:password_confirmation]
   click_button "Sign up"
   find_user
 end
 
 def sign_in
-  visit '/users/sign_in'
-  fill_in "Email", :with => @visitor[:email]
-  fill_in "Password", :with => @visitor[:password]
+  visit "/users/sign_in"
+  fill_in "Email", with: @visitor[:email]
+  fill_in "Password", with: @visitor[:password]
   click_button "Sign in"
 end
 
 ### GIVEN ###
 Given /^I am not logged in$/ do
-  visit '/users/sign_out'
+  visit "/users/sign_out"
 end
 
 Given /^I am logged in$/ do
@@ -75,7 +75,7 @@ When /^I sign in with valid credentials$/ do
 end
 
 When /^I sign out$/ do
-  visit '/users/sign_out'
+  visit "/users/sign_out"
 end
 
 When /^I sign up with valid user data$/ do
@@ -85,51 +85,51 @@ end
 
 When /^I sign up with an invalid email$/ do
   create_visitor
-  @visitor = @visitor.merge(:email => "notanemail")
+  @visitor = @visitor.merge(email: "notanemail")
   sign_up
 end
 
 When /^I sign up without a password confirmation$/ do
   create_visitor
-  @visitor = @visitor.merge(:password_confirmation => "")
+  @visitor = @visitor.merge(password_confirmation: "")
   sign_up
 end
 
 When /^I sign up without a password$/ do
   create_visitor
-  @visitor = @visitor.merge(:password => "")
+  @visitor = @visitor.merge(password: "")
   sign_up
 end
 
 When /^I sign up with a mismatched password confirmation$/ do
   create_visitor
-  @visitor = @visitor.merge(:password_confirmation => "changeme123")
+  @visitor = @visitor.merge(password_confirmation: "changeme123")
   sign_up
 end
 
 When /^I return to the site$/ do
-  visit '/'
+  visit "/"
 end
 
 When /^I sign in with a wrong email$/ do
-  @visitor = @visitor.merge(:email => "wrong@example.com")
+  @visitor = @visitor.merge(email: "wrong@example.com")
   sign_in
 end
 
 When /^I sign in with a wrong password$/ do
-  @visitor = @visitor.merge(:password => "wrongpass")
+  @visitor = @visitor.merge(password: "wrongpass")
   sign_in
 end
 
 When /^I edit my account details$/ do
   click_link "Edit account"
-  fill_in "Name", :with => "newname"
-  fill_in "user_current_password", :with => @visitor[:password]
+  fill_in "Name", with: "newname"
+  fill_in "user_current_password", with: @visitor[:password]
   click_button "Update"
 end
 
 When /^I look at the list of users$/ do
-  visit '/'
+  visit "/"
 end
 
 ### THEN ###

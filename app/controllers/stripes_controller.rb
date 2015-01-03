@@ -1,8 +1,8 @@
 class StripesController < ApplicationController
-  load_and_authorize_resource :user, :except => [:create]
+  load_and_authorize_resource :user, except: [:create]
 
   def index
-    @stripes = Stripe::Charge.all(:customer => @user.stripe_customer.id, :count => 100).data
+    @stripes = Stripe::Charge.all(customer: @user.stripe_customer.id, count: 100).data
   end
 
   def create
@@ -14,10 +14,10 @@ class StripesController < ApplicationController
     customer.save
 
     charge = Stripe::Charge.create(
-        :customer    => customer.id,
-        :amount      => 1061, #Amount in cents ($10.00)
-        :description => "id: #{bracket.id}",
-        :currency    => 'usd'
+        customer: customer.id,
+        amount: 1061, # Amount in cents ($10.00)
+        description: "id: #{bracket.id}",
+        currency: "usd"
     )
 
     bracket.stripe_charge_id = charge.id
@@ -25,9 +25,9 @@ class StripesController < ApplicationController
 
     bracket.payment_received!
 
-    redirect_to bracket, :notice => "Payment of $10.61 was successful."
+    redirect_to bracket, notice: "Payment of $10.61 was successful."
 
   rescue Stripe::CardError => e
-    redirect_to bracket, :alert => e.message
+    redirect_to bracket, alert: e.message
   end
 end

@@ -1,9 +1,9 @@
 class GamesController < ApplicationController
   load_and_authorize_resource
 
-  caches_action :index, :layout => false, :cache_path => :index_cache_path.to_proc
+  caches_action :index, layout: false, cache_path: :index_cache_path.to_proc
 
-  layout 'bracket', :only => 'index'
+  layout "bracket", only: "index"
 
   def index
   end
@@ -16,17 +16,17 @@ class GamesController < ApplicationController
 
   def update
     if @game.update_attributes(params[:game])
-      redirect_to games_path, :notice => 'Updated score.'
+      redirect_to games_path, notice: "Updated score."
     else
-      render 'edit', :alert => 'Problem updating game.'
+      render "edit", alert: "Problem updating game."
     end
   end
 
   def index_cache_path
     if current_user.has_role?(:admin)
-      '/admin/games'
+      "/admin/games"
     else
-      '/public/games'
+      "/public/games"
     end
   end
 end

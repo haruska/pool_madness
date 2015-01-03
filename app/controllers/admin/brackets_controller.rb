@@ -1,9 +1,9 @@
 class Admin::BracketsController < ApplicationController
-  before_filter :ensure_admin
+  before_action :ensure_admin
 
   def index
     if params[:payment_state]
-      @brackets = Bracket.where(:payment_state => params[:payment_state]).all
+      @brackets = Bracket.where(payment_state: params[:payment_state]).all
     else
       @brackets = Bracket.all
     end
@@ -11,7 +11,7 @@ class Admin::BracketsController < ApplicationController
 
   def update_outcomes
     UpdatePossibleOutcomes.perform_async
-    redirect_to brackets_path, :notice => "Outcomes calculation performing"
+    redirect_to brackets_path, notice: "Outcomes calculation performing"
   end
 
   def mark_paid
@@ -22,7 +22,7 @@ class Admin::BracketsController < ApplicationController
 
     @bracket.payment_received!
 
-    redirect_to admin_brackets_path, :notice => "Bracket #{@bracket.name} marked paid"
+    redirect_to admin_brackets_path, notice: "Bracket #{@bracket.name} marked paid"
   end
 
   def promise_to_pay
@@ -33,14 +33,14 @@ class Admin::BracketsController < ApplicationController
 
     @bracket.promise_made!
 
-    redirect_to admin_brackets_path, :notice => "Bracket #{@bracket.name} marked promised to pay"
+    redirect_to admin_brackets_path, notice: "Bracket #{@bracket.name} marked promised to pay"
   end
 
   private
 
   def ensure_admin
     unless current_user.has_role? :admin
-      render :nothing => true, :status => 404
+      render nothing: true, status: 404
       false
     end
     true

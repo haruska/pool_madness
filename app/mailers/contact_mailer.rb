@@ -3,6 +3,6 @@ class ContactMailer < ActionMailer::Base
 
   def invite(contact)
     @contact = contact
-    mail(:to => "\"#{@contact.name}\" <#{@contact.email}>", :subject => "#{ENV['TOURNEY_NAME']} Bracket")
+    mail(to: "\"#{@contact.name}\" <#{@contact.email}>", subject: "#{ENV['TOURNEY_NAME']} Bracket")
   end
 end
