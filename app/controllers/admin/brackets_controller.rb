@@ -1,5 +1,5 @@
 class Admin::BracketsController < ApplicationController
-  before_action :ensure_admin
+  before_filter :ensure_admin
 
   def index
     if params[:payment_state]

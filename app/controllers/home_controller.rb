@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_action :ensure_logged_in, only: [:rules, :payments]
+  before_filter :ensure_logged_in, only: [:rules, :payments]
 
   def index
   end
