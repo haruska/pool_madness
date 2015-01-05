@@ -29,10 +29,27 @@ group :assets do
 end
 
 group :development, :test do
+  gem "capybara"
+  gem "capybara-screenshot"
+  gem "letter_opener"
+  gem "letter_opener_web", "~> 1.2.0"
+  gem "magic_lamp"
+  gem "pry"
+  gem "pry-nav"
+  gem "rails-erd"
+  gem "selenium-webdriver"
+  #gem "teaspoon"
+  #gem "vcr"
+  gem "webmock"
+  gem "database_cleaner", ">= 0.9.1"
+
+
   gem "newrelic_rpm"
   gem "thin", ">= 1.5.0"
   gem "rspec-rails", ">= 2.12.2"
   gem "factory_girl_rails", ">= 4.2.0"
+  gem "faker"
+
   gem "quiet_assets", ">= 1.0.1"
   gem "figaro", ">= 0.5.3"
   gem "better_errors", ">= 0.6.0"
@@ -41,11 +58,10 @@ group :development, :test do
 end
 
 group :test do
-  gem "database_cleaner", ">= 0.9.1"
+  gem "shoulda-matchers", require: false
   gem "email_spec", ">= 1.4.0"
   gem "cucumber-rails", ">= 1.3.0", require: false
   gem "launchy", ">= 2.2.0"
-  gem "capybara", ">= 2.0.2"
 end
 
 group :production do
