@@ -20,22 +20,22 @@ class PossibleOutcome
 
   def round_for(round_number, region = nil)
     case round_number
-      when 5
-        [championship.game_one, championship.game_two]
-      when 6
-        [championship]
-      when 1
-        sort_order = [1, 8, 5, 4, 6, 3, 7, 2]
+    when 5
+      [championship.game_one, championship.game_two]
+    when 6
+      [championship]
+    when 1
+      sort_order = [1, 8, 5, 4, 6, 3, 7, 2]
 
-        teams = region.present? ? Team.where(region: region) : Team
-        team_ids = teams.where(seed: sort_order).select(:id).collect(&:id)
-        game_ids = Game.where(team_one_id: team_ids).select(:id).all.collect(&:id)
+      teams = region.present? ? Team.where(region: region) : Team
+      team_ids = teams.where(seed: sort_order).select(:id).collect(&:id)
+      game_ids = Game.where(team_one_id: team_ids).select(:id).all.collect(&:id)
 
-        games = []
-        game_ids.each { |x| games << self.possible_games[x] }
-        games.sort_by { |x| sort_order.index(x.first_team.seed) }
-      else
-        round_for(round_number - 1, region).collect(&:next_game).uniq
+      games = []
+      game_ids.each { |x| games << self.possible_games[x] }
+      games.sort_by { |x| sort_order.index(x.first_team.seed) }
+    else
+      round_for(round_number - 1, region).collect(&:next_game).uniq
     end
   end
 

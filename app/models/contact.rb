@@ -22,7 +22,7 @@ class Contact
     User.all.each do |user|
       contact = contacts.find { |x| x.email == user.email }
       if contact.present? && contact.name != user.name
-        puts "Changing #{contact.email} name from #{user.name} to #{contact.name}"
+        logger.info "Changing #{contact.email} name from #{user.name} to #{contact.name}"
 
         user.update_attribute(:name, contact.name) if execute
       end

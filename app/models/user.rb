@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
   has_many :charges, through: :brackets
 
-  validates_format_of :email, with: EmailValidator.regexp
+  validates :email, format: { with: EmailValidator.regexp }
 
   after_create do |user|
     user.welcome_message unless user.invitation_token.present?
