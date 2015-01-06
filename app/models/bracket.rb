@@ -15,6 +15,7 @@ class Bracket < ActiveRecord::Base
   end
 
   validates :name, uniqueness: true, presence: true
+  validates :user, presence: true
 
   state_machine :payment_state, initial: :unpaid do
     state :unpaid

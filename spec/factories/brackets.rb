@@ -2,5 +2,6 @@
 
 FactoryGirl.define do
   factory :bracket do
+    user
   end
 end
