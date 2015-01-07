@@ -46,8 +46,22 @@ describe Bracket, type: :model do
   end
 
   context "before validation" do
-    it "resets tie_breaker to nil if it is <= 0"
-    it "gives the bracket a default name if the name is blank"
+    it "resets tie_breaker to nil if it is <= 0" do
+      subject.tie_breaker = 0
+      expect(subject).to be_valid
+      expect(subject.tie_breaker).to be_nil
+    end
+
+    it "gives the bracket a default name if the name is blank" do
+      user = create(:user)
+      bracket = build(:bracket, user: user)
+
+      expected_name = bracket.default_name
+
+      bracket.save!
+
+      expect(bracket.name).to eq(expected_name)
+    end
   end
 
   context "payment_state state machine" do
