@@ -145,9 +145,16 @@ describe Bracket, type: :model do
   end
 
   context "#default_name" do
-    it "is the user's name"
+    it "is the user's name" do
+      expect(subject.name).to eq(subject.user.name)
+    end
+
     context "when a bracket with the user's name exists" do
-      it "increments an integer and adds it to the end of the name until unique"
+      let(:another_bracket) { build(:bracket, user: subject.user) }
+
+      it "increments an integer and adds it to the end of the name until unique" do
+        expect(another_bracket.default_name).to eq("#{subject.user.name} 1")
+      end
     end
   end
 
