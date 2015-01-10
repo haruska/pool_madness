@@ -120,16 +120,31 @@ describe Bracket, type: :model do
     end
 
     context "with a complete bracket" do
-      #subject { create(:bracket, :completed) }
+      subject { create(:bracket, :completed) }
+
+      before { build(:tournament) }
 
       context "and it is unpaid" do
         it "is :unpaid" do
-          #expect(subject.status).to eq(:unpaid)
+          expect(subject.status).to eq(:unpaid)
         end
       end
 
-      context "and it is promised or paid" do
-        it "is :ok"
+      context "and it is promised" do
+
+        before { subject.promise_made! }
+
+        it "is :ok" do
+          expect(subject.status).to eq(:ok)
+        end
+      end
+
+      context "and it is paid" do
+        before { subject.payment_received! }
+
+        it "is :ok" do
+          expect(subject.status).to eq(:ok)
+        end
       end
     end
   end
