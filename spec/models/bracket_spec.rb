@@ -151,11 +151,18 @@ describe Bracket, type: :model do
 
   context "#only_bracket_for_user?" do
     context "when the user has a single bracket" do
-      it "returns true"
+      it "returns true" do
+        expect(subject.user.brackets.count).to eq(1)
+        expect(subject).to be_only_bracket_for_user
+      end
     end
 
     context "when the user has multiple brackets" do
-      it "returns false"
+      let!(:another_bracket) { create(:bracket, user: subject.user) }
+
+      it "returns false" do
+        expect(subject).to_not be_only_bracket_for_user
+      end
     end
   end
 
@@ -174,18 +181,38 @@ describe Bracket, type: :model do
   end
 
   context "#complete? / #incomplete?" do
-    it "is complete when all picks are selected and a tie_breaker is set"
+    subject { create(:bracket, :completed) }
+    before { build(:tournament) }
+
+    it "is complete when all picks are selected and a tie_breaker is set" do
+      expect(subject.picks.where(team_id: nil)).to be_empty
+      expect(subject.tie_breaker).to be > 0
+
+      expect(subject).to be_complete
+    end
 
     context "when a pick.team is nil" do
-      it "is incomplete"
+      before { subject.picks.to_a.sample.update_attribute(:team_id, nil) }
+
+      it "is incomplete" do
+        expect(subject).to be_incomplete
+      end
     end
 
     context "when a pick.team_id is -1" do
-      it "is incomplete"
+      before { subject.picks.to_a.sample.update_attribute(:team_id, -1) }
+
+      it "is incomplete" do
+        expect(subject).to be_incomplete
+      end
     end
 
     context "when a tie_breaker is blank" do
-      it "is incomplete"
+      before { subject.update_attribute(:tie_breaker, nil) }
+
+      it "is incomplete" do
+        expect(subject).to be_incomplete
+      end
     end
   end
 
