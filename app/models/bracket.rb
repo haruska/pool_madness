@@ -68,7 +68,9 @@ class Bracket < ActiveRecord::Base
   end
 
   def calculate_points
-    update_attribute(:points, picks.collect(&:points).sum)
+    points_calc = picks.collect(&:points).sum
+    update_attribute(:points, points_calc)
+    points_calc
   end
 
   def sorted_four

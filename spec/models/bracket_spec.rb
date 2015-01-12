@@ -3,7 +3,6 @@ require "spec_helper"
 describe Bracket, type: :model do
   subject { create(:bracket) }
 
-
   it "has a valid factory" do
     expect(subject).to be_valid
   end
@@ -131,7 +130,6 @@ describe Bracket, type: :model do
       end
 
       context "and it is promised" do
-
         before { subject.promise_made! }
 
         it "is :ok" do
@@ -217,13 +215,45 @@ describe Bracket, type: :model do
   end
 
   context "#calculate_points" do
-    it "is the sum of all the picks' points"
-    it "updates the #points attribute"
+    subject { create(:bracket, :completed) }
+
+    before do
+      build(:tournament)
+
+      Game.all.each do |game|
+        game.score_one = Faker::Number.between(60, 90)
+        game.score_two = Faker::Number.between(60, 90)
+        game.save!
+      end
+    end
+
+    it "is the sum of all the picks' points" do
+      expect(subject.calculate_points).to eq(subject.picks.map(&:points).sum)
+    end
+
+    it "updates the #points attribute" do
+      expected_points = subject.calculate_points
+      expect(subject.points).to eq(expected_points)
+    end
   end
 
   context "#sorted_four" do
-    it "is the teams of final four picks of the bracket"
-    it "is ordered by champ, second, game_one.loser, game_two.loser"
-  end
+    subject { create(:bracket, :completed) }
+    before { build(:tournament) }
 
+    it "is the teams of final four picks of the bracket" do
+      semifinal_games = [Game.championship.game_one, Game.championship.game_two]
+      semifinal_picks = subject.picks.where(game_id: semifinal_games.map(&:id))
+      expected_teams = semifinal_picks.map { |pick| [pick.first_team, pick.second_team] }.flatten
+
+      expected_teams.each { |team| expect(subject.sorted_four).to include(team) }
+    end
+
+    it "is reverse-ordered with champ and 2nd place at the end" do
+      champ_pick = subject.picks.find_by_game_id(Game.championship.id)
+
+      expect(subject.sorted_four.last).to eq(champ_pick.team)
+      expect([champ_pick.first_team, champ_pick.second_team]).to include(subject.sorted_four.third)
+    end
+  end
 end

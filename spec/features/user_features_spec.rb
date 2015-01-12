@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe "User creation, authentication, deletion", type: :feature, js: true do
-
   # describe "Signing up" do
   #   let(:email) { Faker::Internet.email }
   #   let(:password) { Faker::Internet.password }

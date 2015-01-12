@@ -38,11 +38,10 @@ group :development, :test do
   gem "pry-nav"
   gem "rails-erd"
   gem "selenium-webdriver"
-  #gem "teaspoon"
-  #gem "vcr"
+  # gem "teaspoon"
+  # gem "vcr"
   gem "webmock"
   gem "database_cleaner", ">= 0.9.1"
-
 
   gem "newrelic_rpm"
   gem "thin", ">= 1.5.0"

@@ -5,7 +5,7 @@ PoolMadness::Application.configure do
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs. Don't rely on the data there!
-  config.cache_classes = true
+  config.cache_classes = false
 
   # Configure static asset server for tests with Cache-Control for performance
   config.serve_static_assets = true
@@ -15,6 +15,7 @@ PoolMadness::Application.configure do
   config.whiny_nils = true
 
   # Show full error reports and disable caching
+  config.cache_store = :null_store
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 

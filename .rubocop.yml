@@ -63,3 +63,8 @@ Style/GuardClause:
 
 Rails/HasAndBelongsToMany:
   Enabled: false
+
+#disable for rails < 4
+Rails/ActionFilter:
+  Enabled: false
+
