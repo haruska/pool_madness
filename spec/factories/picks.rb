@@ -2,5 +2,7 @@
 
 FactoryGirl.define do
   factory :pick do
+    bracket
+    game
   end
 end

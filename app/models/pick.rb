@@ -5,6 +5,8 @@ class Pick < ActiveRecord::Base
   belongs_to :team
   belongs_to :game
 
+  validates :bracket, :game, presence: true
+
   attr_accessible :game_id, :team_id
 
   def first_team
