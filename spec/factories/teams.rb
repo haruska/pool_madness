@@ -2,5 +2,8 @@
 
 FactoryGirl.define do
   factory :team do
+    region { Team::REGIONS.sample }
+    sequence(:seed)
+    name { Faker::Name }
   end
 end

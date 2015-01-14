@@ -11,8 +11,21 @@ describe Pick, type: :model do
   it { should validate_presence_of(:bracket) }
 
   context "accessible attributes" do
-    it "allows updating of the game and team"
-    it "does not allow updating of the bracket"
+    let(:game) { create(:game) }
+    let(:team) { create(:team) }
+    let(:bracket) { create(:bracket) }
+
+    it "allows updating of the game and team" do
+      subject.update_attributes(game_id: game.id, team_id: team.id)
+      subject.reload
+
+      expect(subject.game).to eq(game)
+      expect(subject.team).to eq(team)
+    end
+
+    it "does not allow updating of the bracket" do
+      expect { subject.update_attributes(bracket_id: bracket.id) }.to raise_exception
+    end
   end
 
   context "#first_team" do
