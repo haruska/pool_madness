@@ -116,16 +116,40 @@ describe Pick, type: :model do
   context "#possible_points" do
     context "there is not a winner yet" do
       context "and the pick's team is still in the tournament" do
-        it "is the team's seed plus the points for the round"
+        it "is the team's seed plus the points for the round" do
+          expect(subject.possible_points).to eq(Pick::POINTS_PER_ROUND[subject.game.round] + subject.team.seed)
+        end
       end
 
       context "and the pick's team is eliminated" do
-        it "is the actual #points"
+        let(:team) { subject.team }
+        before do
+          #eliminate the team
+          first_game = team.first_game
+          first_game.score_one = 1
+          first_game.score_two = 2
+          first_game.score_one = 3 if first_game.winner == subject.team
+          first_game.save!
+        end
+
+        it "is the actual #points" do
+          expect(subject.possible_points).to eq(subject.points)
+        end
       end
     end
 
     context "there is a game winner" do
-      it "is the actual #points"
+      let(:game) { subject.game }
+
+      before do
+        game.score_one = 1
+        game.score_two = 2
+        game.score_one = 3 if game.winner != subject.team
+      end
+
+      it "is the actual #points" do
+        expect(subject.possible_points).to eq(subject.points)
+      end
     end
   end
 end
