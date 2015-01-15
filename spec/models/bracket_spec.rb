@@ -237,6 +237,20 @@ describe Bracket, type: :model do
     end
   end
 
+  context "#calculate_possible_points" do
+    subject { create(:bracket, :completed) }
+    before { build(:tournament) }
+
+    it "is the sum of all picks' possible points" do
+      expect(subject.calculate_possible_points).to eq(subject.picks.map(&:possible_points).sum)
+    end
+
+    it "updates the #possible_points attribute" do
+      expected_points = subject.calculate_possible_points
+      expect(subject.possible_points).to eq(expected_points)
+    end
+  end
+
   context "#sorted_four" do
     subject { create(:bracket, :completed) }
     before { build(:tournament) }
