@@ -11,6 +11,9 @@ class GameObserver < ActiveRecord::Observer
       expire_action "/brackets/#{bracket.id}"
       expire_action "/public/brackets/#{bracket.user.id}"
     end
+
+    Rails.cache.delete("views/all_brackets")
+    Bracket.select("id").all.each { |b| Rails.cache.delete("views/bracket-show-#{b.id}") }
   end
 
   private

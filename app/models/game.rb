@@ -7,12 +7,6 @@ class Game < ActiveRecord::Base
 
   attr_accessible :team_one, :team_two, :game_one, :game_two, :score_one, :score_two
 
-  # TODO: belongs in a sweeper
-  after_update do |_game|
-    Rails.cache.delete("views/all_brackets")
-    Bracket.select("id").all.each { |b| Rails.cache.delete("views/bracket-show-#{b.id}") }
-  end
-
   def first_team
     team_one || game_one.winner
   end
