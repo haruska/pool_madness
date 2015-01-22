@@ -26,7 +26,7 @@ class Game < ActiveRecord::Base
 
   # returns 1, 2 or nil
   def next_slot
-    [0, next_game.game_one_id, next_game.game_two_id].index(id)
+    [0, next_game.try(:game_one_id), next_game.try(:game_two_id)].index(id)
   end
 
   def round
