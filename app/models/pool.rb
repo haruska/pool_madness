@@ -1,11 +1,31 @@
 class Pool
+  include ActiveAttr::Model
+
+  attribute :tip_off_attr
+
   TIP_OFF = DateTime.new(2014, 3, 20, 12, 0, 0, "-4")
 
+  def tip_off
+    tip_off_attr || TIP_OFF
+  end
+
+  def started?
+    DateTime.now > tip_off
+  end
+
+  def start_eliminating?
+    DateTime.now > tip_off + 4.days
+  end
+
+  def self.tip_off
+    Pool.new.tip_off
+  end
+
   def self.started?
-    DateTime.now > TIP_OFF
+    Pool.new.started?
   end
 
   def self.start_eliminating?
-    DateTime.now > TIP_OFF + 4.days
+    Pool.new.start_eliminating?
   end
 end
