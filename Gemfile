@@ -13,7 +13,7 @@ gem "cancan", ">= 1.6.8"
 gem "rolify", ">= 3.2.0"
 gem "simple_form", ">= 2.0.4"
 gem "state_machine"
-gem "stripe", git: "https://github.com/stripe/stripe-ruby"
+gem "stripe"
 gem "memcachier"
 gem "dalli"
 gem "sidekiq"
@@ -62,6 +62,7 @@ group :test do
   gem "cucumber-rails", ">= 1.3.0", require: false
   gem "launchy", ">= 2.2.0"
   gem "simplecov", require: false
+  gem "stripe-ruby-mock", "~> 2.0.1"
 end
 
 group :production do

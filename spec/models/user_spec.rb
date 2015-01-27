@@ -93,4 +93,41 @@ describe User do
       @user.encrypted_password.should_not be_blank
     end
   end
+
+  describe "#stripe_customer" do
+    before { StripeMock.start }
+    after { StripeMock.stop }
+
+    subject { User.create!(@attr) }
+
+    context "with no previous stripe id" do
+      it "creates a new stripe customer" do
+        expect(subject.stripe_customer_id).to be_nil
+
+        stripe_customer = subject.stripe_customer
+
+        expect(stripe_customer.email).to eq(subject.email)
+
+        expect(subject.stripe_customer_id).to eq(stripe_customer.id)
+      end
+    end
+
+    context "with a previous stripe id" do
+      let(:stripe_customer) { Stripe::Customer.create(email: subject.email) }
+      before { subject.update_attribute(:stripe_customer_id, stripe_customer.id) }
+
+      it "reuses the same stripe customer" do
+        expect(User.find_by_email(subject.email).stripe_customer).to eq(stripe_customer)
+      end
+    end
+  end
+
+  describe "#accept_invitation!" do
+    subject { User.create!(@attr) }
+    before { subject.accept_invitation! }
+
+    it "sends a welcome message" do
+      expect(ActionMailer::Base.deliveries.size).to eq(1)
+    end
+  end
 end
