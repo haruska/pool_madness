@@ -117,16 +117,17 @@ describe User do
       before { subject.update_attribute(:stripe_customer_id, stripe_customer.id) }
 
       it "reuses the same stripe customer" do
-        expect(User.find_by_email(subject.email).stripe_customer).to eq(stripe_customer)
+        expect(User.find_by_email(subject.email).stripe_customer_id).to eq(stripe_customer.id)
       end
     end
   end
 
   describe "#accept_invitation!" do
-    subject { User.create!(@attr) }
-    before { subject.accept_invitation! }
+    subject! { User.create!(@attr) }
+    before { ActionMailer::Base.deliveries = []  }
 
     it "sends a welcome message" do
+      subject.accept_invitation!
       expect(ActionMailer::Base.deliveries.size).to eq(1)
     end
   end

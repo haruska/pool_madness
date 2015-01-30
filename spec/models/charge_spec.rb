@@ -1,4 +1,5 @@
 require "spec_helper"
 
-describe Charge do
+describe Charge, type: :model do
+  it { should belong_to(:bracket) }
 end
