@@ -117,7 +117,7 @@ describe User do
       before { subject.update_attribute(:stripe_customer_id, stripe_customer.id) }
 
       it "reuses the same stripe customer" do
-        expect(User.find_by_email(subject.email).stripe_customer_id).to eq(stripe_customer.id)
+        expect(User.find_by_email(subject.email).stripe_customer.id).to eq(stripe_customer.id)
       end
     end
   end
