@@ -18,7 +18,11 @@ describe PossibleOutcome, type: :model do
     end
 
     describe "#generate_cached_opts" do
-      it "gathers all games in slot_bit order"
+      let!(:cached_opts) { PossibleOutcome.generate_cached_opts }
+
+      it "gathers all games in slot_bit order" do
+
+      end
       it "gathers all brackets and caches the associated picks"
       it "gathers all team objects in a hash"
     end
@@ -29,7 +33,7 @@ describe PossibleOutcome, type: :model do
 
       context "with a block" do
         it "is nil"
-        it "yeilds individual slot_bits"
+        it "yields individual slot_bits"
       end
 
       context "without a block" do
@@ -53,8 +57,33 @@ describe PossibleOutcome, type: :model do
       it "generates all possible games given the slot bits"
     end
 
-    describe "#update_brackets_best_possible" do
+    describe "#create_possible_game" do
+      it "creates a new possible game given the game hash"
+      it "sets the possible outcome to itself"
+      it "adds the possible game to the possible_games hash"
+    end
 
+    describe "#championship" do
+      it "returns the championship possible game"
+    end
+
+    describe "#round_for" do
+      it "behaves as Game.round_for"
+      it "is a set of PossibleGames from this outcome"
+    end
+
+    describe "#update_brackets_best_possible" do
+      it "updates the first/second/third brackets"
+      it "allows for multiple third places on ties and updates all"
+
+      context "when a lesser place than current for the bracket" do
+        it "keeps the higher possible place"
+      end
+    end
+
+    describe "#sorted_brackets" do
+      it "calculates the points possible for all brackets"
+      it "is an array of pairs of brackets, points"
     end
   end
 end

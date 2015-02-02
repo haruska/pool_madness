@@ -6,39 +6,6 @@ class PossibleOutcome
   attribute :teams
   attribute :possible_games, type: Hash
 
-  def create_possible_game(game_hash)
-    possible_game = PossibleGame.new(game_hash.merge(possible_outcome: self))
-    self.possible_games ||= {}
-    self.possible_games[possible_game.game.id] = possible_game
-  end
-
-  def championship
-    possible_game = self.possible_games.values.first
-    possible_game = possible_game.next_game while possible_game.next_game.present?
-    possible_game
-  end
-
-  def round_for(round_number, region = nil)
-    case round_number
-    when 5
-      [championship.game_one, championship.game_two]
-    when 6
-      [championship]
-    when 1
-      sort_order = [1, 8, 5, 4, 6, 3, 7, 2]
-
-      teams = region.present? ? Team.where(region: region) : Team
-      team_ids = teams.where(seed: sort_order).select(:id).collect(&:id)
-      game_ids = Game.where(team_one_id: team_ids).select(:id).all.collect(&:id)
-
-      games = []
-      game_ids.each { |x| games << self.possible_games[x] }
-      games.sort_by { |x| sort_order.index(x.first_team.seed) }
-    else
-      round_for(round_number - 1, region).collect(&:next_game).uniq
-    end
-  end
-
   def self.generate_cached_opts
     games = Game.where("score_one > 0").order(:id).all
     games += Game.where("id NOT IN (?)", games.collect(&:id)).order(:id).all
@@ -96,6 +63,40 @@ class PossibleOutcome
     end
 
     possible_outcome
+  end
+
+
+  def create_possible_game(game_hash)
+    possible_game = PossibleGame.new(game_hash.merge(possible_outcome: self))
+    self.possible_games ||= {}
+    self.possible_games[possible_game.game.id] = possible_game
+  end
+
+  def championship
+    possible_game = self.possible_games.values.first
+    possible_game = possible_game.next_game while possible_game.next_game.present?
+    possible_game
+  end
+
+  def round_for(round_number, region = nil)
+    case round_number
+    when 5
+      [championship.game_one, championship.game_two]
+    when 6
+      [championship]
+    when 1
+      sort_order = [1, 8, 5, 4, 6, 3, 7, 2]
+
+      teams = region.present? ? Team.where(region: region) : Team
+      team_ids = teams.where(seed: sort_order).select(:id).collect(&:id)
+      game_ids = Game.where(team_one_id: team_ids).select(:id).all.collect(&:id)
+
+      games = []
+      game_ids.each { |x| games << self.possible_games[x] }
+      games.sort_by { |x| sort_order.index(x.first_team.seed) }
+    else
+      round_for(round_number - 1, region).collect(&:next_game).uniq
+    end
   end
 
   def update_brackets_best_possible

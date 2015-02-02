@@ -7,6 +7,8 @@ class Game < ActiveRecord::Base
 
   attr_accessible :team_one, :team_two, :game_one, :game_two, :score_one, :score_two
 
+  scope :already_played, where("games.score_one > ?", 0).order(:id)
+
   def first_team
     team_one || game_one.winner
   end

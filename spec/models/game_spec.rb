@@ -16,6 +16,47 @@ describe Game, type: :model do
     it { should belong_to(:game_two) }
   end
 
+  describe "scopes" do
+    before do
+      (1..2).each do |round|
+        Team::REGIONS.each do |region|
+          Game.round_for(round, region).each do |game|
+            while game.score_one.nil? || game.score_one == game.score_two
+              game.update_attributes(score_one: rand(100) + 1, score_two: rand(100) + 1)
+            end
+          end
+        end
+      end
+    end
+
+    after do
+      (1..2).each do |round|
+        Team::REGIONS.each do |region|
+          Game.round_for(round, region).each do |game|
+            game.update_attributes(score_one: nil, score_two: nil)
+          end
+        end
+      end
+    end
+
+    describe "already_played" do
+      let(:played_games) { (1..2).map {|round| Team::REGIONS.map { |region| Game.round_for(round, region) }}.flatten }
+
+      it "is a set of all games with a score" do
+        expect(Game.already_played.to_a).to match_array(played_games)
+      end
+
+      it "is ordered by ID" do
+        expect(Game.already_played.map(&:id)).to eq(Game.already_played.map(&:id).sort)
+      end
+    end
+
+    describe "not_played" do
+      it "is a set of all games not played"
+      it "is ordered by ID"
+    end
+  end
+
   describe "#first_team / #second_team" do
     context "in the first round" do
       subject { Game.first }
