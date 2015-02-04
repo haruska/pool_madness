@@ -2,7 +2,7 @@ require "spec_helper"
 require "cancan/matchers"
 
 describe Ability, type: :model do
-  before(:all) { build(:tournament) }
+  before { build(:tournament) }
 
   context "not logged in" do
     let(:user) { User.new }

@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Game, type: :model do
-  before(:all) { build(:tournament) }
+  before { build(:tournament, :with_first_two_rounds_completed) }
 
   context do
     subject { Game.first }
@@ -17,49 +17,25 @@ describe Game, type: :model do
   end
 
   describe "scopes" do
-    before do
-      (1..2).each do |round|
-        Team::REGIONS.each do |region|
-          Game.round_for(round, region).each do |game|
-            while game.score_one.nil? || game.score_one == game.score_two
-              game.update_attributes(score_one: rand(100) + 1, score_two: rand(100) + 1)
-            end
-          end
-        end
-      end
-    end
-
-    after do
-      (1..2).each do |round|
-        Team::REGIONS.each do |region|
-          Game.round_for(round, region).each do |game|
-            game.update_attributes(score_one: nil, score_two: nil)
-          end
-        end
-      end
-    end
+    let(:played_games) { (1..2).map {|round| Team::REGIONS.map { |region| Game.round_for(round, region) }}.flatten }
+    let(:not_played_games) { Game.where("id NOT IN (?)", played_games.map(&:id)).all }
 
     describe "already_played" do
-      let(:played_games) { (1..2).map {|round| Team::REGIONS.map { |region| Game.round_for(round, region) }}.flatten }
-
       it "is a set of all games with a score" do
         expect(Game.already_played.to_a).to match_array(played_games)
-      end
-
-      it "is ordered by ID" do
-        expect(Game.already_played.map(&:id)).to eq(Game.already_played.map(&:id).sort)
       end
     end
 
     describe "not_played" do
-      it "is a set of all games not played"
-      it "is ordered by ID"
+      it "is a set of all games not played" do
+        expect(Game.not_played.to_a).to match_array(not_played_games)
+      end
     end
   end
 
   describe "#first_team / #second_team" do
     context "in the first round" do
-      subject { Game.first }
+      subject { Game.round_for(1).first }
 
       it "is the associated teams" do
         expect(subject.first_team).to eq(subject.team_one)
@@ -68,17 +44,11 @@ describe Game, type: :model do
     end
 
     context "in subsequent rounds" do
-      subject { Game.first.next_game }
+      subject { Game.round_for(2).first }
 
       before do
         [subject.game_one, subject.game_two].each do |game|
           game.update_attributes(score_one: 1, score_two: 0)
-        end
-      end
-
-      after do
-        [subject.game_one, subject.game_two].each do |game|
-          game.update_attributes(score_one: nil, score_two: nil)
         end
       end
 
@@ -90,34 +60,35 @@ describe Game, type: :model do
   end
 
   describe "#winner" do
-    subject { Game.first }
-
     context "when the game hasn't been played" do
+      subject { Game.round_for(3).first }
+
       it "is nil" do
         expect(subject.winner).to be_nil
       end
     end
 
     context "after the game is completed" do
-      before { subject.update_attributes(score_one: 1, score_two: 2) }
-      after { subject.update_attributes(score_one: nil, score_two: nil) }
+      subject { Game.round_for(1).first }
+      let(:expected_winner) { subject.score_one > subject.score_two ? subject.team_one : subject.team_two }
 
       it "is the winning team" do
-        expect(subject.winner).to eq(subject.team_two)
+        expect(subject.winner).to eq(expected_winner)
       end
     end
   end
 
   describe "#next_slot" do
     context "when it is game_one in the next round" do
-      subject { Game.first.next_game.game_one }
+      subject { Game.round_for(2).first.game_one }
+
       it "is 1" do
         expect(subject.next_slot).to eq(1)
       end
     end
 
     context "when it is game_two in the next round" do
-      subject { Game.first.next_game.game_two }
+      subject { Game.round_for(2).first.game_two }
 
       it "is 2" do
         expect(subject.next_slot).to eq(2)

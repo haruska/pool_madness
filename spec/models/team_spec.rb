@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Team, type: :model do
-  before(:all) { build(:tournament) }
+  before { build(:tournament) }
 
   context do
     subject { Game.first.team_one }
@@ -25,7 +25,7 @@ describe Team, type: :model do
   end
 
   describe "#still_playing? / #eliminated?" do
-    let(:game) { Game.round_for(1, Team::REGIONS.sample).first }
+    let(:game) { Game.round_for(1).sample }
 
     subject { game.team_one }
 
@@ -38,7 +38,6 @@ describe Team, type: :model do
 
     context "won the first game" do
       before { game.update_attributes(score_one: 2, score_two: 1) }
-      after { game.update_attributes(score_one: nil, score_two: nil) }
 
       it "is true" do
         expect(subject).to be_still_playing
@@ -47,7 +46,6 @@ describe Team, type: :model do
 
       context "and won the next game" do
         before { game.next_game.update_attributes(score_one: 2, score_two: 1) }
-        after { game.next_game.update_attributes(score_one: nil, score_two: nil) }
 
         it "is true" do
           expect(subject).to be_still_playing
@@ -61,11 +59,6 @@ describe Team, type: :model do
           game.next_game.game_two.update_attributes(score_one: 1, score_two: 2)
         end
 
-        after do
-          game.next_game.update_attributes(score_one: nil, score_two: nil)
-          game.next_game.game_two.update_attributes(score_one: nil, score_two: nil)
-        end
-
         it "is false" do
           expect(subject).to_not be_still_playing
           expect(subject).to be_eliminated
@@ -75,7 +68,6 @@ describe Team, type: :model do
 
     context "lost the first game" do
       before { game.update_attributes(score_one: 1, score_two: 2) }
-      after { game.update_attributes(score_one: nil, score_two: nil) }
 
       it "is false" do
         expect(subject).to_not be_still_playing

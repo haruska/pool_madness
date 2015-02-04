@@ -7,22 +7,16 @@ class PossibleOutcome
   attribute :possible_games, type: Hash
 
   def self.generate_cached_opts
-    games = Game.where("score_one > 0").order(:id).all
-    games += Game.where("id NOT IN (?)", games.collect(&:id)).order(:id).all
-
+    games = Game.already_played.all + Game.not_played.all
     brackets = Bracket.includes(:picks).all
-
-    teams = {}
-    Team.all.each do |team|
-      teams[team.id] = team
-    end
+    teams = Team.all.each_with_object(Hash.new) {|team, acc| acc[team.id] = team}
 
     { games: games, brackets: brackets, teams: teams }
   end
 
   def self.generate_all_slot_bits
-    already_played_games = Game.where("score_one > 0").order(:id).all
-    to_play_games = Game.where("id NOT IN (?)", already_played_games.collect(&:id)).order(:id).all
+    already_played_games = Game.already_played.all
+    to_play_games = Game.not_played.all
 
     already_played_winners_mask = 0
 
@@ -47,10 +41,7 @@ class PossibleOutcome
 
   def self.generate_outcome(slot_bits, opts = {})
     if opts[:games]
-      games = opts[:games]
-    else
-      games = Game.where("score_one > 0").order(:id).all
-      games += Game.where("id NOT IN (?)", games.collect(&:id)).order(:id).all
+      games = opts[:games] ? opts[:games] : Game.already_played.all + Game.not_played.all
     end
 
     possible_outcome = new(slot_bits: slot_bits, brackets: opts[:brackets], teams: opts[:teams])

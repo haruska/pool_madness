@@ -190,7 +190,7 @@ describe Bracket, type: :model do
     end
 
     context "when a pick.team is nil" do
-      before { subject.picks.to_a.sample.update_attribute(:team_id, nil) }
+      subject { create(:bracket) }
 
       it "is incomplete" do
         expect(subject).to be_incomplete
@@ -198,7 +198,7 @@ describe Bracket, type: :model do
     end
 
     context "when a pick.team_id is -1" do
-      before { subject.picks.to_a.sample.update_attribute(:team_id, -1) }
+      before { subject.picks.to_a.sample.update_attributes!(team_id: -1) }
 
       it "is incomplete" do
         expect(subject).to be_incomplete
@@ -206,7 +206,7 @@ describe Bracket, type: :model do
     end
 
     context "when a tie_breaker is blank" do
-      before { subject.update_attribute(:tie_breaker, nil) }
+      before { subject.update_attributes!(tie_breaker: nil) }
 
       it "is incomplete" do
         expect(subject).to be_incomplete
@@ -217,15 +217,7 @@ describe Bracket, type: :model do
   context "#calculate_points" do
     subject { create(:bracket, :completed) }
 
-    before do
-      build(:tournament)
-
-      Game.all.each do |game|
-        game.score_one = Faker::Number.between(60, 90)
-        game.score_two = Faker::Number.between(60, 90)
-        game.save!
-      end
-    end
+    before { build(:tournament, :completed) }
 
     it "is the sum of all the picks' points" do
       expect(subject.calculate_points).to eq(subject.picks.map(&:points).sum)

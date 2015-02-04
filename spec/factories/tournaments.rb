@@ -129,5 +129,29 @@ FactoryGirl.define do
         Game.create game_one: champ_one, game_two: champ_two
       end
     end
+
+    trait :with_first_two_rounds_completed do
+      after(:build) do |_|
+        (1..2).each do |round|
+          Team::REGIONS.each do |region|
+            Game.round_for(round, region).each do |game|
+              while game.score_one.nil? || game.score_one == game.score_two
+                game.update_attributes(score_one: Faker::Number.between(60, 90), score_two: Faker::Number.between(60, 90))
+              end
+            end
+          end
+        end
+      end
+    end
+
+    trait :completed do
+      after(:build) do |_|
+        Game.all.each do |game|
+          while game.score_one.nil? || game.score_one == game.score_two
+            game.update_attributes(score_one: Faker::Number.between(60, 90), score_two: Faker::Number.between(60, 90))
+          end
+        end
+      end
+    end
   end
 end

@@ -8,9 +8,22 @@ FactoryGirl.define do
       tie_breaker { Faker::Number.between(100, 200) }
 
       after(:create) do |bracket|
-        bracket.picks.each do |pick|
-          pick.team = [pick.first_team, pick.second_team].sample
-          pick.save!
+        (1..4).each do |round|
+          Team::REGIONS.each do |region|
+            Game.round_for(round, region).each do |game|
+              pick = bracket.picks.find_by_game_id(game.id)
+              pick.team = [pick.first_team, pick.second_team].sample
+              pick.save!
+            end
+          end
+        end
+
+        (5..6).each do |round|
+          Game.round_for(round).each do |game|
+            pick = bracket.picks.find_by_game_id(game.id)
+            pick.team = [pick.first_team, pick.second_team].sample
+            pick.save!
+          end
         end
       end
     end

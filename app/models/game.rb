@@ -7,7 +7,8 @@ class Game < ActiveRecord::Base
 
   attr_accessible :team_one, :team_two, :game_one, :game_two, :score_one, :score_two
 
-  scope :already_played, where("games.score_one > ?", 0).order(:id)
+  scope :already_played, ->{ where("games.score_one > ?", 0).order(:id) }
+  scope :not_played, ->{ where("games.id NOT IN (?)", Game.already_played.pluck(:id)).order(:id) }
 
   def first_team
     team_one || game_one.winner
