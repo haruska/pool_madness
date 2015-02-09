@@ -11,8 +11,17 @@ describe PossibleOutcome, type: :model do
       expect(cached_opts[:games]).to eq(Game.already_played.order(:id).to_a + Game.not_played.order(:id).to_a)
     end
 
-    it "gathers all brackets and caches the associated picks"
-    it "gathers all team objects in a hash"
+    it "gathers all brackets and caches the associated picks" do
+      brackets.each do |bracket|
+        expect(cached_opts[:brackets]).to include(bracket)
+      end
+    end
+
+    it "gathers all team objects in a hash" do
+      Team.all.each do |team|
+        expect(cached_opts[:teams][team.id]).to eq(team)
+      end
+    end
   end
 
   describe "#generate_all_slot_bits" do
