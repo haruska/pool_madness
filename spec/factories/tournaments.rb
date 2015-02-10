@@ -136,7 +136,7 @@ FactoryGirl.define do
           Team::REGIONS.each do |region|
             Game.round_for(round, region).each do |game|
               while game.score_one.nil? || game.score_one == game.score_two
-                game.update_attributes(score_one: Faker::Number.between(60, 90), score_two: Faker::Number.between(60, 90))
+                game.update_attributes!(score_one: Faker::Number.between(60, 90), score_two: Faker::Number.between(60, 90))
               end
             end
           end
