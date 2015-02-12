@@ -40,14 +40,11 @@ class PossibleOutcome
   end
 
   def self.generate_outcome(slot_bits, opts = {})
-    if opts[:games]
-      games = opts[:games] ? opts[:games] : Game.already_played.all + Game.not_played.all
-    end
-
+    opts = generate_cached_opts if opts.empty?
     possible_outcome = new(slot_bits: slot_bits, brackets: opts[:brackets], teams: opts[:teams])
 
-    games.each_with_index do |game, i|
-      slot_index = games.size - i - 1
+    opts[:games].each_with_index do |game, i|
+      slot_index = opts[:games].size - i - 1
       team_one_winner = slot_bits & (1 << slot_index) == 0
       score_one, score_two = team_one_winner ?  [2, 1] : [1, 2]
       possible_outcome.create_possible_game game: game, score_one: score_one, score_two: score_two
@@ -90,6 +87,17 @@ class PossibleOutcome
     end
   end
 
+  def sorted_brackets
+    result = self.brackets.collect do |bracket|
+      points = bracket.picks.collect do |pick|
+        possible_games[pick.game_id].points_for_pick(pick.team_id)
+      end.sum
+      [bracket, points]
+    end
+
+    result.sort_by(&:last).reverse
+  end
+
   def update_brackets_best_possible
     sorted_brackets = self.sorted_brackets
 
@@ -99,27 +107,13 @@ class PossibleOutcome
       third_place_index += 1
     end
 
-    sorted_brackets[0..third_place_index].each_with_index do |br, _i|
-      bracket, points = *br
-      index = sorted_brackets.index { |_x, y| y == points }
+    sorted_brackets[0..third_place_index].each do |bracket, points|
+      index = sorted_brackets.index { |_b, p| p == points }
       bracket.reload
       if bracket.best_possible > index
         bracket.best_possible = index
         bracket.save!
       end
     end
-  end
-
-  def sorted_brackets
-    self.brackets ||= Bracket.includes(:picks).all
-
-    result = self.brackets.collect do |bracket|
-      points = bracket.picks.collect do |pick|
-        possible_games[pick.game_id].points_for_pick(pick.team_id)
-      end.sum
-      [bracket, points]
-    end
-
-    result.sort_by(&:last).reverse
   end
 end

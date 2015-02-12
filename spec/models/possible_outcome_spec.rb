@@ -71,34 +71,100 @@ describe PossibleOutcome, type: :model do
   end
 
   describe "#generate_outcome" do
+    let(:slot_bits) { PossibleOutcome.generate_all_slot_bits.first }
+
     context "with cached options passed in" do
-      it "uses the games from options"
-      it "uses the passed in brackets"
-      it "uses the passed in teams"
+      let(:cached_opts) { PossibleOutcome.generate_cached_opts }
+      let(:generated_outcome) { PossibleOutcome.generate_outcome(slot_bits, cached_opts) }
+
+      it "uses the games from options" do
+        cached_opts[:games].each do |game|
+          expect(generated_outcome.possible_games[game.id].game).to eq(game)
+        end
+      end
+
+      it "uses the passed in brackets" do
+        expect(generated_outcome.brackets).to eq(cached_opts[:brackets])
+      end
+
+      it "uses the passed in teams" do
+        expect(generated_outcome.teams).to eq(cached_opts[:teams])
+      end
     end
 
     context "with no cached options passed in" do
-      it "gathers all games in slot_bit order"
-      it "gathers all brackets"
-      it "gathers all teams"
-    end
+      let(:generated_outcome) { PossibleOutcome.generate_outcome(slot_bits) }
 
-    it "generates all possible games given the slot bits"
+      it "gathers all games in slot_bit order" do
+        Game.all.each do |game|
+          expect(generated_outcome.possible_games[game.id].game).to eq(game)
+        end
+      end
+
+      it "gathers all brackets" do
+        expect(generated_outcome.brackets).to eq(Bracket.includes(:picks).all)
+      end
+
+      it "gathers all teams" do
+        expect(generated_outcome.teams).to eq(Team.all.each_with_object(Hash.new) {|team, acc| acc[team.id] = team})
+      end
+    end
   end
 
   describe "#create_possible_game" do
-    it "creates a new possible game given the game hash"
-    it "sets the possible outcome to itself"
-    it "adds the possible game to the possible_games hash"
+    let(:slot_bits) { PossibleOutcome.generate_all_slot_bits.sample }
+    let(:cached_opts) { PossibleOutcome.generate_cached_opts }
+    let(:brackets) { cached_opts[:brackets] }
+    let(:teams) { cached_opts[:teams] }
+    let(:game) { cached_opts[:games].sample }
+
+    subject { PossibleOutcome.new(slot_bits: slot_bits, brackets: brackets, teams: teams) }
+
+    let!(:possible_game) { subject.create_possible_game(game: game, score_one: 1, score_two: 2) }
+
+    it "creates a new possible game given the game hash" do
+      expect(possible_game.game).to eq(game)
+      expect(possible_game.score_one).to eq(1)
+      expect(possible_game.score_two).to eq(2)
+    end
+
+    it "sets the possible outcome to itself" do
+      expect(possible_game.possible_outcome).to eq(subject)
+    end
+
+    it "adds the possible game to the possible_games hash" do
+      expect(subject.possible_games[game.id]).to eq(possible_game)
+    end
   end
 
   describe "#championship" do
-    it "returns the championship possible game"
+    let(:championship) { Game.championship }
+    subject { PossibleOutcome.generate_outcome(0) }
+
+    it "returns the championship possible game" do
+      expect(subject.championship).to be_a(PossibleGame)
+      expect(subject.championship.game).to eq(championship)
+    end
   end
 
   describe "#round_for" do
-    it "behaves as Game.round_for"
-    it "is a set of PossibleGames from this outcome"
+    subject { PossibleOutcome.generate_outcome(0) }
+
+    it "behaves as Game.round_for and is a set of PossibleGames from this outcome" do
+      Team::REGIONS.each do |region|
+        (1..6).each do |round_number|
+          games = Game.round_for(round_number, region)
+          possible_games = subject.round_for(round_number, region)
+
+          expect(possible_games.map(&:game)).to match_array(games)
+        end
+      end
+    end
+  end
+
+  describe "#sorted_brackets" do
+    it "calculates the points possible for all brackets"
+    it "is an array of pairs of brackets, points"
   end
 
   describe "#update_brackets_best_possible" do
@@ -108,10 +174,5 @@ describe PossibleOutcome, type: :model do
     context "when a lesser place than current for the bracket" do
       it "keeps the higher possible place"
     end
-  end
-
-  describe "#sorted_brackets" do
-    it "calculates the points possible for all brackets"
-    it "is an array of pairs of brackets, points"
   end
 end
