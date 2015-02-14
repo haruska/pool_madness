@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe PossibleOutcome, type: :model do
   before { build(:tournament, :with_first_two_rounds_completed) }
-  let!(:brackets) { create_list(:bracket, 5) }
+  let!(:brackets) { create_list(:bracket, 5, :completed) }
 
   describe "#generate_cached_opts" do
     let!(:cached_opts) { PossibleOutcome.generate_cached_opts }
@@ -163,16 +163,80 @@ describe PossibleOutcome, type: :model do
   end
 
   describe "#sorted_brackets" do
-    it "calculates the points possible for all brackets"
-    it "is an array of pairs of brackets, points"
+    let(:slot_bits) { PossibleOutcome.generate_all_slot_bits.sample }
+    subject { PossibleOutcome.generate_outcome(slot_bits) }
+    let(:possible_games) { subject.possible_games }
+    let(:sorted_brackets) { subject.sorted_brackets }
+
+    it "calculates the points possible for all brackets" do
+      Bracket.all.each do |bracket|
+        expected_points = bracket.picks.map do |pick|
+          possible_games[pick.game_id].points_for_pick(pick.team_id)
+        end.sum
+
+        result_pair = sorted_brackets.find {|b, p| b == bracket }
+        expect(result_pair.last).to eq(expected_points)
+      end
+    end
+
+    it "is a sorted array of pairs of brackets, points" do
+      sorted_brackets.map(&:first).each do |b|
+        expect(b).to be_a(Bracket)
+      end
+
+      expect(sorted_brackets.map(&:last)).to eq(sorted_brackets.map(&:last).sort.reverse)
+    end
   end
 
   describe "#update_brackets_best_possible" do
-    it "updates the first/second/third brackets"
-    it "allows for multiple third places on ties and updates all"
+    let(:slot_bits) { PossibleOutcome.generate_all_slot_bits.sample }
+    subject { PossibleOutcome.generate_outcome(slot_bits) }
+    let(:sorted_brackets) { subject.sorted_brackets }
+    let(:third_place_index) do
+      t_index = 2
+      third_place_points = sorted_brackets[t_index][1]
+      while sorted_brackets[t_index + 1][1] == third_place_points
+        t_index += 1
+      end
+      t_index
+    end
+
+    let(:bracket_groups) do
+      place_points = sorted_brackets[0..2].map(&:last)
+      place_points[1] = nil if place_points[1] == place_points[0]
+      place_points[2] = nil if place_points[2] == place_points[1]
+
+      place_points.map do |pp|
+        sorted_brackets.select {|_, points| pp == points }.map(&:first)
+      end
+    end
+
+    it "updates the first/second/third brackets" do
+      subject.update_brackets_best_possible
+
+      bracket_groups.each_with_index do |brackets, i|
+        brackets.each do |bracket|
+          expect(bracket.best_possible).to eq(i)
+        end
+      end
+    end
 
     context "when a lesser place than current for the bracket" do
-      it "keeps the higher possible place"
+      let(:first_brackets) { bracket_groups[1] + bracket_groups[2] }
+
+      before do
+        first_brackets.each do |bracket|
+          bracket.best_possible = 0
+          bracket.save!
+        end
+      end
+
+      it "keeps the higher possible place" do
+        subject.update_brackets_best_possible
+        first_brackets.each do |bracket|
+          expect(bracket.best_possible).to eq(0)
+        end
+      end
     end
   end
 end
