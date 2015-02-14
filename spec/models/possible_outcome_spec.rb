@@ -221,6 +221,23 @@ describe PossibleOutcome, type: :model do
       end
     end
 
+    context "with a tie for third" do
+      before do
+        sorted_brackets[3][1] = sorted_brackets[2][1]
+        expect(subject).to receive(:sorted_brackets).and_return(sorted_brackets)
+      end
+
+      it "updates the first/second/third brackets" do
+        subject.update_brackets_best_possible
+
+        bracket_groups.each_with_index do |brackets, i|
+          brackets.each do |bracket|
+            expect(bracket.best_possible).to eq(i)
+          end
+        end
+      end
+    end
+
     context "when a lesser place than current for the bracket" do
       let(:first_brackets) { bracket_groups[1] + bracket_groups[2] }
 
