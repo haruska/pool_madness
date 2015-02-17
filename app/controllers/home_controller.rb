@@ -15,6 +15,8 @@ class HomeController < ApplicationController
   def payments
   end
 
+  protected
+
   def ensure_logged_in
     if current_user.blank?
       redirect_to root_path
