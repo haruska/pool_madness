@@ -78,6 +78,26 @@ describe Game, type: :model do
     end
   end
 
+  describe "#next_game" do
+    let(:next_game) { Game.round_for(2).sample }
+
+    context "when subject is in slot one" do
+      subject { next_game.game_one }
+
+      it "is the next round game for the winner" do
+        expect(subject.next_game).to eq(next_game)
+      end
+    end
+    context "when subject is in slot two" do
+      subject { next_game.game_two }
+
+      it "is the next round game for the winner" do
+        expect(subject.next_game).to eq(next_game)
+      end
+
+    end
+  end
+
   describe "#next_slot" do
     context "when it is game_one in the next round" do
       subject { Game.round_for(2).first.game_one }
