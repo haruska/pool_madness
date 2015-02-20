@@ -3,7 +3,7 @@ class Pool
 
   attribute :tip_off_attr
 
-  TIP_OFF = DateTime.new(2014, 3, 20, 12, 0, 0, "-4")
+  TIP_OFF = DateTime.new(2015, 3, 20, 12, 0, 0, "-4")
 
   def tip_off
     tip_off_attr || TIP_OFF

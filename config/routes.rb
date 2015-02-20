@@ -1,16 +1,12 @@
 PoolMadness::Application.routes.draw do
-  authenticated :user do
-    root to: "brackets#index"
-    # root :to => 'home#whatif'
-  end
 
   root to: "home#index"
 
   namespace :admin do
     resources :brackets do
       member do
-        put :promise_to_pay
-        put :mark_paid
+        patch :promise_to_pay
+        patch :mark_paid
       end
       collection do
         get :update_outcomes
@@ -18,10 +14,10 @@ PoolMadness::Application.routes.draw do
     end
   end
 
-  match "/subscribe", to: "home#subscribe", as: "subscribe"
-  match "/payments", to: "home#payments", as: "payments"
-  match "/rules", to: "home#rules", as: "rules"
-  match "/final_possibilities", to: "home#whatif", as: "possible"
+  match "/subscribe", to: "home#subscribe", via: :get, as: "subscribe"
+  match "/payments", to: "home#payments", via: :get, as: "payments"
+  match "/rules", to: "home#rules", via: :get, as: "rules"
+  match "/final_possibilities", via: :get, to: "home#whatif", as: "possible"
 
   devise_for :users, path: "auth", path_names: { sign_in: "login", sign_up: "signup" }
 

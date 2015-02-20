@@ -9,7 +9,6 @@ class Ability
 
     if user.id.present?
       can :manage, User, id: user.id
-      can [:index, :read], Charge, bracket: { user_id: user.id }
       can :read, Game
 
       if pool.started?

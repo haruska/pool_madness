@@ -17,14 +17,11 @@ describe Ability, type: :model do
   context "logged in" do
     let(:user) { create(:user) }
     let(:bracket) { create(:bracket, user: user) }
-    let(:charge) { create(:charge, bracket: bracket) }
 
     subject { Ability.new(user) }
 
     it { should be_able_to(:manage, user) }
     it { should be_able_to(:read, Game.first) }
-    it { should be_able_to(:index, Charge, bracket: { user_id: user.id}) }
-    it { should be_able_to(:read, charge) }
 
     context "pool has started" do
       it { should be_able_to(:read, bracket) }
@@ -39,7 +36,6 @@ describe Ability, type: :model do
 
       it { should be_able_to(:manage, bracket) }
       it { should be_able_to(:update, bracket.picks.sample) }
-      it { should_not be_able_to(:destroy, charge.bracket) }
     end
   end
 end

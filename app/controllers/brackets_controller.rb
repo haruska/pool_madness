@@ -1,10 +1,6 @@
 class BracketsController < ApplicationController
   load_and_authorize_resource except: [:current_user_bracket_ids, :printable]
 
-  caches_action :index, layout: false, cache_path: :index_cache_path.to_proc
-  caches_action :show,  layout: false, cache_path: proc { |c| "/brackets/#{c.params[:id]}" }
-  # caches_action :printable, :layout => false, :cache_path => Proc.new {|c| "/brackets/#{c.params[:id]}/printable"}
-
   layout "bracket", except: [:index]
 
   def index
@@ -35,7 +31,7 @@ class BracketsController < ApplicationController
   end
 
   def update
-    if @bracket.update_attributes(params[:bracket])
+    if @bracket.update_attributes(bracket_params)
       redirect_to @bracket, notice: "Bracket Saved"
     else
       flash.now[:alert] = "Problem saving bracket. Please try again"
@@ -49,15 +45,13 @@ class BracketsController < ApplicationController
   end
 
   def current_user_bracket_ids
-    ids = current_user.brackets.select(:id).all.collect(&:id)
+    ids = current_user.brackets.pluck(:id)
     render json: ids.to_json
   end
 
-  def index_cache_path
-    if Pool.started?
-      "/public/brackets"
-    else
-      current_user.has_role?(:admin) ? "/admin/brackets" : "/public/brackets/#{current_user.id}"
-    end
+  private
+
+  def bracket_params
+    params.permit(:bracket).permit(:tie_breaker, :name, :points, :possible_points)
   end
 end

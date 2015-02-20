@@ -3,7 +3,7 @@ class Admin::BracketsController < ApplicationController
 
   def index
     if params[:payment_state]
-      @brackets = Bracket.where(payment_state: params[:payment_state]).all
+      @brackets = Bracket.find_by(payment_state: params[:payment_state])
     else
       @brackets = Bracket.all
     end

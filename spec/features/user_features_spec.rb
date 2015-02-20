@@ -14,7 +14,7 @@ describe "User creation, authentication, deletion", type: :feature, js: true do
   #
   #     click_button "Sign up"
   #     expect(page).to have_link("Sign Out")
-  #     expect(User.find_by_email(email)).to be_present
+  #     expect(User.find_by(email: email)).to be_present
   #   end
   #
   #   it "requires an email address" do

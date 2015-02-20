@@ -10,12 +10,6 @@ describe Pick, type: :model do
   it { should validate_presence_of(:game) }
   it { should validate_presence_of(:bracket) }
 
-  context "accessible attributes" do
-    it "does not allow updating of the bracket" do
-      expect { subject.update_attributes(bracket_id: bracket.id) }.to raise_exception
-    end
-  end
-
   context "#first_team / #second_team" do
     context "game is in the first round" do
       it "is the teams of the associated game" do
@@ -26,7 +20,7 @@ describe Pick, type: :model do
 
     context "game is in subsequent rounds" do
       let(:game) { Game.round_for(2).sample }
-      let(:previous_picks) { [game.game_one_id, game.game_two_id].map {|game_id| bracket.picks.find_by_game_id(game_id) } }
+      let(:previous_picks) { [game.game_one_id, game.game_two_id].map {|game_id| bracket.picks.find_by(game_id: game_id) } }
 
       it "is the winning team of this brackets previous picks" do
         expect(subject.first_team).to eq(previous_picks.first.team)

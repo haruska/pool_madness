@@ -10,7 +10,7 @@ describe User, type: :model do
   it { should validate_presence_of(:email) }
   it { should validate_uniqueness_of(:email).case_insensitive }
   it { should validate_presence_of(:password) }
-  it { should ensure_length_of(:password).is_at_least(8) }
+  it { should validate_length_of(:password).is_at_least(8) }
 
   it { should allow_value("user@foo.com").for(:email) }
   it { should allow_value("THE_USER@foo.bar.org").for(:email) }
@@ -41,7 +41,7 @@ describe User, type: :model do
       before { subject.update_attribute(:stripe_customer_id, stripe_customer.id) }
 
       it "reuses the same stripe customer" do
-        expect(User.find_by_email(subject.email).stripe_customer.id).to eq(stripe_customer.id)
+        expect(User.find_by(email: subject.email).stripe_customer.id).to eq(stripe_customer.id)
       end
     end
   end

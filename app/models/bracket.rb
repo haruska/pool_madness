@@ -7,8 +7,6 @@ class Bracket < ActiveRecord::Base
 
   after_create :create_all_picks
 
-  attr_accessible :tie_breaker, :name, :points, :possible_points
-
   before_validation do |bracket|
     bracket.tie_breaker = nil if bracket.tie_breaker.to_i <= 0
     bracket.name = bracket.default_name if bracket.name.blank?
@@ -48,7 +46,7 @@ class Bracket < ActiveRecord::Base
   def default_name
     default_name = user.name
     i = 1
-    while Bracket.find_by_name(default_name).present?
+    while Bracket.find_by(name: default_name).present?
       default_name = "#{user.name} #{i}"
       i += 1
     end
@@ -87,7 +85,7 @@ class Bracket < ActiveRecord::Base
       four.compact.uniq.reverse.collect(&:id)
     end
 
-    Team.where(id: team_ids).all.sort_by { |x| team_ids.index(x.id) }
+    Team.where(id: team_ids).to_a.sort_by { |x| team_ids.index(x.id) }
   end
 
   private

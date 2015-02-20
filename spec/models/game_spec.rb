@@ -18,7 +18,7 @@ describe Game, type: :model do
 
   describe "scopes" do
     let(:played_games) { (1..2).map {|round| Team::REGIONS.map { |region| Game.round_for(round, region) }}.flatten }
-    let(:not_played_games) { Game.where("id NOT IN (?)", played_games.map(&:id)).all }
+    let(:not_played_games) { Game.where("id NOT IN (?)", played_games.map(&:id)) }
 
     describe "already_played" do
       it "is a set of all games with a score" do
@@ -161,7 +161,7 @@ describe Game, type: :model do
     context "round 1" do
       let(:expected_games) do
         [1, 8, 5, 4, 6, 3, 7, 2].map do |seed|
-          Team.where(region: region).find_by_seed(seed).first_game
+          Team.where(region: region).find_by(seed: seed).first_game
         end
       end
 

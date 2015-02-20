@@ -6,8 +6,6 @@ class Team < ActiveRecord::Base
 
   REGIONS = [SOUTH, EAST, WEST, MIDWEST]
 
-  attr_accessible :region, :seed, :name, :score_team_id
-
   validates :name, uniqueness: true, length: { maximum: 15 }
 
   validates :region, inclusion: { in: [SOUTH, WEST, EAST, MIDWEST] }
@@ -17,7 +15,7 @@ class Team < ActiveRecord::Base
             uniqueness: { scope: :region }
 
   def first_game
-    Game.find_by_team_one_id(id) || Game.find_by_team_two_id(id)
+    Game.find_by(team_one_id: id) || Game.find_by(team_two_id: id)
   end
 
   def still_playing?

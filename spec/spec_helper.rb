@@ -6,8 +6,6 @@ SimpleCov.start "rails"
 
 require File.expand_path("../../config/environment", __FILE__)
 require "rspec/rails"
-require "email_spec"
-require "rspec/autorun"
 
 require "shoulda/matchers"
 require "active_attr/rspec"
@@ -36,9 +34,8 @@ WebMock.disable_net_connect!(allow_localhost: true)
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include FeatureHelper, type: :feature
+  config.include Devise::TestHelpers, type: :controller
 
-  config.include(EmailSpec::Helpers)
-  config.include(EmailSpec::Matchers)
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:

@@ -26,7 +26,7 @@ describe PossibleOutcome, type: :model do
 
   describe "#generate_all_slot_bits" do
     let(:all_slot_bits) { PossibleOutcome.generate_all_slot_bits }
-    let(:already_played_games) { Game.already_played.all }
+    let(:already_played_games) { Game.already_played }
     let(:to_play_games) { Game.not_played }
     let(:to_play_mask) do
       mask = 1
@@ -102,7 +102,7 @@ describe PossibleOutcome, type: :model do
       end
 
       it "gathers all brackets" do
-        expect(generated_outcome.brackets).to eq(Bracket.includes(:picks).all)
+        expect(generated_outcome.brackets).to eq(Bracket.includes(:picks).to_a)
       end
 
       it "gathers all teams" do

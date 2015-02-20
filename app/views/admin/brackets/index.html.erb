@@ -16,7 +16,7 @@
             <td><%= link_to bracket.name, bracket %></td>
             <td>
               <% if bracket.unpaid? %>
-                  <%= link_to "Promise to Pay", promise_to_pay_admin_bracket_path(bracket), :method => :put, :class =>'btn btn-mini' %>
+                  <%= link_to "Promise to Pay", promise_to_pay_admin_bracket_path(bracket), :method => :patch, :class =>'btn btn-mini' %>
               <% elsif bracket.promised? %>
                   Promised to pay <%= paid_to?(bracket) %>
               <% elsif bracket.paid? %>
@@ -29,7 +29,7 @@
             <td class="nolink">
               <%= link_to("Change Picks", edit_bracket_path(bracket), :class => 'btn btn-mini btn-primary') if can?(:edit, bracket) %>
               <%= link_to("Delete bracket", bracket_path(bracket), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-mini btn-danger') if can?(:destroy, bracket) %>
-              <%= link_to "Mark paid", mark_paid_admin_bracket_path(bracket), :method => :put, :class => 'btn btn-mini'  unless bracket.paid? %>
+              <%= link_to "Mark paid", mark_paid_admin_bracket_path(bracket), :method => :patch, :class => 'btn btn-mini'  unless bracket.paid? %>
             </td>
           </tr>
         <% end %>

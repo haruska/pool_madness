@@ -7,8 +7,6 @@ class Pick < ActiveRecord::Base
 
   validates :bracket, :game, presence: true
 
-  attr_accessible :game_id, :team_id
-
   def first_team
     if game.game_one.present?
       bracket.picks.where(game_id: game.game_one_id).first.try(:team)

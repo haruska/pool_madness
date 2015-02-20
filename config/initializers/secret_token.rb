@@ -6,4 +6,4 @@
 # no regular words or you'll be exposed to dictionary attacks.
 
 # You can generate a new one using `rake secret`
-PoolMadness::Application.config.secret_token = ENV["SECRET_TOKEN"]
+PoolMadness::Application.config.secret_key_base = ENV["SECRET_KEY_BASE"]

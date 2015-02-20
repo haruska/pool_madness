@@ -11,7 +11,7 @@ FactoryGirl.define do
         (1..4).each do |round|
           Team::REGIONS.each do |region|
             Game.round_for(round, region).each do |game|
-              pick = bracket.picks.find_by_game_id(game.id)
+              pick = bracket.picks.find_by(game_id: game.id)
               pick.team = [pick.first_team, pick.second_team].sample
               pick.save!
             end
@@ -20,7 +20,7 @@ FactoryGirl.define do
 
         (5..6).each do |round|
           Game.round_for(round).each do |game|
-            pick = bracket.picks.find_by_game_id(game.id)
+            pick = bracket.picks.find_by(game_id: game.id)
             pick.team = [pick.first_team, pick.second_team].sample
             pick.save!
           end

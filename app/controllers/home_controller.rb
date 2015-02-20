@@ -2,6 +2,7 @@ class HomeController < ApplicationController
   before_filter :ensure_logged_in, only: [:rules, :payments]
 
   def index
+    redirect_to brackets_path if current_user.present?
   end
 
   def subscribe

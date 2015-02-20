@@ -89,8 +89,8 @@ FactoryGirl.define do
           # 64 teams
           i, j = 1, 16
           while i < j
-            team_one = Team.find_by_region_and_seed(region, i)
-            team_two = Team.find_by_region_and_seed(region, j)
+            team_one = Team.find_by(region: region, seed: i)
+            team_two = Team.find_by(region: region, seed: j)
             Game.create team_one: team_one, team_two: team_two
             i += 1
             j -= 1
@@ -98,31 +98,31 @@ FactoryGirl.define do
 
           # 32 teams
           [[1, 8], [5, 4], [6, 3], [7, 2]].each do |one, two|
-            game_one = Game.find_by_team_one_id(Team.find_by_region_and_seed(region, one))
-            game_two = Game.find_by_team_one_id(Team.find_by_region_and_seed(region, two))
+            game_one = Game.find_by(team_one_id: Team.find_by(region: region, seed: one))
+            game_two = Game.find_by(team_one_id: Team.find_by(region: region, seed: two))
             Game.create game_one: game_one, game_two: game_two
           end
 
           # Sweet 16
           [[1, 5], [6, 7]].each do |one, two|
-            game_one = Game.find_by_team_one_id(Team.find_by_region_and_seed(region, one)).next_game
-            game_two = Game.find_by_team_one_id(Team.find_by_region_and_seed(region, two)).next_game
+            game_one = Game.find_by(team_one_id: Team.find_by(region: region, seed: one)).next_game
+            game_two = Game.find_by(team_one_id: Team.find_by(region: region, seed: two)).next_game
             Game.create game_one: game_one, game_two: game_two
           end
 
           # Great 8
-          game_one = Game.find_by_team_one_id(Team.find_by_region_and_seed(region, 1)).next_game.next_game
-          game_two = Game.find_by_team_one_id(Team.find_by_region_and_seed(region, 6)).next_game.next_game
+          game_one = Game.find_by(team_one_id: Team.find_by(region: region, seed: 1)).next_game.next_game
+          game_two = Game.find_by(team_one_id: Team.find_by(region: region, seed: 6)).next_game.next_game
           Game.create game_one: game_one, game_two: game_two
         end
 
         # Final 4
-        game_one = Game.find_by_team_one_id(Team.find_by_region_and_seed(Team::MIDWEST, 1)).next_game.next_game.next_game
-        game_two = Game.find_by_team_one_id(Team.find_by_region_and_seed(Team::WEST, 1)).next_game.next_game.next_game
+        game_one = Game.find_by(team_one_id: Team.find_by(region: Team::MIDWEST, seed: 1)).next_game.next_game.next_game
+        game_two = Game.find_by(team_one_id: Team.find_by(region: Team::WEST, seed: 1)).next_game.next_game.next_game
         champ_one = Game.create game_one: game_one, game_two: game_two
 
-        game_one = Game.find_by_team_one_id(Team.find_by_region_and_seed(Team::SOUTH, 1)).next_game.next_game.next_game
-        game_two = Game.find_by_team_one_id(Team.find_by_region_and_seed(Team::EAST, 1)).next_game.next_game.next_game
+        game_one = Game.find_by(team_one_id: Team.find_by(region: Team::SOUTH, seed: 1)).next_game.next_game.next_game
+        game_two = Game.find_by(team_one_id: Team.find_by(region: Team::EAST, seed: 1)).next_game.next_game.next_game
         champ_two = Game.create game_one: game_one, game_two: game_two
 
         # Championship

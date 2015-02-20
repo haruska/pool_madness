@@ -7,16 +7,16 @@ class PossibleOutcome
   attribute :possible_games, type: Hash
 
   def self.generate_cached_opts
-    games = Game.already_played.all + Game.not_played.all
-    brackets = Bracket.includes(:picks).all
+    games = Game.already_played.to_a + Game.not_played.to_a
+    brackets = Bracket.includes(:picks).to_a
     teams = Team.all.each_with_object(Hash.new) {|team, acc| acc[team.id] = team}
 
     { games: games, brackets: brackets, teams: teams }
   end
 
   def self.generate_all_slot_bits
-    already_played_games = Game.already_played.all
-    to_play_games = Game.not_played.all
+    already_played_games = Game.already_played.to_a
+    to_play_games = Game.not_played.to_a
 
     already_played_winners_mask = 0
 
@@ -77,7 +77,7 @@ class PossibleOutcome
 
       teams = region.present? ? Team.where(region: region) : Team
       team_ids = teams.where(seed: sort_order).select(:id).collect(&:id)
-      game_ids = Game.where(team_one_id: team_ids).select(:id).all.collect(&:id)
+      game_ids = Game.where(team_one_id: team_ids).pluck(:id)
 
       games = []
       game_ids.each { |x| games << self.possible_games[x] }

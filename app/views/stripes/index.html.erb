@@ -15,7 +15,7 @@
           </thead>
           <tbody>
           <% @stripes.each do |charge| %>
-              <% bracket = Bracket.find_by_stripe_charge_id(charge.id) %>
+              <% bracket = Bracket.find_by(stripe_charge_id: charge.id) %>
               <tr>
                 <td><%= Time.at(charge.created).to_s(:usa) %></td>
                 <td>Pool Entry: <%= bracket.present? ? link_to(bracket.name, bracket) : 'Unknown' %></td>

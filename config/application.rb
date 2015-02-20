@@ -3,12 +3,7 @@ require File.expand_path("../boot", __FILE__)
 require "rails/all"
 require "benchmark"
 
-if defined?(Bundler)
-  # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(assets: %w(development test)))
-  # If you want your assets lazily compiled in production, use this line
-  # Bundler.require(:default, :assets, Rails.env)
-end
+Bundler.require(*Rails.groups)
 
 module PoolMadness
   class Application < Rails::Application
@@ -27,15 +22,11 @@ module PoolMadness
 
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
-    config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/sweepers #{config.root}/app/observers)
+    config.autoload_paths += %W(#{config.root}/lib)
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
-
-    # Activate observers that should always be running.
-    # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
-    config.active_record.observers = :game_observer, :bracket_observer
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
@@ -60,12 +51,6 @@ module PoolMadness
     # config.active_record.schema_format = :sql
 
     # config.cache_store = :redis_store, "#{ENV['REDISTOGO_URL']}0/cache", { expires_in: 90.minutes }
-
-    # Enforce whitelist mode for mass assignment.
-    # This will create an empty whitelist of attributes available for mass-assignment for all models
-    # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
-    # parameters by using an attr_accessible or attr_protected declaration.
-    config.active_record.whitelist_attributes = true
 
     # Enable the asset pipeline
     config.assets.enabled = true

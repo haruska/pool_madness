@@ -1,11 +1,8 @@
 class Game < ActiveRecord::Base
-  # attr_accessible :title, :body
   belongs_to :team_one, class_name: Team
   belongs_to :team_two, class_name: Team
   belongs_to :game_one, class_name: Game
   belongs_to :game_two, class_name: Game
-
-  attr_accessible :team_one, :team_two, :game_one, :game_two, :score_one, :score_two
 
   scope :already_played, ->{ where("games.score_one > ?", 0).order(:id) }
   scope :not_played, ->{ where("games.id NOT IN (?)", Game.already_played.pluck(:id)).order(:id) }
@@ -56,9 +53,9 @@ class Game < ActiveRecord::Base
       [Game.championship]
     when 1
       sort_order = [1, 8, 5, 4, 6, 3, 7, 2]
-      teams = region.present? ? Team.where(region: region) : Team
+      teams = region.present? ? Team.where(region: region) : Team.all
 
-      teams.all.collect(&:first_game).uniq.sort_by { |x| sort_order.index(x.first_team.seed) }
+      teams.collect(&:first_game).uniq.sort_by { |x| sort_order.index(x.first_team.seed) }
     else
       Game.round_for(round_number - 1, region).collect(&:next_game).uniq
     end
