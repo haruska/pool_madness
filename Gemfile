@@ -24,13 +24,13 @@ gem "email_validator"
 
 group :assets do
   gem "sass-rails",   "~> 3.2.3"
-  gem "coffee-rails", "~> 3.2.1"
   gem "uglifier", ">= 1.0.3"
 end
 
 group :development, :test do
   gem "capybara"
   gem "capybara-screenshot"
+  gem "dotenv-rails"
   gem "letter_opener"
   gem "letter_opener_web", "~> 1.2.0"
   gem "magic_lamp"
@@ -41,16 +41,12 @@ group :development, :test do
   # gem "teaspoon"
   # gem "vcr"
   gem "webmock"
-  gem "database_cleaner", ">= 0.9.1"
 
   gem "newrelic_rpm"
   gem "thin", ">= 1.5.0"
   gem "rspec-rails", ">= 2.12.2"
-  gem "factory_girl_rails", ">= 4.2.0"
-  gem "faker"
 
   gem "quiet_assets", ">= 1.0.1"
-  gem "figaro", ">= 0.5.3"
   gem "better_errors", ">= 0.6.0"
   gem "binding_of_caller", ">= 0.7.1"
   gem "rubocop"
@@ -65,6 +61,12 @@ group :test do
   gem "stripe-ruby-mock", "~> 2.0.1"
 end
 
-group :production do
+group :production, :staging do
   gem "unicorn"
+end
+
+group :test, :development, :staging do
+  gem "database_cleaner", ">= 0.9.1"
+  gem "factory_girl_rails", ">= 4.2.0"
+  gem "faker"
 end
