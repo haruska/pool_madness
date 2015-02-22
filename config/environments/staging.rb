@@ -77,5 +77,8 @@ PoolMadness::Application.configure do
       authentication: "login" # Mandrill supports 'plain' or 'login'
   }
 
+  #FIXME: Not needed in rails 4.1 (ENV var allowed in application.rb)
+  config.action_mailer.default_url_options = { host: 'madness-staging.herokuapp.com' }
+
   config.eager_load = true
 end
