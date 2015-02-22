@@ -54,6 +54,7 @@ group :test do
 end
 
 group :production, :staging do
+  gem "rails_12factor"
   gem "unicorn"
 end
 
