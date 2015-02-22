@@ -210,6 +210,8 @@ GEM
     rainbow (2.0.0)
     raindrops (0.13.0)
     rake (10.4.2)
+    recipient_interceptor (0.1.2)
+      mail
     redis (3.2.1)
     redis-namespace (1.5.1)
       redis (~> 3.0, >= 3.0.4)
@@ -359,6 +361,7 @@ DEPENDENCIES
   quiet_assets
   rails (~> 4.0)
   rails-erd
+  recipient_interceptor
   rolify
   rspec-rails
   rubocop

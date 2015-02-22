@@ -57,6 +57,10 @@ group :production, :staging do
   gem "unicorn"
 end
 
+group :staging do
+  gem "recipient_interceptor"
+end
+
 group :test, :development, :staging do
   gem "database_cleaner"
   gem "factory_girl_rails"
