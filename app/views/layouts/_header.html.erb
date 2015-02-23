@@ -1,0 +1,39 @@
+<header class="centered-navigation" role="banner">
+  <div class="centered-navigation-wrapper">
+    <a href="javascript:void(0)" class="mobile-logo">Pool Madness</a>
+    <a href="javascript:void(0)" id="js-centered-navigation-mobile-menu" class="centered-navigation-mobile-menu">MENU</a>
+    <nav role="navigation">
+      <ul id="js-centered-navigation-menu" class="centered-navigation-menu show">
+        <% if user_signed_in? %>
+            <li class="nav-link"><%= link_to "Brackets", brackets_path %></li>
+            <% if Pool.started? %>
+                <li class="nav-link"><%= link_to "Game Results", games_path %></li>
+            <% else %>
+                <li class="nav-link"><%= link_to "Types of Payment", payments_path %></li>
+            <% end %>
+
+            <li class="nav-link logo">
+              <%= link_to image_tag("basketball_icon.png"), root_path, class: "logo" %>
+            </li>
+
+            <li class="nav-link"><%= link_to "Rules and Scoring", rules_path %></li>
+
+            <li class="nav-link more">
+              <%= link_to current_user.email, "javascript:void(0)" %>
+              <ul class="submenu">
+                <% if current_user.has_role? :admin %>
+                    <li class="admin-link"><%= link_to 'Admin Users', users_path %></li>
+                    <li class="admin-link"><%= link_to 'Admin Brackets', admin_brackets_path %></li>
+                <% end %>
+                <li><%= link_to 'Billing/Payments', user_stripes_path(current_user) %></li>
+                <li><%= link_to 'Edit account', edit_user_registration_path %></li>
+                <li><%= link_to 'Logout', destroy_user_session_path, method: 'delete' %></li>
+              </ul>
+            </li>
+        <% else %>
+            <li class="nav-link"><%= link_to 'Login', new_user_session_path %></li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+</header>

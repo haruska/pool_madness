@@ -2,8 +2,7 @@ source "https://rubygems.org"
 
 gem "jquery-rails"
 gem "pg"
-gem "rails", "~> 4.0"
-gem "bootstrap-sass", "< 3.0.0"
+gem "rails", "< 4.1"
 gem "devise"
 gem "devise_invitable"
 gem "cancancan", "~> 1.10"
@@ -18,8 +17,13 @@ gem "google_drive"
 gem "active_attr", git: "https://github.com/haruska/active_attr.git"
 gem "email_validator"
 
-gem "sass-rails"
-gem "uglifier"
+gem "sass-rails", "~> 4.0.3"
+gem "uglifier", ">=1.3.0"
+
+gem "bourbon"
+gem "bitters"
+gem "neat"
+gem "refills"
 
 group :development, :test do
   gem "capybara"
