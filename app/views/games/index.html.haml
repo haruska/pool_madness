@@ -1,0 +1,12 @@
+= render :partial => 'brackets/bracket'
+- if can? :update, Game
+  :javascript
+    $('.match').click(function(){
+        var game_id = $(this)[0].id.replace('match', '');
+        window.location = "#{games_url}/" + game_id;
+    });
+
+
+    $(document).ready(function() {
+       $('.match').addClass('edit-game')
+    });

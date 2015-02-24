@@ -1,0 +1,8 @@
+%h1 Game Details
+%h2 Score
+%dl
+  %dt= @game.first_team.try(:name) || 'Unknown'
+  %dd= @game.score_one.to_i
+  %dt= @game.second_team.try(:name) || 'Unknown'
+  %dd= @game.score_two.to_i
+%p= link_to('Edit', edit_game_path) if can?(:update, @game)

@@ -1,0 +1,64 @@
+%h1 Rules and Scoring
+.span6.offset2
+  %h2 Pool Settings
+  %dl.dl-horizontal
+    %dt Entry Amount
+    %dd $10.00
+    %dt Tiebreaker
+    %dd Points in final game
+    %dt Seed reward?
+    %dd Yes
+    %dt Entry Deadline
+    %dd Thursday, March 20, 2014 at 12:00pm Eastern
+  %h2 Prizes
+  %dl.dl-horizontal
+    %dt First Place
+    %dd
+      70%
+    %dt Second Place
+    %dd
+      20%
+    %dt Third Place
+    %dd
+      10%
+  %h2 Scoring
+  %table.table.table-condensed.table-striped
+    %thead
+      %tr
+        %th Round
+        %th Points per Game
+    %tbody
+      %tr
+        %td First
+        %td 1 + Seed Number
+      %tr
+        %td Second
+        %td 2 + Seed Number
+      %tr
+        %td Third
+        %td 3 + Seed Number
+      %tr
+        %td Fourth
+        %td 5 + Seed Number
+      %tr
+        %td Fifth
+        %td 8 + Seed Number
+      %tr
+        %td Sixth
+        %td 13 + Seed Number
+  %p
+    For all correct picks you get that round's points
+    %em plus
+    the seed number of the team. So, if you pick the 10th-seed
+    team to win the 3rd-round, that would be 13 points if correct.
+  %h2 Tie Breaker
+  %p In case of a tie will broken in the following order
+  %ol
+    %li Closest "tiebreaker" to the total score (both teams) added together in the final game
+    %li Correct team picked for winner
+    %li Correct overall number of picks
+  %p If two brackets are still tied after this, they split the winnings.
+  %h2 Administrators
+  %ul
+    - User.with_role(:admin).each do |user|
+      %li= mail_to user.email, user.name

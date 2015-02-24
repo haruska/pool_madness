@@ -1,0 +1,40 @@
+%p
+  Hello #{@user.name},
+%p
+  Thanks for signing up for the #{ENV['TOURNEY_NAME']} pool! Here is some additional information you might find
+  helpful.
+%p
+  %b> Site URL
+  \: #{link_to root_url, root_url}
+  %br/
+  = succeed ":" do
+    %b Username
+  = @user.email
+  %br/
+  = succeed ":" do
+    %b Password
+%p You can get to your brackets anytime by returning to the site, clicking login, and filling out your credentials.
+%p Some useful links:
+%ul
+  %li= link_to 'Rules and Scoring', rules_url
+  %li= link_to 'Payment Types', payments_url
+  %li= link_to 'Forgotten Password', new_user_password_url
+%p
+  If you changed your mind and do not want to enter the pool, that's fine. Please delete your bracket. You can do so
+  by going to the bracket page and clicking "delete bracket" on the bottom of the page. Likewise, if you filled
+  out multiple brackets but there is one you don't want, please delete it.
+%p
+  You can continue to update your brackets until tip off on Thursday, even after you pay the entry fee. After Thursday,
+  they will be locked in.
+%p
+  If you plan on paying cash in person,
+  %b please let an administrator know
+  so they can mark you as paid. Any brackets
+  unpaid at tip off will be removed from the pool.
+%p
+  Before the tournament starts, you can only see the brackets you've personally filled out. After tip off, all brackets
+  will be available for viewing. Simply go back to the site (#{root_url}) and login to see them all.
+%p
+  Good Luck,
+  %br/
+  John, Jason and Chris Haruska

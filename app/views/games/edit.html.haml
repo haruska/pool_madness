@@ -1,0 +1,8 @@
+%h1 Update Score
+= form_for @game do |f|
+  %dl
+    %dt= @game.first_team.try(:name) || 'Unknown'
+    %dd= f.text_field :score_one
+    %dt= @game.second_team.try(:name) || 'Unknown'
+    %dd= f.text_field :score_two
+  = f.submit

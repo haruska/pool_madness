@@ -1,0 +1,18 @@
+!!!
+%html
+  %head
+    %meta{:context => "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+    %meta{:content => content_for?(:description) ? yield(:description) : "Pool Madness", :name => "description"}/
+    %title= content_for?(:title) ? yield(:title) : "Pool Madness"
+    %link{:href => "/favicon.png", :rel => "shortcut icon", :type => "image/png"}/
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+    = yield(:head)
+  %body#application-layout{:class => "#{controller_name}-controller #{action_name}-action #{yield :body_class}"}
+    = render "layouts/header"
+    %section#content
+      = render "layouts/messages"
+      = yield
+    = render "layouts/footer"

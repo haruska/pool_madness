@@ -1,0 +1,11 @@
+- content_for :head do
+  %link{href: "https://fonts.googleapis.com/css?family=Dosis:300,400,600", rel: "stylesheet", type: "text/css"}/
+  /[if lt IE 9]
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+#box.span7.offset2
+  %h1.bold Pool Madness
+  %h1 NCAA March Madness
+  %h3
+    Private pool. #{link_to 'Login Now', new_user_session_path} or #{mail_to ENV['ADMIN_EMAIL'], 'Email Us'}
+  %h5
+    %small © 2014 Pool Madness

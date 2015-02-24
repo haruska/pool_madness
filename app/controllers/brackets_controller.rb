@@ -27,7 +27,7 @@ class BracketsController < ApplicationController
   def create
     if @bracket.save
       redirect_to edit_bracket_path(@bracket)
-    elsera
+    else
       redirect_to root_path, alert: "Problem creating a new bracket. Please try again."
     end
   end

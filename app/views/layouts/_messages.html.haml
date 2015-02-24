@@ -1,0 +1,4 @@
+- flash.each do |name, msg|
+  - if msg.is_a?(String)
+    %div{class: "flash-#{name}"}
+      %span= msg
