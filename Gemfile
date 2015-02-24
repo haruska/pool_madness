@@ -2,13 +2,12 @@ source "https://rubygems.org"
 
 gem "jquery-rails"
 gem "pg"
-gem "rails", "< 4.1"
+gem "rails", "~> 4.2"
 gem "devise"
 gem "devise_invitable"
 gem "cancancan", "~> 1.10"
 gem "rolify"
 gem "simple_form"
-gem "state_machine"
 gem "stripe"
 gem "dalli"
 gem "sidekiq"
@@ -24,8 +23,11 @@ gem "bourbon"
 gem "bitters"
 gem "neat"
 gem "refills"
+gem "font-awesome-rails"
+gem "haml"
 
 group :development, :test do
+  gem "awesome_print"
   gem "capybara"
   gem "capybara-screenshot"
   gem "dotenv-rails"
@@ -36,11 +38,10 @@ group :development, :test do
   gem "pry-nav"
   gem "rails-erd"
   gem "selenium-webdriver"
+  gem "spring"
   # gem "teaspoon"
   # gem "vcr"
   gem "webmock"
-
-  gem "newrelic_rpm"
   gem "thin"
   gem "rspec-rails"
 
@@ -50,9 +51,13 @@ group :development, :test do
   gem "rubocop"
 end
 
+group :development do
+  gem "web-console", "~> 2.0"
+end
+
 group :test do
   gem "shoulda-matchers", require: false
-  gem "launchy"
+  gem "fuubar"
   gem "simplecov", require: false
   gem "stripe-ruby-mock", "~> 2.0.1"
 end
@@ -60,6 +65,7 @@ end
 group :production, :staging do
   gem "rails_12factor"
   gem "unicorn"
+  gem "newrelic_rpm"
 end
 
 group :staging do

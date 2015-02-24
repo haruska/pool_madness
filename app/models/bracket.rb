@@ -15,19 +15,7 @@ class Bracket < ActiveRecord::Base
   validates :name, uniqueness: true, presence: true
   validates :user, presence: true
 
-  state_machine :payment_state, initial: :unpaid do
-    state :unpaid
-    state :promised
-    state :paid
-
-    event :promise_made do
-      transition unpaid: :promised
-    end
-
-    event :payment_received do
-      transition all => :paid
-    end
-  end
+  enum payment_state: %i(unpaid promised paid)
 
   def status
     if !self.complete?

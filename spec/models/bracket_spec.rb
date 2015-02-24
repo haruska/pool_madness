@@ -50,7 +50,7 @@ describe Bracket, type: :model do
 
     context "unpaid state" do
       context "and a promise_made event is fired" do
-        before { subject.promise_made! }
+        before { subject.promised! }
 
         it "transitions to :promised state" do
           expect(subject).to be_promised
@@ -58,7 +58,7 @@ describe Bracket, type: :model do
       end
 
       context "and a payment_recieved event is fired" do
-        before { subject.payment_received! }
+        before { subject.paid! }
 
         it "transitions to :paid state" do
           expect(subject).to be_paid
@@ -67,14 +67,14 @@ describe Bracket, type: :model do
     end
 
     context "promised state" do
-      before { subject.promise_made! }
+      before { subject.promised! }
 
       it "is promised?" do
         expect(subject).to be_promised
       end
 
       context "and a payment_recieved event is fired" do
-        before { subject.payment_received! }
+        before { subject.paid! }
 
         it "transitions to :paid state" do
           expect(subject).to be_paid
@@ -83,7 +83,7 @@ describe Bracket, type: :model do
     end
 
     context "paid state" do
-      before { subject.payment_received! }
+      before { subject.paid! }
 
       it "is paid?" do
         expect(subject).to be_paid
@@ -110,7 +110,7 @@ describe Bracket, type: :model do
       end
 
       context "and it is promised" do
-        before { subject.promise_made! }
+        before { subject.promised! }
 
         it "is :ok" do
           expect(subject.status).to eq(:ok)
@@ -118,7 +118,7 @@ describe Bracket, type: :model do
       end
 
       context "and it is paid" do
-        before { subject.payment_received! }
+        before { subject.paid! }
 
         it "is :ok" do
           expect(subject.status).to eq(:ok)

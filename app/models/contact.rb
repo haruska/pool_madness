@@ -30,6 +30,6 @@ class Contact
   end
 
   def invite
-    ContactMailer.invite(self).deliver
+    ContactMailer.invite(self).deliver_later
   end
 end

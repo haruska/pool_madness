@@ -20,7 +20,7 @@ class Admin::BracketsController < ApplicationController
     @bracket.payment_collector = current_user
     @bracket.save!
 
-    @bracket.payment_received!
+    @bracket.paid!
 
     redirect_to admin_brackets_path, notice: "Bracket #{@bracket.name} marked paid"
   end
@@ -31,7 +31,7 @@ class Admin::BracketsController < ApplicationController
     @bracket.payment_collector = current_user
     @bracket.save!
 
-    @bracket.promise_made!
+    @bracket.promised!
 
     redirect_to admin_brackets_path, notice: "Bracket #{@bracket.name} marked promised to pay"
   end

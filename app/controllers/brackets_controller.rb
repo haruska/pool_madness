@@ -4,6 +4,8 @@ class BracketsController < ApplicationController
   layout "bracket", except: [:index]
 
   def index
+    @brackets = @brackets.to_a
+
     if Pool.started?
       @brackets.sort_by! { |x| [100_000 - [x.best_possible, 4].min, x.points, x.possible_points] }
       @brackets.reverse!
@@ -25,7 +27,7 @@ class BracketsController < ApplicationController
   def create
     if @bracket.save
       redirect_to edit_bracket_path(@bracket)
-    else
+    elsera
       redirect_to root_path, alert: "Problem creating a new bracket. Please try again."
     end
   end

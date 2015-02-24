@@ -11,35 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324220949) do
+ActiveRecord::Schema.define(version: 20150224150216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "brackets", force: true do |t|
+  create_table "brackets", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.string   "charge_id"
     t.integer  "tie_breaker"
-    t.string   "payment_state",        default: "unpaid", null: false
     t.integer  "payment_collector_id"
     t.string   "stripe_charge_id"
     t.string   "name"
-    t.integer  "points",               default: 0,        null: false
-    t.integer  "possible_points",      default: 0,        null: false
+    t.integer  "points",               default: 0,     null: false
+    t.integer  "possible_points",      default: 0,     null: false
     t.integer  "best_possible",        default: 20000
+    t.integer  "payment_state",        default: 0
   end
 
   add_index "brackets", ["best_possible"], name: "index_brackets_on_best_possible", using: :btree
   add_index "brackets", ["charge_id"], name: "index_brackets_on_stripe_charge_id", using: :btree
   add_index "brackets", ["payment_collector_id"], name: "index_brackets_on_payment_collector_id", using: :btree
-  add_index "brackets", ["payment_state"], name: "index_brackets_on_payment_state", using: :btree
   add_index "brackets", ["points"], name: "index_brackets_on_points", using: :btree
   add_index "brackets", ["possible_points"], name: "index_brackets_on_possible_points", using: :btree
   add_index "brackets", ["user_id"], name: "index_brackets_on_user_id", using: :btree
 
-  create_table "charges", force: true do |t|
+  create_table "charges", force: :cascade do |t|
     t.string   "order_id"
     t.datetime "completed_at"
     t.integer  "amount"
@@ -51,7 +50,7 @@ ActiveRecord::Schema.define(version: 20140324220949) do
 
   add_index "charges", ["bracket_id"], name: "index_charges_on_bracket_id", unique: true, using: :btree
 
-  create_table "games", force: true do |t|
+  create_table "games", force: :cascade do |t|
     t.integer  "team_one_id"
     t.integer  "team_two_id"
     t.integer  "game_one_id"
@@ -67,7 +66,7 @@ ActiveRecord::Schema.define(version: 20140324220949) do
   add_index "games", ["team_one_id"], name: "index_games_on_team_one_id", using: :btree
   add_index "games", ["team_two_id"], name: "index_games_on_team_two_id", using: :btree
 
-  create_table "picks", force: true do |t|
+  create_table "picks", force: :cascade do |t|
     t.integer  "bracket_id", null: false
     t.integer  "game_id",    null: false
     t.integer  "team_id"
@@ -80,7 +79,7 @@ ActiveRecord::Schema.define(version: 20140324220949) do
   add_index "picks", ["game_id"], name: "index_picks_on_game_id", using: :btree
   add_index "picks", ["team_id"], name: "index_picks_on_team_id", using: :btree
 
-  create_table "roles", force: true do |t|
+  create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "resource_id"
     t.string   "resource_type"
@@ -93,7 +92,7 @@ ActiveRecord::Schema.define(version: 20140324220949) do
   add_index "roles", ["resource_id"], name: "index_roles_on_resource_id", using: :btree
   add_index "roles", ["resource_type"], name: "index_roles_on_resource_type", using: :btree
 
-  create_table "teams", force: true do |t|
+  create_table "teams", force: :cascade do |t|
     t.string   "name",          null: false
     t.integer  "seed",          null: false
     t.datetime "created_at",    null: false
@@ -108,7 +107,7 @@ ActiveRecord::Schema.define(version: 20140324220949) do
   add_index "teams", ["score_team_id"], name: "index_teams_on_score_team_id", unique: true, using: :btree
   add_index "teams", ["seed"], name: "index_teams_on_seed", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                             default: "", null: false
     t.string   "encrypted_password",                default: ""
     t.string   "reset_password_token"
@@ -140,7 +139,7 @@ ActiveRecord::Schema.define(version: 20140324220949) do
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "users_roles", id: false, force: true do |t|
+  create_table "users_roles", id: false, force: :cascade do |t|
     t.integer "user_id"
     t.integer "role_id"
   end
