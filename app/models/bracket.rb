@@ -2,6 +2,9 @@ class Bracket < ActiveRecord::Base
   has_many :picks, dependent: :destroy
   has_one :charge
 
+  belongs_to :pool
+  has_one :tournament, through: :pool
+
   belongs_to :user
   belongs_to :payment_collector, class_name: "User"
 
@@ -34,7 +37,7 @@ class Bracket < ActiveRecord::Base
   def default_name
     default_name = user.name
     i = 1
-    while Bracket.find_by(name: default_name).present?
+    while pool.brackets.find_by(name: default_name).present?
       default_name = "#{user.name} #{i}"
       i += 1
     end
@@ -63,7 +66,7 @@ class Bracket < ActiveRecord::Base
 
   def sorted_four
     team_ids = Rails.cache.fetch("sorted_four_#{id}") do
-      champ_pick = picks.where(game_id: Game.championship.id).first
+      champ_pick = picks.where(game_id: tournament.championship.id).first
       four = [champ_pick.team, champ_pick.first_team, champ_pick.second_team]
       four << picks.where(game_id: champ_pick.game.game_one_id).first.first_team
       four << picks.where(game_id: champ_pick.game.game_one_id).first.second_team
@@ -79,6 +82,6 @@ class Bracket < ActiveRecord::Base
   private
 
   def create_all_picks
-    Game.all.each { |game| picks.create(game_id: game.id) }
+    tournament.games.all.each { |game| picks.create(game_id: game.id) }
   end
 end

@@ -1,22 +1,25 @@
 class PossibleOutcome
   include ActiveAttr::Model
 
+  attribute :pool
   attribute :slot_bits
   attribute :brackets
   attribute :teams
   attribute :possible_games, type: Hash
 
-  def self.generate_cached_opts
-    games = Game.already_played.to_a + Game.not_played.to_a
-    brackets = Bracket.includes(:picks).to_a
-    teams = Team.all.each_with_object(Hash.new) {|team, acc| acc[team.id] = team}
+  delegate :tournament, to: :pool
+
+  def generate_cached_opts
+    games = tournament.games.already_played.to_a + tournament.games.not_played.to_a
+    brackets = pool.brackets.includes(:picks).to_a
+    teams = tournament.teams.each_with_object(Hash.new) {|team, acc| acc[team.id] = team}
 
     { games: games, brackets: brackets, teams: teams }
   end
 
-  def self.generate_all_slot_bits
-    already_played_games = Game.already_played.to_a
-    to_play_games = Game.not_played.to_a
+  def generate_all_slot_bits
+    already_played_games = tournament.games.already_played.to_a
+    to_play_games = tournament.games.not_played.to_a
 
     already_played_winners_mask = 0
 
@@ -39,9 +42,9 @@ class PossibleOutcome
     block_given? ? nil : collected_slot_bits
   end
 
-  def self.generate_outcome(slot_bits, opts = {})
+  def generate_outcome(slot_bits, opts = {})
     opts = generate_cached_opts if opts.empty?
-    possible_outcome = new(slot_bits: slot_bits, brackets: opts[:brackets], teams: opts[:teams])
+    possible_outcome = PossibleOutcome.new(slot_bits: slot_bits, brackets: opts[:brackets], teams: opts[:teams], pool: pool)
 
     opts[:games].each_with_index do |game, i|
       slot_index = opts[:games].size - i - 1

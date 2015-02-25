@@ -1,14 +1,26 @@
 require "spec_helper"
 
 describe PossibleOutcome, type: :model do
-  before { build(:tournament, :with_first_two_rounds_completed) }
-  let!(:brackets) { create_list(:bracket, 5, :completed) }
+  before(:all) {
+    @tournament = create(:tournament, :with_first_two_rounds_completed)
+    @pool = create(:pool, tournament: @tournament)
+    @possible_outcome = create(:possible_outcome, pool: @pool)
+    @brackets = create_list(:bracket, 5, :completed, pool: @pool)
+    @all_slot_bits = @possible_outcome.generate_all_slot_bits
+  }
+
+  let(:tournament) { @tournament }
+  let(:pool) { @pool }
+  let(:brackets) { @brackets }
+  let(:all_slot_bits) { @all_slot_bits }
+  subject { @possible_outcome }
+
 
   describe "#generate_cached_opts" do
-    let!(:cached_opts) { PossibleOutcome.generate_cached_opts }
+    let!(:cached_opts) { subject.generate_cached_opts }
 
     it "gathers all games in slot_bit order" do
-      expect(cached_opts[:games]).to eq(Game.already_played.order(:id).to_a + Game.not_played.order(:id).to_a)
+      expect(cached_opts[:games]).to eq(tournament.games.already_played.order(:id).to_a + tournament.games.not_played.order(:id).to_a)
     end
 
     it "gathers all brackets and caches the associated picks" do
@@ -18,16 +30,15 @@ describe PossibleOutcome, type: :model do
     end
 
     it "gathers all team objects in a hash" do
-      Team.all.each do |team|
+      tournament.teams.each do |team|
         expect(cached_opts[:teams][team.id]).to eq(team)
       end
     end
   end
 
   describe "#generate_all_slot_bits" do
-    let(:all_slot_bits) { PossibleOutcome.generate_all_slot_bits }
-    let(:already_played_games) { Game.already_played }
-    let(:to_play_games) { Game.not_played }
+    let(:already_played_games) { tournament.games.already_played }
+    let(:to_play_games) { tournament.games.not_played }
     let(:to_play_mask) do
       mask = 1
       to_play_games.size.times { |i| mask |= 1 << i }
@@ -59,11 +70,11 @@ describe PossibleOutcome, type: :model do
 
     context "with a block" do
       it "is nil" do
-        expect(PossibleOutcome.generate_all_slot_bits {|_| }).to be_nil
+        expect(subject.generate_all_slot_bits {|_| }).to be_nil
       end
 
       it "yields individual slot_bits" do
-        PossibleOutcome.generate_all_slot_bits do |slot_bits|
+        subject.generate_all_slot_bits do |slot_bits|
           expect(all_slot_bits).to include(slot_bits)
         end
       end
@@ -71,11 +82,11 @@ describe PossibleOutcome, type: :model do
   end
 
   describe "#generate_outcome" do
-    let(:slot_bits) { PossibleOutcome.generate_all_slot_bits.first }
+    let(:slot_bits) { all_slot_bits.sample }
 
     context "with cached options passed in" do
-      let(:cached_opts) { PossibleOutcome.generate_cached_opts }
-      let(:generated_outcome) { PossibleOutcome.generate_outcome(slot_bits, cached_opts) }
+      let(:cached_opts) { subject.generate_cached_opts }
+      let(:generated_outcome) { subject.generate_outcome(slot_bits, cached_opts) }
 
       it "uses the games from options" do
         cached_opts[:games].each do |game|
@@ -93,7 +104,7 @@ describe PossibleOutcome, type: :model do
     end
 
     context "with no cached options passed in" do
-      let(:generated_outcome) { PossibleOutcome.generate_outcome(slot_bits) }
+      let(:generated_outcome) { subject.generate_outcome(slot_bits) }
 
       it "gathers all games in slot_bit order" do
         Game.all.each do |game|
@@ -102,23 +113,23 @@ describe PossibleOutcome, type: :model do
       end
 
       it "gathers all brackets" do
-        expect(generated_outcome.brackets).to eq(Bracket.includes(:picks).to_a)
+        expect(generated_outcome.brackets).to eq(pool.brackets.includes(:picks).to_a)
       end
 
       it "gathers all teams" do
-        expect(generated_outcome.teams).to eq(Team.all.each_with_object(Hash.new) {|team, acc| acc[team.id] = team})
+        expect(generated_outcome.teams).to eq(tournament.teams.each_with_object(Hash.new) {|team, acc| acc[team.id] = team})
       end
     end
   end
 
   describe "#create_possible_game" do
-    let(:slot_bits) { PossibleOutcome.generate_all_slot_bits.sample }
-    let(:cached_opts) { PossibleOutcome.generate_cached_opts }
+    let(:slot_bits) { all_slot_bits.sample }
+    let(:cached_opts) { subject.generate_cached_opts }
     let(:brackets) { cached_opts[:brackets] }
     let(:teams) { cached_opts[:teams] }
     let(:game) { cached_opts[:games].sample }
 
-    subject { PossibleOutcome.new(slot_bits: slot_bits, brackets: brackets, teams: teams) }
+    subject { PossibleOutcome.new(slot_bits: slot_bits, brackets: brackets, teams: teams, pool: pool) }
 
     let!(:possible_game) { subject.create_possible_game(game: game, score_one: 1, score_two: 2) }
 
@@ -139,7 +150,7 @@ describe PossibleOutcome, type: :model do
 
   describe "#championship" do
     let(:championship) { Game.championship }
-    subject { PossibleOutcome.generate_outcome(0) }
+    subject { subject.generate_outcome(0) }
 
     it "returns the championship possible game" do
       expect(subject.championship).to be_a(PossibleGame)
@@ -148,7 +159,7 @@ describe PossibleOutcome, type: :model do
   end
 
   describe "#round_for" do
-    subject { PossibleOutcome.generate_outcome(0) }
+    subject { subject.generate_outcome(0) }
 
     it "behaves as Game.round_for and is a set of PossibleGames from this outcome" do
       Team::REGIONS.each do |region|
@@ -163,8 +174,8 @@ describe PossibleOutcome, type: :model do
   end
 
   describe "#sorted_brackets" do
-    let(:slot_bits) { PossibleOutcome.generate_all_slot_bits.sample }
-    subject { PossibleOutcome.generate_outcome(slot_bits) }
+    let(:slot_bits) { subject.generate_all_slot_bits.sample }
+    subject { subject.generate_outcome(slot_bits) }
     let(:possible_games) { subject.possible_games }
     let(:sorted_brackets) { subject.sorted_brackets }
 
@@ -189,8 +200,8 @@ describe PossibleOutcome, type: :model do
   end
 
   describe "#update_brackets_best_possible" do
-    let(:slot_bits) { PossibleOutcome.generate_all_slot_bits.sample }
-    subject { PossibleOutcome.generate_outcome(slot_bits) }
+    let(:slot_bits) { subject.generate_all_slot_bits.sample }
+    subject { subject.generate_outcome(slot_bits) }
     let(:sorted_brackets) { subject.sorted_brackets }
     let(:third_place_index) do
       t_index = 2

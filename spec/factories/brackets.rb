@@ -3,6 +3,7 @@
 FactoryGirl.define do
   factory :bracket do
     user
+    pool
 
     trait :completed do
       tie_breaker { Faker::Number.between(100, 200) }
@@ -10,7 +11,7 @@ FactoryGirl.define do
       after(:create) do |bracket|
         (1..4).each do |round|
           Team::REGIONS.each do |region|
-            Game.round_for(round, region).each do |game|
+            bracket.tournament.round_for(round, region).each do |game|
               pick = bracket.picks.find_by(game_id: game.id)
               pick.team = [pick.first_team, pick.second_team].sample
               pick.save!
@@ -19,7 +20,7 @@ FactoryGirl.define do
         end
 
         (5..6).each do |round|
-          Game.round_for(round).each do |game|
+          bracket.tournament.round_for(round).each do |game|
             pick = bracket.picks.find_by(game_id: game.id)
             pick.team = [pick.first_team, pick.second_team].sample
             pick.save!

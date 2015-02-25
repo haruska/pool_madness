@@ -1,11 +1,17 @@
 require "spec_helper"
 
 describe Pick, type: :model do
-  before { build(:tournament, :with_first_two_rounds_completed) }
-  let(:bracket) { create(:bracket, :completed) }
-  let(:game) { Game.round_for(1).sample }
+  before(:all) {
+    @tournament = create(:tournament, :with_first_two_rounds_completed)
+  }
 
-  subject { bracket.picks.where(game_id: game.id).first }
+  let(:tournament) { @tournament }
+  let(:pool) { create(:pool, tournament: tournament) }
+
+  let(:bracket) { create(:bracket, :completed, pool: pool) }
+  let(:game) { tournament.round_for(1).sample }
+
+  subject { bracket.picks.find_by(game_id: game.id) }
 
   it { should validate_presence_of(:game) }
   it { should validate_presence_of(:bracket) }
@@ -19,7 +25,7 @@ describe Pick, type: :model do
     end
 
     context "game is in subsequent rounds" do
-      let(:game) { Game.round_for(2).sample }
+      let(:game) { tournament.round_for(2).sample }
       let(:previous_picks) { [game.game_one_id, game.game_two_id].map {|game_id| bracket.picks.find_by(game_id: game_id) } }
 
       it "is the winning team of this brackets previous picks" do
@@ -68,7 +74,7 @@ describe Pick, type: :model do
       end
 
       context "there is not a winner yet" do
-        before { game.update_attributes(score_one: nil, score_two: nil) }
+        let(:game) { tournament.round_for(3).sample }
 
         it "is zero" do
           expect(subject.points).to eq(0)
@@ -87,7 +93,7 @@ describe Pick, type: :model do
 
   context "#possible_points" do
     context "there is not a winner yet" do
-      let(:game) { Game.round_for(3).sample }
+      let(:game) { tournament.round_for(3).sample }
       let(:team) { subject.team }
 
       context "and the pick's team is still in the tournament" do

@@ -2,10 +2,9 @@
 
 FactoryGirl.define do
   factory :tournament do
-    skip_create
-
-    after(:build) do |_|
-      if Game.count < 63
+    tip_off { 1.week.ago }
+    
+    after(:create) do |tournament|
         {
           Team::MIDWEST => [
             "Wichita St",
@@ -81,7 +80,7 @@ FactoryGirl.define do
           ]
         }.each do |region, team_names|
           team_names.each_with_index do |name, i|
-            Team.create region: region, seed: i + 1, name: name
+            tournament.teams.create region: region, seed: i + 1, name: name
           end
         end
 
@@ -89,52 +88,53 @@ FactoryGirl.define do
           # 64 teams
           i, j = 1, 16
           while i < j
-            team_one = Team.find_by(region: region, seed: i)
-            team_two = Team.find_by(region: region, seed: j)
-            Game.create team_one: team_one, team_two: team_two
+            team_one = tournament.teams.find_by(region: region, seed: i)
+            team_two = tournament.teams.find_by(region: region, seed: j)
+            tournament.games.create team_one: team_one, team_two: team_two
             i += 1
             j -= 1
           end
 
           # 32 teams
           [[1, 8], [5, 4], [6, 3], [7, 2]].each do |one, two|
-            game_one = Game.find_by(team_one_id: Team.find_by(region: region, seed: one))
-            game_two = Game.find_by(team_one_id: Team.find_by(region: region, seed: two))
-            Game.create game_one: game_one, game_two: game_two
+            game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: one))
+            game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: two))
+            tournament.games.create game_one: game_one, game_two: game_two
           end
 
           # Sweet 16
           [[1, 5], [6, 7]].each do |one, two|
-            game_one = Game.find_by(team_one_id: Team.find_by(region: region, seed: one)).next_game
-            game_two = Game.find_by(team_one_id: Team.find_by(region: region, seed: two)).next_game
-            Game.create game_one: game_one, game_two: game_two
+            game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: one)).next_game
+            game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: two)).next_game
+            tournament.games.create game_one: game_one, game_two: game_two
           end
 
           # Great 8
-          game_one = Game.find_by(team_one_id: Team.find_by(region: region, seed: 1)).next_game.next_game
-          game_two = Game.find_by(team_one_id: Team.find_by(region: region, seed: 6)).next_game.next_game
-          Game.create game_one: game_one, game_two: game_two
+          game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: 1)).next_game.next_game
+          game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: 6)).next_game.next_game
+          tournament.games.create game_one: game_one, game_two: game_two
         end
 
         # Final 4
-        game_one = Game.find_by(team_one_id: Team.find_by(region: Team::MIDWEST, seed: 1)).next_game.next_game.next_game
-        game_two = Game.find_by(team_one_id: Team.find_by(region: Team::WEST, seed: 1)).next_game.next_game.next_game
-        champ_one = Game.create game_one: game_one, game_two: game_two
+        game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: Team::MIDWEST, seed: 1)).next_game.next_game.next_game
+        game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: Team::WEST, seed: 1)).next_game.next_game.next_game
+        champ_one = tournament.games.create game_one: game_one, game_two: game_two
 
-        game_one = Game.find_by(team_one_id: Team.find_by(region: Team::SOUTH, seed: 1)).next_game.next_game.next_game
-        game_two = Game.find_by(team_one_id: Team.find_by(region: Team::EAST, seed: 1)).next_game.next_game.next_game
-        champ_two = Game.create game_one: game_one, game_two: game_two
+        game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: Team::SOUTH, seed: 1)).next_game.next_game.next_game
+        game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: Team::EAST, seed: 1)).next_game.next_game.next_game
+        champ_two = tournament.games.create game_one: game_one, game_two: game_two
 
         # Championship
-        Game.create game_one: champ_one, game_two: champ_two
-      end
+        tournament.games.create game_one: champ_one, game_two: champ_two
     end
 
     trait :with_first_two_rounds_completed do
-      after(:build) do |_|
+      tip_off { 1.week.ago }
+
+      after(:create) do |tournament|
         (1..2).each do |round|
           Team::REGIONS.each do |region|
-            Game.round_for(round, region).each do |game|
+            tournament.round_for(round, region).each do |game|
               while game.score_one.nil? || game.score_one == game.score_two
                 game.update_attributes!(score_one: Faker::Number.between(60, 90), score_two: Faker::Number.between(60, 90))
               end
@@ -145,13 +145,23 @@ FactoryGirl.define do
     end
 
     trait :completed do
-      after(:build) do |_|
-        Game.all.each do |game|
+      tip_off { 4.weeks.ago }
+
+      after(:create) do |tournament|
+        tournament.games.all.each do |game|
           while game.score_one.nil? || game.score_one == game.score_two
             game.update_attributes(score_one: Faker::Number.between(60, 90), score_two: Faker::Number.between(60, 90))
           end
         end
       end
+    end
+
+    trait :started do
+      tip_off { 1.week.ago }
+    end
+
+    trait :not_started do
+      tip_off { 4.days.from_now }
     end
   end
 end

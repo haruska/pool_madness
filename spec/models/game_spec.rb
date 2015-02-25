@@ -1,10 +1,14 @@
 require "spec_helper"
 
 describe Game, type: :model do
-  before { build(:tournament, :with_first_two_rounds_completed) }
+  before(:all) {
+    @tournament = create(:tournament, :with_first_two_rounds_completed)
+  }
+
+  let(:tournament) { @tournament }
 
   context do
-    subject { Game.first }
+    subject { tournament.games.first }
 
     it "has a valid factory" do
       expect(subject).to be_valid
@@ -17,25 +21,25 @@ describe Game, type: :model do
   end
 
   describe "scopes" do
-    let(:played_games) { (1..2).map {|round| Team::REGIONS.map { |region| Game.round_for(round, region) }}.flatten }
-    let(:not_played_games) { Game.where("id NOT IN (?)", played_games.map(&:id)) }
+    let(:played_games) { (1..2).map {|round| Team::REGIONS.map { |region| tournament.round_for(round, region) }}.flatten }
+    let(:not_played_games) { tournament.games.where("id NOT IN (?)", played_games.map(&:id)) }
 
     describe "already_played" do
       it "is a set of all games with a score" do
-        expect(Game.already_played.to_a).to match_array(played_games)
+        expect(tournament.games.already_played.to_a).to match_array(played_games)
       end
     end
 
     describe "not_played" do
       it "is a set of all games not played" do
-        expect(Game.not_played.to_a).to match_array(not_played_games)
+        expect(tournament.games.not_played.to_a).to match_array(not_played_games)
       end
     end
   end
 
   describe "#first_team / #second_team" do
     context "in the first round" do
-      subject { Game.round_for(1).first }
+      subject { tournament.round_for(1).first }
 
       it "is the associated teams" do
         expect(subject.first_team).to eq(subject.team_one)
@@ -44,7 +48,7 @@ describe Game, type: :model do
     end
 
     context "in subsequent rounds" do
-      subject { Game.round_for(2).first }
+      subject { tournament.round_for(2).first }
 
       before do
         [subject.game_one, subject.game_two].each do |game|
@@ -61,7 +65,7 @@ describe Game, type: :model do
 
   describe "#winner" do
     context "when the game hasn't been played" do
-      subject { Game.round_for(3).first }
+      subject { tournament.round_for(3).first }
 
       it "is nil" do
         expect(subject.winner).to be_nil
@@ -69,7 +73,7 @@ describe Game, type: :model do
     end
 
     context "after the game is completed" do
-      subject { Game.round_for(1).first }
+      subject { tournament.round_for(1).first }
       let(:expected_winner) { subject.score_one > subject.score_two ? subject.team_one : subject.team_two }
 
       it "is the winning team" do
@@ -79,7 +83,7 @@ describe Game, type: :model do
   end
 
   describe "#next_game" do
-    let(:next_game) { Game.round_for(2).sample }
+    let(:next_game) { tournament.round_for(2).sample }
 
     context "when subject is in slot one" do
       subject { next_game.game_one }
@@ -100,7 +104,7 @@ describe Game, type: :model do
 
   describe "#next_slot" do
     context "when it is game_one in the next round" do
-      subject { Game.round_for(2).first.game_one }
+      subject { tournament.round_for(2).first.game_one }
 
       it "is 1" do
         expect(subject.next_slot).to eq(1)
@@ -108,7 +112,7 @@ describe Game, type: :model do
     end
 
     context "when it is game_two in the next round" do
-      subject { Game.round_for(2).first.game_two }
+      subject { tournament.round_for(2).first.game_two }
 
       it "is 2" do
         expect(subject.next_slot).to eq(2)
@@ -116,7 +120,7 @@ describe Game, type: :model do
     end
 
     context "when there isn't another round (championship)" do
-      subject { Game.championship }
+      subject { tournament.championship }
 
       it "is nil" do
         expect(subject.next_slot).to be_nil
@@ -126,7 +130,7 @@ describe Game, type: :model do
 
   describe "#round" do
     context "championship" do
-      subject { Game.championship }
+      subject { tournament.championship }
 
       it "is 6" do
         expect(subject.round).to eq(6)
@@ -135,58 +139,12 @@ describe Game, type: :model do
 
     context "previous rounds" do
       it "is the current round number between 1-5" do
-        game = Game.championship.game_one
+        game = tournament.championship.game_one
         round = 5
         while round > 0
           expect(game.round).to eq(round)
           game = game.game_one
           round -= 1
-        end
-      end
-
-    end
-  end
-
-  describe "Game#championship" do
-    let(:expected_game) { Game.all.to_a.find {|g| g.next_game.blank? } }
-
-    it "returns the championship game" do
-      expect(Game.championship).to eq(expected_game)
-    end
-  end
-
-  describe "Game#round_for" do
-    let(:region) { Team::REGIONS.first }
-
-    context "round 1" do
-      let(:expected_games) do
-        [1, 8, 5, 4, 6, 3, 7, 2].map do |seed|
-          Team.where(region: region).find_by(seed: seed).first_game
-        end
-      end
-
-      it "returns games for the region ordered by team seed (1,8,5,4,6,3,7,2)" do
-        expect(Game.round_for(1, region)).to eq(expected_games)
-      end
-    end
-
-    context "round 5" do
-      it "returns the semi-final games" do
-        expect(Game.round_for(5)).to eq([Game.championship.game_one, Game.championship.game_two])
-      end
-    end
-
-    context "round 6" do
-      it "returns a singleton list of the championship game" do
-        expect(Game.round_for(6)).to eq([Game.championship])
-      end
-    end
-
-    context "other rounds" do
-      it "returns the previous round_for's next_games" do
-        (2..4).each do |round|
-          expected_games = Game.round_for(round - 1, region).map(&:next_game).uniq
-          expect(Game.round_for(round, region)).to eq(expected_games)
         end
       end
     end

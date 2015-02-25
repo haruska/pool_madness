@@ -1,7 +1,17 @@
 require "spec_helper"
 
 describe Bracket, type: :model do
-  subject { create(:bracket) }
+  before(:all) {
+    @tournament = create(:tournament)
+    @completed_tournament = create(:tournament, :completed)
+  }
+
+  let(:tournament) { @tournament }
+  let(:completed_tournament) { @completed_tournament }
+
+
+  let(:pool) { create(:pool, tournament: tournament) }
+  subject { create(:bracket, pool: pool) }
 
   it "has a valid factory" do
     expect(subject).to be_valid
@@ -15,10 +25,8 @@ describe Bracket, type: :model do
   it { should validate_uniqueness_of(:name) }
 
   context "after create" do
-    let!(:games) { create_list(:game, 5) }
-
     it "creates all picks" do
-      games.each do |game|
+      tournament.games.each do |game|
         expect(subject.picks.find_by(game_id: game.id)).to be_present
       end
     end
@@ -33,7 +41,7 @@ describe Bracket, type: :model do
 
     it "gives the bracket a default name if the name is blank" do
       user = create(:user)
-      bracket = build(:bracket, user: user)
+      bracket = build(:bracket, pool: pool, user: user)
 
       expected_name = bracket.default_name
 
@@ -99,9 +107,7 @@ describe Bracket, type: :model do
     end
 
     context "with a complete bracket" do
-      subject { create(:bracket, :completed) }
-
-      before { build(:tournament) }
+      subject { create(:bracket, :completed, pool: pool) }
 
       context "and it is unpaid" do
         it "is :unpaid" do
@@ -136,7 +142,7 @@ describe Bracket, type: :model do
     end
 
     context "when the user has multiple brackets" do
-      let!(:another_bracket) { create(:bracket, user: subject.user) }
+      let!(:another_bracket) { create(:bracket, pool: pool, user: subject.user) }
 
       it "returns false" do
         expect(subject).to_not be_only_bracket_for_user
@@ -150,7 +156,7 @@ describe Bracket, type: :model do
     end
 
     context "when a bracket with the user's name exists" do
-      let(:another_bracket) { build(:bracket, user: subject.user) }
+      let(:another_bracket) { build(:bracket, pool: pool, user: subject.user) }
 
       it "increments an integer and adds it to the end of the name until unique" do
         expect(another_bracket.default_name).to eq("#{subject.user.name} 1")
@@ -159,8 +165,7 @@ describe Bracket, type: :model do
   end
 
   context "#complete? / #incomplete?" do
-    subject { create(:bracket, :completed) }
-    before { build(:tournament) }
+    subject { create(:bracket, :completed, pool: pool) }
 
     it "is complete when all picks are selected and a tie_breaker is set" do
       expect(subject.picks.where(team_id: nil)).to be_empty
@@ -170,7 +175,7 @@ describe Bracket, type: :model do
     end
 
     context "when a pick.team is nil" do
-      subject { create(:bracket) }
+      subject { create(:bracket, pool: pool) }
 
       it "is incomplete" do
         expect(subject).to be_incomplete
@@ -195,9 +200,8 @@ describe Bracket, type: :model do
   end
 
   context "#calculate_points" do
-    subject { create(:bracket, :completed) }
-
-    before { build(:tournament, :completed) }
+    let(:pool) { create(:pool, tournament: completed_tournament) }
+    subject { create(:bracket, :completed, pool: pool) }
 
     it "is the sum of all the picks' points" do
       expect(subject.calculate_points).to eq(subject.picks.map(&:points).sum)
@@ -210,8 +214,7 @@ describe Bracket, type: :model do
   end
 
   context "#calculate_possible_points" do
-    subject { create(:bracket, :completed) }
-    before { build(:tournament) }
+    subject { create(:bracket, :completed, pool: pool) }
 
     it "is the sum of all picks' possible points" do
       expect(subject.calculate_possible_points).to eq(subject.picks.map(&:possible_points).sum)
@@ -224,11 +227,10 @@ describe Bracket, type: :model do
   end
 
   context "#sorted_four" do
-    subject { create(:bracket, :completed) }
-    before { build(:tournament) }
+    subject { create(:bracket, :completed, pool: pool) }
 
     it "is the teams of final four picks of the bracket" do
-      semifinal_games = [Game.championship.game_one, Game.championship.game_two]
+      semifinal_games = [tournament.championship.game_one, tournament.championship.game_two]
       semifinal_picks = subject.picks.where(game_id: semifinal_games.map(&:id))
       expected_teams = semifinal_picks.map { |pick| [pick.first_team, pick.second_team] }.flatten
 
@@ -236,7 +238,7 @@ describe Bracket, type: :model do
     end
 
     it "is reverse-ordered with champ and 2nd place at the end" do
-      champ_pick = subject.picks.find_by(game_id: Game.championship.id)
+      champ_pick = subject.picks.find_by(game_id: tournament.championship.id)
 
       expect(subject.sorted_four.last).to eq(champ_pick.team)
       expect([champ_pick.first_team, champ_pick.second_team]).to include(subject.sorted_four.third)

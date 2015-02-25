@@ -3,7 +3,7 @@ class Ability
 
   def initialize(user, pool=nil)
     user ||= User.new # guest user (not logged in)
-    pool ||= Pool
+    pool ||= Pool.first
 
     can(:manage, :all) if user.has_role?(:admin)
 

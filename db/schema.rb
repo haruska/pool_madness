@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224150216) do
+ActiveRecord::Schema.define(version: 20150225131118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,12 +29,14 @@ ActiveRecord::Schema.define(version: 20150224150216) do
     t.integer  "possible_points",      default: 0,     null: false
     t.integer  "best_possible",        default: 20000
     t.integer  "payment_state",        default: 0
+    t.integer  "pool_id",                              null: false
   end
 
   add_index "brackets", ["best_possible"], name: "index_brackets_on_best_possible", using: :btree
   add_index "brackets", ["charge_id"], name: "index_brackets_on_stripe_charge_id", using: :btree
   add_index "brackets", ["payment_collector_id"], name: "index_brackets_on_payment_collector_id", using: :btree
   add_index "brackets", ["points"], name: "index_brackets_on_points", using: :btree
+  add_index "brackets", ["pool_id"], name: "index_brackets_on_pool_id", using: :btree
   add_index "brackets", ["possible_points"], name: "index_brackets_on_possible_points", using: :btree
   add_index "brackets", ["user_id"], name: "index_brackets_on_user_id", using: :btree
 
@@ -57,14 +59,16 @@ ActiveRecord::Schema.define(version: 20150224150216) do
     t.integer  "game_two_id"
     t.integer  "score_one"
     t.integer  "score_two"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "tournament_id", null: false
   end
 
   add_index "games", ["game_one_id"], name: "index_games_on_game_one_id", using: :btree
   add_index "games", ["game_two_id"], name: "index_games_on_game_two_id", using: :btree
   add_index "games", ["team_one_id"], name: "index_games_on_team_one_id", using: :btree
   add_index "games", ["team_two_id"], name: "index_games_on_team_two_id", using: :btree
+  add_index "games", ["tournament_id"], name: "index_games_on_tournament_id", using: :btree
 
   create_table "picks", force: :cascade do |t|
     t.integer  "bracket_id", null: false
@@ -78,6 +82,14 @@ ActiveRecord::Schema.define(version: 20150224150216) do
   add_index "picks", ["bracket_id"], name: "index_picks_on_bracket_id", using: :btree
   add_index "picks", ["game_id"], name: "index_picks_on_game_id", using: :btree
   add_index "picks", ["team_id"], name: "index_picks_on_team_id", using: :btree
+
+  create_table "pools", force: :cascade do |t|
+    t.integer  "tournament_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "pools", ["tournament_id"], name: "index_pools_on_tournament_id", using: :btree
 
   create_table "roles", force: :cascade do |t|
     t.string   "name"
@@ -99,13 +111,22 @@ ActiveRecord::Schema.define(version: 20150224150216) do
     t.datetime "updated_at",    null: false
     t.integer  "score_team_id"
     t.string   "region"
+    t.integer  "tournament_id", null: false
   end
 
-  add_index "teams", ["name"], name: "index_teams_on_name", unique: true, using: :btree
-  add_index "teams", ["region", "seed"], name: "index_teams_on_region_and_seed", unique: true, using: :btree
   add_index "teams", ["region"], name: "index_teams_on_region", using: :btree
-  add_index "teams", ["score_team_id"], name: "index_teams_on_score_team_id", unique: true, using: :btree
+  add_index "teams", ["score_team_id"], name: "index_teams_on_score_team_id", using: :btree
   add_index "teams", ["seed"], name: "index_teams_on_seed", using: :btree
+  add_index "teams", ["tournament_id", "name"], name: "index_teams_on_tournament_id_and_name", unique: true, using: :btree
+  add_index "teams", ["tournament_id", "region", "seed"], name: "index_teams_on_tournament_id_and_region_and_seed", unique: true, using: :btree
+  add_index "teams", ["tournament_id"], name: "index_teams_on_tournament_id", using: :btree
+
+  create_table "tournaments", force: :cascade do |t|
+    t.datetime "tip_off"
+    t.integer  "eliminating_offset"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                             default: "", null: false

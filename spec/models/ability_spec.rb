@@ -2,7 +2,8 @@ require "spec_helper"
 require "cancan/matchers"
 
 describe Ability, type: :model do
-  before { build(:tournament) }
+  before(:all) { @pool = create(:pool) }
+  let(:pool) { @pool }
 
   context "not logged in" do
     let(:user) { User.new }
@@ -16,7 +17,7 @@ describe Ability, type: :model do
 
   context "logged in" do
     let(:user) { create(:user) }
-    let(:bracket) { create(:bracket, user: user) }
+    let(:bracket) { create(:bracket, pool: pool, user: user) }
 
     subject { Ability.new(user) }
 
@@ -32,7 +33,8 @@ describe Ability, type: :model do
     end
 
     context "pool has not started" do
-      subject { Ability.new(user, Pool.new(tip_off_attr: DateTime.tomorrow)) }
+      before { pool.tournament.update(tip_off: 1.day.from_now) }
+      subject { Ability.new(user) }
 
       it { should be_able_to(:manage, bracket) }
       it { should be_able_to(:update, bracket.picks.sample) }

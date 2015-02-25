@@ -1,13 +1,8 @@
-class Pool
-  include ActiveAttr::Model
+class Pool < ActiveRecord::Base
+  belongs_to :tournament
+  has_many :brackets
 
-  attribute :tip_off_attr
-
-  TIP_OFF = DateTime.new(2015, 3, 20, 12, 0, 0, "-4")
-
-  def tip_off
-    tip_off_attr || TIP_OFF
-  end
+  delegate :tip_off, to: :tournament
 
   def started?
     DateTime.now > tip_off
@@ -15,17 +10,5 @@ class Pool
 
   def start_eliminating?
     DateTime.now > tip_off + 4.days
-  end
-
-  def self.tip_off
-    Pool.new.tip_off
-  end
-
-  def self.started?
-    Pool.new.started?
-  end
-
-  def self.start_eliminating?
-    Pool.new.start_eliminating?
   end
 end

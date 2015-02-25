@@ -1,22 +1,23 @@
 require "spec_helper"
 
 describe Team, type: :model do
-  before { build(:tournament) }
+  before(:all) { @tournament = create(:tournament) }
+  let(:tournament) { @tournament }
 
   context do
-    subject { Game.first.team_one }
+    subject { tournament.games.first.team_one }
 
-    it { should validate_uniqueness_of(:name) }
-    # it { should validate_length_of(:name).is_at_most(15) } # Uncomment with latest version of shoulda-matchers
+    it { should validate_uniqueness_of(:name).scoped_to(:tournament_id) }
+    it { should validate_length_of(:name).is_at_most(15) }
     it { should validate_inclusion_of(:region).in_array(Team::REGIONS) }
     it { should validate_numericality_of(:seed)
                     .only_integer.is_greater_than_or_equal_to(1)
                     .is_less_than_or_equal_to(16) }
-    it { should validate_uniqueness_of(:seed).scoped_to(:region) }
+    it { should validate_uniqueness_of(:seed).scoped_to([:tournament_id, :region]) }
   end
 
   describe "#first_game" do
-    let(:game) { Game.where("team_two_id is not null").first }
+    let(:game) { tournament.games.where.not(team_two_id: nil).first }
 
     it "returns the first game the team plays" do
       expect(game.team_one.first_game).to eq(game)
@@ -25,7 +26,7 @@ describe Team, type: :model do
   end
 
   describe "#still_playing? / #eliminated?" do
-    let(:game) { Game.round_for(1).sample }
+    let(:game) { tournament.round_for(1).sample }
 
     subject { game.team_one }
 
