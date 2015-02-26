@@ -4,6 +4,11 @@ class Pool < ActiveRecord::Base
 
   delegate :tip_off, to: :tournament
 
+  #FIXME: remove
+  def self.started?
+    first.started?
+  end
+
   def started?
     DateTime.now > tip_off
   end

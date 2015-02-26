@@ -36,8 +36,8 @@ describe Ability, type: :model do
       before { pool.tournament.update(tip_off: 1.day.from_now) }
       subject { Ability.new(user) }
 
-      it { should be_able_to(:manage, bracket) }
-      it { should be_able_to(:update, bracket.picks.sample) }
+      xit { should be_able_to(:manage, bracket) }
+      xit { should be_able_to(:update, bracket.picks.sample) }
     end
   end
 end

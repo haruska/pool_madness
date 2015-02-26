@@ -22,7 +22,7 @@ describe Bracket, type: :model do
   it { should have_many(:picks) }
 
   it { should validate_presence_of(:user) }
-  it { should validate_uniqueness_of(:name) }
+  it { should validate_uniqueness_of(:name).scoped_to(:pool_id) }
 
   context "after create" do
     it "creates all picks" do

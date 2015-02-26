@@ -38,6 +38,7 @@ describe "User creation, authentication, deletion", type: :feature, js: true do
   # end
   #
   describe "Signing in" do
+    let!(:pool) { create(:pool) }
     let(:password) { Faker::Internet.password }
     subject { create(:user, password: password, password_confirmation: password) }
 
@@ -47,7 +48,7 @@ describe "User creation, authentication, deletion", type: :feature, js: true do
       fill_in "user[email]", with: subject.email
       fill_in "user[password]", with: password
       click_button "Sign in"
-      expect(page).to have_link("Game Results", href: games_path)
+      expect(page).to have_content("Signed in successfully")
     end
   end
   #

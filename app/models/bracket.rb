@@ -15,7 +15,7 @@ class Bracket < ActiveRecord::Base
     bracket.name = bracket.default_name if bracket.name.blank?
   end
 
-  validates :name, uniqueness: true, presence: true
+  validates :name, uniqueness: { scope: :pool_id }, presence: true
   validates :user, presence: true
 
   enum payment_state: %i(unpaid promised paid)

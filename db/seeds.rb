@@ -21,4 +21,4 @@ user = User.create_with(name: ENV['ADMIN_NAME'].dup, password: ENV['ADMIN_PASSWO
 puts 'user: ' << user.name
 user.add_role :admin
 
-FactoryGirl.build(:tournament)
+FactoryGirl.create(:pool)

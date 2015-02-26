@@ -3,6 +3,6 @@
 FactoryGirl.define do
   factory :possible_outcome do
     skip_create
-    pool { create(:pool) }
+    possible_outcome_set
   end
 end

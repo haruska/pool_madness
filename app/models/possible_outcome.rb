@@ -1,61 +1,11 @@
 class PossibleOutcome
   include ActiveAttr::Model
 
-  attribute :pool
+  attribute :possible_outcome_set
   attribute :slot_bits
-  attribute :brackets
-  attribute :teams
   attribute :possible_games, type: Hash
 
-  delegate :tournament, to: :pool
-
-  def generate_cached_opts
-    games = tournament.games.already_played.to_a + tournament.games.not_played.to_a
-    brackets = pool.brackets.includes(:picks).to_a
-    teams = tournament.teams.each_with_object(Hash.new) {|team, acc| acc[team.id] = team}
-
-    { games: games, brackets: brackets, teams: teams }
-  end
-
-  def generate_all_slot_bits
-    already_played_games = tournament.games.already_played.to_a
-    to_play_games = tournament.games.not_played.to_a
-
-    already_played_winners_mask = 0
-
-    already_played_games.each_with_index do |game, i|
-      slot_index = already_played_games.size - i - 1
-      if game.score_one < game.score_two
-        already_played_winners_mask |= 1 << slot_index
-      end
-    end
-
-    to_play_games_mask = 1
-    to_play_games.size.times { |i| to_play_games_mask |= 1 << i }
-
-    collected_slot_bits = []
-    (0..to_play_games_mask).each do |to_play_bits|
-      slot_bits = (already_played_winners_mask << to_play_games.size) | to_play_bits
-      block_given? ? yield(slot_bits) : collected_slot_bits << slot_bits
-    end
-
-    block_given? ? nil : collected_slot_bits
-  end
-
-  def generate_outcome(slot_bits, opts = {})
-    opts = generate_cached_opts if opts.empty?
-    possible_outcome = PossibleOutcome.new(slot_bits: slot_bits, brackets: opts[:brackets], teams: opts[:teams], pool: pool)
-
-    opts[:games].each_with_index do |game, i|
-      slot_index = opts[:games].size - i - 1
-      team_one_winner = slot_bits & (1 << slot_index) == 0
-      score_one, score_two = team_one_winner ?  [2, 1] : [1, 2]
-      possible_outcome.create_possible_game game: game, score_one: score_one, score_two: score_two
-    end
-
-    possible_outcome
-  end
-
+  delegate :tournament, :pool, :games, :brackets, :teams, to: :possible_outcome_set
 
   def create_possible_game(game_hash)
     possible_game = PossibleGame.new(game_hash.merge(possible_outcome: self))
@@ -64,35 +14,18 @@ class PossibleOutcome
   end
 
   def championship
-    possible_game = self.possible_games.values.first
+    possible_game = possible_games.values.first
     possible_game = possible_game.next_game while possible_game.next_game.present?
     possible_game
   end
 
   def round_for(round_number, region = nil)
-    case round_number
-    when 5
-      [championship.game_one, championship.game_two]
-    when 6
-      [championship]
-    when 1
-      sort_order = [1, 8, 5, 4, 6, 3, 7, 2]
-
-      teams = region.present? ? Team.where(region: region) : Team
-      team_ids = teams.where(seed: sort_order).select(:id).collect(&:id)
-      game_ids = Game.where(team_one_id: team_ids).pluck(:id)
-
-      games = []
-      game_ids.each { |x| games << self.possible_games[x] }
-      games.sort_by { |x| sort_order.index(x.first_team.seed) }
-    else
-      round_for(round_number - 1, region).collect(&:next_game).uniq
-    end
+    tournament.round_for(round_number, region).map { |game| possible_games[game.id] }
   end
 
   def sorted_brackets
-    result = self.brackets.collect do |bracket|
-      points = bracket.picks.collect do |pick|
+    result = brackets.map do |bracket|
+      points = bracket.picks.map do |pick|
         possible_games[pick.game_id].points_for_pick(pick.team_id)
       end.sum
       [bracket, points]
