@@ -5,7 +5,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
     pool ||= Pool.first
 
-    can(:manage, :all) if user.has_role?(:admin)
+    can(:manage, :all) if user.admin?
 
     if user.id.present?
       can :manage, User, id: user.id
@@ -14,7 +14,7 @@ class Ability
       if pool.started?
         can :read, Bracket
         cannot [:create, :update], Bracket
-        cannot :destroy, Bracket unless user.has_role?(:admin)
+        cannot :destroy, Bracket unless user.admin?
       else
         can :manage, Bracket, user_id: user.id
         can :update, Pick, bracket: { user_id: user.id }

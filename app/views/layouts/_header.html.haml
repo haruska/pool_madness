@@ -17,7 +17,7 @@
             %li.nav-link.more
               = link_to current_user.email, "javascript:void(0)"
               %ul.submenu
-                - if current_user.has_role? :admin
+                - if current_user.admin?
                   %li.admin-link= link_to 'Admin Users', users_path
                   %li.admin-link= link_to 'Admin Brackets', admin_brackets_path
                 %li= link_to 'Billing/Payments', user_stripes_path(current_user)

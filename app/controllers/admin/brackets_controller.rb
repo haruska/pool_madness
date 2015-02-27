@@ -39,7 +39,7 @@ class Admin::BracketsController < ApplicationController
   private
 
   def ensure_admin
-    unless current_user.has_role? :admin
+    unless current_user.admin?
       render nothing: true, status: 404
       false
     end

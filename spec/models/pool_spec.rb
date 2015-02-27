@@ -5,6 +5,13 @@ describe Pool, type: :model do
   let(:tournament) { @tournament }
   subject { create(:pool, tournament: tournament) }
 
+  it { should belong_to(:tournament) }
+  it { should have_many(:brackets) }
+  it { should have_many(:pool_users) }
+  it { should have_many(:users).through(:pool_users) }
+
+  it { should delegate_method(:tip_off).to(:tournament) }
+
   context "tournament hasn't started" do
     before { tournament.update(tip_off: 4.days.from_now) }
 

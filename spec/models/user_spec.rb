@@ -12,6 +12,11 @@ describe User, type: :model do
   it { should validate_presence_of(:password) }
   it { should validate_length_of(:password).is_at_least(8) }
 
+  it { should have_many(:brackets) }
+  it { should have_many(:brackets_to_pay) }
+  it { should have_many(:pool_users) }
+  it { should have_many(:pools).through(:pool_users) }
+
   it { should allow_value("user@foo.com").for(:email) }
   it { should allow_value("THE_USER@foo.bar.org").for(:email) }
   it { should allow_value("first.last@foo.jp").for(:email) }
@@ -52,6 +57,20 @@ describe User, type: :model do
     it "sends a welcome message" do
       subject.accept_invitation!
       expect(ActionMailer::Base.deliveries.size).to eq(1)
+    end
+  end
+
+  describe "roles" do
+    it "defaults to a regular user" do
+      expect(subject).to be_regular
+    end
+
+    context "an admin" do
+      before { subject.admin! }
+
+      it "is an admin" do
+        expect(subject).to be_admin
+      end
     end
   end
 end

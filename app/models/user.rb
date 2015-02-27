@@ -1,16 +1,14 @@
 class User < ActiveRecord::Base
-  rolify
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :invitable
 
   has_many :brackets
   has_many :brackets_to_pay, class_name: "Bracket", foreign_key: "payment_collector_id"
-
-  has_many :charges, through: :brackets
+  has_many :pool_users
+  has_many :pools, through: :pool_users
 
   validates :email, format: { with: EmailValidator.regexp }
+
+  enum role: %i(regular admin)
 
   after_create do |user|
     user.welcome_message unless user.invitation_token.present?
