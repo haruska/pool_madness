@@ -1,12 +1,16 @@
 class BracketsController < ApplicationController
-  load_and_authorize_resource except: [:current_user_bracket_ids, :printable]
+  before_action :authenticate_user!
+
+  load_and_authorize_resource :pool, only: [:index, :create]
+  load_and_authorize_resource :bracket, through: :pool, only: [:index, :create]
+  load_and_authorize_resource :bracket, except: [:index, :create]
 
   layout "bracket", except: [:index]
 
   def index
     @brackets = @brackets.to_a
 
-    if Pool.started?
+    if @pool.started?
       @brackets.sort_by! { |x| [100_000 - [x.best_possible, 4].min, x.points, x.possible_points] }
       @brackets.reverse!
     else
@@ -17,43 +21,43 @@ class BracketsController < ApplicationController
   def show
   end
 
-  def printable
-    @bracket = Bracket.find(params[:id])
-    authorize! :read, @bracket
-
-    render layout: false
-  end
-
-  def create
-    if @bracket.save
-      redirect_to edit_bracket_path(@bracket)
-    else
-      redirect_to root_path, alert: "Problem creating a new bracket. Please try again."
-    end
-  end
-
+  # def printable
+  #   @bracket = Bracket.find(params[:id])
+  #   authorize! :read, @bracket
+  #
+  #   render layout: false
+  # end
+  #
+  # def create
+  #   if @bracket.save
+  #     redirect_to edit_bracket_path(@bracket)
+  #   else
+  #     redirect_to root_path, alert: "Problem creating a new bracket. Please try again."
+  #   end
+  # end
+  #
   def update
-    if @bracket.update_attributes(bracket_params)
+    if @bracket.update(bracket_params)
       redirect_to @bracket, notice: "Bracket Saved"
     else
       flash.now[:alert] = "Problem saving bracket. Please try again"
       render :edit
     end
   end
-
-  def destroy
-    @bracket.destroy
-    redirect_to root_path, notice: "Bracket Destroyed"
-  end
-
-  def current_user_bracket_ids
-    ids = current_user.brackets.pluck(:id)
-    render json: ids.to_json
-  end
+  #
+  # def destroy
+  #   @bracket.destroy
+  #   redirect_to root_path, notice: "Bracket Destroyed"
+  # end
+  #
+  # def current_user_bracket_ids
+  #   ids = current_user.brackets.pluck(:id)
+  #   render json: ids.to_json
+  # end
 
   private
 
   def bracket_params
-    params.permit(:bracket).permit(:tie_breaker, :name, :points, :possible_points)
+    params.require(:bracket).permit(:tie_breaker, :name, :points, :possible_points)
   end
 end

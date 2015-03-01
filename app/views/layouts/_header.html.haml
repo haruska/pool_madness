@@ -6,21 +6,21 @@
       %nav{role: "navigation"}
         %ul#js-centered-navigation-menu.centered-navigation-menu.show
           - if user_signed_in?
-            %li.nav-link= link_to "Brackets", brackets_path
-            - if Pool.started?
-              %li.nav-link= link_to "Game Results", games_path
-            - else
-              %li.nav-link= link_to "Types of Payment", payments_path
+            %li.nav-link= link_to "Pools", pools_path
+            -#- if Pool.started?
+            -#  %li.nav-link= link_to "Game Results", games_path
+            -#- else
+            -#  %li.nav-link= link_to "Types of Payment", payments_path
             %li.nav-link.logo
               = link_to image_tag("basketball_icon.png"), root_path, class: "logo"
-            %li.nav-link= link_to "Rules and Scoring", rules_path
+            -#%li.nav-link= link_to "Rules and Scoring", rules_path
             %li.nav-link.more
               = link_to current_user.email, "javascript:void(0)"
               %ul.submenu
-                - if current_user.admin?
-                  %li.admin-link= link_to 'Admin Users', users_path
-                  %li.admin-link= link_to 'Admin Brackets', admin_brackets_path
-                %li= link_to 'Billing/Payments', user_stripes_path(current_user)
+                -#- if current_user.admin?
+                -#  %li.admin-link= link_to 'Admin Users', users_path
+                -#  %li.admin-link= link_to 'Admin Brackets', admin_brackets_path
+                -#%li= link_to 'Billing/Payments', user_stripes_path(current_user)
                 %li= link_to 'Edit account', edit_user_registration_path
                 %li= link_to 'Logout', destroy_user_session_path, method: 'delete'
           - else

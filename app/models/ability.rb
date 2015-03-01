@@ -1,24 +1,31 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user, pool=nil)
+  def initialize(user = nil)
     user ||= User.new # guest user (not logged in)
-    pool ||= Pool.first
 
-    can(:manage, :all) if user.admin?
+    can :manage, :all if user.admin?
 
-    if user.id.present?
+    if user.persisted?
       can :manage, User, id: user.id
+      can :read, Tournament
       can :read, Game
 
-      if pool.started?
-        can :read, Bracket
-        cannot [:create, :update], Bracket
-        cannot :destroy, Bracket unless user.admin?
-      else
-        can :manage, Bracket, user_id: user.id
-        can :update, Pick, bracket: { user_id: user.id }
-        cannot :destroy, Bracket.where("id IN (select bracket_id from charges)")
+      user.pool_users.includes(:pool).each do |pool_user|
+        pool = pool_user.pool
+
+        if pool_user.admin?
+          can :manage, Pool, id: pool.id
+        else
+          can :read, Pool, id: pool.id
+        end
+
+        if pool.started?
+          can :read, Bracket, pool_id: pool.id
+        else
+          can :manage, Bracket, pool_id: pool.id, user_id: user.id
+          can :update, Pick, bracket: { pool_id: pool.id, user_id: user.id }
+        end
       end
     end
   end

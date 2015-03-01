@@ -27,14 +27,14 @@
 <script type="text/javascript">
   var game_transitions = []; //hash of game id => [next game_id, slot (1 or 2)]
   var game_to_pick = []; //game_id => this bracket pick id
-  <% Game.all.each do |g| %>
+  <% @bracket.tournament.games.all.each do |g| %>
     game_to_pick[<%= g.id %>] = <%= @bracket.picks.find_by(game_id: g.id).id %>;
     <% unless g.next_game.blank? %>
       game_transitions[<%= g.id %>] = [<%= g.next_game.id %>, <%= g.next_slot %>];
     <% end %>
   <% end %>
 
-  var champ_game_id = <%= Game.championship.id %>;
+  var champ_game_id = <%= @bracket.tournament.championship.id %>;
 
   $(document).ready(function() {
       $('#tie-breaker-static').hide();
