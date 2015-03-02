@@ -6,4 +6,8 @@ class PoolsController < ApplicationController
   def index
 
   end
+
+  def show
+    redirect_to pool_brackets_path(@pool)
+  end
 end

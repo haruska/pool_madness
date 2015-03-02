@@ -4,6 +4,7 @@ class BracketsController < ApplicationController
   load_and_authorize_resource :pool, only: [:index, :create]
   load_and_authorize_resource :bracket, through: :pool, only: [:index, :create]
   load_and_authorize_resource :bracket, except: [:index, :create]
+  before_action :load_pool, except: [:index, :create]
 
   layout "bracket", except: [:index]
 
@@ -56,6 +57,10 @@ class BracketsController < ApplicationController
   # end
 
   private
+
+  def load_pool
+    @pool = @bracket.pool
+  end
 
   def bracket_params
     params.require(:bracket).permit(:tie_breaker, :name, :points, :possible_points)

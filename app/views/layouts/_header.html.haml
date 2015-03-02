@@ -1,27 +1,27 @@
-%body
-  %header.centered-navigation{role: "banner"}
-    .centered-navigation-wrapper
-      %a.mobile-logo{href: "javascript:void(0)"} Pool Madness
-      %a#js-centered-navigation-mobile-menu.centered-navigation-mobile-menu{href: "javascript:void(0)"} MENU
-      %nav{role: "navigation"}
-        %ul#js-centered-navigation-menu.centered-navigation-menu.show
-          - if user_signed_in?
-            %li.nav-link= link_to "Pools", pools_path
-            -#- if Pool.started?
-            -#  %li.nav-link= link_to "Game Results", games_path
-            -#- else
-            -#  %li.nav-link= link_to "Types of Payment", payments_path
-            %li.nav-link.logo
-              = link_to image_tag("basketball_icon.png"), root_path, class: "logo"
-            -#%li.nav-link= link_to "Rules and Scoring", rules_path
-            %li.nav-link.more
-              = link_to current_user.email, "javascript:void(0)"
-              %ul.submenu
-                -#- if current_user.admin?
-                -#  %li.admin-link= link_to 'Admin Users', users_path
-                -#  %li.admin-link= link_to 'Admin Brackets', admin_brackets_path
-                -#%li= link_to 'Billing/Payments', user_stripes_path(current_user)
-                %li= link_to 'Edit account', edit_user_registration_path
-                %li= link_to 'Logout', destroy_user_session_path, method: 'delete'
-          - else
-            %li.nav-link= link_to 'Login', new_user_session_path
+%header.navigation{:role => "banner"}
+  .navigation-wrapper
+    = link_to image_tag("basketball_icon.png"), root_path, class: :logo
+    = link_to "MENU", "javascript:void(0)", class: "js-mobile-menu navigation-menu-button"
+    %nav{:role => "navigation"}
+      %ul#js-navigation-menu.navigation-menu.show
+        - if @pool.present?
+          %li.nav-link
+            = link_to "Brackets", pool_brackets_path(@pool)
+          -#%li.nav-link
+          -#  = link_to "Game Results", tournament_path(@pool.tournament)
+          -#%li.nav-link
+          -#  = link_to "Rules and Scoring", pool_rules_path(@pool)
+          -#%li.nav-link
+          -#  = link_to "Types of Payment", pool_payments_path(@pool)
+    .navigation-tools
+      %ul.navigation-menu
+        - if user_signed_in?
+          %li.nav-link.more
+            = link_to current_user.email, "javascript:void(0)"
+            %ul.submenu
+              -#%li= link_to 'Billing/Payments', user_stripes_path(current_user)
+              %li= link_to 'Edit account', edit_user_registration_path
+              %li= link_to 'Logout', destroy_user_session_path, method: 'delete'
+        - else
+          %li.nav-link
+            = link_to "Login", new_user_session_path
