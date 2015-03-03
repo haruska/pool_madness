@@ -10,7 +10,7 @@
     = javascript_include_tag "application"
     = csrf_meta_tags
     = yield(:head)
-  %body#application-layout{:class => "#{controller_name}-controller #{action_name}-action #{yield :body_class}"}
+  %body#application-layout{:class => "#{controller_name}-controller #{action_name}-action"}
     = render "layouts/header"
     %section#content.container
       %div.wrapper

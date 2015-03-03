@@ -1,0 +1,323 @@
+.bracket {
+  width: 970px;
+  padding-top: 10px;
+  margin: 0 auto;
+
+  .bracket-heading {
+    width: 950px;
+
+    table.gridtable {
+      font-size: 11px;
+      color: #333333;
+      border-width: 1px;
+      border-color: #fff;
+      border-collapse: collapse;
+
+      th {
+        background-color: #b3d4ef;
+        padding: 8px;
+        width: 69.4px;
+        border: 1px solid #fff;
+      }
+
+      td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #fff;
+        background-color: #ffffff;
+        text-align: center;
+      }
+
+      td.title {
+        background: #ccc;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .bracket-body {
+    margin-top: 15px;
+    height: 1050px;
+    position: relative;
+
+    .round {
+      position: absolute;
+      top: 0;
+      width: 950px;
+    }
+
+    .match {
+      border: 1px solid #444;
+      padding: 0;
+      width: 114px;
+      position: absolute;
+      font-size: 12px;
+
+      .slot {
+        margin: 0;
+        position: absolute;
+        left: 0;
+        right: 0;
+        padding: 0 4px;
+      }
+
+      .slot1 {
+        top: 0px;
+      }
+
+      .slot2 {
+        bottom: 0px;
+      }
+
+      .score {
+        position: absolute;
+        right: 4px;
+        font-style: normal;
+      }
+
+      .seed {
+        color: #777;
+        font-size: 10px;
+      }
+
+      .winner, .winner em {
+        font-weight: bold;
+      }
+    }
+
+    .round1 {
+      .match {
+        height: 40px;
+      }
+
+      .region1, .region3 {
+        .m1 { top: 0; }
+        .m2 { top: 50px; }
+        .m3 { top: 100px; }
+        .m4 { top: 150px; }
+        .m5 { top: 200px; }
+        .m6 { top: 250px; }
+        .m7 { top: 300px; }
+        .m8 { top: 350px; }
+      }
+
+      .region2, .region4 {
+        .m1 { top: 600px; }
+        .m2 { top: 650px; }
+        .m3 { top: 700px; }
+        .m4 { top: 750px; }
+        .m5 { top: 800px; }
+        .m6 { top: 850px; }
+        .m7 { top: 900px; }
+        .m8 { top: 950px; }
+      }
+    }
+
+    .round2 {
+      left: 115px;
+      width: 720px;
+
+      .match {
+        height: 40px;
+        margin-top: 24px;
+      }
+
+      .region1, .region3 {
+        .m1 { top: 0; }
+        .m2 { top: 100px; }
+        .m3 { top: 200px; }
+        .m4 { top: 300px; }
+      }
+
+      .region2, .region4 {
+        .m1 { top: 600px; }
+        .m2 { top: 700px; }
+        .m3 { top: 800px; }
+        .m4 { top: 900px; }
+      }
+    }
+
+    .round3 {
+      left: 230px;
+      width: 490px;
+
+      .match {
+        height: 90px;
+        margin-top: 50px;
+      }
+
+      .region1, .region3 {
+        .m1 { top: 0; }
+        .m2 { top: 200px; }
+      }
+
+      .region2, .region4 {
+        .m1 { top: 600px; }
+        .m2 { top: 800px; }
+      }
+    }
+
+    .round4 {
+      left: 345px;
+      width: 260px;
+
+      .match {
+        height: 190px;
+        margin-top: 100px;
+      }
+
+      .region1, .region3 { .m1 { top: 0; } }
+      .region2, .region4 { .m1 { top: 600px; } }
+    }
+
+    .round5 {
+      left: 280px;
+      width: 380px;
+
+      .match {
+        height: 75px;
+        top: 425px;
+      }
+
+      .m1 {
+        left: 0;
+        border-left: none;
+      }
+
+      .m2 {
+        right: 0;
+        border-right: none;
+      }
+    }
+
+    .round6 {
+      left: 395px;
+      width: 150px;
+
+      .match {
+        height: 75px;
+        top: 415px;
+        border: none;
+        width: 150px;
+        padding: 0;
+      }
+
+      .slot {
+        font-size: 13px;
+        height: 25px;
+        line-height: 25px;
+        padding: 0 10px 0 6px;
+      }
+
+      .slot1 {
+        border-bottom: 1px solid #666;
+        top: 22px;
+      }
+
+      .slot2 {
+        top: 48px;
+        text-align: right;
+      }
+    }
+
+    .championship {
+      left: 395px;
+      width: 150px;
+      top: 535px;
+
+      .box {
+        height: 75px;
+        //top: 600px;
+        border: none;
+        width: 150px;
+        padding: 0;
+      }
+
+      .square {
+        font-size: 13px;
+        height: 25px;
+        line-height: 25px;
+        padding: 0 10px 0 6px;
+      }
+
+      .square1 {
+        border: 2px solid #666;
+        top: 22px;
+        text-align: center;
+        font-weight: bolder;
+      }
+
+      .square2 {
+        top: 40px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 0;
+      }
+    }
+
+    .region-label {
+      display: block;
+      position: absolute;
+      width: 150px;
+      font-weight: bold;
+      color: #444;
+      text-transform: uppercase;
+
+      &.region3 {
+        left: auto;
+        right: 170px;
+        top: 170px;
+        text-align: right;
+      }
+
+      &.region4 {
+        left: auto;
+        right: 170px;
+        top: 780px;
+        text-align: right;
+      }
+
+      &.region1 {
+        left: 170px;
+        top: 170px;
+      }
+
+      &.region2 {
+        left: 170px;
+        top: 780px;
+      }
+    }
+
+    .region1, .region2 {
+      .match {
+        border-left: 0px;
+      }
+    }
+
+    .region3, .region4 {
+      .match {
+        border-right: 0px;
+        right: 0px;
+      }
+    }
+
+    .final_pick {
+      font-size: 16px;
+      background: #fff;
+    }
+
+    .loser {
+      font-weight: normal;
+      color: #777777;
+      text-decoration: line-through;
+    }
+
+    .tie-breaker {
+      position: absolute;
+      left: 418px;
+      top: 600px;
+    }
+  }
+}

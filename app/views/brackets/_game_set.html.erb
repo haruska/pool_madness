@@ -1,3 +1,0 @@
-<% games.each_with_index do |game, i| %>
-    <%= render :partial => 'brackets/game', :locals => {:game => game, :i => i, :pick => (bracket.present? ? bracket.picks.where(:game_id => game.id).first : nil)} %>
-<% end %>
