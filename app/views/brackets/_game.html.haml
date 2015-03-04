@@ -1,0 +1,21 @@
+- pick = @bracket.picks.find_by(game_id: game.id)
+- first_team = pick.first_team
+- second_team = pick.second_team
+
+%div{id: "match#{game.id}", class: "match m#{i}"}
+
+  - team_class = "team#{first_team.id}" if first_team.present?
+  - p_id = "slot127" if game.championship?
+
+  %p{id: p_id, class: "slot slot1 #{team_class}"}
+    - if first_team.present?
+      %span.seed= first_team.seed
+      = first_team.name
+
+  - team_class = "team#{second_team.id}" if second_team.present?
+  - p_id = "slot128" if game.championship?
+
+  %p{id: p_id, class: "slot slot2 #{team_class}"}
+    - if second_team.present?
+      %span.seed= second_team.seed
+      = second_team.name

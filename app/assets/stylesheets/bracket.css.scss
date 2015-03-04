@@ -222,39 +222,36 @@
     }
 
     .championship {
+      position: absolute;
       left: 395px;
-      width: 150px;
       top: 535px;
+      width: 150px;
+      height: 75px;
+      padding: 0;
+      border: none;
 
-      .box {
-        height: 75px;
-        //top: 600px;
-        border: none;
-        width: 150px;
-        padding: 0;
-      }
 
-      .square {
-        font-size: 13px;
+      div {
         height: 25px;
         line-height: 25px;
-        padding: 0 10px 0 6px;
+        text-align: center;
+
+        &.champion-box {
+          top: 22px;
+          font-size: 13px;
+          font-weight: bolder;
+          padding: 0 10px 0 6px;
+          border: 2px solid #666;
+        }
+
+        &.champion-label {
+          top: 40px;
+          font-size: 16px;
+          font-weight: bold;
+          padding-top: 5px;
+        }
       }
 
-      .square1 {
-        border: 2px solid #666;
-        top: 22px;
-        text-align: center;
-        font-weight: bolder;
-      }
-
-      .square2 {
-        top: 40px;
-        text-align: center;
-        font-size: 16px;
-        font-weight: bold;
-        padding: 0;
-      }
     }
 
     .region-label {

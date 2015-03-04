@@ -4,5 +4,7 @@ body {
 }
 
 #content {
-  padding: 50px;
+  @include clearfix;
+  @include outer-container;
+  padding: 40px 60px;
 }

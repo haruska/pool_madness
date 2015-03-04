@@ -1,0 +1,12 @@
+.brackets-controller {
+  &.edit-action {
+    .slot {
+      cursor: pointer;
+      &:hover { background-color: #D6F5FF; }
+    }
+
+    h3 {
+      color: #c52000;
+    }
+  }
+}

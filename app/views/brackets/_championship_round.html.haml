@@ -1,0 +1,9 @@
+- game = @bracket.tournament.championship
+- team = @bracket.picks.find_by(game_id: game.id).try(:team)
+
+.championship
+  - if team.present?
+    %div{:class => "champion-box team#{team.id}"}= team.name
+  - else
+    .champion-box
+  .champion-label CHAMPION

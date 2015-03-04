@@ -1,0 +1,9 @@
+%h2
+  - if @bracket.name =~ /#{Regexp.escape(@bracket.user.name)}/
+    = @bracket.name
+  - else
+    %abbr{title: @bracket.user.name}
+      = @bracket.name
+
+= render @bracket
+

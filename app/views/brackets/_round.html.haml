@@ -5,17 +5,7 @@
         - if round_num == 1
           %div{:class => "region-label region#{region_num + 1}"}
             = region
-        = render partial: 'brackets/game_set', locals: {games: bracket.tournament.round_for(round_num, region), bracket: bracket}
+        = render partial: 'brackets/game_set', locals: {games: @bracket.tournament.round_for(round_num, region)}
   - else
     .region
-      = render partial: 'brackets/game_set', locals: {games: bracket.tournament.round_for(round_num), bracket: bracket}
-
-- if round_num == 6
-  - game = bracket.tournament.championship
-  - pick = bracket.present? ? bracket.picks.find_by(game_id: game.id) : nil
-  - team = pick.try(:team) || game.winner
-  .championship.round
-    .box
-      %p{:class => "square square1 #{team.present? ? "team#{team.id}" : nil}"}
-        = team.name if team.present?
-      %p.square.square2 CHAMPION
+      = render partial: 'brackets/game_set', locals: {games: @bracket.tournament.round_for(round_num)}

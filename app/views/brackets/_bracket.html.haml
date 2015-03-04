@@ -26,8 +26,8 @@
         %td March 22-23
         %td March 20-21
   .bracket-body
-    - (1..6).to_a.each do |round_num|
-      = render :partial => 'brackets/round', :locals => {:round_num => round_num, :bracket => (bracket ||= nil)}
-    - if defined?(bracket) && bracket.present?
-      .tie-breaker
-        Tie Breaker: #{bracket.tie_breaker || 'None'}
+    - 6.times do |round_num|
+      = render partial: "brackets/round", locals: { round_num: round_num + 1 }
+    = render partial: "brackets/championship_round"
+    .tie-breaker
+      Tie Breaker: #{bracket.tie_breaker || "None"}

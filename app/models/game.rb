@@ -40,4 +40,8 @@ class Game < ActiveRecord::Base
     end
     round
   end
+
+  def championship?
+    next_slot.nil?
+  end
 end

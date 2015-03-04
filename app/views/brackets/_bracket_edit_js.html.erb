@@ -1,44 +1,21 @@
-<% content_for :head do %>
- <style>
-   p.slot {cursor: hand; cursor: pointer;}
-   p.slot:hover {background-color: #D6F5FF;}
- </style>
-<% end %>
-
-<h3 class="pagination-centered" style="color: #c52000"><%= "Editing #{@bracket.name} Bracket" %></h3>
-
-<%= render @bracket %>
-
-<%= form_for @bracket do |f| %>
-    <dl id="bracket-dl" class="dl-horizontal">
-      <dt><%= f.label :name, "Bracket Name", :class => 'bracket-label' %></dt>
-      <dd><%= f.text_field :name %></dd>
-
-      <dt><%= f.label :tie_breaker, :class => 'bracket-label' do %>
-            <abbr title="Points in final game">Tie Breaker</abbr>
-        <% end %></dt>
-      <dd><%= f.text_field :tie_breaker, :size => 4 %></dd>
-    </dl>
-    <div class="form-actions">
-      <%= f.submit "Done", :class => 'btn btn-primary' %>
-    </div>
-<% end %>
+<%# to move to JSKit %>
 
 <script type="text/javascript">
-  var game_transitions = []; //hash of game id => [next game_id, slot (1 or 2)]
-  var game_to_pick = []; //game_id => this bracket pick id
-  <% @bracket.tournament.games.all.each do |g| %>
+    var game_transitions = []; //hash of game id => [next game_id, slot (1 or 2)]
+    var game_to_pick = []; //game_id => this bracket pick id
+
+    <% @bracket.tournament.games.all.each do |g| %>
     game_to_pick[<%= g.id %>] = <%= @bracket.picks.find_by(game_id: g.id).id %>;
     <% unless g.next_game.blank? %>
-      game_transitions[<%= g.id %>] = [<%= g.next_game.id %>, <%= g.next_slot %>];
+    game_transitions[<%= g.id %>] = [<%= g.next_game.id %>, <%= g.next_slot %>];
     <% end %>
-  <% end %>
+    <% end %>
 
-  var champ_game_id = <%= @bracket.tournament.championship.id %>;
+    var champ_game_id = <%= @bracket.tournament.championship.id %>;
 
-  $(document).ready(function() {
-      $('#tie-breaker-static').hide();
-  });
+    $(document).ready(function() {
+        $('#tie-breaker').hide();
+    });
 
 
     $('.slot').click(function () {
@@ -74,15 +51,13 @@
             //add this teamID
             slot_node.addClass("team" + team_id);
         }
+
         else {
 
+            var next_game_id = transition[0];
+            var next_slot = transition[1];
 
-
-
-          var next_game_id = transition[0];
-          var next_slot = transition[1];
-
-          var slot_node = $("div#match" + next_game_id + " > .slot" + next_slot);
+            var slot_node = $("div#match" + next_game_id + " > .slot" + next_slot);
 
 
             //get team in next slot
@@ -95,14 +70,14 @@
             });
 
             if(defunct_team_id > 0 && defunct_team_id != team_id) {
-              clearSelection(current_game_id, next_game_id, defunct_team_id);
-              clearChampionship(defunct_team_id);
+                clearSelection(current_game_id, next_game_id, defunct_team_id);
+                clearChampionship(defunct_team_id);
             }
 
 
 
-          slot_node.html($(this).html());
-          slot_node.attr('class', 'slot slot' + next_slot + ' team' + team_id);
+            slot_node.html($(this).html());
+            slot_node.attr('class', 'slot slot' + next_slot + ' team' + team_id);
         }
 
         $.ajax({
@@ -119,7 +94,6 @@
         var slot_node = $("div#match" + from_game_id + " > .team" + team_id);
         if(slot_node[0] === undefined) {
             return;
-
         }
         else {
             slot_node.html(' ');
@@ -136,7 +110,7 @@
                 clearChampionship(team_id);
             }
             else {
-              clearSelection(from_game_id, game_transitions[from_game_id][0], team_id);
+                clearSelection(from_game_id, game_transitions[from_game_id][0], team_id);
             }
         }
     }
@@ -159,4 +133,3 @@
         }
     }
 </script>
-

@@ -1,0 +1,14 @@
+%h3 Editing #{@bracket.name} Bracket
+
+= render @bracket
+
+= form_for @bracket do |f|
+  = f.label :name, "Bracket Name"
+  = f.text_field :name
+
+  = f.label :tie_breaker
+  = f.text_field :tie_breaker
+
+  = f.submit "Done"
+
+= render "brackets/bracket_edit_js"

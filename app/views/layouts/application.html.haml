@@ -12,8 +12,8 @@
     = yield(:head)
   %body#application-layout{:class => "#{controller_name}-controller #{action_name}-action"}
     = render "layouts/header"
+    = render "layouts/messages"
     %section#content.container
       %div.wrapper
-        = render "layouts/messages"
         = yield
     = render "layouts/footer"
