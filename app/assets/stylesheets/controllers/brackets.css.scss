@@ -5,8 +5,9 @@
       &:hover { background-color: #D6F5FF; }
     }
 
-    h3 {
-      color: #c52000;
-    }
+    h3 { color: #c52000; }
+
+    .tie-breaker { display: none; }
+    .champion-box .seed { display: none; }
   }
 }

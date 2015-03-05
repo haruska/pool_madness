@@ -5,17 +5,13 @@
     var game_to_pick = []; //game_id => this bracket pick id
 
     <% @bracket.tournament.games.all.each do |g| %>
-    game_to_pick[<%= g.id %>] = <%= @bracket.picks.find_by(game_id: g.id).id %>;
-    <% unless g.next_game.blank? %>
-    game_transitions[<%= g.id %>] = [<%= g.next_game.id %>, <%= g.next_slot %>];
-    <% end %>
+        game_to_pick[<%= g.id %>] = <%= @bracket.picks.find_by(game_id: g.id).id %>;
+        <% unless g.next_game.blank? %>
+            game_transitions[<%= g.id %>] = [<%= g.next_game.id %>, <%= g.next_slot %>];
+        <% end %>
     <% end %>
 
     var champ_game_id = <%= @bracket.tournament.championship.id %>;
-
-    $(document).ready(function() {
-        $('#tie-breaker').hide();
-    });
 
 
     $('.slot').click(function () {
@@ -36,7 +32,7 @@
         //championship
         if(transition === undefined) {
 
-            var slot_node = $(".square1");
+            var slot_node = $(".champion-box");
 
             slot_node.html($(this).html());
 
@@ -116,7 +112,7 @@
     }
 
     function clearChampionship(team_id) {
-        var champ_node = $("div#championship > div.box > p.team" + team_id);
+        var champ_node = $(".championship > .team" + team_id);
         if(champ_node[0] === undefined) {
             return;
         }
