@@ -29,7 +29,7 @@ describe Tournament, type: :model do
 
     context "round 5" do
       it "returns the semi-final games" do
-        expect(subject.round_for(5)).to eq([subject.championship.game_one, subject.championship.game_two])
+        expect(subject.round_for(5)).to eq([subject.championship.game_two, subject.championship.game_one])
       end
     end
 

@@ -1,10 +1,10 @@
 class PoolsController < ApplicationController
   before_action :authenticate_user!
 
-  load_and_authorize_resource
+  load_and_authorize_resource only: :show
 
   def index
-
+    @pools = Pool.accessible_by(current_ability)
   end
 
   def show

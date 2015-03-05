@@ -28,6 +28,6 @@
   .bracket-body
     - 6.times do |round_num|
       = render partial: "brackets/round", locals: { round_num: round_num + 1 }
-    = render partial: "brackets/championship_round"
+    = render partial: "brackets/championship"
     .tie-breaker
       Tie Breaker: #{bracket.tie_breaker || "None"}
