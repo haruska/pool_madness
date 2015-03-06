@@ -1,0 +1,15 @@
+.pool
+  %ul
+    %li.name
+      = link_to "#{pool.name} Pool", pool
+    %li.tournament-name
+      = pool.tournament.name
+    %li.admins
+      Admins:
+      = pool.admins.map(&:name).join(", ")
+    %li.members
+      #{pool.users.count} Members
+  .invite-code
+    Invite Code:
+    %span.code= pool.invite_code
+

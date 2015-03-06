@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   has_many :pools, through: :pool_users
 
   validates :email, format: { with: EmailValidator.regexp }
+  validates :name, presence: true
 
   enum role: %i(regular admin)
 

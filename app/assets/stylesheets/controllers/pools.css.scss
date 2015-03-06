@@ -1,0 +1,31 @@
+.pools-controller {
+  &.index-action {
+    .pool {
+      @include clearfix;
+      padding: 20px;
+      background-color: $light-gray;
+      width: 100%;
+      margin-bottom: 25px;
+
+      ul {
+        @include span-columns(6 of 8);
+      }
+
+      .name {
+        font-size: larger;
+        font-weight: bold;
+      }
+
+      .invite-code {
+        @include span-columns(2 of 8);
+        @include omega;
+
+        padding-top: 30px;
+
+        .code {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

@@ -19,6 +19,10 @@ class Pool < ActiveRecord::Base
     DateTime.now > tip_off + 4.days
   end
 
+  def admins
+    pool_users.admin.map(&:user)
+  end
+
   private
 
   def set_invite_code

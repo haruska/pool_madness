@@ -1,6 +1,4 @@
 - if @pools.empty?
   %p You are not a member of any tournament pools.
 - else
-  %ul
-    - @pools.each do |pool|
-      %li= link_to "Pool #{pool.id}", pool
+  %ul.pools= render @pools, partial: "pools/pool_li"

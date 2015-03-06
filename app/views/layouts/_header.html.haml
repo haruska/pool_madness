@@ -4,6 +4,8 @@
     = link_to "MENU", "javascript:void(0)", class: "js-mobile-menu navigation-menu-button"
     %nav{:role => "navigation"}
       %ul#js-navigation-menu.navigation-menu.show
+        %li.nav-link
+          = link_to "Pool Madness", root_path
         - if @pool.present?
           %li.nav-link
             = link_to "Brackets", pool_brackets_path(@pool)
