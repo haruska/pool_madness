@@ -3,6 +3,8 @@ class Tournament < ActiveRecord::Base
   has_many :pools
   has_many :teams
 
+  validates :name, presence: true, uniqueness: true
+
   def championship
     game = games.first
     game = game.next_game while game.next_game.present?

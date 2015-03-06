@@ -4,6 +4,9 @@ describe Tournament, type: :model do
   before(:all) { @tournament = create(:tournament) }
   subject { @tournament }
 
+  it { should validate_presence_of :name }
+  it { should validate_uniqueness_of :name }
+
   describe "#championship" do
     let(:expected_game) { subject.games.to_a.find {|g| g.next_game.blank? } }
 

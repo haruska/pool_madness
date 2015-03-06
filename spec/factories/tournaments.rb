@@ -3,6 +3,10 @@
 FactoryGirl.define do
   factory :tournament do
     tip_off { 1.week.ago }
+
+    after(:build) do |tournament|
+      tournament.name = "#{tournament.tip_off.strftime('%Y')} #{Faker::Company.name} Tournament"
+    end
     
     after(:create) do |tournament|
         {
