@@ -12,6 +12,18 @@ describe Pool, type: :model do
 
   it { should delegate_method(:tip_off).to(:tournament) }
 
+  it { should validate_uniqueness_of :invite_code }
+  it { should validate_presence_of :name }
+  it { should validate_uniqueness_of(:name).scoped_to(:tournament_id) }
+
+  context "before validation" do
+    subject { build(:pool, tournament: tournament) }
+
+    it "generates a unique invite code" do
+      expect(subject).to be_valid
+      expect(subject.invite_code).to be_present
+    end
+  end
   context "tournament hasn't started" do
     before { tournament.update(tip_off: 4.days.from_now) }
 
