@@ -1,6 +1,3 @@
-
-#DatabaseCleaner.clean_with :truncation
-
 if Rails.env.development?
   User.delete_all
   Tournament.delete_all
