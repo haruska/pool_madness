@@ -7,7 +7,6 @@
     %title= content_for?(:title) ? yield(:title) : "Pool Madness"
     %link{:href => "/favicon.png", :rel => "shortcut icon", :type => "image/png"}/
     = stylesheet_link_tag "application", :media => "all"
-    = javascript_include_tag "application"
     = csrf_meta_tags
     = yield(:head)
   %body#application-layout{:class => "#{controller_name}-controller #{action_name}-action"}
@@ -17,3 +16,5 @@
       %div.wrapper
         = yield
     = render "layouts/footer"
+    = javascript_include_tag "application"
+    = jskit

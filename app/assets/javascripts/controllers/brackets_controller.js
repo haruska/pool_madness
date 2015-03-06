@@ -1,44 +1,40 @@
-<%# to move to JSKit %>
+App.createController("Brackets", {
+    actions: ["edit"],
 
-<script type="text/javascript">
-    var game_transitions = []; //hash of game id => [next game_id, slot (1 or 2)]
-    var game_to_pick = []; //game_id => this bracket pick id
+    edit: function(game_transitions, game_to_pick, champ_game_id) {
+        this.game_to_pick = game_to_pick;
+        this.game_transitions = game_transitions;
+        this.champ_game_id = champ_game_id;
 
-    <% @bracket.tournament.games.all.each do |g| %>
-        game_to_pick[<%= g.id %>] = <%= @bracket.picks.find_by(game_id: g.id).id %>;
-        <% unless g.next_game.blank? %>
-            game_transitions[<%= g.id %>] = [<%= g.next_game.id %>, <%= g.next_slot %>];
-        <% end %>
-    <% end %>
+        $('.slot').click(this.handleSlotClick);
+    },
 
-    var champ_game_id = <%= @bracket.tournament.championship.id %>;
+    handleSlotClick: function (event) {
 
-
-    $('.slot').click(function () {
-        var parent_node = $(this).offsetParent();
+        var parent_node = $(event.currentTarget).offsetParent();
 
         var current_game_id = parseInt(parent_node[0].id.replace('match', ''));
-        var transition = game_transitions[current_game_id];
+        var transition = this.game_transitions[current_game_id];
 
         var team_id = -1;
-        var classList = $(this).attr('class').split(/\s+/);
-        $.each( classList, function(index, item){
+        var classList = $(event.currentTarget).attr('class').split(/\s+/);
+        $.each(classList, function (index, item) {
             if (item.substring(0, 4) == 'team') {
-                team_id = parseInt(item.replace('team',''));
+                team_id = parseInt(item.replace('team', ''));
             }
         });
 
 
         //championship
-        if(transition === undefined) {
+        if (transition === undefined) {
 
             var slot_node = $(".champion-box");
 
-            slot_node.html($(this).html());
+            slot_node.html($(event.currentTarget).html());
 
             //remove any old teamID classes
             var defunctClassList = slot_node.attr('class').split(/\s+/);
-            $.each( defunctClassList, function(index, item){
+            $.each(defunctClassList, function (index, item) {
                 if (item.substring(0, 4) == 'team') {
                     slot_node.removeClass(item);
                 }
@@ -59,34 +55,33 @@
             //get team in next slot
             var defunct_team_id = -1;
             var defunctClassList = slot_node.attr('class').split(/\s+/);
-            $.each( defunctClassList, function(index, item){
+            $.each(defunctClassList, function (index, item) {
                 if (item.substring(0, 4) == 'team') {
-                    defunct_team_id = parseInt(item.replace('team',''));
+                    defunct_team_id = parseInt(item.replace('team', ''));
                 }
             });
 
-            if(defunct_team_id > 0 && defunct_team_id != team_id) {
-                clearSelection(current_game_id, next_game_id, defunct_team_id);
-                clearChampionship(defunct_team_id);
+            if (defunct_team_id > 0 && defunct_team_id != team_id) {
+                this.clearSelection(current_game_id, next_game_id, defunct_team_id);
+                this.clearChampionship(defunct_team_id);
             }
 
 
-
-            slot_node.html($(this).html());
+            slot_node.html($(event.currentTarget).html());
             slot_node.attr('class', 'slot slot' + next_slot + ' team' + team_id);
         }
 
         $.ajax({
-            url: '/picks/' + game_to_pick[current_game_id],
+            url: '/picks/' + this.game_to_pick[current_game_id],
             type: 'POST',
-            data: { _method: 'PUT', pick: {team_id: team_id}}
+            data: {_method: 'PUT', pick: {team_id: team_id}}
 
         });
 
+    },
 
-    });
 
-    function clearSelection(prev_game_id, from_game_id, team_id) {
+    clearSelection: function(prev_game_id, from_game_id, team_id) {
         var slot_node = $("div#match" + from_game_id + " > .team" + team_id);
         if(slot_node[0] === undefined) {
             return;
@@ -96,22 +91,22 @@
             slot_node.removeClass("team" + team_id);
 
             $.ajax({
-                url: '/picks/' + game_to_pick[prev_game_id],
+                url: '/picks/' + this.game_to_pick[prev_game_id],
                 type: 'POST',
                 data: { _method: 'PUT', pick: {team_id: -1}}
 
             });
 
-            if(game_transitions[from_game_id] === undefined) {
-                clearChampionship(team_id);
+            if(this.game_transitions[from_game_id] === undefined) {
+                this.clearChampionship(team_id);
             }
             else {
-                clearSelection(from_game_id, game_transitions[from_game_id][0], team_id);
+                this.clearSelection(from_game_id, this.game_transitions[from_game_id][0], team_id);
             }
         }
-    }
+    },
 
-    function clearChampionship(team_id) {
+    clearChampionship: function(team_id) {
         var champ_node = $(".championship > .team" + team_id);
         if(champ_node[0] === undefined) {
             return;
@@ -121,11 +116,12 @@
             champ_node.removeClass("team" + team_id);
 
             $.ajax({
-                url: '/picks/' + game_to_pick[champ_game_id],
+                url: '/picks/' + this.game_to_pick[this.champ_game_id],
                 type: 'POST',
                 data: { _method: 'PUT', pick: {team_id: -1}}
 
             });
         }
     }
-</script>
+
+});

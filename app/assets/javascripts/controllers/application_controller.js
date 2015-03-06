@@ -1,0 +1,2 @@
+App.createController("Application", {
+});

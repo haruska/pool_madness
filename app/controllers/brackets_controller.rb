@@ -4,7 +4,9 @@ class BracketsController < ApplicationController
   load_and_authorize_resource :pool, only: [:index, :create]
   load_and_authorize_resource :bracket, through: :pool, only: [:index, :create]
   load_and_authorize_resource :bracket, except: [:index, :create]
+
   before_action :load_pool, except: [:index, :create]
+  before_action :set_jskit_payload, only: [:edit]
 
   layout "bracket", except: [:index]
 
@@ -64,5 +66,18 @@ class BracketsController < ApplicationController
 
   def bracket_params
     params.require(:bracket).permit(:tie_breaker, :name, :points, :possible_points)
+  end
+
+  def set_jskit_payload
+    game_transitions = {}
+    game_to_pick = {}
+    champ_game_id = @bracket.tournament.championship.id
+
+    @bracket.tournament.games.all.each do |g|
+      game_to_pick[g.id] = @bracket.picks.find_by(game_id: g.id).id
+      game_transitions[g.id] = [g.next_game.id, g.next_slot] unless g.next_game.blank?
+    end
+
+    set_action_payload(game_transitions, game_to_pick, champ_game_id)
   end
 end
