@@ -28,4 +28,11 @@
       }
     }
   }
+
+  &.invite_code-action {
+    .wrapper {
+      text-align: left;
+      width: 200px;
+    }
+  }
 }

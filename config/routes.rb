@@ -14,6 +14,9 @@ PoolMadness::Application.routes.draw do
   #   end
   # end
 
+  match "pools/join", to: "pools#join", via: :post, as: "join_pool"
+  match "pools/invite_code", to: "pools#invite_code", via: :get, as: "invite_code"
+
   # match "/subscribe", to: "home#subscribe", via: :get, as: "subscribe"
   # match "/payments", to: "home#payments", via: :get, as: "payments"
   # match "/rules", to: "home#rules", via: :get, as: "rules"
@@ -34,6 +37,8 @@ PoolMadness::Application.routes.draw do
   end
 
   resources :brackets, except: [:index, :create]
+
+
 
   #resources :games
 end
