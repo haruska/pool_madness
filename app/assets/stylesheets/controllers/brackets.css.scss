@@ -1,11 +1,28 @@
 .brackets-controller {
+  min-width: 1024px;
+
+  &.index-action {
+    table {
+      font-size: 0.9em;
+    }
+
+    h3 {
+      font-size: small;
+      padding-bottom: 25px;
+
+    }
+
+    .actions {
+      padding-top: 25px;
+    }
+  }
   &.edit-action {
     .slot {
       cursor: pointer;
       &:hover { background-color: #D6F5FF; }
     }
 
-    h3 { color: #c52000; }
+    h2 { color: $red; }
 
     .tie-breaker { display: none; }
     .champion-box .seed { display: none; }

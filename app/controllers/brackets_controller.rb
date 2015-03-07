@@ -31,16 +31,17 @@ class BracketsController < ApplicationController
   #   render layout: false
   # end
   #
-  # def create
-  #   if @bracket.save
-  #     redirect_to edit_bracket_path(@bracket)
-  #   else
-  #     redirect_to root_path, alert: "Problem creating a new bracket. Please try again."
-  #   end
-  # end
-  #
+
+  def create
+    if @bracket.save
+      redirect_to edit_bracket_path(@bracket)
+    else
+      redirect_to root_path, alert: "Problem creating a new bracket. Please try again."
+    end
+  end
+
   def update
-    if @bracket.update(bracket_params)
+    if @bracket.update(update_params)
       redirect_to @bracket, notice: "Bracket Saved"
     else
       flash.now[:alert] = "Problem saving bracket. Please try again"
@@ -64,7 +65,7 @@ class BracketsController < ApplicationController
     @pool = @bracket.pool
   end
 
-  def bracket_params
+  def update_params
     params.require(:bracket).permit(:tie_breaker, :name, :points, :possible_points)
   end
 

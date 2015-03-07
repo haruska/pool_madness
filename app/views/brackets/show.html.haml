@@ -1,9 +1,9 @@
 %h2
-  - if @bracket.name =~ /#{Regexp.escape(@bracket.user.name)}/
-    = @bracket.name
-  - else
-    %abbr{title: @bracket.user.name}
-      = @bracket.name
+  = @bracket.name
+
+.bracket-actions
+  - if can?(:edit, @bracket)
+    = link_to "Edit Bracket", edit_bracket_path(@bracket)
 
 = render @bracket
 

@@ -1,15 +1,15 @@
 module BracketsHelper
   def status_to_label(status)
-    out = '<span class="label label-'
+    out = '<span class="badge-'
     case status
     when :ok
       out += 'success">OK'
     when :unpaid
-      out += 'warning">Unpaid'
+      out += 'alert">Unpaid'
     when :incomplete
-      out += 'important">Incomplete'
+      out += 'error">Incomplete'
     end
-    out += "</span>"
+    out += '</span>'
     out.html_safe
   end
 end
