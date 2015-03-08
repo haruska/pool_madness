@@ -1,0 +1,28 @@
+%h2 My Brackets
+
+%h3 * All brackets in pool will be displayed after tournament start
+
+%table.table-minimal
+  %thead
+    %tr
+      %th Name
+      %th Final Four
+      %th Final Four
+      %th Second
+      %th Winner
+      %th Tie
+      %th Status
+  %tbody
+    - @brackets.each do |bracket|
+      %tr
+        %td= link_to bracket.name, edit_bracket_path(bracket)
+        - bracket.sorted_four.each do |team|
+          %td= team.name
+        - (4 - bracket.sorted_four.size).times do
+          %td
+        %td= bracket.tie_breaker
+        %td= status_to_label(bracket.status)
+
+.actions
+  - if can? :create, @pool.brackets.build(user_id: current_user.id)
+    = link_to "New Bracket Entry", pool_brackets_path, :method => :post, :class => "button"

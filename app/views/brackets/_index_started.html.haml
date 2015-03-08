@@ -1,0 +1,29 @@
+%h2 Brackets (#{@brackets.size} total)
+
+%table.table-minimal
+  %thead
+    %tr
+      %th Name
+      %th Score
+      %th Possible
+      - if @pool.start_eliminating?
+        %th Best
+      %th Final Four
+      %th Final Four
+      %th Second
+      %th Winner
+      %th Tie
+  %tbody
+    - @brackets.each_with_index do |bracket, i|
+      %tr{:id => "bracket-row-#{bracket.id}"}
+        %td
+          = "*" if @pool.start_eliminating? && bracket.best_possible > 2
+          = "#{i+1}."
+          = link_to bracket.name, bracket
+        %td= bracket.points
+        %td= bracket.possible_points
+        - if @pool.start_eliminating?
+          %td= bracket.best_possible > 2 ? '-' : bracket.best_possible + 1
+        - bracket.sorted_four.each do |team|
+          %td= team.name
+        %td= bracket.tie_breaker

@@ -2,7 +2,7 @@ class BracketsController < ApplicationController
   before_action :authenticate_user!
 
   load_and_authorize_resource :pool, only: [:index, :create]
-  load_and_authorize_resource :bracket, through: :pool, only: [:index, :create]
+  load_and_authorize_resource :bracket, through: :pool, only: [:create]
   load_and_authorize_resource :bracket, except: [:index, :create]
 
   before_action :load_pool, except: [:index, :create]
@@ -11,12 +11,12 @@ class BracketsController < ApplicationController
   layout "bracket", except: [:index]
 
   def index
-    @brackets = @brackets.to_a
-
     if @pool.started?
+      @brackets = @pool.brackets.to_a
       @brackets.sort_by! { |x| [100_000 - [x.best_possible, 4].min, x.points, x.possible_points] }
       @brackets.reverse!
     else
+      @brackets = @pool.brackets.where(user_id: current_user).to_a
       @brackets.sort_by! { |x| [[:ok, :unpaid, :incomplete].index(x.status), x.name] }
     end
   end
@@ -30,33 +30,27 @@ class BracketsController < ApplicationController
   #
   #   render layout: false
   # end
-  #
 
   def create
     if @bracket.save
       redirect_to edit_bracket_path(@bracket)
     else
-      redirect_to root_path, alert: "Problem creating a new bracket. Please try again."
+      redirect_to pool_brackets_path(@pool), alert: "Problem creating a new bracket. Please try again."
     end
   end
 
   def update
     if @bracket.update(update_params)
-      redirect_to @bracket, notice: "Bracket Saved"
+      redirect_to pool_brackets_path(@pool), notice: "Bracket Saved"
     else
-      flash.now[:alert] = "Problem saving bracket. Please try again"
+      flash.now[:error] = "Problem saving bracket. Please try again"
       render :edit
     end
   end
-  #
+
   # def destroy
   #   @bracket.destroy
-  #   redirect_to root_path, notice: "Bracket Destroyed"
-  # end
-  #
-  # def current_user_bracket_ids
-  #   ids = current_user.brackets.pluck(:id)
-  #   render json: ids.to_json
+  #   redirect_to pool_brackets_path(@pool), notice: "Bracket Destroyed"
   # end
 
   private
