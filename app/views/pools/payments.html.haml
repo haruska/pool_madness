@@ -1,25 +1,17 @@
-%section#overview
-  .page-header
-    %h1 Types of Payment
-  %p
-    Each bracket entry in the pool has a $10 entry fee. The options are described in detail below.
-  %p
-    These methods assume trust that the proverbial "check is in the mail". We're all friends here. Filling out
-    a bracket assumes you've agreed to pay the entry fee before the tournament starts. In some circumstances that's not
-    possible. Therefore,
-    = succeed "." do
-      %strong if you need extra time you must make arrangements with a pool administrator
+%h2 Types of Payment
+
 %section#cash
-  %h2 Cash
+  %h3 Cash
   %p
     Cash in person is by far the easiest option. Note that because of lack of payment by some entries last year,
     %strong you must pay an admin in person before tip off or your entry will be voided.
+
 %section#credit-card
-  %h2 Credit Card
+  %h3 Credit Card
   %p
-    We accept all major credit cards. Note, the processing company charges us $0.61 per bracket which we add to the
-    amount charged. Just select "Pay with Credit Card" on #{link_to "your brackets", brackets_path} page.
+    We accept all major credit cards. Just select "Pay with Credit Card" on #{link_to "your brackets", pool_brackets_path(@pool)} page.
+
 %section#paypal
-  %h2 Paypal
+  %h3 Paypal
   %p
     If you wish to pay by PayPal, just email an administrator and they'll send you a payment request to complete on PayPal.

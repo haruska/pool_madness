@@ -11,8 +11,8 @@
             -#  = link_to "Game Results", tournament_path(@pool.tournament)
             %li.nav-link
               = link_to "Rules and Scoring", rules_pool_path(@pool)
-            -#%li.nav-link
-            -#  = link_to "Types of Payment", pool_payments_path(@pool)
+            %li.nav-link
+              = link_to "Types of Payment", payments_pool_path(@pool)
           - else
             %li.nav-link= link_to "Pool Madness", root_path
       .navigation-tools

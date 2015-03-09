@@ -29,14 +29,18 @@ PoolMadness::Application.routes.draw do
 
   resources :picks, only: [:update]
 
+  match "pools/join", to: "pools#join", via: :post, as: "join_pool"
+  match "pools/invite_code", to: "pools#invite_code", via: :get, as: "invite_code"
+
   resources :pools, only: [:index, :show] do
-    get :rules, on: :member
+    member do
+      get :rules
+      get :payments
+    end
+
 
     resources :brackets, only: [:index, :create]
   end
-
-  match "pools/join", to: "pools#join", via: :post, as: "join_pool"
-  match "pools/invite_code", to: "pools#invite_code", via: :get, as: "invite_code"
 
   resources :brackets, except: [:index, :create]
 
