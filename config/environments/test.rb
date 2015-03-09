@@ -31,7 +31,7 @@ PoolMadness::Application.configure do
   config.active_support.deprecation = :stderr
 
   # ActionMailer Config
-  config.action_mailer.default_url_options = { host: "example.com" }
+  config.action_mailer.default_url_options = { host: ENV["MAILER_HOST"] }
 
   config.eager_load = false
 end
