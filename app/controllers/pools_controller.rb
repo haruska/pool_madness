@@ -1,7 +1,7 @@
 class PoolsController < ApplicationController
   before_action :authenticate_user!
 
-  load_and_authorize_resource only: :show
+  load_and_authorize_resource only: [:show]
 
   def index
     @pools = Pool.accessible_by(current_ability)
@@ -13,6 +13,10 @@ class PoolsController < ApplicationController
   end
 
   def invite_code
+  end
+
+  def rules
+    @pool = Pool.accessible_by(current_ability).find(params[:id])
   end
 
   def join
