@@ -47,7 +47,7 @@ describe "User creation, authentication, deletion", type: :feature, js: true do
     it "allows you to login with a email address and password" do
       fill_in "user[email]", with: subject.email
       fill_in "user[password]", with: password
-      click_button "Sign in"
+      click_button "Log in"
       expect(page).to have_content("Signed in successfully")
     end
   end
