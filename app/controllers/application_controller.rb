@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   rescue_from CanCan::AccessDenied do |_exception|
     if user_signed_in?
       flash[:error] = "Not authorized to view this page"
@@ -12,5 +14,11 @@ class ApplicationController < ActionController::Base
       session[:user_return_to] = request.url
       redirect_to new_user_session_path
     end
+  end
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) << :name
   end
 end

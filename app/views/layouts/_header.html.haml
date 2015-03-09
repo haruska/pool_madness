@@ -2,29 +2,32 @@
   .navigation-wrapper
     = link_to image_tag("basketball_icon.png"), root_path, class: :logo
     = link_to "MENU", "javascript:void(0)", class: "js-mobile-menu navigation-menu-button"
-    %nav{:role => "navigation"}
-      %ul#js-navigation-menu.navigation-menu.show
-        - if @pool.present?
-          %li.nav-link
-            = link_to "Brackets", pool_brackets_path(@pool)
-          -#%li.nav-link
-          -#  = link_to "Game Results", tournament_path(@pool.tournament)
-          -#%li.nav-link
-          -#  = link_to "Rules and Scoring", pool_rules_path(@pool)
-          -#%li.nav-link
-          -#  = link_to "Types of Payment", pool_payments_path(@pool)
-        - else
-          %li.nav-link
-            = link_to "Pool Madness", root_path
-    .navigation-tools
-      %ul.navigation-menu
-        - if user_signed_in?
+    - if user_signed_in?
+      %nav{:role => "navigation"}
+        %ul#js-navigation-menu.navigation-menu.show
+          - if @pool.present?
+            %li.nav-link= link_to "Brackets", pool_brackets_path(@pool)
+            -#%li.nav-link
+            -#  = link_to "Game Results", tournament_path(@pool.tournament)
+            -#%li.nav-link
+            -#  = link_to "Rules and Scoring", pool_rules_path(@pool)
+            -#%li.nav-link
+            -#  = link_to "Types of Payment", pool_payments_path(@pool)
+          - else
+            %li.nav-link= link_to "Pool Madness", root_path
+      .navigation-tools
+        %ul.navigation-menu
           %li.nav-link.more
             = link_to current_user.email, "javascript:void(0)"
             %ul.submenu
               -#%li= link_to 'Billing/Payments', user_stripes_path(current_user)
               %li= link_to 'Edit account', edit_user_registration_path
               %li= link_to 'Logout', destroy_user_session_path, method: 'delete'
-        - else
-          %li.nav-link
-            = link_to "Login", new_user_session_path
+    - else
+      %nav{:role => "navigation"}
+        %ul#js-navigation-menu.navigation-menu.show
+          %li.nav-link= link_to "Pool Madness", root_path
+      .navigation-tools
+        %ul.navigation-menu
+          %li.nav-link= link_to "Login", new_user_session_path
+        = link_to "Sign Up", new_user_registration_path, class: "sign-up"
