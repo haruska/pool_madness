@@ -28,7 +28,7 @@ Pool.all.each do |pool|
   end
 end
 
-Bracket.all.each { |b| b.paid! }
+#Bracket.all.each { |b| b.paid! }
 
 puts "updating pool-admin and user email addresses"
 PoolUser.admin.first.user.update!(email: "pool-admin@pool-madness.com")

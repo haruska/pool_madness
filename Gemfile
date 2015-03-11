@@ -44,7 +44,6 @@ group :development, :test do
   gem "selenium-webdriver"
   gem "spring"
   gem "thin"
-  gem "webmock"
 end
 
 group :development do
@@ -56,6 +55,7 @@ group :test do
   gem "shoulda-matchers", require: false
   gem "simplecov", require: false
   gem "stripe-ruby-mock", "~> 2.0.1"
+  gem "webmock"
 end
 
 group :production, :staging do

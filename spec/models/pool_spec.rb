@@ -24,6 +24,7 @@ describe Pool, type: :model do
       expect(subject.invite_code).to be_present
     end
   end
+
   context "tournament hasn't started" do
     before { tournament.update(tip_off: 4.days.from_now) }
 
@@ -33,6 +34,10 @@ describe Pool, type: :model do
 
     it "has not started eliminating" do
       expect(subject).to_not be_start_eliminating
+    end
+
+    it "has an entry_fee that defaults to 10 dollars" do
+      expect(subject.entry_fee).to eq(1000)
     end
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150306151624) do
+ActiveRecord::Schema.define(version: 20150311134107) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,10 +98,11 @@ ActiveRecord::Schema.define(version: 20150306151624) do
 
   create_table "pools", force: :cascade do |t|
     t.integer  "tournament_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.string   "name"
     t.string   "invite_code"
+    t.integer  "entry_fee",     default: 1000, null: false
   end
 
   add_index "pools", ["invite_code"], name: "index_pools_on_invite_code", unique: true, using: :btree

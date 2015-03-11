@@ -43,6 +43,7 @@ PoolMadness::Application.routes.draw do
   end
 
   resources :brackets, except: [:index, :create]
+  resources :charges, only: [:create]
 
   #resources :games
 end
