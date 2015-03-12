@@ -188,6 +188,18 @@
       .m2 {
         right: 0;
         border-right: none;
+
+        //fixme: flip slot1 and slot2
+
+        .slot1 {
+          top: auto;
+          bottom: 0px;
+        }
+
+        .slot2 {
+          top: 0px;
+          bottom: auto;
+        }
       }
     }
 

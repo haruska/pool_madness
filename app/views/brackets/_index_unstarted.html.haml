@@ -27,7 +27,8 @@
   - if can? :create, @pool.brackets.build(user_id: current_user.id)
     = link_to "New Bracket Entry", pool_brackets_path, :method => :post, :class => "button"
   - if @unpaid_brackets.present?
-    = form_tag charges_path, method: :post do
-      - @unpaid_brackets.each do |unpaid_bracket|
-        = hidden_field_tag "bracket_ids[]", unpaid_bracket.id, id: nil
-      %script.stripe-button{"data-amount" => @unpaid_brackets.size * @pool.entry_fee, "data-description" => pluralize(@unpaid_brackets.size, "bracket"), "data-email" => current_user.email, "data-image" => image_path("basketball_icon.png"), "data-key" => Rails.configuration.stripe[:publishable_key], "data-name" => "Pool Madness", "data-allow-remember-me" => "false", :src => "https://checkout.stripe.com/checkout.js"}
+    .payment
+      = form_tag charges_path, method: :post do
+        - @unpaid_brackets.each do |unpaid_bracket|
+          = hidden_field_tag "bracket_ids[]", unpaid_bracket.id, id: nil
+        %script.stripe-button{"data-amount" => @unpaid_brackets.size * @pool.entry_fee, "data-description" => pluralize(@unpaid_brackets.size, "bracket"), "data-email" => current_user.email, "data-image" => image_path("basketball_icon.png"), "data-key" => Rails.configuration.stripe[:publishable_key], "data-name" => "Pool Madness", "data-allow-remember-me" => "false", :src => "https://checkout.stripe.com/checkout.js"}
