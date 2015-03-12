@@ -2,11 +2,15 @@
 
 = render @bracket
 
-= form_for @bracket do |f|
-  = f.label :name, "Bracket Name"
-  = f.text_field :name
+.actions
+  .data-form
+    = form_for @bracket do |f|
+      = f.label :name, "Bracket Name"
+      = f.text_field :name
 
-  = f.label :tie_breaker
-  = f.text_field :tie_breaker
+      = f.label :tie_breaker
+      = f.text_field :tie_breaker
 
-  = f.submit "Done"
+      = f.submit "Done"
+  .destroy
+    = link_to "Delete Bracket", @bracket, class: "button danger", method: :delete, data: { confirm: "Are you sure you want to delete your bracket?"}

@@ -30,4 +30,8 @@ input[type="submit"] {
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  &.danger {
+    background-color: $red;
+  }
 }

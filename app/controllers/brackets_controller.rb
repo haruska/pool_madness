@@ -25,13 +25,6 @@ class BracketsController < ApplicationController
   def show
   end
 
-  # def printable
-  #   @bracket = Bracket.find(params[:id])
-  #   authorize! :read, @bracket
-  #
-  #   render layout: false
-  # end
-
   def create
     if @bracket.save
       redirect_to edit_bracket_path(@bracket)
@@ -49,10 +42,10 @@ class BracketsController < ApplicationController
     end
   end
 
-  # def destroy
-  #   @bracket.destroy
-  #   redirect_to pool_brackets_path(@pool), notice: "Bracket Destroyed"
-  # end
+  def destroy
+    @bracket.destroy
+    redirect_to pool_brackets_path(@pool), notice: "Bracket Destroyed"
+  end
 
   private
 

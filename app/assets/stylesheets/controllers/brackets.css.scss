@@ -31,5 +31,10 @@
 
     .tie-breaker { display: none; }
     .champion-box .seed { display: none; }
+
+    .destroy {
+      display: inline-block;
+      float: right;
+    }
   }
 }
