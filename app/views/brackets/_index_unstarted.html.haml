@@ -15,7 +15,11 @@
   %tbody
     - @brackets.each do |bracket|
       %tr
-        %td= link_to bracket.name, edit_bracket_path(bracket)
+        %td
+          - if bracket.status == :ok
+            = link_to bracket.name, bracket
+          - else
+            = link_to bracket.name, edit_bracket_path(bracket)
         - bracket.sorted_four.each do |team|
           %td= team.name
         - (4 - bracket.sorted_four.size).times do

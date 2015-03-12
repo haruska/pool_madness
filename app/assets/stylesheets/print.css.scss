@@ -1,0 +1,11 @@
+header { display: none }
+
+.brackets-controller {
+  &.show-action {
+    .bracket-actions { display: none }
+  }
+
+  &.edit-action {
+    form { display: none }
+  }
+}
