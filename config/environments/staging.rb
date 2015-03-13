@@ -60,7 +60,6 @@ PoolMadness::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.action_mailer.default_url_options = { host: ENV["MAILER_HOST"] }
   # ActionMailer Config
   # Setup for production - deliveries, no errors raised
   config.action_mailer.delivery_method = :smtp
@@ -76,9 +75,6 @@ PoolMadness::Application.configure do
       password: ENV["MANDRILL_APIKEY"], # SMTP password is any valid API key
       authentication: "login" # Mandrill supports 'plain' or 'login'
   }
-
-  #FIXME: Not needed in rails 4.1 (ENV var allowed in application.rb)
-  config.action_mailer.default_url_options = { host: 'madness-staging.herokuapp.com' }
 
   config.eager_load = true
 end

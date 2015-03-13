@@ -61,7 +61,7 @@ module PoolMadness
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = "1.0"
 
-    #FIXME: host from ENV does not work in rails 4.0. Fixed in 4.1
-    #config.action_mailer.default_url_options = { host: ENV["MAILER_HOST"] }
+    # ActionMailer Config
+    config.action_mailer.default_url_options = { host: ENV["HOST"] }
   end
 end
