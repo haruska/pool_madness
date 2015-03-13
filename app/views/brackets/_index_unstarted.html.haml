@@ -2,30 +2,31 @@
 
 %h3 * All brackets in pool will be displayed after tournament start
 
-%table.table-minimal
-  %thead
-    %tr
-      %th Name
-      %th Final Four
-      %th Final Four
-      %th Second
-      %th Winner
-      %th Tie
-      %th Status
-  %tbody
-    - @brackets.each do |bracket|
+- if @brackets.present?
+  %table.table-minimal
+    %thead
       %tr
-        %td
-          - if bracket.status == :ok
-            = link_to bracket.name, bracket
-          - else
-            = link_to bracket.name, edit_bracket_path(bracket)
-        - bracket.sorted_four.each do |team|
-          %td= team.name
-        - (4 - bracket.sorted_four.size).times do
+        %th Name
+        %th Final Four
+        %th Final Four
+        %th Second
+        %th Winner
+        %th Tie
+        %th Status
+    %tbody
+      - @brackets.each do |bracket|
+        %tr
           %td
-        %td= bracket.tie_breaker
-        %td= status_to_label(bracket.status)
+            - if bracket.status == :ok
+              = link_to bracket.name, bracket
+            - else
+              = link_to bracket.name, edit_bracket_path(bracket)
+          - bracket.sorted_four.each do |team|
+            %td= team.name
+          - (4 - bracket.sorted_four.size).times do
+            %td
+          %td= bracket.tie_breaker
+          %td= status_to_label(bracket.status)
 
 .actions
   - if can? :create, @pool.brackets.build(user_id: current_user.id)
