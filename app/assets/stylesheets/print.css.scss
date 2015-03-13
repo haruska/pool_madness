@@ -1,11 +1,13 @@
-header { display: none }
+@media print {
+  header { display: none }
 
-.brackets-controller {
-  &.show-action {
-    .bracket-actions { display: none }
-  }
+  .brackets-controller {
+    &.show-action {
+      .bracket-actions { display: none }
+    }
 
-  &.edit-action {
-    form { display: none }
+    &.edit-action {
+      form { display: none }
+    }
   }
 }

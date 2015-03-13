@@ -7,7 +7,6 @@
     %title= content_for?(:title) ? yield(:title) : "Pool Madness"
     %link{:href => "/favicon.png", :rel => "shortcut icon", :type => "image/png"}/
     = stylesheet_link_tag "application", :media => "all"
-    = stylesheet_link_tag "print", :media => "print"
     = csrf_meta_tags
     = yield(:head)
   %body#application-layout{:class => "#{controller_name}-controller #{action_name}-action"}
