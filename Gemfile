@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+ruby "2.2.0"
+
 gem "active_attr", git: "https://github.com/haruska/active_attr.git"
 gem "bitters"
 gem "bourbon"
