@@ -1,5 +1,4 @@
 .brackets-controller {
-  min-width: 1024px;
 
   &.index-action {
     table {
@@ -21,7 +20,13 @@
       }
     }
   }
+
+  &.show-action {
+    .wrapper { min-width: 1024px; }
+  }
+
   &.edit-action {
+    .wrapper { min-width: 1024px; }
     .slot {
       cursor: pointer;
       &:hover { background-color: #D6F5FF; }

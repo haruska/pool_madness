@@ -14,3 +14,7 @@
 @import "controllers/pools";
 @import "admin/brackets";
 @import "print";
+
+body {
+  min-width: 800px;
+}
