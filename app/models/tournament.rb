@@ -3,6 +3,8 @@ class Tournament < ActiveRecord::Base
   has_many :pools
   has_many :teams
 
+  accepts_nested_attributes_for :teams
+
   validates :name, presence: true, uniqueness: true
 
   def championship

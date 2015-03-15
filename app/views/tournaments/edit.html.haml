@@ -1,0 +1,9 @@
+%h2 Edit Tournament
+= form_for(@tournament) do |f|
+  = f.label :name
+  = f.text_field :name
+  - @tournament.teams.each do |team|
+    = f.fields_for :teams, team do |team_fields|
+      = team_fields.label :name, "#{team.region} seed #{team.seed}"
+      = team_fields.text_field :name
+  = f.submit
