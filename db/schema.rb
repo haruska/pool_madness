@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150311134107) do
+ActiveRecord::Schema.define(version: 20150316014756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20150311134107) do
     t.integer  "tie_breaker"
     t.integer  "payment_collector_id"
     t.string   "stripe_charge_id"
-    t.string   "name"
+    t.string   "name",                                 null: false
     t.integer  "points",               default: 0,     null: false
     t.integer  "possible_points",      default: 0,     null: false
     t.integer  "best_possible",        default: 20000
@@ -34,8 +34,10 @@ ActiveRecord::Schema.define(version: 20150311134107) do
 
   add_index "brackets", ["best_possible"], name: "index_brackets_on_best_possible", using: :btree
   add_index "brackets", ["charge_id"], name: "index_brackets_on_stripe_charge_id", using: :btree
+  add_index "brackets", ["name"], name: "index_brackets_on_name", using: :btree
   add_index "brackets", ["payment_collector_id"], name: "index_brackets_on_payment_collector_id", using: :btree
   add_index "brackets", ["points"], name: "index_brackets_on_points", using: :btree
+  add_index "brackets", ["pool_id", "name"], name: "index_brackets_on_pool_id_and_name", unique: true, using: :btree
   add_index "brackets", ["pool_id"], name: "index_brackets_on_pool_id", using: :btree
   add_index "brackets", ["possible_points"], name: "index_brackets_on_possible_points", using: :btree
   add_index "brackets", ["user_id"], name: "index_brackets_on_user_id", using: :btree
