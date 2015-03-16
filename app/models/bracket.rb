@@ -21,7 +21,7 @@ class Bracket < ActiveRecord::Base
   enum payment_state: %i(unpaid promised paid)
 
   def status
-    if !self.complete?
+    if self.incomplete?
       :incomplete
     elsif self.unpaid?
       :unpaid
