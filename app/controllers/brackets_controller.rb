@@ -26,6 +26,8 @@ class BracketsController < ApplicationController
   end
 
   def create
+    @bracket.pool = @pool
+    
     if @bracket.save
       redirect_to edit_bracket_path(@bracket)
     else
