@@ -1,5 +1,5 @@
-require 'rails_helper'
+require 'spec_helper'
 
-RSpec.describe TournamentsController, type: :controller do
+describe TournamentsController, type: :controller do
 
 end
