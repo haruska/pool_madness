@@ -38,11 +38,16 @@ PoolMadness::Application.routes.draw do
       get :payments
     end
 
-
     resources :brackets, only: [:index, :create]
+    resources :admin_brackets, only: [:index]
   end
 
   resources :brackets, except: [:index, :create]
+
+  resources :admin_brackets, only: [] do
+    patch :mark_paid, on: :member
+  end
+
   resources :charges, only: [:create]
   resources :tournaments, only: [:edit, :update]
 

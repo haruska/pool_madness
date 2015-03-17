@@ -1,0 +1,16 @@
+%table.tables
+  %thead
+    %th Owner Name
+    %th Bracket Name
+    %th Status
+    %th Actions
+  - @brackets.each do |bracket|
+    %tr{id: "bracket-#{bracket.id}"}
+      %td= bracket.user.name
+      %td= link_to bracket.name, bracket
+      %td.status-cell= status_to_label(bracket.status)
+      %td
+        - unless bracket.paid?
+          = link_to("Mark Paid", mark_paid_admin_bracket_path(bracket), method: :patch, class: "button")
+          = link_to("Delete", bracket_path(bracket), method: :delete, class: "button danger", data: {confirm: "Are you sure you want to delete this bracket?"})
+
