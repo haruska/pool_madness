@@ -28,4 +28,6 @@ PoolMadness::Application.configure do
   config.assets.debug = true
 
   config.eager_load = false
+
+  config.active_job.queue_adapter = :sidekiq
 end
