@@ -1,29 +1,16 @@
-%h3 Brackets
-.span12
-  - if @brackets.present?
-    %table.table.table-condensed.table-striped{"data-provides" => "rowlink"}
-      %thead
-        %tr
-          %th Name
-          %th Payment Status
-          %th Completed
-          %th
-      %tbody
-        - @brackets.each do |bracket|
-          %tr
-            %td= link_to bracket.name, bracket
-            %td
-              - if bracket.unpaid?
-                = link_to "Promise to Pay", promise_to_pay_admin_bracket_path(bracket), :method => :patch, :class =>'btn btn-mini'
-              - elsif bracket.promised?
-                Promised to pay #{paid_to?(bracket)}
-              - elsif bracket.paid?
-                Paid to #{paid_to?(bracket)}
-            %td
-              = bracket.complete?
-            %td.nolink
-              = link_to("Change Picks", edit_bracket_path(bracket), :class => 'btn btn-mini btn-primary') if can?(:edit, bracket)
-              = link_to("Delete bracket", bracket_path(bracket), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-mini btn-danger') if can?(:destroy, bracket)
-              = link_to "Mark paid", mark_paid_admin_bracket_path(bracket), :method => :patch, :class => 'btn btn-mini'  unless bracket.paid?
-  .pagination-centered
-    = link_to "New Bracket Entry", brackets_path, :method => :post, :class => 'btn btn-primary'
+%table.tables
+  %thead
+    %th Owner Name
+    %th Bracket Name
+    %th Status
+    %th Actions
+  - @brackets.each do |bracket|
+    %tr{id: "bracket-#{bracket.id}"}
+      %td= bracket.user.name
+      %td= link_to bracket.name, bracket
+      %td.status-cell= status_to_label(bracket.status)
+      %td
+        - unless bracket.paid?
+          = link_to("Mark Paid", mark_paid_admin_bracket_path(bracket), method: :patch, class: "button")
+          = link_to("Delete", bracket_path(bracket), method: :delete, class: "button danger", data: {confirm: "Are you sure you want to delete this bracket?"})
+

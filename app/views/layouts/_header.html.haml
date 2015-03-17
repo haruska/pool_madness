@@ -14,7 +14,7 @@
               = link_to "Types of Payment", payments_pool_path(@pool)
             - if can? :manage, @pool
               %li.nav-link
-                = link_to "Admin", pool_admin_brackets_path(@pool)
+                = link_to "Admin", admin_pool_brackets_path(@pool)
           - else
             %li.nav-link= link_to "Pool Madness", root_path
       .navigation-tools

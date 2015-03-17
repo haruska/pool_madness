@@ -52,11 +52,11 @@ describe User, type: :model do
   end
 
   describe "#accept_invitation!" do
-    before { ActionMailer::Base.deliveries = []  }
+    let(:queue) { ActiveJob::Base.queue_adapter.enqueued_jobs }
 
     it "sends a welcome message" do
-      subject.accept_invitation!
-      expect(ActionMailer::Base.deliveries.size).to eq(1)
+      expect { subject.accept_invitation! }.to change(queue, :size).by(1)
+      expect(queue.last[:args].second).to eq("welcome_message")
     end
   end
 
