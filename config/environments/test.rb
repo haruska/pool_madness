@@ -31,4 +31,6 @@ PoolMadness::Application.configure do
   config.active_support.deprecation = :stderr
 
   config.eager_load = false
+
+  config.active_job.queue_adapter = :test
 end
