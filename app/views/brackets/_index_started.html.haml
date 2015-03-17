@@ -1,8 +1,9 @@
 %h2 Brackets (#{@brackets.size} total)
 
-%table.table-minimal
+%table.tables
   %thead
     %tr
+      %th
       %th Name
       %th Score
       %th Possible
@@ -19,6 +20,7 @@
         %td
           = "*" if @pool.start_eliminating? && bracket.best_possible > 2
           = "#{i+1}."
+        %td
           = link_to bracket.name, bracket
         %td= bracket.points
         %td= bracket.possible_points
