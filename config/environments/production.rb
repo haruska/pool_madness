@@ -80,4 +80,6 @@ PoolMadness::Application.configure do
   }
 
   config.eager_load = true
+
+  config.active_job.queue_adapter = :sidekiq
 end
