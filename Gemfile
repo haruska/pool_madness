@@ -73,9 +73,7 @@ group :staging do
 end
 
 group :test, :development, :staging do
-  # 1.4.0 cleans schema_migrations, fixed in master
-  gem "database_cleaner", github: "DatabaseCleaner/database_cleaner"
-
+  gem "database_cleaner"
   gem "factory_girl_rails"
   gem "faker"
 end
