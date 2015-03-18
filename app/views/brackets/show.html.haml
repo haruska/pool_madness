@@ -5,5 +5,6 @@
   - if can?(:edit, @bracket)
     = link_to "Edit Bracket", edit_bracket_path(@bracket)
 
-= render @bracket
+= cache_if @pool.started?, @bracket do
+  = render @bracket
 
