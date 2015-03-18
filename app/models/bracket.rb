@@ -1,14 +1,18 @@
 class Bracket < ActiveRecord::Base
-  has_many :picks, dependent: :destroy
-  has_one :charge
-
   belongs_to :pool
-  has_one :tournament, through: :pool
-
   belongs_to :user
   belongs_to :payment_collector, class_name: "User"
 
+  has_one :charge
+  has_one :tournament, through: :pool
+  has_one :bracket_point
+
+  has_many :picks, dependent: :destroy
+
+  delegate :points, :possible_points, :best_possible, :calculate_possible_points, :calculate_points, to: :bracket_point
+
   after_create :create_all_picks
+  after_create :create_bracket_point
 
   before_validation do |bracket|
     bracket.tie_breaker = nil if bracket.tie_breaker.to_i <= 0
@@ -50,18 +54,6 @@ class Bracket < ActiveRecord::Base
 
   def incomplete?
     !complete?
-  end
-
-  def calculate_possible_points
-    points_calc = picks.collect(&:possible_points).sum
-    update_attribute(:possible_points, points_calc)
-    points_calc
-  end
-
-  def calculate_points
-    points_calc = picks.collect(&:points).sum
-    update_attribute(:points, points_calc)
-    points_calc
   end
 
   def sorted_four

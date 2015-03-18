@@ -45,10 +45,10 @@ class PossibleOutcome
 
     sorted_brackets[0..third_place_index].each do |bracket, points|
       index = sorted_brackets.index { |_b, p| p == points }
-      bracket.reload
+      bracket.bracket_point.reload
       if bracket.best_possible > index
-        bracket.best_possible = index
-        bracket.save!
+        bracket.bracket_point.best_possible = index
+        bracket.bracket_point.save!
       end
     end
   end

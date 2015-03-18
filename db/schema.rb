@@ -11,35 +11,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150316014756) do
+ActiveRecord::Schema.define(version: 20150318115325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "bracket_points", force: :cascade do |t|
+    t.integer  "bracket_id",                      null: false
+    t.integer  "points",          default: 0,     null: false
+    t.integer  "possible_points", default: 0,     null: false
+    t.integer  "best_possible",   default: 60000
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "bracket_points", ["best_possible"], name: "index_bracket_points_on_best_possible", using: :btree
+  add_index "bracket_points", ["bracket_id"], name: "index_bracket_points_on_bracket_id", unique: true, using: :btree
+  add_index "bracket_points", ["points"], name: "index_bracket_points_on_points", using: :btree
+  add_index "bracket_points", ["possible_points"], name: "index_bracket_points_on_possible_points", using: :btree
+
   create_table "brackets", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                           null: false
-    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.string   "charge_id"
     t.integer  "tie_breaker"
     t.integer  "payment_collector_id"
     t.string   "stripe_charge_id"
-    t.string   "name",                                 null: false
-    t.integer  "points",               default: 0,     null: false
-    t.integer  "possible_points",      default: 0,     null: false
-    t.integer  "best_possible",        default: 20000
+    t.string   "name",                             null: false
     t.integer  "payment_state",        default: 0
-    t.integer  "pool_id",                              null: false
+    t.integer  "pool_id",                          null: false
   end
 
-  add_index "brackets", ["best_possible"], name: "index_brackets_on_best_possible", using: :btree
   add_index "brackets", ["charge_id"], name: "index_brackets_on_stripe_charge_id", using: :btree
   add_index "brackets", ["name"], name: "index_brackets_on_name", using: :btree
   add_index "brackets", ["payment_collector_id"], name: "index_brackets_on_payment_collector_id", using: :btree
-  add_index "brackets", ["points"], name: "index_brackets_on_points", using: :btree
   add_index "brackets", ["pool_id", "name"], name: "index_brackets_on_pool_id_and_name", unique: true, using: :btree
   add_index "brackets", ["pool_id"], name: "index_brackets_on_pool_id", using: :btree
-  add_index "brackets", ["possible_points"], name: "index_brackets_on_possible_points", using: :btree
   add_index "brackets", ["user_id"], name: "index_brackets_on_user_id", using: :btree
 
   create_table "charges", force: :cascade do |t|

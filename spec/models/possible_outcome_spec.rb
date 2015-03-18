@@ -139,15 +139,15 @@ describe PossibleOutcome, type: :model do
 
       before do
         first_brackets.each do |bracket|
-          bracket.best_possible = 0
-          bracket.save!
+          bracket.bracket_point.best_possible = 0
+          bracket.bracket_point.save!
         end
       end
 
       it "keeps the higher possible place" do
         subject.update_brackets_best_possible
         first_brackets.each do |bracket|
-          expect(bracket.best_possible).to eq(0)
+          expect(bracket.bracket_point.reload.best_possible).to eq(0)
         end
       end
     end

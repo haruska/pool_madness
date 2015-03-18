@@ -1,16 +1,11 @@
 require "spec_helper"
 
 describe Bracket, type: :model do
-  before(:all) {
-    @tournament = create(:tournament)
-    @completed_tournament = create(:tournament, :completed)
-  }
+  before(:all) { @tournament = create(:tournament) }
 
   let(:tournament) { @tournament }
-  let(:completed_tournament) { @completed_tournament }
-
-
   let(:pool) { create(:pool, tournament: tournament) }
+
   subject { create(:bracket, pool: pool) }
 
   it "has a valid factory" do
@@ -196,33 +191,6 @@ describe Bracket, type: :model do
       it "is incomplete" do
         expect(subject).to be_incomplete
       end
-    end
-  end
-
-  context "#calculate_points" do
-    let(:pool) { create(:pool, tournament: completed_tournament) }
-    subject { create(:bracket, :completed, pool: pool) }
-
-    it "is the sum of all the picks' points" do
-      expect(subject.calculate_points).to eq(subject.picks.map(&:points).sum)
-    end
-
-    it "updates the #points attribute" do
-      expected_points = subject.calculate_points
-      expect(subject.points).to eq(expected_points)
-    end
-  end
-
-  context "#calculate_possible_points" do
-    subject { create(:bracket, :completed, pool: pool) }
-
-    it "is the sum of all picks' possible points" do
-      expect(subject.calculate_possible_points).to eq(subject.picks.map(&:possible_points).sum)
-    end
-
-    it "updates the #possible_points attribute" do
-      expected_points = subject.calculate_possible_points
-      expect(subject.possible_points).to eq(expected_points)
     end
   end
 
