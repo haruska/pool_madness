@@ -1,9 +1,18 @@
+%h2 Pool Admin
+
+%dl
+  %dt Number of Brackets
+  %dd= @brackets.size
+  %dt Number of Members
+  %dd= @pool.users.count
+
 %table.tables
   %thead
     %th Owner Name
     %th Bracket Name
     %th Status
     %th Actions
+  %tbody
   - @brackets.each do |bracket|
     %tr{id: "bracket-#{bracket.id}"}
       %td= bracket.user.name

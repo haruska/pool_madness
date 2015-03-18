@@ -16,7 +16,7 @@ class BracketsController < ApplicationController
     else
       @brackets = @pool.brackets.where(user_id: current_user).to_a
       @brackets.sort_by! { |x| [[:ok, :unpaid, :incomplete].index(x.status), x.name] }
-      @unpaid_brackets = @brackets.select {|b| b.status == :unpaid}
+      @unpaid_brackets = @brackets.select {|b| b.unpaid? }
     end
   end
 
