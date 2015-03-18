@@ -76,6 +76,9 @@ GEM
       sass (~> 3.2)
       thor
     builder (3.2.2)
+    bullet (4.14.4)
+      activesupport (>= 3.0.0)
+      uniform_notifier (>= 1.6.0)
     cancancan (1.10.1)
     capybara (2.4.4)
       mime-types (>= 1.16)
@@ -185,6 +188,10 @@ GEM
       rails (>= 3.2)
     lodash-rails (3.3.1.1)
       railties (>= 3.1)
+    lol_dba (1.6.6)
+      actionpack (>= 3.0, < 5.0)
+      activerecord (>= 3.0, < 5.0)
+      railties (>= 3.0, < 5.0)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
     magic_lamp (1.5.0)
@@ -380,6 +387,7 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    uniform_notifier (1.8.0)
     warden (1.2.3)
       rack (>= 1.0)
     web-console (2.1.1)
@@ -404,6 +412,7 @@ DEPENDENCIES
   binding_of_caller
   bitters
   bourbon
+  bullet
   cancancan (~> 1.10)
   capybara
   capybara-screenshot
@@ -425,6 +434,7 @@ DEPENDENCIES
   letter_opener
   letter_opener_web (~> 1.2.0)
   lodash-rails
+  lol_dba
   magic_lamp
   neat
   newrelic_rpm

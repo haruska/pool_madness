@@ -29,5 +29,14 @@ PoolMadness::Application.configure do
 
   config.eager_load = false
 
+  config.after_initialize do
+    Bullet.enable = false
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.add_footer = true
+  end
+
   config.active_job.queue_adapter = :sidekiq
+  config.cache_store = :dalli_store
 end
