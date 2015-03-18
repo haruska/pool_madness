@@ -1,3 +1,5 @@
+require "google_drive_v0"
+
 class Contact
   include ActiveAttr::Model
 
@@ -5,7 +7,7 @@ class Contact
   attribute :email
 
   def self.session
-    GoogleDrive.login(ENV["GMAIL_USERNAME"], ENV["GMAIL_PASSWORD"])
+    GoogleDriveV0.login(ENV["GMAIL_USERNAME"], ENV["GMAIL_PASSWORD"])
   end
 
   def self.all
