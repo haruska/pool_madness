@@ -1,5 +1,13 @@
 App.createController("Brackets", {
-    actions: ["edit"],
+    actions: ["index", "edit"],
+
+    index: function(bracket_ids) {
+        $(document).ready(function() {
+            _.each(bracket_ids, function(bracket_id) {
+                $('#bracket-row-' + bracket_id).addClass("current-user-bracket");
+            });
+        });
+    },
 
     edit: function(game_transitions, game_to_pick, champ_game_id) {
         this.game_to_pick = game_to_pick;

@@ -6,13 +6,11 @@ class BracketsController < ApplicationController
   load_and_authorize_resource :bracket, except: [:index, :create]
 
   before_action :load_pool, except: [:index, :create]
-  before_action :set_jskit_payload, only: [:edit]
-
-  layout "bracket", except: [:index]
 
   def index
     if @pool.started?
       @brackets = @pool.brackets.includes(:bracket_point).joins(:bracket_point).order("best_possible asc", "points desc", "possible_points desc")
+      set_jskit_index_payload
     else
       @brackets = @pool.brackets.where(user_id: current_user).to_a
       @brackets.sort_by! { |x| [[:ok, :unpaid, :incomplete].index(x.status), x.name] }
@@ -21,6 +19,10 @@ class BracketsController < ApplicationController
   end
 
   def show
+  end
+
+  def edit
+    set_jskit_edit_payload
   end
 
   def create
@@ -57,7 +59,11 @@ class BracketsController < ApplicationController
     params.require(:bracket).permit(:tie_breaker, :name, :points, :possible_points)
   end
 
-  def set_jskit_payload
+  def set_jskit_index_payload
+    set_action_payload(current_user.brackets.where(pool_id: @pool.id).pluck(:id))
+  end
+
+  def set_jskit_edit_payload
     game_transitions = {}
     game_to_pick = {}
     champ_game_id = @bracket.tournament.championship.id
