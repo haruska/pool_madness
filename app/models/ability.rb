@@ -16,8 +16,10 @@ class Ability
 
         if pool_user.admin?
           can :manage, Pool, id: pool.id
-          can :manage, Bracket, pool_id: pool.id
-          can :manage, Pick, bracket: { pool_id: pool.id }
+          unless pool.started?
+            can :manage, Bracket, pool_id: pool.id
+            can :manage, Pick, bracket: { pool_id: pool.id }
+          end
         else
           can :read, Pool, id: pool.id
         end
