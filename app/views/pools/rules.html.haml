@@ -13,7 +13,7 @@
     %td Yes
   %tr
     %td Entry Deadline
-    %td Thursday, March 20, 2014 at 12:00pm Eastern
+    %td= @pool.tip_off.in_time_zone("America/New_York").strftime("%A %B %e, %Y at %l:%M%P %Z")
 
 %h3 Prizes
 %table
