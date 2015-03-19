@@ -28,7 +28,7 @@ class Pool < ActiveRecord::Base
     credit_card = brackets.paid.where(payment_collector_id: nil).count * entry_fee * 0.94
     cash = brackets.paid.where.not(payment_collector_id: nil).count * entry_fee
 
-    ((credit_card + cash) / 100).to_i
+    (credit_card.to_i + cash) / 1000 * 10
   end
 
   private

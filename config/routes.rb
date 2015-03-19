@@ -2,31 +2,9 @@ PoolMadness::Application.routes.draw do
 
   root to: "home#index"
 
-  # namespace :admin do
-  #   resources :brackets do
-  #     member do
-  #       patch :promise_to_pay
-  #       patch :mark_paid
-  #     end
-  #     collection do
-  #       get :update_outcomes
-  #     end
-  #   end
-  # end
-
-
-  # match "/subscribe", to: "home#subscribe", via: :get, as: "subscribe"
-  # match "/payments", to: "home#payments", via: :get, as: "payments"
-  # match "/rules", to: "home#rules", via: :get, as: "rules"
-  # match "/final_possibilities", via: :get, to: "home#whatif", as: "possible"
-
   devise_for :users, path: "auth", path_names: { sign_in: "login", sign_up: "signup" }
 
   resources :users
-  # resources :users do
-  #   resources :stripes, only: [:index]
-  # end
-
   resources :picks, only: [:update]
 
   match "pools/join", to: "pools#join", via: :post, as: "join_pool"
@@ -43,7 +21,12 @@ PoolMadness::Application.routes.draw do
 
   resources :brackets, except: [:index, :create]
   resources :charges, only: [:create]
-  resources :tournaments, only: [:edit, :update]
+
+  resources :tournaments, only: [:edit, :update] do
+    resources :games, only: [:index]
+  end
+
+  resources :games, only: [:edit, :update, :index]
 
   namespace :admin do
     resources :tournaments, only: [] do
@@ -58,6 +41,4 @@ PoolMadness::Application.routes.draw do
       patch :mark_paid, on: :member
     end
   end
-
-  #resources :games
 end

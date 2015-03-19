@@ -1,12 +1,34 @@
-= render :partial => 'brackets/bracket'
-- if can? :update, Game
-  :javascript
-    $('.match').click(function(){
-        var game_id = $(this)[0].id.replace('match', '');
-        window.location = "#{games_url}/" + game_id;
-    });
+= cache cache_key_for_tournament_bracket(@tournament) do
+  %h2= @tournament.name
 
-
-    $(document).ready(function() {
-       $('.match').addClass('edit-game')
-    });
+  .bracket
+    .bracket-heading
+      %table.gridtable
+        %tr
+          %th.round_1 1st ROUND
+          %th.round_2 2nd ROUND
+          %th.round_3 SWEET 16
+          %th.round_4 ELITE EIGHT
+          %th.round_5 FINAL FOUR
+          %th.round_6 CHAMPION
+          %th.round_5 FINAL FOUR
+          %th.round_4 ELITE EIGHT
+          %th.round_3 SWEET 16
+          %th.round_2 2nd ROUND
+          %th.round_1 1st ROUND
+        %tr
+          %td March 19-20
+          %td March 21-22
+          %td March 26-27
+          %td March 28-29
+          %td April 4
+          %td April 6
+          %td April 4
+          %td March 28-29
+          %td March 26-27
+          %td March 21-22
+          %td March 19-20
+    .bracket-body
+      - 6.times do |round_num|
+        = render partial: "games/round", locals: { round_num: round_num + 1 }
+      = render partial: "games/championship"

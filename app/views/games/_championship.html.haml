@@ -1,0 +1,10 @@
+= cache @tournament.championship do
+  - game = @tournament.championship
+  - team = game.winner
+
+  .championship
+    - if team.present?
+      %div{:class => "champion-box team#{team.id}"}= team.name
+    - else
+      .champion-box
+    .champion-label CHAMPION

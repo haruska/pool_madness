@@ -1,20 +1,21 @@
 class GamesController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :tournament, only: [:index]
+  load_and_authorize_resource only: [:edit, :update]
 
-  layout "bracket", only: "index"
+  before_action :load_tournament, only: [:edit, :update]
+  before_action :set_jskit_payload, only: [:index]
 
   def index
-  end
-
-  def show
+    @games = @tournament.games
   end
 
   def edit
   end
 
   def update
-    if @game.update_attributes(game_params)
-      redirect_to games_path, notice: "Updated score."
+    if @game.update(game_params)
+      @game.next_game.try(:touch)
+      redirect_to tournament_games_path(@tournament), notice: "Updated score."
     else
       render "edit", alert: "Problem updating game."
     end
@@ -22,7 +23,15 @@ class GamesController < ApplicationController
 
   private
 
+  def load_tournament
+    @tournament = @game.tournament
+  end
+
   def game_params
-    params.require(:game).permit(:team_one, :team_two, :game_one, :game_two, :score_one, :score_two)
+    params.require(:game).permit(:score_one, :score_two)
+  end
+
+  def set_jskit_payload
+    set_action_payload(can?(:edit, @tournament), games_url)
   end
 end

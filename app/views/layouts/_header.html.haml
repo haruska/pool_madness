@@ -6,12 +6,14 @@
         %ul.navigation-menu.show
           - if @pool.present?
             %li.nav-link= link_to "Brackets", pool_brackets_path(@pool)
-            -#%li.nav-link
-            -#  = link_to "Game Results", tournament_path(@pool.tournament)
+            - if @pool.started?
+              %li.nav-link
+                = link_to "Game Results", tournament_games_path(@pool.tournament)
+            - else
+              %li.nav-link
+                = link_to "Types of Payment", payments_pool_path(@pool)
             %li.nav-link
               = link_to "Rules and Scoring", rules_pool_path(@pool)
-            %li.nav-link
-              = link_to "Types of Payment", payments_pool_path(@pool)
             - if can? :manage, @pool
               %li.nav-link
                 = link_to "Pool Admin", admin_pool_brackets_path(@pool)
