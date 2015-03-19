@@ -1,5 +1,5 @@
 App.createController("Brackets", {
-    actions: ["index", "edit"],
+    actions: ["index", "edit", "show"],
 
     index: function(bracket_ids) {
         $(document).ready(function() {
@@ -15,6 +15,14 @@ App.createController("Brackets", {
         this.champ_game_id = champ_game_id;
 
         $('.slot').click(this.handleSlotClick);
+    },
+
+    show: function(eliminatedTeamIds) {
+      $(document).ready(function() {
+          _.each(eliminatedTeamIds, function(eliminatedTeamId) {
+              $('.team' + eliminatedTeamId).addClass("eliminated");
+          });
+      });
     },
 
     handleSlotClick: function (event) {

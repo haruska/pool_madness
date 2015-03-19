@@ -28,6 +28,16 @@
 
   &.show-action {
     .wrapper { min-width: 1024px; }
+    .eliminated {
+      text-decoration: line-through;
+      color: #666;
+    }
+    .round1 {
+      .eliminated {
+        text-decoration: none;
+        color: black;
+      }
+    }
   }
 
   &.edit-action {
