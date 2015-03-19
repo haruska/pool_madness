@@ -66,13 +66,20 @@ class BracketsController < ApplicationController
 
   def set_jskit_show_payload
     max_updated_at = @bracket.tournament.games.maximum(:updated_at).to_i
-    cache_key = "tournament-#{@bracket.tournament.id}/eliminated/all-#{max_updated_at}"
+    teams_cache_key = "tournament-#{@bracket.tournament.id}/eliminated/all-#{max_updated_at}"
+    games_cache_key = "tournament-#{@bracket.tournament.id}/games-played/all-#{max_updated_at}"
 
-    eliminated_team_ids = Rails.cache.fetch(cache_key) do
+    eliminated_team_ids = Rails.cache.fetch(teams_cache_key) do
       @bracket.tournament.teams.to_a.select { |team| team.eliminated? }.map(&:id)
     end
 
-    set_action_payload(eliminated_team_ids)
+    games_played_slots = Rails.cache.fetch(games_cache_key) do
+      @bracket.tournament.games.already_played.map do |game|
+        [game.next_game.id, game.next_slot]
+      end
+    end
+
+    set_action_payload(eliminated_team_ids, games_played_slots)
   end
 
   def set_jskit_edit_payload

@@ -17,10 +17,21 @@ App.createController("Brackets", {
         $('.slot').click(this.handleSlotClick);
     },
 
-    show: function(eliminatedTeamIds) {
+    show: function(eliminatedTeamIds, gamesPlayedSlots) {
       $(document).ready(function() {
           _.each(eliminatedTeamIds, function(eliminatedTeamId) {
               $('.team' + eliminatedTeamId).addClass("eliminated");
+          });
+
+          _.each(gamesPlayedSlots, function(gamePlayedSlot) {
+              var gameId = gamePlayedSlot[0];
+              var slotId = gamePlayedSlot[1];
+
+              var game = $('#match' + gameId);
+              var slot = game.find(".slot" + slotId);
+              if(!slot.hasClass("eliminated")) {
+                  slot.addClass("correct-pick");
+              }
           });
       });
     },
