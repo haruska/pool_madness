@@ -1,5 +1,7 @@
 %h2
   = @bracket.name
+  - unless @bracket.name.downcase.match(@bracket.user.name.downcase)
+    (#{@bracket.user.name})
 
 .bracket-actions
   - if can?(:edit, @bracket)
