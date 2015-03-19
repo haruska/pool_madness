@@ -16,7 +16,10 @@ class Ability
 
         if pool_user.admin?
           can :manage, Pool, id: pool.id
-          unless pool.started?
+          if pool.started?
+            can :destroy, Bracket, pool_id: pool.id
+            can :mark_paid, Bracket, pool_id: pool.id
+          else
             can :manage, Bracket, pool_id: pool.id
             can :manage, Pick, bracket: { pool_id: pool.id }
           end
