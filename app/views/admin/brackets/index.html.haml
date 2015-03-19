@@ -1,11 +1,15 @@
-%h2 Pool Admin
+%h1 #{@pool.name} Pool Admin
 
+%h2 Payment Info
 %dl
-  %dt Number of Brackets
-  %dd= @brackets.size
-  %dt Number of Members
-  %dd= @pool.users.count
+  %dt Credit Card
+  %dd= (@pool.brackets.paid.where(payment_collector_id: nil).count * @pool.entry_fee * 0.94 / 100).to_i
+  - @pool.admins.each do |pool_admin|
+    %dt= pool_admin.name
+    %dd= pool_admin.brackets_to_pay.size * @pool.entry_fee / 100
 
+
+%h2 Brackets (#{@brackets.size})
 %table.tables
   %thead
     %th Owner Name
