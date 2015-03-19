@@ -7,7 +7,9 @@
   - @pool.admins.each do |pool_admin|
     %dt= pool_admin.name
     %dd= pool_admin.brackets_to_pay.size * @pool.entry_fee / 100
-
+%dl.total-line
+  %dt Total
+  %dd= @pool.total_collected
 
 %h2 Brackets (#{@brackets.size})
 %table.tables

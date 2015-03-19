@@ -20,12 +20,18 @@
   %tr
     %td First Place
     %td 70%
+    - if @pool.started?
+      %td $#{(@pool.total_collected * 0.7).to_i}
   %tr
     %td Second Place
     %td 20%
+    - if @pool.started?
+      %td $#{(@pool.total_collected * 0.2).to_i}
   %tr
     %td Third Place
     %td 10%
+    - if @pool.started?
+      %td $#{(@pool.total_collected * 0.1).to_i}
 
 %h3 Scoring
 %table

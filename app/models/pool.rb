@@ -24,6 +24,13 @@ class Pool < ActiveRecord::Base
     pool_users.admin.map(&:user)
   end
 
+  def total_collected
+    credit_card = brackets.paid.where(payment_collector_id: nil).count * entry_fee * 0.94
+    cash = brackets.paid.where.not(payment_collector_id: nil).count * entry_fee
+
+    ((credit_card + cash) / 100).to_i
+  end
+
   private
 
   def set_invite_code
