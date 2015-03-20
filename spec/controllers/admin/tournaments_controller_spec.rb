@@ -21,7 +21,7 @@ describe Admin::TournamentsController, type: :controller do
 
       it "redirects home" do
         patch :update_bracket_scores, id: tournament.id
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(tournament_games_path(tournament))
         expect(subject).to set_flash
       end
     end
