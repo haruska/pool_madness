@@ -8,7 +8,9 @@ class UpdateGameScoresJob < ActiveJob::Base
     today.update_scores
 
     if yesterday.changed_games || today.changed_games
-      UpdateAllBracketScoresJob.perform_later
+      Tournament.all.each do |tournament|
+        UpdateAllBracketScoresJob.perform_later(tournament.id)
+      end
     end
 
     UpdateGameScoresJob.set(wait_until: today.next_poll_time).perform_later
