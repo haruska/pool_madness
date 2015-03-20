@@ -48,15 +48,12 @@ class SportsScores
 
       if game.present? && game.score_one.blank?
         if game.first_team == home_team
-          game.score_one = espn_game[:home_score]
-          game.score_two = espn_game[:away_score]
+          game.update!(score_one: espn_game[:home_score], score_two: espn_game[:away_score])
         else
-          game.score_one = espn_game[:away_score]
-          game.score_two = espn_game[:home_score]
+          game.update!(score_one: espn_game[:away_score], score_two: espn_game[:home_score])
         end
 
-        game.save!
-        game.touch
+        game.next_game.try(:touch)
         
         self.changed_games = true
       end
