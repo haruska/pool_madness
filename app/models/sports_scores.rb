@@ -3,6 +3,7 @@ class SportsScores
 
   attribute :date
   attribute :api_response
+  attribute :changed_games, default: false
 
   class ScoreTeam
     include ActiveAttr::Model
@@ -55,6 +56,7 @@ class SportsScores
         end
 
         game.save!
+        self.changed_games = true
       end
     end
   end
