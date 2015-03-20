@@ -5,9 +5,9 @@ module Admin
     load_and_authorize_resource
 
     def update_bracket_scores
-      UpdateAllBracketScoresJob.perform_later(params[:id])
+      UpdateAllBracketScoresJob.perform_later(@tournament.id)
       flash[:success] = "UpdateAllBracketScores job enqueued."
-      redirect_to root_path
+      redirect_to tournament_games_path(@tournament)
     end
   end
 end
