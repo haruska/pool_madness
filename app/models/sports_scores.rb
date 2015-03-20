@@ -56,6 +56,8 @@ class SportsScores
         end
 
         game.save!
+        game.touch
+        
         self.changed_games = true
       end
     end
