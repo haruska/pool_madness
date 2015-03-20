@@ -1,10 +1,19 @@
 class SportsScores
+  include ActiveAttr::Model
+
+  attribute :date
+  attribute :api_response
+
   class ScoreTeam
     include ActiveAttr::Model
 
     attribute :name
     attribute :seed
     attribute :score_id
+  end
+
+  def self.generate_for(date)
+    new(date: date, api_response: ESPN::Score.find(ESPN::NCB, date))
   end
 
   def self.list_teams(dates)
@@ -24,4 +33,64 @@ class SportsScores
       puts "##{score_team.seed} #{score_team.name} (#{score_team.score_id})"
     end
   end
+
+
+  def update_scores
+    api_response.select {|g| g[:state] == "postgame"}.each do |espn_game|
+      home_team = Team.find_by score_team_id: espn_game[:home_team]
+      away_team = Team.find_by score_team_id: espn_game[:away_team]
+
+
+      game = Game.all.to_a.find do |g|
+        g.first_team == home_team && g.second_team == away_team || g.first_team == away_team && g.second_team == home_team
+      end
+
+      if game.present? && game.score_one.blank?
+        if game.first_team == home_team
+          game.score_one = espn_game[:home_score]
+          game.score_two = espn_game[:away_score]
+        else
+          game.score_one = espn_game[:away_score]
+          game.score_two = espn_game[:home_score]
+        end
+
+        game.save!
+      end
+    end
+  end
+
+  def next_poll_time
+    if api_response.find {|g| g[:state] == "in-progress"}.present?
+      5.minutes.from_now
+    elsif api_response.find {|g| g[:state] == "pregame"}.present?
+      next_game = api_response.find {|g| g[:state] == "pregame"}
+      time_str = "#{next_game[:game_date]} #{next_game[:start_time].gsub('ET','EDT')}"
+      DateTime.parse(time_str)
+    else
+      Date.tomorrow.noon.in_time_zone("America/New_York")
+    end
+  end
+
+  # ESPN::Score.find(ESPN::NCB, Date.today)
+  # {
+  #   :game_date=>Fri, 20 Mar 2015,
+  #   :home_team=>"2305",
+  #   :home_team_name=>"Kansas",
+  #   :away_team=>"166",
+  #   :away_team_name=>"New Mexico St",
+  #   :home_score=>0,
+  #   :away_score=>0,
+  #   :home_team_rank=>"2",
+  #   :away_team_rank=>"15",
+  #   :away_team_logo=>"http://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/166.png&w=200&h=200&transparent=true",
+  #   :home_team_logo=>"http://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/2305.png&w=200&h=200&transparent=true",
+  #   :home_team_record=>"26-8",
+  #   :away_team_record=>"23-10",
+  #   :state=>"pregame",
+  #   :start_time=>"12:15 PM ET",
+  #   :preview=>"400785345",
+  #   :line=>"KU -10.5 O/U 131.5",
+  #   :league=>"ncb"
+  # }
+
 end
