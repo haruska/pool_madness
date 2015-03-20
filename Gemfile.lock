@@ -1,10 +1,20 @@
 GIT
-  remote: https://github.com/haruska/active_attr.git
+  remote: git://github.com/haruska/active_attr.git
   revision: 7977578acabcd57e5571fcaf373c3045ad8ce29f
   specs:
     active_attr (0.8.5)
       activemodel (>= 3.0.2, < 5.0)
       activesupport (>= 3.0.2, < 5.0)
+
+GIT
+  remote: git://github.com/haruska/espn-scraper.git
+  revision: 89b2856465f02d8bafb83569459e5e46e3804079
+  specs:
+    espn_scraper (1.0.4)
+      activesupport
+      addressable
+      httparty
+      nokogiri
 
 GEM
   remote: https://rubygems.org/
@@ -417,6 +427,7 @@ DEPENDENCIES
   devise_invitable
   dotenv-rails
   email_validator
+  espn_scraper!
   factory_girl_rails
   faker
   font-awesome-rails
