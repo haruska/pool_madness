@@ -22,7 +22,7 @@
     }
 
     .current-user-bracket {
-      background-color: lightblue;
+      background-color: $light-blue;
     }
   }
 
@@ -30,13 +30,13 @@
     .wrapper { min-width: 1024px; }
     .eliminated {
       text-decoration: line-through;
-      color: #666;
+      color: $middark-gray;
     }
 
     .correct-pick {
       //background-color: lightyellow;
       font-weight: 500;
-      background-color: #E0F5FF;
+      background-color: $light-blue;
     }
     .round1 {
       .eliminated {
