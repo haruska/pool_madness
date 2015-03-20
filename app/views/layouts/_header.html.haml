@@ -17,11 +17,11 @@
             - if can? :manage, @pool
               %li.nav-link
                 = link_to "Pool Admin", admin_pool_brackets_path(@pool)
-            - if can? :manage, @pool.tournament
-              %li.nav-link
-                = link_to "Update Scores", update_bracket_scores_admin_tournament_path(@pool.tournament), method: 'patch'
           - else
             %li.nav-link= link_to "Pool Madness", root_path
+          - if @tournament.present? && can?(:manage, @tournament)
+            %li.nav-link
+              = link_to "Update Scores", update_bracket_scores_admin_tournament_path(@tournament), method: 'patch'
       .navigation-tools
         %ul.navigation-menu
           %li.nav-link.more
