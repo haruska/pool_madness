@@ -35,6 +35,16 @@ class PossibleOutcome
   end
 
   def update_brackets_best_possible
+    get_best_possible.each do |bracket, rank|
+      bracket.bracket_point.reload
+      if bracket.best_possible > rank
+        bracket.bracket_point.best_possible = rank
+        bracket.bracket_point.save!
+      end
+    end
+  end
+
+  def get_best_possible
     sorted_brackets = self.sorted_brackets
 
     third_place_index = 2
@@ -43,13 +53,9 @@ class PossibleOutcome
       third_place_index += 1
     end
 
-    sorted_brackets[0..third_place_index].each do |bracket, points|
+    sorted_brackets[0..third_place_index].map do |bracket, points|
       index = sorted_brackets.index { |_b, p| p == points }
-      bracket.bracket_point.reload
-      if bracket.best_possible > index
-        bracket.bracket_point.best_possible = index
-        bracket.bracket_point.save!
-      end
+      [bracket, index]
     end
   end
 end
