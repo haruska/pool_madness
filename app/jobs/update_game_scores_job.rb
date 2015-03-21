@@ -12,7 +12,7 @@ class UpdateGameScoresJob < ActiveJob::Base
       Tournament.all.each do |tournament|
         UpdateAllBracketScoresJob.perform_later(tournament.id)
 
-        if tournament.start_eliminating? && next_time > 30.minutes.from_now
+        if tournament.start_eliminating?
           UpdatePossibleOutcomesJob.perform_later(tournament.id)
         end
       end

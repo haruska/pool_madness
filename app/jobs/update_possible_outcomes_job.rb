@@ -3,7 +3,6 @@ class UpdatePossibleOutcomesJob < ActiveJob::Base
     timestamp = Time.now.to_i
 
     Tournament.find(tournament_id).pools.each do |pool|
-      #pool.bracket_points.update_all(best_possible: 60000)
       outcome_set_key = self.class.outcome_set_key(tournament_id, timestamp, pool.id)
 
       Sidekiq.redis do |redis|
