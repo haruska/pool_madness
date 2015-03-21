@@ -7,6 +7,14 @@ class Tournament < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
 
+  def started?
+    DateTime.now > tip_off
+  end
+
+  def start_eliminating?
+    DateTime.now > (tip_off + 4.days).in_time_zone("America/New_York").at_midnight
+  end
+
   def championship
     game = games.first
     game = game.next_game while game.next_game.present?

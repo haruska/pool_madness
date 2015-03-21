@@ -14,7 +14,6 @@
         %th Final Four
         %th Second
         %th Winner
-        %th Tie
     %tbody
       - @brackets.each_with_index do |bracket, i|
         %tr{:id => "bracket-row-#{bracket.id}"}
@@ -30,4 +29,3 @@
           = cache cache_key_for_bracket_final_four(bracket) do
             - bracket.sorted_four.each do |team|
               %td= team.name
-          %td= bracket.tie_breaker

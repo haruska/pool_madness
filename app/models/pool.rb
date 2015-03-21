@@ -6,20 +6,12 @@ class Pool < ActiveRecord::Base
   has_many :users, through: :pool_users
   has_many :games, through: :tournament
 
-  delegate :tip_off, to: :tournament
+  delegate :tip_off, :started?, :start_eliminating?, to: :tournament
 
   validates :invite_code, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: { scope: :tournament_id }
 
   before_validation :set_invite_code
-
-  def started?
-    DateTime.now > tip_off
-  end
-
-  def start_eliminating?
-    DateTime.now > tip_off + 4.days
-  end
 
   def admins
     pool_users.admin.map(&:user)

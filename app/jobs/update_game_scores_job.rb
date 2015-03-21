@@ -6,14 +6,17 @@ class UpdateGameScoresJob < ActiveJob::Base
 
     yesterday.update_scores
     today.update_scores
+    next_time = [today.next_poll_time, yesterday.next_poll_time].min
 
     if yesterday.changed_games || today.changed_games
       Tournament.all.each do |tournament|
         UpdateAllBracketScoresJob.perform_later(tournament.id)
+
+        if tournament.start_eliminating? && next_time > 30.minutes.from_now
+          UpdatePossibleOutcomesJob.perform_later(tournament.id)
+        end
       end
     end
-
-    next_time = [today.next_poll_time, yesterday.next_poll_time].min
 
     UpdateGameScoresJob.set(wait_until: next_time).perform_later
   end

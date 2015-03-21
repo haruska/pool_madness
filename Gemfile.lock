@@ -452,6 +452,7 @@ DEPENDENCIES
   rails-erd
   rails_12factor
   recipient_interceptor
+  redis
   refills
   rspec-rails
   rubocop
