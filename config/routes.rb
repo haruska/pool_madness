@@ -17,6 +17,7 @@ PoolMadness::Application.routes.draw do
     end
 
     resources :brackets, only: [:index, :create]
+    resources :games, only: [:index]
   end
 
   resources :brackets, except: [:index, :create]

@@ -1,9 +1,10 @@
 class GamesController < ApplicationController
-  load_and_authorize_resource :tournament, only: [:index]
+  before_action :authenticate_user!
+
   load_and_authorize_resource only: [:edit, :update]
 
   before_action :load_tournament, only: [:edit, :update]
-  before_action :set_jskit_payload, only: [:index]
+  before_action :load_pool_tournament, :set_jskit_payload, only: [:index]
 
   def index
     @games = @tournament.games
@@ -25,6 +26,17 @@ class GamesController < ApplicationController
 
   def load_tournament
     @tournament = @game.tournament
+  end
+
+  def load_pool_tournament
+    if params[:pool_id]
+      @pool = Pool.find(params[:pool_id])
+      authorize! :read, @pool
+      @tournament = @pool.tournament
+    else
+      @tournament = Tournament.find(params[:tournament_id])
+      authorize! :read, @tournament
+    end
   end
 
   def game_params

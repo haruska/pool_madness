@@ -8,7 +8,7 @@
             %li.nav-link= link_to "Brackets", pool_brackets_path(@pool)
             - if @pool.started?
               %li.nav-link
-                = link_to "Game Results", tournament_games_path(@pool.tournament)
+                = link_to "Game Results", pool_games_path(@pool)
             - else
               %li.nav-link
                 = link_to "Types of Payment", payments_pool_path(@pool)
