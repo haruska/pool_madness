@@ -12,7 +12,7 @@ class Tournament < ActiveRecord::Base
   end
 
   def start_eliminating?
-    DateTime.now > (tip_off + 4.days).in_time_zone("America/New_York").at_midnight
+    DateTime.now > (tip_off + eliminating_offset).in_time_zone("America/New_York").at_midnight
   end
 
   def championship
@@ -23,9 +23,9 @@ class Tournament < ActiveRecord::Base
 
   def round_for(round_number, region = nil)
     case round_number
-      when 5
+      when num_rounds - 1
         [championship.game_two, championship.game_one]
-      when 6
+      when num_rounds
         [championship]
       when 1
         sort_order = [1, 8, 5, 4, 6, 3, 7, 2]
