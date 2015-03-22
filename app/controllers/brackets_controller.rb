@@ -75,7 +75,7 @@ class BracketsController < ApplicationController
 
     games_played_slots = Rails.cache.fetch(games_cache_key) do
       @bracket.tournament.games.already_played.map do |game|
-        [game.next_game.id, game.next_slot]
+        [game.next_game.id, game.next_slot, game.winner.id]
       end
     end
 

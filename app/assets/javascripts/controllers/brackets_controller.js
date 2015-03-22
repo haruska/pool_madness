@@ -26,13 +26,16 @@ App.createController("Brackets", {
           _.each(gamesPlayedSlots, function(gamePlayedSlot) {
               var gameId = gamePlayedSlot[0];
               var slotId = gamePlayedSlot[1];
+              var teamId = gamePlayedSlot[2];
 
               var game = $('#match' + gameId);
               var slot = game.find(".slot" + slotId);
-              if(!slot.hasClass("eliminated")) {
+              if(slot.hasClass("team" + teamId)) {
                   slot.addClass("correct-pick");
               }
           });
+
+          $(".eliminated.correct-pick").removeClass("eliminated");
       });
     },
 
