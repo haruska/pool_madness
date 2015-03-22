@@ -34,6 +34,10 @@
         font-weight: bold;
       }
     }
+
+    &.sweet-16 {
+      width: 825px;
+    }
   }
 
   .bracket-body {
@@ -86,150 +90,287 @@
       }
     }
 
-    .round1 {
-      .match {
-        height: 40px;
+
+
+
+    &.sweet-16 {
+      .round1 {
+        //left: 0px;
+        width: 836px;
+
+        .match {
+          height: 40px;
+          //margin-top: 50px;
+        }
+
+        .region1, .region3 {
+          .m1 { top: 0; }
+          .m2 { top: 50px; }
+        }
+
+        .region2, .region4 {
+          .m1 { top: 200px; }
+          .m2 { top: 250px; }
+        }
       }
 
-      .region1, .region3 {
-        .m1 { top: 0; }
-        .m2 { top: 50px; }
-        .m3 { top: 100px; }
-        .m4 { top: 150px; }
-        .m5 { top: 200px; }
-        .m6 { top: 250px; }
-        .m7 { top: 300px; }
-        .m8 { top: 350px; }
+      .round2 {
+        left: 115px;
+        width: 606px;
+
+        .match {
+          height: 40px;
+          margin-top: 24px;
+        }
+
+        .region1, .region3 {
+          .m1 { top: 0; }
+        }
+        .region2, .region4 {
+          .m1 { top: 200px; }
+        }
       }
 
-      .region2, .region4 {
-        .m1 { top: 600px; }
-        .m2 { top: 650px; }
-        .m3 { top: 700px; }
-        .m4 { top: 750px; }
-        .m5 { top: 800px; }
-        .m6 { top: 850px; }
-        .m7 { top: 900px; }
-        .m8 { top: 950px; }
-      }
-    }
+      .round3 {
+        left: 229px;
+        width: 378px;
 
-    .round2 {
-      left: 115px;
-      width: 720px;
+        .match {
+          height: 205px;
+          top: 43px;
+        }
 
-      .match {
-        height: 40px;
-        margin-top: 24px;
-      }
+        .m1 {
+          left: 0;
+          border-left: none;
+        }
 
-      .region1, .region3 {
-        .m1 { top: 0; }
-        .m2 { top: 100px; }
-        .m3 { top: 200px; }
-        .m4 { top: 300px; }
-      }
+        .m2 {
+          right: 0;
+          border-right: none;
 
-      .region2, .region4 {
-        .m1 { top: 600px; }
-        .m2 { top: 700px; }
-        .m3 { top: 800px; }
-        .m4 { top: 900px; }
-      }
-    }
+          //fixme: flip slot1 and slot2
 
-    .round3 {
-      left: 230px;
-      width: 490px;
+          .slot1 {
+            top: auto;
+            bottom: 0px;
+          }
 
-      .match {
-        height: 90px;
-        margin-top: 50px;
+          .slot2 {
+            top: 0px;
+            bottom: auto;
+          }
+        }
       }
 
-      .region1, .region3 {
-        .m1 { top: 0; }
-        .m2 { top: 200px; }
-      }
+      .round4 {
+        left: 343px;
+        //width: 180px;
 
-      .region2, .region4 {
-        .m1 { top: 600px; }
-        .m2 { top: 800px; }
-      }
-    }
+        .match {
+          height: 75px;
+          top: 100px;
+          border: none;
+          width: 150px;
+          padding: 0;
+        }
 
-    .round4 {
-      left: 345px;
-      width: 260px;
-
-      .match {
-        height: 190px;
-        margin-top: 100px;
-      }
-
-      .region1, .region3 { .m1 { top: 0; } }
-      .region2, .region4 { .m1 { top: 600px; } }
-    }
-
-    .round5 {
-      left: 280px;
-      width: 380px;
-
-      .match {
-        height: 75px;
-        top: 425px;
-      }
-
-      .m1 {
-        left: 0;
-        border-left: none;
-      }
-
-      .m2 {
-        right: 0;
-        border-right: none;
-
-        //fixme: flip slot1 and slot2
+        .slot {
+          font-size: 13px;
+          height: 25px;
+          line-height: 25px;
+          padding: 0 10px 0 6px;
+        }
 
         .slot1 {
-          top: auto;
-          bottom: 0px;
+          border-bottom: 1px solid #666;
+          top: 22px;
+          text-align: right;
         }
 
         .slot2 {
-          top: 0px;
-          bottom: auto;
+          top: 48px;
         }
+      }
+
+      .region-label {
+        display: none;
+      }
+
+      .championship {
+        left: 343px;
+        top: 275px;
       }
     }
 
-    .round6 {
-      left: 395px;
-      width: 150px;
 
-      .match {
-        height: 75px;
-        top: 415px;
-        border: none;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    &.field-64 {
+      .round1 {
+        .match { height: 40px; }
+
+        .region1, .region3 {
+          .m1 { top: 0; }
+          .m2 { top: 50px; }
+          .m3 { top: 100px; }
+          .m4 { top: 150px; }
+          .m5 { top: 200px; }
+          .m6 { top: 250px; }
+          .m7 { top: 300px; }
+          .m8 { top: 350px; }
+        }
+
+        .region2, .region4 {
+          .m1 { top: 600px; }
+          .m2 { top: 650px; }
+          .m3 { top: 700px; }
+          .m4 { top: 750px; }
+          .m5 { top: 800px; }
+          .m6 { top: 850px; }
+          .m7 { top: 900px; }
+          .m8 { top: 950px; }
+        }
+      }
+
+      .round2 {
+        left: 115px;
+        width: 720px;
+
+        .match {
+          height: 40px;
+          margin-top: 24px;
+        }
+
+        .region1, .region3 {
+          .m1 { top: 0; }
+          .m2 { top: 100px; }
+          .m3 { top: 200px; }
+          .m4 { top: 300px; }
+        }
+
+        .region2, .region4 {
+          .m1 { top: 600px; }
+          .m2 { top: 700px; }
+          .m3 { top: 800px; }
+          .m4 { top: 900px; }
+        }
+      }
+
+      .round3 {
+        left: 230px;
+        width: 490px;
+
+        .match {
+          height: 90px;
+          margin-top: 50px;
+        }
+
+        .region1, .region3 {
+          .m1 { top: 0; }
+          .m2 { top: 200px; }
+        }
+
+        .region2, .region4 {
+          .m1 {
+            top: 600px;
+          }
+          .m2 {
+            top: 800px;
+          }
+        }
+      }
+
+      .round4 {
+        left: 345px;
+        width: 260px;
+
+        .match {
+          height: 190px;
+          margin-top: 100px;
+        }
+
+        .region1, .region3 {
+          .m1 { top: 0; }
+        }
+        .region2, .region4 {
+          .m1 { top: 600px; }
+        }
+      }
+
+      .round5 {
+        left: 280px;
+        width: 380px;
+
+        .match {
+          height: 75px;
+          top: 425px;
+        }
+
+        .m1 {
+          left: 0;
+          border-left: none;
+        }
+
+        .m2 {
+          right: 0;
+          border-right: none;
+
+          //fixme: flip slot1 and slot2
+
+          .slot1 {
+            top: auto;
+            bottom: 0px;
+          }
+
+          .slot2 {
+            top: 0px;
+            bottom: auto;
+          }
+        }
+      }
+
+      .round6 {
+        left: 395px;
         width: 150px;
-        padding: 0;
-      }
 
-      .slot {
-        font-size: 13px;
-        height: 25px;
-        line-height: 25px;
-        padding: 0 10px 0 6px;
-      }
+        .match {
+          height: 75px;
+          top: 415px;
+          border: none;
+          width: 150px;
+          padding: 0;
+        }
 
-      .slot1 {
-        border-bottom: 1px solid #666;
-        top: 22px;
-        text-align: right;
-      }
+        .slot {
+          font-size: 13px;
+          height: 25px;
+          line-height: 25px;
+          padding: 0 10px 0 6px;
+        }
 
-      .slot2 {
-        top: 48px;
+        .slot1 {
+          border-bottom: 1px solid #666;
+          top: 22px;
+          text-align: right;
+        }
+
+        .slot2 {
+          top: 48px;
+        }
       }
     }
 

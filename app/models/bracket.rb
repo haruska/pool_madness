@@ -5,7 +5,7 @@ class Bracket < ActiveRecord::Base
 
   has_one :charge
   has_one :tournament, through: :pool
-  has_one :bracket_point
+  has_one :bracket_point, dependent: :destroy
 
   has_many :picks, dependent: :destroy
 

@@ -2,7 +2,12 @@
 haruska_pool = Pool.find_by name: "Haruska"
 haruska_tournament = haruska_pool.tournament
 
-tournament = Tournament.create(name: "2015 NCAA Sweet Sixteen", tip_off: haruska_tournament.tip_off + 1.week)
+tournament = Tournament.create(
+    name: "2015 NCAA Sweet Sixteen",
+    tip_off: haruska_tournament.tip_off + 1.week,
+    eliminating_offset: 0,
+    num_rounds: 4
+)
 
 game_map = {}
 

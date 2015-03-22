@@ -1,7 +1,7 @@
 class Tournament < ActiveRecord::Base
-  has_many :games
-  has_many :pools
-  has_many :teams
+  has_many :games, dependent: :destroy
+  has_many :pools, dependent: :destroy
+  has_many :teams, dependent: :destroy
 
   accepts_nested_attributes_for :teams
 
@@ -28,7 +28,7 @@ class Tournament < ActiveRecord::Base
       when num_rounds
         [championship]
       when 1
-        sort_order = [1, 8, 5, 4, 6, 3, 7, 2]
+        sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
         t = region.present? ? teams.where(region: region) : teams.all
 
         t.collect(&:first_game).uniq.sort_by { |x| sort_order.index(x.first_team.seed) }

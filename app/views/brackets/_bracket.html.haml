@@ -1,9 +1,11 @@
+- num_rounds = @bracket.tournament.num_rounds
 .bracket
-  .bracket-heading
+  %div{class: "bracket-heading #{num_rounds == 4 ? 'sweet-16' : 'field-64'}"}
     %table.gridtable
       %tr
-        %th.round_1 1st ROUND
-        %th.round_2 2nd ROUND
+        - if num_rounds == 6
+          %th.round_1 1st ROUND
+          %th.round_2 2nd ROUND
         %th.round_3 SWEET 16
         %th.round_4 ELITE EIGHT
         %th.round_5 FINAL FOUR
@@ -11,11 +13,13 @@
         %th.round_5 FINAL FOUR
         %th.round_4 ELITE EIGHT
         %th.round_3 SWEET 16
-        %th.round_2 2nd ROUND
-        %th.round_1 1st ROUND
+        - if num_rounds == 6
+          %th.round_2 2nd ROUND
+          %th.round_1 1st ROUND
       %tr
-        %td March 19-20
-        %td March 21-22
+        - if num_rounds == 6
+          %td March 19-20
+          %td March 21-22
         %td March 26-27
         %td March 28-29
         %td April 4
@@ -23,10 +27,11 @@
         %td April 4
         %td March 28-29
         %td March 26-27
-        %td March 21-22
-        %td March 19-20
-  .bracket-body
-    - 6.times do |round_num|
+        - if num_rounds == 6
+          %td March 21-22
+          %td March 19-20
+  %div{class: "bracket-body #{num_rounds == 4 ? 'sweet-16' : 'field-64'}"}
+    - bracket.tournament.num_rounds.times do |round_num|
       = render partial: "brackets/round", locals: { round_num: round_num + 1 }
     = render partial: "brackets/championship"
     .tie-breaker

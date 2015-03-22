@@ -1,8 +1,8 @@
 class Pool < ActiveRecord::Base
   belongs_to :tournament
-  has_many :brackets
+  has_many :brackets, dependent: :destroy
   has_many :bracket_points, through: :brackets
-  has_many :pool_users
+  has_many :pool_users, dependent: :destroy
   has_many :users, through: :pool_users
   has_many :games, through: :tournament
 

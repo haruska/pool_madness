@@ -38,5 +38,5 @@ PoolMadness::Application.configure do
   end
 
   config.active_job.queue_adapter = :sidekiq
-  config.cache_store = :dalli_store
+  #config.cache_store = :dalli_store
 end
