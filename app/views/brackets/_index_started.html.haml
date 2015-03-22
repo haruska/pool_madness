@@ -8,7 +8,7 @@
         %th Name
         %th Score
         %th Possible
-        - if @pool.start_eliminating?
+        - if @pool.display_best?
           %th Best
         %th Final Four
         %th Final Four
@@ -18,13 +18,13 @@
       - @brackets.each_with_index do |bracket, i|
         %tr{:id => "bracket-row-#{bracket.id}"}
           %td
-            = "*" if @pool.start_eliminating? && bracket.best_possible > 2
+            = "*" if @pool.display_best? && bracket.best_possible > 2
             = "#{i+1}."
           %td
             = link_to bracket.name, bracket
           %td= bracket.points
           %td= bracket.possible_points
-          - if @pool.start_eliminating?
+          - if @pool.display_best?
             %td= bracket.best_possible > 2 ? '-' : bracket.best_possible + 1
           = cache cache_key_for_bracket_final_four(bracket) do
             - bracket.sorted_four.each do |team|

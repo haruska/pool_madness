@@ -38,24 +38,26 @@ class SportsScores
 
   def update_scores
     api_response.select {|g| g[:state] == "postgame"}.each do |espn_game|
-      home_team = Team.find_by score_team_id: espn_game[:home_team]
-      away_team = Team.find_by score_team_id: espn_game[:away_team]
+      Tournament.all.each do |tournament|
+        home_team = tournament.teams.find_by score_team_id: espn_game[:home_team]
+        away_team = tournament.teams.find_by score_team_id: espn_game[:away_team]
 
 
-      game = Game.all.to_a.find do |g|
-        g.first_team == home_team && g.second_team == away_team || g.first_team == away_team && g.second_team == home_team
-      end
-
-      if game.present? && game.score_one.blank?
-        if game.first_team == home_team
-          game.update!(score_one: espn_game[:home_score], score_two: espn_game[:away_score])
-        else
-          game.update!(score_one: espn_game[:away_score], score_two: espn_game[:home_score])
+        game = tournament.games.to_a.find do |g|
+          g.first_team == home_team && g.second_team == away_team || g.first_team == away_team && g.second_team == home_team
         end
 
-        game.next_game.try(:touch)
-        
-        self.changed_games = true
+        if game.present? && game.score_one.blank?
+          if game.first_team == home_team
+            game.update!(score_one: espn_game[:home_score], score_two: espn_game[:away_score])
+          else
+            game.update!(score_one: espn_game[:away_score], score_two: espn_game[:home_score])
+          end
+
+          game.next_game.try(:touch)
+
+          self.changed_games = true
+        end
       end
     end
   end

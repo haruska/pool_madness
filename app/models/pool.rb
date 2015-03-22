@@ -24,6 +24,10 @@ class Pool < ActiveRecord::Base
     (credit_card.to_i + cash) / 1000 * 10
   end
 
+  def display_best?
+    start_eliminating? && bracket_points.minimum(:best_possible) == 0
+  end
+
   private
 
   def set_invite_code

@@ -32,7 +32,7 @@ class Game < ActiveRecord::Base
   end
 
   def round
-    round = 6 # championship
+    round = tournament.num_rounds # championship
     n = next_game
     while n.present?
       round -= 1
