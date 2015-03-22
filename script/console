@@ -1,3 +1,0 @@
-#!/bin/sh
-
-heroku run bundle exec rails c --app madness

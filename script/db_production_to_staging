@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ $1 ]; then
-  heroku pgbackups:restore DATABASE `heroku pgbackups:url --app ${1}` --remote ${1}-staging --app ${1}-staging
-else
-  echo "Usage: $0 <madness|bigten>"
-fi
-

@@ -47,7 +47,6 @@ group :development, :test do
   gem "rubocop"
   gem "selenium-webdriver"
   gem "spring"
-  gem "thin"
 end
 
 group :development do
