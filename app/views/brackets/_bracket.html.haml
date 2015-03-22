@@ -31,7 +31,7 @@
           %td March 21-22
           %td March 19-20
   %div{class: "bracket-body #{num_rounds == 4 ? 'sweet-16' : 'field-64'}"}
-    - bracket.tournament.num_rounds.times do |round_num|
+    - num_rounds.times do |round_num|
       = render partial: "brackets/round", locals: { round_num: round_num + 1 }
     = render partial: "brackets/championship"
     .tie-breaker
