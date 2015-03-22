@@ -3,7 +3,7 @@
   %h2= @tournament.name
 
   .bracket
-    .bracket-heading
+    %div{class: "bracket-heading #{num_rounds == 4 ? 'sweet-16' : 'field-64'}"}
       %table.gridtable
         %tr
           - if num_rounds == 6
