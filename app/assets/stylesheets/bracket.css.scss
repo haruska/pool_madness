@@ -36,7 +36,7 @@
     }
 
     &.sweet-16 {
-      width: 825px;
+      width: 810px;
     }
   }
 
@@ -94,13 +94,17 @@
 
 
     &.sweet-16 {
+      height: 400px;
+
+      .match {
+        width: 110px;
+      }
+
       .round1 {
-        //left: 0px;
-        width: 836px;
+        width: 810px;
 
         .match {
           height: 40px;
-          //margin-top: 50px;
         }
 
         .region1, .region3 {
@@ -115,8 +119,8 @@
       }
 
       .round2 {
-        left: 115px;
-        width: 606px;
+        left: 110px;
+        width: 590px;
 
         .match {
           height: 40px;
@@ -132,8 +136,8 @@
       }
 
       .round3 {
-        left: 229px;
-        width: 378px;
+        left: 220px;
+        width: 370px;
 
         .match {
           height: 205px;
@@ -164,8 +168,8 @@
       }
 
       .round4 {
-        left: 343px;
-        //width: 180px;
+        left: 330px;
+
 
         .match {
           height: 75px;
@@ -198,8 +202,14 @@
       }
 
       .championship {
-        left: 343px;
+        left: 330px;
         top: 275px;
+      }
+
+      .tie-breaker {
+        position: absolute;
+        left: 345px;
+        top: 350px;
       }
     }
 

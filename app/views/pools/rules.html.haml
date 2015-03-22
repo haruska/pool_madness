@@ -52,12 +52,13 @@
     %tr
       %td Fourth
       %td 5 + Seed Number
-    %tr
-      %td Fifth
-      %td 8 + Seed Number
-    %tr
-      %td Sixth
-      %td 13 + Seed Number
+    - if @pool.tournament.num_rounds > 4
+      %tr
+        %td Fifth
+        %td 8 + Seed Number
+      %tr
+        %td Sixth
+        %td 13 + Seed Number
 
 %div
   For all correct picks you get that round's points
