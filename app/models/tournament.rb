@@ -12,7 +12,7 @@ class Tournament < ActiveRecord::Base
   end
 
   def start_eliminating?
-    DateTime.now > (tip_off + eliminating_offset).in_time_zone("America/New_York").at_midnight
+    games.not_played.count < 16
   end
 
   def championship
