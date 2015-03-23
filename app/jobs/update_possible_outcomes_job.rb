@@ -1,8 +1,8 @@
 class UpdatePossibleOutcomesJob < ActiveJob::Base
   def perform(tournament_id)
     timestamp = Time.now.to_i
-
     pool = Tournament.find(tournament_id).pools.first
+    outcome_set_key = self.class.outcome_set_key(tournament_id, timestamp)
 
     Sidekiq.redis do |redis|
       PossibleOutcomeSet.new(pool: pool).all_slot_bits do |sb|
