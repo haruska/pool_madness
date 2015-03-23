@@ -1,25 +1,30 @@
 class CalculatePossibleOutcomeJob < ActiveJob::Base
   def perform(tournament_id, timestamp)
     ActiveRecord::Base.cache do
-      Tournament.find(tournament_id).pools.each do |pool|
-        outcome_set = PossibleOutcomeSet.new(pool: pool)
-        bits = pop_bits(tournament_id, timestamp, pool.id)
+      tournament = Tournament.find(tournament_id)
 
-        until bits.nil?
+      outcome_sets = tournament.pools.map do |pool|
+        PossibleOutcomeSet.new(pool: pool)
+      end
+
+      bits = pop_bits(tournament_id, timestamp)
+
+      until bits.nil?
+        outcome_sets.each do |outcome_set|
           outcome = outcome_set.generate_outcome(bits)
           outcome.get_best_possible.each do |bracket, rank|
-            update_redis_bracket(pool, timestamp, bracket, rank)
+            update_redis_bracket(outcome_set.pool, timestamp, bracket, rank)
           end
-
-          bits = pop_bits(tournament_id, timestamp, pool.id)
         end
 
-        Sidekiq.redis do |redis|
-          best_hash = redis.hgetall(self.class.outcome_brackets_key(tournament_id, timestamp, pool.id))
-          pool.brackets.where.not(id: best_hash.keys.map(&:to_i)).map(&:bracket_point).each {|bp| bp.update(best_possible: 60000)}
-          best_hash.each do |bracket_id, rank|
-            Bracket.find(bracket_id.to_i).bracket_point.update(best_possible: rank.to_i)
-          end
+        bits = pop_bits(tournament_id, timestamp)
+      end
+
+      Sidekiq.redis do |redis|
+        best_hash = redis.hgetall(self.class.outcome_brackets_key(tournament_id, timestamp, pool.id))
+        pool.brackets.where.not(id: best_hash.keys.map(&:to_i)).map(&:bracket_point).each {|bp| bp.update(best_possible: 60000)}
+        best_hash.each do |bracket_id, rank|
+          Bracket.find(bracket_id.to_i).bracket_point.update(best_possible: rank.to_i)
         end
       end
     end
@@ -44,11 +49,11 @@ class CalculatePossibleOutcomeJob < ActiveJob::Base
     end
   end
 
-  def pop_bits(tournament_id, timestamp, pool_id)
+  def pop_bits(tournament_id, timestamp)
     bits = nil
 
     Sidekiq.redis do |redis|
-      key = UpdatePossibleOutcomesJob.outcome_set_key(tournament_id, timestamp, pool_id)
+      key = UpdatePossibleOutcomesJob.outcome_set_key(tournament_id, timestamp)
       bits = redis.lpop(key)
     end
 
