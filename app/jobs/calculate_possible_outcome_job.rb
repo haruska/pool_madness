@@ -2,18 +2,16 @@ class CalculatePossibleOutcomeJob < ActiveJob::Base
   def perform(tournament_id, timestamp)
     ActiveRecord::Base.cache do
       tournament = Tournament.find(tournament_id)
-
-      outcome_sets = tournament.pools.map do |pool|
-        PossibleOutcomeSet.new(pool: pool)
-      end
+      pools = tournament.pools.includes(brackets: [:picks])
+      outcome_set = PossibleOutcomeSet.new(tournament: tournament)
 
       bits = pop_bits(tournament_id, timestamp)
 
       until bits.nil?
-        outcome_sets.each do |outcome_set|
-          outcome = outcome_set.generate_outcome(bits)
-          outcome.get_best_possible.each do |bracket, rank|
-            update_redis_bracket(outcome_set.pool, timestamp, bracket, rank)
+        outcome = outcome_set.generate_outcome(bits)
+        pools.each do |pool|
+          outcome.get_best_possible(pool).each do |bracket, rank|
+            update_redis_bracket(pool, timestamp, bracket, rank)
           end
         end
 
@@ -21,10 +19,12 @@ class CalculatePossibleOutcomeJob < ActiveJob::Base
       end
 
       Sidekiq.redis do |redis|
-        best_hash = redis.hgetall(self.class.outcome_brackets_key(tournament_id, timestamp, pool.id))
-        pool.brackets.where.not(id: best_hash.keys.map(&:to_i)).map(&:bracket_point).each {|bp| bp.update(best_possible: 60000)}
-        best_hash.each do |bracket_id, rank|
-          Bracket.find(bracket_id.to_i).bracket_point.update(best_possible: rank.to_i)
+        pools.each do |pool|
+          best_hash = redis.hgetall(self.class.outcome_brackets_key(tournament_id, timestamp, pool.id))
+          pool.brackets.where.not(id: best_hash.keys.map(&:to_i)).map(&:bracket_point).each {|bp| bp.update(best_possible: 60000)}
+          best_hash.each do |bracket_id, rank|
+            Bracket.find(bracket_id.to_i).bracket_point.update(best_possible: rank.to_i)
+          end
         end
       end
     end

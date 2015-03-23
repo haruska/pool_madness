@@ -5,7 +5,7 @@ class PossibleOutcome
   attribute :slot_bits
   attribute :possible_games, type: Hash
 
-  delegate :tournament, :pool, :games, :brackets, :teams, to: :possible_outcome_set
+  delegate :tournament, :games, :teams, to: :possible_outcome_set
 
   def create_possible_game(game_hash)
     possible_game = PossibleGame.new(game_hash.merge(possible_outcome: self))
@@ -23,8 +23,8 @@ class PossibleOutcome
     tournament.round_for(round_number, region).map { |game| possible_games[game.id] }
   end
 
-  def sorted_brackets
-    result = brackets.map do |bracket|
+  def sorted_brackets(pool)
+    result = pool.brackets.includes(:picks).map do |bracket|
       points = bracket.picks.map do |pick|
         possible_games[pick.game_id].points_for_pick(pick.team_id)
       end.sum
@@ -34,27 +34,17 @@ class PossibleOutcome
     result.sort_by(&:last).reverse
   end
 
-  def update_brackets_best_possible
-    get_best_possible.each do |bracket, rank|
-      bracket.bracket_point.reload
-      if bracket.best_possible > rank
-        bracket.bracket_point.best_possible = rank
-        bracket.bracket_point.save!
-      end
-    end
-  end
-
-  def get_best_possible
-    sorted_brackets = self.sorted_brackets
+  def get_best_possible(pool)
+    s_brackets = sorted_brackets(pool)
 
     third_place_index = 2
-    third_place_points = sorted_brackets[third_place_index][1]
-    while sorted_brackets[third_place_index + 1][1] == third_place_points
+    third_place_points = s_brackets[third_place_index][1]
+    while s_brackets[third_place_index + 1][1] == third_place_points
       third_place_index += 1
     end
 
-    sorted_brackets[0..third_place_index].map do |bracket, points|
-      index = sorted_brackets.index { |_b, p| p == points }
+    s_brackets[0..third_place_index].map do |bracket, points|
+      index = s_brackets.index { |_b, p| p == points }
       [bracket, index]
     end
   end

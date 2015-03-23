@@ -1,15 +1,12 @@
 class PossibleOutcomeSet
   include ActiveAttr::Model
 
-  attribute :pool
-
-  attribute :brackets_attr
+  attribute :tournament
   attribute :teams_attr
 
   attribute :already_played_games_attr
   attribute :not_played_games_attr
 
-  delegate :tournament, to: :pool
 
   def already_played_games
     self.already_played_games_attr ||= tournament.games.already_played.to_a
@@ -17,10 +14,6 @@ class PossibleOutcomeSet
 
   def not_played_games
     self.not_played_games_attr ||= tournament.games.not_played.to_a
-  end
-
-  def brackets
-    self.brackets_attr ||= pool.brackets.includes(:picks).to_a
   end
 
   def teams
