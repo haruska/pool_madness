@@ -7,6 +7,11 @@ class PossibleOutcomeSet
   attribute :already_played_games_attr
   attribute :not_played_games_attr
 
+  attribute :round_for_cache_attr
+  attribute :pool_brackets_cache_attr
+  attribute :bracket_picks_cache_attr
+
+  attribute :possible_outcome_attr
 
   def already_played_games
     self.already_played_games_attr ||= tournament.games.already_played.to_a
@@ -47,7 +52,13 @@ class PossibleOutcomeSet
   end
 
   def generate_outcome(slot_bits)
-    possible_outcome = PossibleOutcome.new(possible_outcome_set: self, slot_bits: slot_bits)
+
+    if possible_outcome_attr.nil?
+      self.possible_outcome_attr = PossibleOutcome.new(possible_outcome_set: self, slot_bits: slot_bits)
+    end
+
+    possible_outcome = possible_outcome_attr
+    possible_outcome.slot_bits = slot_bits
 
     games.each_with_index do |game, i|
       slot_index = games.size - i - 1
@@ -57,5 +68,29 @@ class PossibleOutcomeSet
     end
 
     possible_outcome
+  end
+
+  def round_for_cache(round_number, region)
+    self.round_for_cache_attr ||= {}
+    if round_for_cache_attr[[round_number, region]].nil?
+      round_for_cache_attr[[round_number, region]] = tournament.round_for(round_number, region)
+    end
+    round_for_cache_attr[[round_number, region]]
+  end
+
+  def pool_brackets_cache(pool)
+    self.pool_brackets_cache_attr ||= {}
+    if pool_brackets_cache_attr[pool.id].nil?
+      pool_brackets_cache_attr[pool.id] = pool.brackets.to_a
+    end
+    pool_brackets_cache_attr[pool.id]
+  end
+
+  def bracket_picks_cache(bracket)
+    self.bracket_picks_cache_attr ||= {}
+    if bracket_picks_cache_attr[bracket.id].nil?
+      bracket_picks_cache_attr[bracket.id] = bracket.picks.to_a
+    end
+    bracket_picks_cache_attr[bracket.id]
   end
 end

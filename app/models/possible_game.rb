@@ -6,7 +6,7 @@ class PossibleGame
   attribute :score_one
   attribute :score_two
 
-  delegate :team_one_id, :team_two_id, :game_one_id, :game_two_id, :next_slot, :round, to: :game
+  delegate :team_one_id, :team_two_id, :game_one_id, :game_two_id, to: :game
 
   def siblings_hash
     possible_outcome.possible_games
@@ -42,5 +42,13 @@ class PossibleGame
 
   def points_for_pick(team_id)
     team_id == winner.id ? Pick::POINTS_PER_ROUND[round] + winner.seed : 0
+  end
+
+  def next_slot
+    @next_slot ||= game.next_slot
+  end
+
+  def round
+    @round ||= game.round
   end
 end

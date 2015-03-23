@@ -5,12 +5,24 @@ class PossibleOutcome
   attribute :slot_bits
   attribute :possible_games, type: Hash
 
-  delegate :tournament, :games, :teams, to: :possible_outcome_set
+  delegate :tournament, :games, :teams, :round_for_cache, :pool_brackets_cache, :bracket_picks_cache, to: :possible_outcome_set
 
   def create_possible_game(game_hash)
-    possible_game = PossibleGame.new(game_hash.merge(possible_outcome: self))
     self.possible_games ||= {}
-    self.possible_games[possible_game.game.id] = possible_game
+
+    game = game_hash[:game]
+
+    if possible_games[game.id].nil?
+      possible_game = PossibleGame.new(game_hash.merge(possible_outcome: self))
+      self.possible_games[game.id] = possible_game
+    else
+      possible_game = possible_games[game.id]
+    end
+
+    possible_game.score_one = game_hash[:score_one]
+    possible_game.score_two = game_hash[:score_two]
+
+    possible_game
   end
 
   def championship
@@ -20,12 +32,12 @@ class PossibleOutcome
   end
 
   def round_for(round_number, region = nil)
-    tournament.round_for(round_number, region).map { |game| possible_games[game.id] }
+    round_for_cache(round_number, region).map { |game| possible_games[game.id] }
   end
 
   def sorted_brackets(pool)
-    result = pool.brackets.includes(:picks).map do |bracket|
-      points = bracket.picks.map do |pick|
+    result = pool_brackets_cache(pool).map do |bracket|
+      points = bracket_picks_cache(bracket).map do |pick|
         possible_games[pick.game_id].points_for_pick(pick.team_id)
       end.sum
       [bracket, points]
