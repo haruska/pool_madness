@@ -1,5 +1,6 @@
-PoolMadness::Application.routes.draw do
+require 'sidekiq/web'
 
+PoolMadness::Application.routes.draw do
   root to: "home#index"
 
   devise_for :users, path: "auth", path_names: { sign_in: "login", sign_up: "signup" }
@@ -41,5 +42,9 @@ PoolMadness::Application.routes.draw do
     resources :brackets, only: [] do
       patch :mark_paid, on: :member
     end
+  end
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
   end
 end

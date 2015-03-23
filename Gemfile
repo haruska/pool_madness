@@ -25,6 +25,7 @@ gem "redis"
 gem "refills"
 gem "sass-rails", "~> 4.0.3"
 gem "sidekiq"
+gem "sinatra", require: true
 gem "simple_form"
 gem "stripe"
 gem "uglifier", ">=1.3.0"
