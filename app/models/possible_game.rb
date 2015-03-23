@@ -33,11 +33,11 @@ class PossibleGame
   end
 
   def winner
-    @winner ||= score_one > score_two ? first_team : second_team
+    score_one > score_two ? first_team : second_team
   end
 
   def next_game
-    siblings.find { |x| [x.game_one_id, x.game_two_id].include?(game.id) }
+    @next_game ||= siblings.find { |x| [x.game_one_id, x.game_two_id].include?(game.id) }
   end
 
   def points_for_pick(team_id)
