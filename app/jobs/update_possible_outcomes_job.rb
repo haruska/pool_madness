@@ -1,6 +1,6 @@
 class UpdatePossibleOutcomesJob < ActiveJob::Base
   def perform(tournament_id, opts = {})
-    opts = {update_db: true}.merge(opts)
+    opts = HashWithIndifferentAccess.new(update_db: true).merge(opts)
 
     timestamp = Time.now.to_i
     tournament = Tournament.find(tournament_id)

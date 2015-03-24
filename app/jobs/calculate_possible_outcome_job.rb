@@ -1,6 +1,6 @@
 class CalculatePossibleOutcomeJob < ActiveJob::Base
   def perform(tournament_id, timestamp, opts={})
-    opts = {update_db: true}.merge(opts)
+    opts = HashWithIndifferentAccess.new(update_db: true).merge(opts)
 
     ActiveRecord::Base.cache do
       tournament = Tournament.find(tournament_id)
