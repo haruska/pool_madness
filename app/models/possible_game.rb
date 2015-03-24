@@ -25,11 +25,11 @@ class PossibleGame
   end
 
   def first_team
-    @first_team ||= game.team_one || game_one.winner
+    game.team_one || game_one.winner
   end
 
   def second_team
-    @second_team ||= game.team_two || game_two.winner
+    game.team_two || game_two.winner
   end
 
   def winner

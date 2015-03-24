@@ -39,7 +39,7 @@ class PossibleOutcomeSet
       end
     end
 
-    to_play_games_mask = 1
+    to_play_games_mask = 0
     not_played_games.size.times { |i| to_play_games_mask |= 1 << i }
 
     collected_slot_bits = []
