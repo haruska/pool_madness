@@ -2,12 +2,11 @@ class PossibleOutcome
   include ActiveAttr::Model
 
   attribute :possible_outcome_set
-  attribute :slot_bits
   attribute :possible_games, type: Hash
 
   delegate :tournament, :games, :teams, :round_for_cache, :pool_brackets_cache, :bracket_picks_cache, to: :possible_outcome_set
 
-  def create_possible_game(game_hash)
+  def create_or_update_possible_game(game_hash)
     self.possible_games ||= {}
 
     game = game_hash[:game]
@@ -19,8 +18,7 @@ class PossibleOutcome
       possible_game = possible_games[game.id]
     end
 
-    possible_game.score_one = game_hash[:score_one]
-    possible_game.score_two = game_hash[:score_two]
+    possible_game.update_score(game_hash[:score_one], game_hash[:score_two])
 
     possible_game
   end

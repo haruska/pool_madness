@@ -1,14 +1,17 @@
 class CalculatePossibleOutcomeJob < ActiveJob::Base
-  def perform(tournament_id, timestamp)
+  def perform(tournament_id, timestamp, opts={})
+    opts = {update_db: true}.merge(opts)
+
     ActiveRecord::Base.cache do
       tournament = Tournament.find(tournament_id)
       pools = tournament.pools.includes(brackets: [:picks])
       outcome_set = PossibleOutcomeSet.new(tournament: tournament)
+      max_slot_bits = outcome_set.max_slot_bits
 
       bits = pop_bits(tournament_id, timestamp)
 
-      until bits.nil?
-        outcome = outcome_set.generate_outcome(bits)
+      until bits > max_slot_bits
+        outcome = outcome_set.update_outcome(bits)
         pools.each do |pool|
           outcome.get_best_possible(pool).each do |bracket, rank|
             update_redis_bracket(pool, timestamp, bracket, rank)
@@ -18,12 +21,14 @@ class CalculatePossibleOutcomeJob < ActiveJob::Base
         bits = pop_bits(tournament_id, timestamp)
       end
 
-      Sidekiq.redis do |redis|
-        pools.each do |pool|
-          best_hash = redis.hgetall(self.class.outcome_brackets_key(tournament_id, timestamp, pool.id))
-          pool.brackets.where.not(id: best_hash.keys.map(&:to_i)).map(&:bracket_point).each {|bp| bp.update(best_possible: 60000)}
-          best_hash.each do |bracket_id, rank|
-            Bracket.find(bracket_id.to_i).bracket_point.update(best_possible: rank.to_i)
+      if opts[:update_db]
+        Sidekiq.redis do |redis|
+          pools.each do |pool|
+            best_hash = redis.hgetall(self.class.outcome_brackets_key(tournament_id, timestamp, pool.id))
+            pool.brackets.where.not(id: best_hash.keys.map(&:to_i)).map(&:bracket_point).each {|bp| bp.update(best_possible: 60000)}
+            best_hash.each do |bracket_id, rank|
+              Bracket.find(bracket_id.to_i).bracket_point.update(best_possible: rank.to_i)
+            end
           end
         end
       end
@@ -50,13 +55,6 @@ class CalculatePossibleOutcomeJob < ActiveJob::Base
   end
 
   def pop_bits(tournament_id, timestamp)
-    bits = nil
-
-    Sidekiq.redis do |redis|
-      key = UpdatePossibleOutcomesJob.outcome_set_key(tournament_id, timestamp)
-      bits = redis.lpop(key)
-    end
-
-    bits.try(:to_i)
+    Sidekiq.redis { |r| r.incr(UpdatePossibleOutcomesJob.outcome_set_key(tournament_id, timestamp)) }
   end
 end

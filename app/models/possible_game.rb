@@ -7,6 +7,13 @@ class PossibleGame
   attribute :score_two
 
   delegate :team_one_id, :team_two_id, :game_one_id, :game_two_id, to: :game
+  delegate :teams, to: :possible_outcome
+
+  def update_score(one, two)
+    @winner = nil
+    self.score_one = one
+    self.score_two = two
+  end
 
   def siblings_hash
     possible_outcome.possible_games
@@ -25,15 +32,15 @@ class PossibleGame
   end
 
   def first_team
-    game.team_one || game_one.winner
+    team_one_id.present? ? teams[team_one_id] : game_one.winner
   end
 
   def second_team
-    game.team_two || game_two.winner
+    team_two_id.present? ? teams[team_two_id] : game_two.winner
   end
 
   def winner
-    score_one > score_two ? first_team : second_team
+    @winner ||= score_one > score_two ? first_team : second_team
   end
 
   def next_game
