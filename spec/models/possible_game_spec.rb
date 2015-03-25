@@ -3,14 +3,12 @@ require "spec_helper"
 describe PossibleGame do
   before(:all) {
     @tournament = create(:tournament, :with_first_two_rounds_completed)
-    @pool = create(:pool, tournament: @tournament)
-    @possible_outcome_set = create(:possible_outcome_set, pool: @pool)
-    @slot_bits = @possible_outcome_set.all_slot_bits.sample
-    @possible_outcome = @possible_outcome_set.generate_outcome(@slot_bits)
   }
 
-  let(:slot_bits) { @slot_bits }
-  let(:possible_outcome) { @possible_outcome }
+  let(:tournament) { @tournament }
+  let(:possible_outcome_set) { PossibleOutcomeSet.new(tournament: tournament) }
+  let(:slot_bits) { Faker::Number.between(possible_outcome_set.min_slot_bits, possible_outcome_set.max_slot_bits) }
+  let(:possible_outcome) { possible_outcome_set.update_outcome(slot_bits) }
 
   describe "#siblings_hash" do
     subject { possible_outcome.possible_games.values.sample }

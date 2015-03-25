@@ -55,7 +55,7 @@ describe Pool, type: :model do
     end
 
     context "second weekend" do
-      before { tournament.update(tip_off: 1.week.ago) }
+      let(:tournament) { create(:tournament, :with_first_two_rounds_completed) }
 
       it "has started eliminating" do
         expect(subject).to be_start_eliminating
