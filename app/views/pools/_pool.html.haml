@@ -9,8 +9,8 @@
       = pool.admins.map(&:name).join(", ")
       - if can?(:manage, pool)
         (#{ link_to "Admin", admin_pool_brackets_path(pool) })
-    %li.members
-      #{pool.users.count} Members
+    %li.brackets
+      #{pool.brackets.count} Brackets
   - unless pool.started?
     .invite-code
       Invite Code:
