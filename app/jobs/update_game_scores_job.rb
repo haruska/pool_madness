@@ -1,4 +1,5 @@
 class UpdateGameScoresJob < ActiveJob::Base
+  queue_as :scores
 
   def perform
     yesterday = SportsScores.generate_for(Date.yesterday)

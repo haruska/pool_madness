@@ -1,5 +1,5 @@
 class BracketScoreJob < ActiveJob::Base
-  queue_as :default
+  queue_as :scores
 
   def perform(bracket_id)
     bracket = Bracket.find(bracket_id)

@@ -1,4 +1,6 @@
 class CalculatePossibleOutcomeJob < ActiveJob::Base
+  queue_as :elimination
+
   def perform(tournament_id, timestamp, opts={})
     opts = HashWithIndifferentAccess.new(update_db: true).merge(opts)
 

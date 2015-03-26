@@ -1,4 +1,6 @@
 class UpdatePossibleOutcomesJob < ActiveJob::Base
+  queue_as :default
+
   def perform(tournament_id, opts = {})
     opts = HashWithIndifferentAccess.new(update_db: true).merge(opts)
 

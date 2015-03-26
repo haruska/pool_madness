@@ -23,7 +23,7 @@ class ChargesController < ApplicationController
 
     rescue Stripe::CardError => e
       # The card has been declined
-      flash[:error] = "Your card has been declined."
+      flash[:error] = e.message
     end
 
     redirect_to pool_brackets_path(@pool)

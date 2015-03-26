@@ -1,5 +1,5 @@
 class UpdateAllBracketScoresJob < ActiveJob::Base
-  queue_as :default
+  queue_as :scores
 
   def perform(tournament_id)
     Tournament.find(tournament_id).pools.each do |pool|
