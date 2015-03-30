@@ -17,12 +17,12 @@ describe Ability, type: :model do
   end
 
   context "logged in" do
-    context "as a regular user" do
-      let(:user) { create(:user) }
-      let!(:pool_user) { create(:pool_user, user: user, pool: pool) }
-      let(:bracket) { create(:bracket, pool: pool, user: user) }
-      let(:another_bracket) { create(:bracket, pool: pool) }
+    let(:user) { create(:user) }
+    let!(:pool_user) { create(:pool_user, user: user, pool: pool) }
+    let(:bracket) { create(:bracket, pool: pool, user: user) }
+    let(:another_bracket) { create(:bracket, pool: pool) }
 
+    context "as a regular user" do
       subject { Ability.new(user) }
 
       it { should be_able_to(:manage, user) }
@@ -64,6 +64,42 @@ describe Ability, type: :model do
 
         it { should be_able_to(:update, bracket.picks.sample) }
         it { should_not be_able_to(:update, another_bracket.picks.sample) }
+      end
+    end
+
+    context "as a pool admin" do
+      let(:another_pool_bracket) { create(:bracket) }
+
+      before { pool_user.admin! }
+
+      subject { Ability.new(user) }
+
+      it { should be_able_to(:manage, pool) }
+
+      context "the pool has started" do
+        before { pool.tournament.update(tip_off: 1.day.ago) }
+
+        subject { Ability.new(user) }
+
+        it { should be_able_to(:destroy, bracket) }
+        it { should be_able_to(:destroy, another_bracket) }
+        it { should_not be_able_to(:edit, bracket) }
+        it { should_not be_able_to(:edit, another_bracket) }
+        it { should_not be_able_to(:destroy, another_pool_bracket) }
+      end
+
+      context "the pool has not started" do
+        before { pool.tournament.update(tip_off: 1.day.from_now) }
+
+        subject { Ability.new(user) }
+
+        it { should be_able_to(:manage, bracket) }
+        it { should be_able_to(:manage, another_bracket) }
+        it { should_not be_able_to(:manage, another_pool_bracket) }
+
+        it { should be_able_to(:update, bracket.picks.first) }
+        it { should be_able_to(:update, another_bracket.picks.first) }
+        it { should_not be_able_to(:update, another_pool_bracket.picks.first) }
       end
     end
 

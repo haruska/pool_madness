@@ -149,4 +149,22 @@ describe Game, type: :model do
       end
     end
   end
+
+  describe "#championship" do
+    context "the game is the championship" do
+      subject { tournament.championship }
+
+      it "is true" do
+        expect(subject).to be_championship
+      end
+    end
+
+    context "the game is not the championship" do
+      subject { tournament.games.first }
+
+      it "is false" do
+        expect(subject).to_not be_championship
+      end
+    end
+  end
 end

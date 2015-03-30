@@ -66,4 +66,33 @@ describe Pool, type: :model do
       end
     end
   end
+
+  describe "#display_best?" do
+    context "the tournament has started eliminating" do
+      let(:tournament) { create(:tournament, :with_first_two_rounds_completed) }
+      let!(:brackets) { create_list(:bracket, 2, pool: subject)}
+
+      context "eliminations have been calculated previously" do
+        before { subject.bracket_points.first.update(best_possible: 0) }
+
+        it "is true" do
+          expect(subject).to be_display_best
+        end
+      end
+
+      context "no eliminations have been calculated" do
+        it "is false" do
+          expect(subject).to be_start_eliminating
+          expect(subject).to_not be_display_best
+        end
+      end
+    end
+
+    context "the tournament has not started eliminating" do
+      it "is false" do
+        expect(subject).to_not be_start_eliminating
+        expect(subject).to_not be_display_best
+      end
+    end
+  end
 end

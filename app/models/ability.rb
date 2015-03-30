@@ -18,10 +18,9 @@ class Ability
           can :manage, Pool, id: pool.id
           if pool.started?
             can :destroy, Bracket, pool_id: pool.id
-            can :mark_paid, Bracket, pool_id: pool.id
           else
             can :manage, Bracket, pool_id: pool.id
-            can :manage, Pick, bracket: { pool_id: pool.id }
+            can :update, Pick, bracket: { pool_id: pool.id }
           end
         else
           can :read, Pool, id: pool.id
