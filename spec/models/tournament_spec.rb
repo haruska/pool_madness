@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Tournament, type: :model do
   before(:all) { @tournament = create(:tournament) }
@@ -8,7 +8,7 @@ describe Tournament, type: :model do
   it { should validate_uniqueness_of :name }
 
   describe "#championship" do
-    let(:expected_game) { subject.games.to_a.find {|g| g.next_game.blank? } }
+    let(:expected_game) { subject.games.to_a.find { |g| g.next_game.blank? } }
 
     it "returns the championship game" do
       expect(subject.championship).to eq(expected_game)

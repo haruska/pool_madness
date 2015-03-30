@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Admin::BracketsController, type: :controller do
   before(:all) do
@@ -19,7 +19,6 @@ describe Admin::BracketsController, type: :controller do
     end
 
     context "a regular user" do
-
       it "redirects home with an authorization message" do
         get :index, pool_id: pool.id
         expect(response).to redirect_to(root_path)
@@ -40,9 +39,9 @@ describe Admin::BracketsController, type: :controller do
         let!(:brackets) { create_list(:bracket, 3, :completed, pool: pool) }
         let!(:incomplete_bracket) { create(:bracket, pool: pool) }
 
-        before {
+        before do
           brackets.first.paid!
-        }
+        end
 
         it "renders a list of brackets" do
           get :index, pool_id: pool.id

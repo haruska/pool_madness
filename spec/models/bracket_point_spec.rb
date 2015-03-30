@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe BracketPoint, type: :model do
   before(:all) { @tournament = create(:tournament, :completed) }
@@ -30,4 +30,3 @@ describe BracketPoint, type: :model do
     end
   end
 end
-

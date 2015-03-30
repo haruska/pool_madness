@@ -23,7 +23,7 @@ class PossibleOutcomeSet
   end
 
   def teams
-    self.teams_attr ||= tournament.teams.each_with_object(Hash.new) {|team, acc| acc[team.id] = team}
+    self.teams_attr ||= tournament.teams.each_with_object({}) { |team, acc| acc[team.id] = team }
   end
 
   def games

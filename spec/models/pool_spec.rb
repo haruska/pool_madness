@@ -70,7 +70,7 @@ describe Pool, type: :model do
   describe "#display_best?" do
     context "the tournament has started eliminating" do
       let(:tournament) { create(:tournament, :with_first_two_rounds_completed) }
-      let!(:brackets) { create_list(:bracket, 2, pool: subject)}
+      let!(:brackets) { create_list(:bracket, 2, pool: subject) }
 
       context "eliminations have been calculated previously" do
         before { subject.bracket_points.first.update(best_possible: 0) }

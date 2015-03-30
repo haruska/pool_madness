@@ -15,7 +15,6 @@ PoolMadness::Application.configure do
   # change to true to allow email to be sent during development
   config.action_mailer.perform_deliveries = false
 
-
   # config.action_dispatch.rack_cache = {
   #    metastore:   "redis://localhost:6379/1/metastore",
   #    entitystore: "redis://localhost:6379/1/entitystore"
@@ -38,5 +37,5 @@ PoolMadness::Application.configure do
   end
 
   config.active_job.queue_adapter = :sidekiq
-  #config.cache_store = :dalli_store
+  # config.cache_store = :dalli_store
 end

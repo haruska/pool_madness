@@ -1,11 +1,11 @@
 require "spec_helper"
 
 describe PossibleOutcome, type: :model do
-  before(:all) {
+  before(:all) do
     @tournament = create(:tournament, :with_first_two_rounds_completed)
     @pool = create(:pool, tournament: @tournament)
     @brackets = create_list(:bracket, 5, :completed, pool: @pool)
-  }
+  end
 
   let(:tournament) { @tournament }
   let(:pool) { @pool }
@@ -69,7 +69,7 @@ describe PossibleOutcome, type: :model do
           possible_games[pick.game_id].points_for_pick(pick.team_id)
         end.sum
 
-        result_pair = sorted_brackets.find {|b, _p| b == bracket }
+        result_pair = sorted_brackets.find { |b, _p| b == bracket }
         expect(result_pair.last).to eq(expected_points)
       end
     end
@@ -97,7 +97,7 @@ describe PossibleOutcome, type: :model do
 
     let(:expected) do
       sorted_brackets[0..third_place_index].map do |bracket, points|
-        [bracket, sorted_brackets.index {|_b, p| p == points}]
+        [bracket, sorted_brackets.index { |_b, p| p == points }]
       end
     end
 

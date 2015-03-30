@@ -8,7 +8,7 @@ module Admin
     before_action :auth_pool_admin
 
     def index
-      @brackets = @pool.brackets.includes(:user).to_a.sort_by {|b| [b.user.name, b.name]}
+      @brackets = @pool.brackets.includes(:user).to_a.sort_by { |b| [b.user.name, b.name] }
     end
 
     def mark_paid

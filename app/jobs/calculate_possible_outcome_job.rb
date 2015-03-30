@@ -27,7 +27,7 @@ class CalculatePossibleOutcomeJob < ActiveJob::Base
         Sidekiq.redis do |redis|
           pools.each do |pool|
             best_hash = redis.hgetall(self.class.outcome_brackets_key(tournament_id, timestamp, pool.id))
-            pool.brackets.where.not(id: best_hash.keys.map(&:to_i)).map(&:bracket_point).each {|bp| bp.update(best_possible: 60000)}
+            pool.brackets.where.not(id: best_hash.keys.map(&:to_i)).map(&:bracket_point).each { |bp| bp.update(best_possible: 60_000) }
             best_hash.each do |bracket_id, rank|
               Bracket.find(bracket_id.to_i).bracket_point.update(best_possible: rank.to_i)
             end

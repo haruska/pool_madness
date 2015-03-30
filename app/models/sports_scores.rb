@@ -35,13 +35,11 @@ class SportsScores
     end
   end
 
-
   def update_scores
-    api_response.select {|g| g[:state] == "postgame"}.each do |espn_game|
+    api_response.select { |g| g[:state] == "postgame" }.each do |espn_game|
       Tournament.all.each do |tournament|
         home_team = tournament.teams.find_by score_team_id: espn_game[:home_team]
         away_team = tournament.teams.find_by score_team_id: espn_game[:away_team]
-
 
         game = tournament.games.to_a.find do |g|
           g.first_team == home_team && g.second_team == away_team || g.first_team == away_team && g.second_team == home_team
@@ -63,11 +61,11 @@ class SportsScores
   end
 
   def next_poll_time
-    if api_response.find {|g| g[:state] == "in-progress"}.present?
+    if api_response.find { |g| g[:state] == "in-progress" }.present?
       5.minutes.from_now
-    elsif api_response.find {|g| g[:state] == "pregame"}.present?
-      next_game = api_response.find {|g| g[:state] == "pregame"}
-      time_str = "#{next_game[:game_date]} #{next_game[:start_time].gsub('ET','EDT')}"
+    elsif api_response.find { |g| g[:state] == "pregame" }.present?
+      next_game = api_response.find { |g| g[:state] == "pregame" }
+      time_str = "#{next_game[:game_date]} #{next_game[:start_time].gsub('ET', 'EDT')}"
       DateTime.parse(time_str)
     else
       Date.tomorrow.noon.in_time_zone("America/New_York")
@@ -95,5 +93,4 @@ class SportsScores
   #   :line=>"KU -10.5 O/U 131.5",
   #   :league=>"ncb"
   # }
-
 end

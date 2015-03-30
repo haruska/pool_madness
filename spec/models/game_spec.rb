@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe Game, type: :model do
-  before(:all) {
+  before(:all) do
     @tournament = create(:tournament, :with_first_two_rounds_completed)
-  }
+  end
 
   let(:tournament) { @tournament }
 
@@ -21,7 +21,7 @@ describe Game, type: :model do
   end
 
   describe "scopes" do
-    let(:played_games) { (1..2).map {|round| Team::REGIONS.map { |region| tournament.round_for(round, region) }}.flatten }
+    let(:played_games) { (1..2).map { |round| Team::REGIONS.map { |region| tournament.round_for(round, region) } }.flatten }
     let(:not_played_games) { tournament.games.where("id NOT IN (?)", played_games.map(&:id)) }
 
     describe "already_played" do
@@ -98,7 +98,6 @@ describe Game, type: :model do
       it "is the next round game for the winner" do
         expect(subject.next_game).to eq(next_game)
       end
-
     end
   end
 

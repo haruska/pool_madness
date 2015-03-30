@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe PossibleGame do
-  before(:all) {
+  before(:all) do
     @tournament = create(:tournament, :with_first_two_rounds_completed)
-  }
+  end
 
   let(:tournament) { @tournament }
   let(:possible_outcome_set) { PossibleOutcomeSet.new(tournament: tournament) }
@@ -121,7 +121,6 @@ describe PossibleGame do
       it "is the next round game for the winner" do
         expect(subject.next_game).to eq(next_game)
       end
-
     end
   end
 
@@ -134,7 +133,6 @@ describe PossibleGame do
       it "is the points for the round + seed" do
         expect(subject.points_for_pick(team_id)).to eq(Pick::POINTS_PER_ROUND[3] + subject.winner.seed)
       end
-
     end
 
     context "when team_id is the losing team" do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe PoolUser, type: :model do
   subject { create(:pool_user) }

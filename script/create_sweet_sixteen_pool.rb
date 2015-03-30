@@ -3,17 +3,16 @@ haruska_pool = Pool.find_by name: "Haruska"
 haruska_tournament = haruska_pool.tournament
 
 tournament = Tournament.create(
-    name: "2015 NCAA Sweet Sixteen",
-    tip_off: haruska_tournament.tip_off + 1.week,
-    eliminating_offset: 0,
-    num_rounds: 4
+  name: "2015 NCAA Sweet Sixteen",
+  tip_off: haruska_tournament.tip_off + 1.week,
+  eliminating_offset: 0,
+  num_rounds: 4
 )
 
 game_map = {}
 
 haruska_tournament.round_for(3).each do |game|
   teams = [game.first_team, game.second_team].map do |team|
-
     tournament.teams.create(name: team.name,
                             score_team_id: team.score_team_id,
                             seed: team.seed,

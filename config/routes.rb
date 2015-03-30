@@ -1,4 +1,4 @@
-require 'sidekiq/web'
+require "sidekiq/web"
 
 PoolMadness::Application.routes.draw do
   root to: "home#index"
@@ -44,7 +44,7 @@ PoolMadness::Application.routes.draw do
     end
   end
 
-  authenticate :user, lambda { |u| u.admin? } do
-    mount Sidekiq::Web => '/sidekiq'
+  authenticate :user, ->(u) { u.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
   end
 end

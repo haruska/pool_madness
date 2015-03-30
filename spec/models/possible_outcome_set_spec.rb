@@ -1,11 +1,11 @@
 require "spec_helper"
 
 describe PossibleOutcomeSet, type: :model do
-  before(:all) {
+  before(:all) do
     @tournament = create(:tournament, :with_first_two_rounds_completed)
     @pool = create(:pool, tournament: @tournament)
     @brackets = create_list(:bracket, 5, :completed, pool: @pool)
-  }
+  end
 
   let(:tournament) { @tournament }
   let(:pool) { @pool }
@@ -13,10 +13,7 @@ describe PossibleOutcomeSet, type: :model do
 
   subject { PossibleOutcomeSet.new(tournament: tournament) }
 
-
   context "slot_bit_calculation" do
-
-
     let(:already_played_games) { subject.already_played_games }
     let(:to_play_games) { subject.not_played_games }
 

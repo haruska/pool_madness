@@ -10,16 +10,16 @@ class ChargesController < ApplicationController
     # Create the charge on Stripe's servers - this will charge the user's card
     begin
       Stripe::Charge.create(
-          amount: amount, # amount in cents, again
-          currency: "usd",
-          source: token,
-          description: "#{@brackets.size} bracket(s) in the pool #{@pool.name} at PoolMadness",
-          statement_descriptor: "PoolMadness Brackets",
-          metadata: {bracket_ids: @brackets.map(&:id).to_s, email: current_user.email}
+        amount: amount, # amount in cents, again
+        currency: "usd",
+        source: token,
+        description: "#{@brackets.size} bracket(s) in the pool #{@pool.name} at PoolMadness",
+        statement_descriptor: "PoolMadness Brackets",
+        metadata: { bracket_ids: @brackets.map(&:id).to_s, email: current_user.email }
       )
 
-        @brackets.each {|b| b.paid! }
-        flash[:success] = "Charge Successful"
+      @brackets.each(&:paid!)
+      flash[:success] = "Charge Successful"
 
     rescue Stripe::CardError => e
       # The card has been declined

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe BracketScoreJob, type: :job do
   before(:all) { @tournament = create(:tournament, :with_first_two_rounds_completed) }

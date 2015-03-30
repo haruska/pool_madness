@@ -14,7 +14,7 @@ class BracketsController < ApplicationController
     else
       @brackets = @pool.brackets.where(user_id: current_user).to_a
       @brackets.sort_by! { |x| [[:ok, :unpaid, :incomplete].index(x.status), x.name] }
-      @unpaid_brackets = @brackets.select {|b| b.unpaid? }
+      @unpaid_brackets = @brackets.select(&:unpaid?)
     end
   end
 
@@ -70,7 +70,7 @@ class BracketsController < ApplicationController
     games_cache_key = "tournament-#{@bracket.tournament.id}/games-played/all-#{max_updated_at}"
 
     eliminated_team_ids = Rails.cache.fetch(teams_cache_key) do
-      @bracket.tournament.teams.to_a.select { |team| team.eliminated? }.map(&:id)
+      @bracket.tournament.teams.to_a.select(&:eliminated?).map(&:id)
     end
 
     games_played_slots = Rails.cache.fetch(games_cache_key) do

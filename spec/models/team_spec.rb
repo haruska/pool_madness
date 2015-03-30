@@ -10,10 +10,13 @@ describe Team, type: :model do
     it { should validate_uniqueness_of(:name).scoped_to(:tournament_id) }
     it { should validate_length_of(:name).is_at_most(15) }
     it { should validate_inclusion_of(:region).in_array(Team::REGIONS) }
-    it { should validate_numericality_of(:seed)
-                    .only_integer.is_greater_than_or_equal_to(1)
-                    .is_less_than_or_equal_to(16) }
     it { should validate_uniqueness_of(:seed).scoped_to([:tournament_id, :region]) }
+    it do
+      should validate_numericality_of(:seed)
+        .only_integer
+        .is_greater_than_or_equal_to(1)
+        .is_less_than_or_equal_to(16)
+    end
   end
 
   describe "#first_game" do

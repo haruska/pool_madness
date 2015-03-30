@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe Pick, type: :model do
-  before(:all) {
+  before(:all) do
     @tournament = create(:tournament, :with_first_two_rounds_completed)
-  }
+  end
 
   let(:tournament) { @tournament }
   let(:pool) { create(:pool, tournament: tournament) }
@@ -26,7 +26,7 @@ describe Pick, type: :model do
 
     context "game is in subsequent rounds" do
       let(:game) { tournament.round_for(2).sample }
-      let(:previous_picks) { [game.game_one_id, game.game_two_id].map {|game_id| bracket.picks.find_by(game_id: game_id) } }
+      let(:previous_picks) { [game.game_one_id, game.game_two_id].map { |game_id| bracket.picks.find_by(game_id: game_id) } }
 
       it "is the winning team of this brackets previous picks" do
         expect(subject.first_team).to eq(previous_picks.first.team)
@@ -109,7 +109,7 @@ describe Pick, type: :model do
       end
 
       context "and the pick's team is eliminated" do
-        #eliminate the team
+        # eliminate the team
         before { team.first_game.update_attributes(score_one: team.first_game.score_two, score_two: team.first_game.score_one) if team.first_game.winner == subject.team }
 
         it "is the actual #points" do

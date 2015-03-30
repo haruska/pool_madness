@@ -25,7 +25,7 @@ class Pool < ActiveRecord::Base
   end
 
   def display_best?
-     start_eliminating? && bracket_points.minimum(:best_possible) == 0
+    start_eliminating? && bracket_points.minimum(:best_possible) == 0
   end
 
   private

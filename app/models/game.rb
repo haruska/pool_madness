@@ -6,8 +6,8 @@ class Game < ActiveRecord::Base
   belongs_to :game_one, class_name: Game
   belongs_to :game_two, class_name: Game
 
-  scope :already_played, ->{ where.not(score_one: nil).order(:id) }
-  scope :not_played, ->{ where(score_one: nil).order(:id) }
+  scope :already_played, -> { where.not(score_one: nil).order(:id) }
+  scope :not_played, -> { where(score_one: nil).order(:id) }
 
   def first_team
     team_one || game_one.winner

@@ -18,7 +18,7 @@ module BracketsHelper
     when :incomplete
       out += 'error">Incomplete'
     end
-    out += '</span>'
+    out += "</span>"
     out.html_safe
   end
 end
