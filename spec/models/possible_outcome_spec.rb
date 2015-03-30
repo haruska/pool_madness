@@ -89,9 +89,7 @@ describe PossibleOutcome, type: :model do
     let(:third_place_index) do
       t_index = 2
       third_place_points = sorted_brackets[t_index][1]
-      while sorted_brackets[t_index + 1][1] == third_place_points
-        t_index += 1
-      end
+      t_index += 1 while sorted_brackets[t_index + 1][1] == third_place_points
       t_index
     end
 

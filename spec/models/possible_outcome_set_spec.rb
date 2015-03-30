@@ -27,9 +27,7 @@ describe PossibleOutcomeSet, type: :model do
       winners_mask = 0
       already_played_games.each_with_index do |game, i|
         slot_index = already_played_games.size - i - 1
-        if game.score_one < game.score_two
-          winners_mask |= 1 << slot_index
-        end
+        winners_mask |= 1 << slot_index if game.score_one < game.score_two
       end
       winners_mask
     end
