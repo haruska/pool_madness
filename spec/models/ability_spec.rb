@@ -21,6 +21,7 @@ describe Ability, type: :model do
     let!(:pool_user) { create(:pool_user, user: user, pool: pool) }
     let(:bracket) { create(:bracket, pool: pool, user: user) }
     let(:another_bracket) { create(:bracket, pool: pool) }
+    let!(:another_pool_user) { create(:pool_user, user: another_bracket.user, pool: pool) }
 
     context "as a regular user" do
       subject { Ability.new(user) }
@@ -69,12 +70,15 @@ describe Ability, type: :model do
 
     context "as a pool admin" do
       let(:another_pool_bracket) { create(:bracket) }
+      let!(:different_pool_user) { create(:pool_user, pool: another_pool_bracket.pool, user: another_pool_bracket.user) }
 
       before { pool_user.admin! }
 
       subject { Ability.new(user) }
 
       it { should be_able_to(:manage, pool) }
+      it { should be_able_to(:read, another_bracket.user) }
+      it { should_not be_able_to(:read, another_pool_bracket.user) }
 
       context "the pool has started" do
         before { pool.tournament.update(tip_off: 1.day.ago) }

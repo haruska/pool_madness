@@ -21,7 +21,7 @@
   %tbody
   - @brackets.each do |bracket|
     %tr{id: "bracket-#{bracket.id}"}
-      %td= bracket.user.name
+      %td= link_to bracket.user.name, bracket.user
       %td= link_to bracket.name, bracket
       %td.status-cell= status_to_label(bracket.status)
       %td
