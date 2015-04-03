@@ -1,4 +1,4 @@
 require "spec_helper"
 
-describe BracketsController do
+describe BracketsController, type: :controller do
 end
