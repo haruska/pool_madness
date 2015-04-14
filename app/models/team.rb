@@ -22,8 +22,7 @@ class Team < ActiveRecord::Base
 
   def still_playing?
     game = first_game
-    return false unless game.present?
-    while game.winner.present?
+    while game.try(:winner).present?
       return false if game.winner != self
       game = game.next_game
     end

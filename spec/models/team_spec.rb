@@ -68,6 +68,16 @@ describe Team, type: :model do
           expect(subject).to be_eliminated
         end
       end
+
+      context "won the championship" do
+        let(:tournament) { create(:tournament, :completed) }
+        subject { tournament.championship.winner }
+
+        it "is true" do
+          expect(subject).to_not be_eliminated
+          expect(subject).to be_still_playing
+        end
+      end
     end
 
     context "lost the first game" do
