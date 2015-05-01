@@ -1,8 +1,9 @@
 source "https://rubygems.org"
 
-ruby "2.2.0"
+ruby "2.2.2"
 
 gem "active_attr", github: "haruska/active_attr"
+gem "binary_decision_tree"
 gem "bitters"
 gem "bourbon"
 gem "cancancan", "~> 1.10"
