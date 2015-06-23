@@ -5,11 +5,10 @@ App.createController("Brackets", {
     this.highlightBracketRows(bracketIds);
   },
 
-  edit: function(gameTransitions, gameToPick, champGameId) {
-    this.gameToPick = gameToPick;
-    this.gameTransitions = gameTransitions;
-    this.champGameId = champGameId;
-    
+  edit: function(games, teams) {
+    this.games = games;
+    this.teams = teams;
+
     $('.slot').click(this.handleSlotClick);
   },
 
@@ -17,6 +16,22 @@ App.createController("Brackets", {
     this.strikeEliminatedTeams(eliminatedTeamIds);
     this.highlightCorrectPicks(gamesPlayedSlots);
     this.cleanupStrikesOnCorrectPicks();
+  },
+
+  championshipGame: function() {
+    return _.findWhere(_.values(this.games), {"nextGameId": null});
+  },
+
+  isChampionshipGame: function(game) {
+    return this.championshipGame().id === game.id;
+  },
+
+  findGame: function(id) {
+    return this.games[id];
+  },
+
+  findTeam: function(id) {
+    return this.teams[id];
   },
 
   highlightBracketRows: function(bracketIds) {
@@ -31,19 +46,18 @@ App.createController("Brackets", {
     var parentNode = $(event.currentTarget).offsetParent();
 
     var currentGameId = parseInt(parentNode[0].id.replace('match', ''));
-    var transition = this.gameTransitions[currentGameId];
+    var currentGame = this.findGame(currentGameId);
 
     var teamId = -1;
     var classList = $(event.currentTarget).attr('class').split(/\s+/);
+
     $.each(classList, function (index, item) {
       if (item.substring(0, 4) == 'team') {
         teamId = parseInt(item.replace('team', ''));
       }
     });
 
-
-    //championship
-    if (transition === undefined) {
+    if (this.isChampionshipGame(currentGame)) {
 
       var slotNode = $(".champion-box");
 
@@ -63,8 +77,8 @@ App.createController("Brackets", {
 
     else {
 
-      var nextGameId = transition[0];
-      var nextSlot = transition[1];
+      var nextGameId = currentGame.nextGameId;
+      var nextSlot = currentGame.nextSlot;
 
       var slotNode = $("div#match" + nextGameId + " > .slot" + nextSlot);
 
@@ -89,7 +103,7 @@ App.createController("Brackets", {
     }
 
     $.ajax({
-      url: '/picks/' + this.gameToPick[currentGameId],
+      url: '/picks/' + currentGame.pickId,
       type: 'POST',
       data: {_method: 'PUT', pick: {team_id: teamId}}
 
@@ -125,6 +139,10 @@ App.createController("Brackets", {
 
   clearSelection: function(prevGameId, fromGameId, teamId) {
     var slotNode = $("div#match" + fromGameId + " > .team" + teamId);
+
+    var prevGame = this.findGame(prevGameId);
+    var fromGame = this.findGame(fromGameId);
+
     if(slotNode[0] === undefined) {
       return;
     }
@@ -133,17 +151,17 @@ App.createController("Brackets", {
       slotNode.removeClass("team" + teamId);
 
       $.ajax({
-        url: '/picks/' + this.gameToPick[prevGameId],
+        url: '/picks/' + prevGame.pickId,
         type: 'POST',
         data: { _method: 'PUT', pick: {team_id: -1}}
 
       });
 
-      if(this.gameTransitions[fromGameId] === undefined) {
+      if(this.isChampionshipGame(fromGame)) {
         this.clearChampionship(teamId);
       }
       else {
-        this.clearSelection(fromGameId, this.gameTransitions[fromGameId][0], teamId);
+        this.clearSelection(fromGameId, fromGame.nextGameId, teamId);
       }
     }
   },
@@ -158,7 +176,7 @@ App.createController("Brackets", {
       champNode.removeClass("team" + teamId);
 
       $.ajax({
-        url: '/picks/' + this.gameToPick[this.champGameId],
+        url: '/picks/' + this.championshipGame().pickId,
         type: 'POST',
         data: { _method: 'PUT', pick: {team_id: -1}}
       });

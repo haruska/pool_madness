@@ -83,15 +83,33 @@ class BracketsController < ApplicationController
   end
 
   def set_jskit_edit_payload
-    game_transitions = {}
-    game_to_pick = {}
-    champ_game_id = @bracket.tournament.championship.id
+    games = @bracket.picks.each_with_object({}) do |pick, obj|
+      game = pick.game
+      choice = case pick.team
+                 when nil ; nil
+                 when pick.first_team ; 0
+                 when pick.second_team ; 1
+                 else ; nil
+               end
 
-    @bracket.tournament.games.all.each do |g|
-      game_to_pick[g.id] = @bracket.picks.find_by(game_id: g.id).id
-      game_transitions[g.id] = [g.next_game.id, g.next_slot] unless g.next_game.blank?
+      obj[game.id] = {
+          id: game.id,
+          teamOneId: game.team_one_id,
+          teamTwoId: game.team_two_id,
+          gameOneId: game.game_one_id,
+          gameTwoId: game.game_two_id,
+          nextGameId: game.next_game.try(:id),
+          nextSlot: game.next_slot,
+          pickId: pick.id,
+          choice: choice
+      }
     end
 
-    set_action_payload(game_transitions, game_to_pick, champ_game_id)
+    teams = @bracket.tournament.teams.each_with_object({}) do |team, obj|
+      obj[team.id] = { id: team.id, seed: team.seed, name: team.name }
+    end
+
+
+    set_action_payload(games, teams)
   end
 end
