@@ -5,8 +5,11 @@ App.createController("Brackets", {
     this.highlightBracketRows(bracketIds);
   },
 
-  edit: function(games) {
-    this.games = games;
+  edit: function(gamesHash) {
+    this.gamesHash = gamesHash;
+    this.games = _.values(this.gamesHash);
+    this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
+
     this.fillInPicks();
     $('.slot').click(this.handleSlotClick);
   },
@@ -17,16 +20,12 @@ App.createController("Brackets", {
     this.cleanupStrikesOnCorrectPicks();
   },
 
-  championshipGame: function() {
-    return _.findWhere(_.values(this.games), {"nextGameId": null});
-  },
-
   isChampionshipGame: function(game) {
-    return this.championshipGame().id === game.id;
+    return this.championshipGame.id === game.id;
   },
 
   findGame: function(id) {
-    return this.games[id];
+    return this.gamesHash[id];
   },
 
   handleSlotClick: function (event) {
@@ -49,7 +48,7 @@ App.createController("Brackets", {
   },
 
   fillInPicks: function() {
-    _.each(_.values(this.games), this.fillInPick);
+    _.each(this.games, this.fillInPick);
   },
 
   fillInPick: function(game) {
