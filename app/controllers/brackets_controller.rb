@@ -94,8 +94,8 @@ class BracketsController < ApplicationController
 
       obj[game.id] = {
           id: game.id,
-          teamOneId: game.team_one_id,
-          teamTwoId: game.team_two_id,
+          teamOne: team_hash(game.team_one),
+          teamTwo: team_hash(game.team_two),
           gameOneId: game.game_one_id,
           gameTwoId: game.game_two_id,
           nextGameId: game.next_game.try(:id),
@@ -105,11 +105,10 @@ class BracketsController < ApplicationController
       }
     end
 
-    teams = @bracket.tournament.teams.each_with_object({}) do |team, obj|
-      obj[team.id] = { id: team.id, seed: team.seed, name: team.name }
-    end
+    set_action_payload(games)
+  end
 
-
-    set_action_payload(games, teams)
+  def team_hash(team)
+    team.present? ? { id: team.id, seed: team.seed, name: team.name } : nil
   end
 end

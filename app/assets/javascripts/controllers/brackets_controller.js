@@ -5,10 +5,9 @@ App.createController("Brackets", {
     this.highlightBracketRows(bracketIds);
   },
 
-  edit: function(games, teams) {
+  edit: function(games) {
     this.games = games;
-    this.teams = teams;
-
+    this.fillInPicks();
     $('.slot').click(this.handleSlotClick);
   },
 
@@ -30,8 +29,68 @@ App.createController("Brackets", {
     return this.games[id];
   },
 
-  findTeam: function(id) {
-    return this.teams[id];
+  handleSlotClick: function (event) {
+    var eventTarget = $(event.currentTarget);
+    var parentNode = eventTarget.offsetParent();
+    var currentGameId = parseInt(parentNode[0].id.replace('match', ''));
+    var currentGame = this.findGame(currentGameId);
+
+    currentGame.choice = eventTarget.hasClass("slot1") ? 0 : 1;
+
+    this.fillInPicks();
+
+    //$.ajax({
+    //  url: '/picks/' + currentGame.pickId,
+    //  type: 'POST',
+    //  data: {_method: 'PUT', pick: {team_id: teamId}}
+    //
+    //});
+
+  },
+
+  fillInPicks: function() {
+    _.each(_.values(this.games), this.fillInPick);
+  },
+
+  fillInPick: function(game) {
+    var team = this.pickTeam(game);
+    if (team != null) {
+      if (this.isChampionshipGame(game)) {
+        this.fillChampionship(team);
+      }
+      else {
+        this.fillTeam(game.nextGameId, game.nextSlot, team);
+      }
+    }
+  },
+
+  fillChampionship: function(team) {
+    $(".champion-box").html(team.name);
+  },
+
+  fillTeam: function(gameId, slot, team) {
+    var slotHTML = '<span class="seed">' + team.seed + '</span>' + ' ' + team.name;
+    $("#match" + gameId + ' > .slot' + slot).html(slotHTML);
+  },
+
+  pickTeam: function(game) {
+    if(game.choice == 0) {
+      if(game.teamOne == null) {
+        return this.pickTeam(this.findGame(game.gameOneId));
+      }
+      else {
+        return game.teamOne;
+      }
+    } else if(game.choice == 1) {
+      if (game.teamTwo == null) {
+        return this.pickTeam(this.findGame(game.gameTwoId));
+      }
+      else {
+        return game.teamTwo;
+      }
+    } else {
+      return null;
+    }
   },
 
   highlightBracketRows: function(bracketIds) {
@@ -40,75 +99,6 @@ App.createController("Brackets", {
 
   highlightBracketRow: function(bracketId) {
     $('#bracket-row-' + bracketId).addClass("current-user-bracket");
-  },
-
-  handleSlotClick: function (event) {
-    var parentNode = $(event.currentTarget).offsetParent();
-
-    var currentGameId = parseInt(parentNode[0].id.replace('match', ''));
-    var currentGame = this.findGame(currentGameId);
-
-    var teamId = -1;
-    var classList = $(event.currentTarget).attr('class').split(/\s+/);
-
-    $.each(classList, function (index, item) {
-      if (item.substring(0, 4) == 'team') {
-        teamId = parseInt(item.replace('team', ''));
-      }
-    });
-
-    if (this.isChampionshipGame(currentGame)) {
-
-      var slotNode = $(".champion-box");
-
-      slotNode.html($(event.currentTarget).html());
-
-      //remove any old teamID classes
-      var defunctClassList = slotNode.attr('class').split(/\s+/);
-      $.each(defunctClassList, function (index, item) {
-        if (item.substring(0, 4) == 'team') {
-          slotNode.removeClass(item);
-        }
-      });
-
-      //add this teamID
-      slotNode.addClass("team" + teamId);
-    }
-
-    else {
-
-      var nextGameId = currentGame.nextGameId;
-      var nextSlot = currentGame.nextSlot;
-
-      var slotNode = $("div#match" + nextGameId + " > .slot" + nextSlot);
-
-
-      //get team in next slot
-      var defunctTeamId = -1;
-      var defunctClassList = slotNode.attr('class').split(/\s+/);
-      $.each(defunctClassList, function (index, item) {
-        if (item.substring(0, 4) == 'team') {
-          defunctTeamId = parseInt(item.replace('team', ''));
-        }
-      });
-
-      if (defunctTeamId > 0 && defunctTeamId != teamId) {
-        this.clearSelection(currentGameId, nextGameId, defunctTeamId);
-        this.clearChampionship(defunctTeamId);
-      }
-
-
-      slotNode.html($(event.currentTarget).html());
-      slotNode.attr('class', 'slot slot' + nextSlot + ' team' + teamId);
-    }
-
-    $.ajax({
-      url: '/picks/' + currentGame.pickId,
-      type: 'POST',
-      data: {_method: 'PUT', pick: {team_id: teamId}}
-
-    });
-
   },
 
   strikeEliminatedTeams: function(eliminatedTeamIds) {
@@ -135,51 +125,5 @@ App.createController("Brackets", {
 
   cleanupStrikesOnCorrectPicks: function() {
     $(".eliminated.correct-pick").removeClass("eliminated");
-  },
-
-  clearSelection: function(prevGameId, fromGameId, teamId) {
-    var slotNode = $("div#match" + fromGameId + " > .team" + teamId);
-
-    var prevGame = this.findGame(prevGameId);
-    var fromGame = this.findGame(fromGameId);
-
-    if(slotNode[0] === undefined) {
-      return;
-    }
-    else {
-      slotNode.html(' ');
-      slotNode.removeClass("team" + teamId);
-
-      $.ajax({
-        url: '/picks/' + prevGame.pickId,
-        type: 'POST',
-        data: { _method: 'PUT', pick: {team_id: -1}}
-
-      });
-
-      if(this.isChampionshipGame(fromGame)) {
-        this.clearChampionship(teamId);
-      }
-      else {
-        this.clearSelection(fromGameId, fromGame.nextGameId, teamId);
-      }
-    }
-  },
-
-  clearChampionship: function(teamId) {
-    var champNode = $(".championship > .team" + teamId);
-    if(champNode[0] === undefined) {
-      return;
-    }
-    else {
-      champNode.html(' ');
-      champNode.removeClass("team" + teamId);
-
-      $.ajax({
-        url: '/picks/' + this.championshipGame().pickId,
-        type: 'POST',
-        data: { _method: 'PUT', pick: {team_id: -1}}
-      });
-    }
   }
 });
