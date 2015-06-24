@@ -85,12 +85,7 @@ class BracketsController < ApplicationController
   def set_jskit_edit_payload
     games = @bracket.picks.each_with_object({}) do |pick, obj|
       game = pick.game
-      choice = case pick.team
-                 when nil ; nil
-                 when pick.first_team ; 0
-                 when pick.second_team ; 1
-                 else ; nil
-               end
+      choice = pick.choice < 0 ? nil : pick.choice
 
       obj[game.id] = {
           id: game.id,

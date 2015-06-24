@@ -38,12 +38,11 @@ App.createController("Brackets", {
 
     this.fillInPicks();
 
-    //$.ajax({
-    //  url: '/picks/' + currentGame.pickId,
-    //  type: 'POST',
-    //  data: {_method: 'PUT', pick: {team_id: teamId}}
-    //
-    //});
+    $.ajax({
+      url: '/picks/' + currentGame.pickId,
+      type: 'PATCH',
+      data: { pick: {choice: currentGame.choice} }
+    });
 
   },
 

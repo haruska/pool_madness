@@ -2,13 +2,13 @@ class PicksController < ApplicationController
   load_and_authorize_resource
 
   def update
-    @pick.update_attributes(pick_params)
+    @pick.update(pick_params)
     render nothing: true
   end
 
   private
 
   def pick_params
-    params.require(:pick).permit(:game_id, :team_id)
+    params.require(:pick).permit(:game_id, :choice)
   end
 end
