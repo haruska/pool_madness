@@ -66,7 +66,7 @@ describe PossibleOutcome, type: :model do
     it "calculates the points possible for all brackets" do
       brackets.each do |bracket|
         expected_points = bracket.picks.map do |pick|
-          possible_games[pick.game_id].points_for_pick(pick.team_id)
+          possible_games[pick.game_id].points_for_pick(pick.team.id)
         end.sum
 
         result_pair = sorted_brackets.find { |b, _p| b == bracket }

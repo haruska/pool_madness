@@ -36,7 +36,7 @@ class PossibleOutcome
   def sorted_brackets(pool)
     result = pool_brackets_cache(pool).map do |bracket|
       points = bracket_picks_cache(bracket).map do |pick|
-        possible_games[pick.game_id].points_for_pick(pick.team_id)
+        possible_games[pick.game_id].points_for_pick(pick.team.id)
       end.sum
       [bracket, points]
     end

@@ -2,14 +2,13 @@ class Pick < ActiveRecord::Base
   POINTS_PER_ROUND = [0, 1, 2, 3, 5, 8, 13]
 
   belongs_to :bracket
-  belongs_to :team
   belongs_to :game
 
   validates :bracket, :game, presence: true
 
   def first_team
     if game.game_one.present?
-      bracket.picks.where(game_id: game.game_one_id).first.try(:team)
+      bracket.picks.find_by(game_id: game.game_one_id).try(:team)
     else
       game.team_one
     end
@@ -17,9 +16,20 @@ class Pick < ActiveRecord::Base
 
   def second_team
     if game.game_two.present?
-      bracket.picks.where(game_id: game.game_two_id).first.try(:team)
+      bracket.picks.find_by(game_id: game.game_two_id).try(:team)
     else
       game.team_two
+    end
+  end
+
+  def team
+    case choice
+      when 0
+        first_team
+      when 1
+        second_team
+      else
+        nil
     end
   end
 

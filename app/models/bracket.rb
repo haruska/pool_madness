@@ -49,7 +49,7 @@ class Bracket < ActiveRecord::Base
   end
 
   def complete?
-    picks.where(team_id: nil).first.blank? && picks.where(team_id: -1).first.blank? && tie_breaker.present?
+    picks.where(choice: -1).first.blank? && tie_breaker.present?
   end
 
   def incomplete?

@@ -163,7 +163,7 @@ describe Bracket, type: :model do
     subject { create(:bracket, :completed, pool: pool) }
 
     it "is complete when all picks are selected and a tie_breaker is set" do
-      expect(subject.picks.where(team_id: nil)).to be_empty
+      expect(subject.picks.where(choice: -1)).to be_empty
       expect(subject.tie_breaker).to be > 0
 
       expect(subject).to be_complete
@@ -178,7 +178,7 @@ describe Bracket, type: :model do
     end
 
     context "when a pick.team_id is -1" do
-      before { subject.picks.to_a.sample.update_attributes!(team_id: -1) }
+      before { subject.picks.to_a.sample.update!(choice: -1) }
 
       it "is incomplete" do
         expect(subject).to be_incomplete

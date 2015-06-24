@@ -39,7 +39,7 @@ describe Pick, type: :model do
     let(:expected_points) { Pick::POINTS_PER_ROUND[game.round] + subject.team.seed }
 
     context do
-      before { game.update_attributes(score_one: game.score_two, score_two: game.score_one) if game.winner != subject.team }
+      before { subject.update(choice: subject.choice == 0 ? 1 : 0) if game.winner != subject.team }
 
       context "with a possible game" do
         it "uses the outcome of the passed in game" do
@@ -57,7 +57,7 @@ describe Pick, type: :model do
     context "there is a picked team" do
       context "and someone has won the associated game" do
         context "and the pick is correct" do
-          before { game.update_attributes(score_one: game.score_two, score_two: game.score_one) if game.winner != subject.team }
+          before { subject.update(choice: subject.choice == 0 ? 1 : 0) if game.winner != subject.team }
 
           it "is the team's seed plus the points for the round" do
             expect(subject.points).to eq(Pick::POINTS_PER_ROUND[game.round] + subject.team.seed)
@@ -65,7 +65,7 @@ describe Pick, type: :model do
         end
 
         context "and the pick is incorrect" do
-          before { game.update_attributes(score_one: game.score_two, score_two: game.score_one) if game.winner == subject.team }
+          before { subject.update(choice: subject.choice == 0 ? 1 : 0) if game.winner == subject.team }
 
           it "is zero" do
             expect(subject.points).to eq(0)
@@ -83,7 +83,7 @@ describe Pick, type: :model do
     end
 
     context "team is nil" do
-      before { subject.update_attributes(team_id: nil) }
+      before { subject.update(choice: -1) }
 
       it "is zero" do
         expect(subject.points).to eq(0)
