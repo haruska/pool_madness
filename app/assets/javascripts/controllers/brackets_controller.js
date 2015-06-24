@@ -5,9 +5,8 @@ App.createController("Brackets", {
     this.highlightBracketRows(bracketIds);
   },
 
-  edit: function(gamesHash) {
-    this.gamesHash = gamesHash;
-    this.games = _.values(this.gamesHash);
+  edit: function(games) {
+    this.games = games;
     this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
 
     this.fillInPicks();
@@ -25,7 +24,7 @@ App.createController("Brackets", {
   },
 
   findGame: function(id) {
-    return this.gamesHash[id];
+    return _.findWhere(this.games, { "id": id });
   },
 
   handleSlotClick: function (event) {

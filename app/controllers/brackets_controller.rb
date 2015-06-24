@@ -83,20 +83,17 @@ class BracketsController < ApplicationController
   end
 
   def set_jskit_edit_payload
-    games = @bracket.picks.each_with_object({}) do |pick, obj|
-      game = pick.game
-      choice = pick.choice < 0 ? nil : pick.choice
-
-      obj[game.id] = {
-          id: game.id,
-          teamOne: team_hash(game.team_one),
-          teamTwo: team_hash(game.team_two),
-          gameOneId: game.game_one_id,
-          gameTwoId: game.game_two_id,
-          nextGameId: game.next_game.try(:id),
-          nextSlot: game.next_slot,
+    games = @bracket.picks.map do |pick|
+      {
+          id: pick.game.id,
+          teamOne: team_hash(pick.game.team_one),
+          teamTwo: team_hash(pick.game.team_two),
+          gameOneId: pick.game.game_one_id,
+          gameTwoId: pick.game.game_two_id,
+          nextGameId: pick.game.next_game.try(:id),
+          nextSlot: pick.game.next_slot,
           pickId: pick.id,
-          choice: choice
+          choice: pick.choice < 0 ? nil : pick.choice
       }
     end
 
