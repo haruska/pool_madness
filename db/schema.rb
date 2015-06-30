@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150630141427) do
+ActiveRecord::Schema.define(version: 20150630152247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,12 +74,15 @@ ActiveRecord::Schema.define(version: 20150630141427) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "tournament_id", null: false
+    t.integer  "slot"
   end
 
   add_index "games", ["game_one_id"], name: "index_games_on_game_one_id", using: :btree
   add_index "games", ["game_two_id"], name: "index_games_on_game_two_id", using: :btree
+  add_index "games", ["slot"], name: "index_games_on_slot", using: :btree
   add_index "games", ["team_one_id"], name: "index_games_on_team_one_id", using: :btree
   add_index "games", ["team_two_id"], name: "index_games_on_team_two_id", using: :btree
+  add_index "games", ["tournament_id", "slot"], name: "index_games_on_tournament_id_and_slot", unique: true, using: :btree
   add_index "games", ["tournament_id"], name: "index_games_on_tournament_id", using: :btree
 
   create_table "picks", force: :cascade do |t|

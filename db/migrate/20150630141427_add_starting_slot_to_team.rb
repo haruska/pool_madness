@@ -8,7 +8,7 @@ class AddStartingSlotToTeam < ActiveRecord::Migration
     sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
     regions = ["South", "West", "East", "Midwest"]
 
-    starting_slot = 65
+    starting_slot = 64
 
     regions.each do |region|
       sort_order.each do |seed|

@@ -88,48 +88,28 @@ FactoryGirl.define do
         end
       end
 
-      Team::REGIONS.each do |region|
-        # 64 teams
-        i, j = 1, 16
-        while i < j
+      team_slot = 64
+
+      sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
+      ["South", "West", "East", "Midwest"].each do |region|
+        sort_order.each_slice(2) do |i, j|
           team_one = tournament.teams.find_by(region: region, seed: i)
           team_two = tournament.teams.find_by(region: region, seed: j)
-          tournament.games.create team_one: team_one, team_two: team_two
-          i += 1
-          j -= 1
-        end
 
-        # 32 teams
-        [[1, 8], [5, 4], [6, 3], [7, 2]].each do |one, two|
-          game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: one))
-          game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: two))
-          tournament.games.create game_one: game_one, game_two: game_two
-        end
+          team_one.update(starting_slot: team_slot)
+          team_two.update(starting_slot: team_slot + 1)
 
-        # Sweet 16
-        [[1, 5], [6, 7]].each do |one, two|
-          game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: one)).next_game
-          game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: two)).next_game
-          tournament.games.create game_one: game_one, game_two: game_two
-        end
+          tournament.games.create team_one: team_one, team_two: team_two, slot: team_slot / 2
 
-        # Great 8
-        game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: 1)).next_game.next_game
-        game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: region, seed: 6)).next_game.next_game
-        tournament.games.create game_one: game_one, game_two: game_two
+          team_slot += 2
+        end
       end
 
-      # Final 4
-      game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: Team::MIDWEST, seed: 1)).next_game.next_game.next_game
-      game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: Team::WEST, seed: 1)).next_game.next_game.next_game
-      champ_one = tournament.games.create game_one: game_one, game_two: game_two
-
-      game_one = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: Team::SOUTH, seed: 1)).next_game.next_game.next_game
-      game_two = tournament.games.find_by(team_one_id: tournament.teams.find_by(region: Team::EAST, seed: 1)).next_game.next_game.next_game
-      champ_two = tournament.games.create game_one: game_one, game_two: game_two
-
-      # Championship
-      tournament.games.create game_one: champ_one, game_two: champ_two
+      (2..63).to_a.reverse.each_slice(2) do |slot_1, slot_2|
+        game_one = tournament.games.find_by(slot: slot_1)
+        game_two = tournament.games.find_by(slot: slot_2)
+        tournament.games.create game_one: game_one, game_two: game_two, slot: slot_1 / 2
+      end
     end
 
     trait :with_first_two_rounds_completed do
