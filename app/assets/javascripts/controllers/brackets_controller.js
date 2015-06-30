@@ -9,14 +9,25 @@ App.createController("Brackets", {
     this.games = games;
     this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
 
+    this.cacheElements();
+    this.registerEvents();
+
     this.fillInPicks();
-    $('.slot').click(this.handleSlotClick);
   },
 
   show: function(eliminatedTeamIds, gamesPlayedSlots) {
     this.strikeEliminatedTeams(eliminatedTeamIds);
     this.highlightCorrectPicks(gamesPlayedSlots);
     this.cleanupStrikesOnCorrectPicks();
+  },
+
+  cacheElements: function() {
+    this.$slots = $('.slot');
+    this.$championshipBox = $(".champion-box");
+  },
+
+  registerEvents: function() {
+    this.$slots.click(this.handleSlotClick);
   },
 
   isChampionshipGame: function(game) {
@@ -62,7 +73,7 @@ App.createController("Brackets", {
   },
 
   fillChampionship: function(team) {
-    $(".champion-box").html(team.name);
+    this.$championshipBox.html(team.name);
   },
 
   fillTeam: function(gameId, slot, team) {
