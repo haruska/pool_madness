@@ -33,7 +33,6 @@ class TournamentTree < BinaryDecisionTree::Tree
   end
 
   def update_game(position, choice)
-    self.mask |= 1 << position
     at(position).decision = choice
   end
 

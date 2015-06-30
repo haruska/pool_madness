@@ -69,6 +69,19 @@ class Bracket < ActiveRecord::Base
     Team.where(id: team_ids).to_a.sort_by { |x| team_ids.index(x.id) }
   end
 
+  def tree
+    TournamentTree.unmarshal(tournament, tree_decisions, tree_mask)
+  end
+
+  def update_choice(position, choice)
+    working_tree = tree
+    working_tree.update_game(position, choice)
+
+    marshalled_tree = working_tree.marshal
+    self.tree_decisions = marshalled_tree.decisions
+    self.tree_mask = marshalled_tree.mask
+  end
+
   private
 
   def create_all_picks
