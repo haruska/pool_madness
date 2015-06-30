@@ -6,10 +6,10 @@ class AddStartingSlotToTeam < ActiveRecord::Migration
 
 
     sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
-    regions = ["South", "West", "East", "Midwest"]
+    regions = ["South", "East", "West", "Midwest"]
 
     Tournament.all.each do |tournament|
-      starting_slot = tournament.num_rounds == 6 ? 64 : 16
+      starting_slot = 2 ** tournament.num_rounds
       regions.each do |region|
         sort_order.each do |seed|
           team = Team.find_by(region: region, seed: seed, tournament_id: tournament.id)

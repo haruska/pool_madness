@@ -91,7 +91,7 @@ FactoryGirl.define do
       team_slot = 64
 
       sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
-      ["South", "West", "East", "Midwest"].each do |region|
+      ["South", "East", "West", "Midwest"].each do |region|
         sort_order.each_slice(2) do |i, j|
           team_one = tournament.teams.find_by(region: region, seed: i)
           team_two = tournament.teams.find_by(region: region, seed: j)

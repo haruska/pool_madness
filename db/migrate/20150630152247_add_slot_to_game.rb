@@ -4,12 +4,12 @@ class AddSlotToGame < ActiveRecord::Migration
     add_index :games, :slot
     add_index :games, [:tournament_id, :slot], unique: true
 
-    Team.all.each do |team|
+    Team.order(starting_slot: :desc).each do |team|
       next unless team.starting_slot.even?
       slot = team.starting_slot / 2
       game = first_game_for_team(team)
       while slot > 1
-        game.update(slot: slot)
+        game.update(slot: slot) if game.slot.blank?
         game = game.next_game
         slot /= 2
       end
