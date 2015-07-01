@@ -21,6 +21,10 @@ class Tournament < ActiveRecord::Base
     game
   end
 
+  def num_games
+    2**num_rounds - 1
+  end
+
   def round_for(round_number, region = nil)
     case round_number
     when num_rounds - 1

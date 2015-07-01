@@ -8,9 +8,9 @@ FactoryGirl.define do
     trait :completed do
       tie_breaker { Faker::Number.between(100, 200) }
 
-      after(:create) do |bracket|
-        bracket.picks.each do |pick|
-          pick.update(choice: [0,1].sample)
+      before(:create) do |bracket|
+        bracket.tournament.num_games.times do |i|
+          bracket.update_choice(i+1, [0,1].sample)
         end
       end
     end

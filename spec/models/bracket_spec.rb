@@ -14,18 +14,9 @@ describe Bracket, type: :model do
 
   it { should belong_to(:user) }
   it { should belong_to(:payment_collector) }
-  it { should have_many(:picks) }
 
   it { should validate_presence_of(:user) }
   it { should validate_uniqueness_of(:name).scoped_to(:pool_id) }
-
-  context "after create" do
-    it "creates all picks" do
-      tournament.games.each do |game|
-        expect(subject.picks.find_by(game_id: game.id)).to be_present
-      end
-    end
-  end
 
   context "before validation" do
     it "resets tie_breaker to nil if it is <= 0" do
@@ -163,13 +154,13 @@ describe Bracket, type: :model do
     subject { create(:bracket, :completed, pool: pool) }
 
     it "is complete when all picks are selected and a tie_breaker is set" do
-      expect(subject.picks.where(choice: -1)).to be_empty
+      expect(subject.tree).to be_complete
       expect(subject.tie_breaker).to be > 0
 
       expect(subject).to be_complete
     end
 
-    context "when a pick.team is nil" do
+    context "when a pick is not made" do
       subject { create(:bracket, pool: pool) }
 
       it "is incomplete" do
@@ -177,16 +168,8 @@ describe Bracket, type: :model do
       end
     end
 
-    context "when a pick.team_id is -1" do
-      before { subject.picks.to_a.sample.update!(choice: -1) }
-
-      it "is incomplete" do
-        expect(subject).to be_incomplete
-      end
-    end
-
     context "when a tie_breaker is blank" do
-      before { subject.update_attributes!(tie_breaker: nil) }
+      before { subject.tie_breaker = nil }
 
       it "is incomplete" do
         expect(subject).to be_incomplete
@@ -198,15 +181,14 @@ describe Bracket, type: :model do
     subject { create(:bracket, :completed, pool: pool) }
 
     it "is the teams of final four picks of the bracket" do
-      semifinal_games = [tournament.championship.game_one, tournament.championship.game_two]
-      semifinal_picks = subject.picks.where(game_id: semifinal_games.map(&:id))
-      expected_teams = semifinal_picks.map { |pick| [pick.first_team, pick.second_team] }.flatten
+      team_slots = subject.tree.round_for(tournament.num_rounds - 2).map(&:value)
+      expected_teams = team_slots.map { |slot| tournament.teams.find_by(starting_slot: slot) }
 
       expected_teams.each { |team| expect(subject.sorted_four).to include(team) }
     end
 
     it "is reverse-ordered with champ and 2nd place at the end" do
-      champ_pick = subject.picks.find_by(game_id: tournament.championship.id)
+      champ_pick = subject.tree.championship
 
       expect(subject.sorted_four.last).to eq(champ_pick.team)
       expect([champ_pick.first_team, champ_pick.second_team]).to include(subject.sorted_four.third)

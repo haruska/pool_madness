@@ -11,7 +11,6 @@ describe Ability, type: :model do
 
     it { should_not be_able_to(:read, User) }
     it { should_not be_able_to(:read, Bracket) }
-    it { should_not be_able_to(:read, Pick) }
     it { should_not be_able_to(:read, Game) }
     it { should_not be_able_to(:read, Tournament) }
   end
@@ -50,9 +49,6 @@ describe Ability, type: :model do
         it { should_not be_able_to(:create, pool.brackets.build(user: user)) }
         it { should_not be_able_to(:destroy, bracket) }
         it { should_not be_able_to(:update, bracket) }
-
-        it { should_not be_able_to(:update, bracket.picks.sample) }
-        it { should_not be_able_to(:read, another_bracket.picks.sample) }
       end
 
       context "pool has not started" do
@@ -62,9 +58,6 @@ describe Ability, type: :model do
 
         it { should be_able_to(:manage, bracket) }
         it { should_not be_able_to(:read, another_bracket) }
-
-        it { should be_able_to(:update, bracket.picks.sample) }
-        it { should_not be_able_to(:update, another_bracket.picks.sample) }
       end
     end
 
@@ -100,10 +93,6 @@ describe Ability, type: :model do
         it { should be_able_to(:manage, bracket) }
         it { should be_able_to(:manage, another_bracket) }
         it { should_not be_able_to(:manage, another_pool_bracket) }
-
-        it { should be_able_to(:update, bracket.picks.first) }
-        it { should be_able_to(:update, another_bracket.picks.first) }
-        it { should_not be_able_to(:update, another_pool_bracket.picks.first) }
       end
     end
 

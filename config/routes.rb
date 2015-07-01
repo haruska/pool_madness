@@ -6,7 +6,6 @@ PoolMadness::Application.routes.draw do
   devise_for :users, path: "auth", path_names: { sign_in: "login", sign_up: "signup" }
 
   resources :users, only: [:show]
-  resources :picks, only: [:update]
 
   match "pools/join", to: "pools#join", via: :post, as: "join_pool"
   match "pools/invite_code", to: "pools#invite_code", via: :get, as: "invite_code"
@@ -21,7 +20,10 @@ PoolMadness::Application.routes.draw do
     resources :games, only: [:index]
   end
 
-  resources :brackets, except: [:index, :create]
+  resources :brackets, except: [:index, :create] do
+    resources :picks, only: [:update]
+  end
+
   resources :charges, only: [:create]
 
   resources :tournaments, only: [:edit, :update] do

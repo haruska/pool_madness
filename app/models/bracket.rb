@@ -7,11 +7,8 @@ class Bracket < ActiveRecord::Base
   has_one :tournament, through: :pool
   has_one :bracket_point, dependent: :destroy
 
-  has_many :picks, dependent: :destroy
-
   delegate :points, :possible_points, :best_possible, :calculate_possible_points, :calculate_points, to: :bracket_point
 
-  after_create :create_all_picks
   after_create :create_bracket_point
 
   before_validation do |bracket|
@@ -49,7 +46,7 @@ class Bracket < ActiveRecord::Base
   end
 
   def complete?
-    picks.where(choice: -1).first.blank? && tie_breaker.present?
+    tree.complete? && tie_breaker.present?
   end
 
   def incomplete?
@@ -57,16 +54,11 @@ class Bracket < ActiveRecord::Base
   end
 
   def sorted_four
-    champ_pick = picks.where(game_id: tournament.championship.id).first
-    four = [champ_pick.team, champ_pick.first_team, champ_pick.second_team]
-    four << picks.where(game_id: champ_pick.game.game_one_id).first.first_team
-    four << picks.where(game_id: champ_pick.game.game_one_id).first.second_team
-    four << picks.where(game_id: champ_pick.game.game_two_id).first.first_team
-    four << picks.where(game_id: champ_pick.game.game_two_id).first.second_team
+    working_tree = tree
+    slot_count = 2**3 - 1
+    values = (1..slot_count).map { |slot| working_tree.at(slot).value }.uniq.compact
 
-    team_ids = four.compact.uniq.reverse.collect(&:id)
-
-    Team.where(id: team_ids).to_a.sort_by { |x| team_ids.index(x.id) }
+    tournament.teams.where(starting_slot: values).sort_by {|x| values.index(x.starting_slot) * -1}
   end
 
   def tree
@@ -80,11 +72,5 @@ class Bracket < ActiveRecord::Base
     marshalled_tree = working_tree.marshal
     self.tree_decisions = marshalled_tree.decisions
     self.tree_mask = marshalled_tree.mask
-  end
-
-  private
-
-  def create_all_picks
-    tournament.games.all.each { |game| picks.create(game_id: game.id) }
   end
 end

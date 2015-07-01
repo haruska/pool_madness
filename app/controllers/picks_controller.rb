@@ -1,14 +1,15 @@
 class PicksController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :bracket
 
   def update
-    @pick.update(pick_params)
+    @bracket.update_choice(pick_params[:id].to_i, pick_params[:choice].to_i)
+    @bracket.save
     render nothing: true
   end
 
   private
 
   def pick_params
-    params.require(:pick).permit(:game_id, :choice)
+    params.permit(:id, :choice)
   end
 end

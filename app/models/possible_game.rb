@@ -48,7 +48,7 @@ class PossibleGame
   end
 
   def points_for_pick(team_id)
-    team_id == winner.id ? Pick::POINTS_PER_ROUND[round] + winner.seed : 0
+    team_id == winner.id ? BracketPoint::POINTS_PER_ROUND[round] + winner.seed : 0
   end
 
   def next_slot

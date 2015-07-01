@@ -22,7 +22,6 @@ class Ability
             can :destroy, Bracket, pool_id: pool.id
           else
             can :manage, Bracket, pool_id: pool.id
-            can :update, Pick, bracket: { pool_id: pool.id }
           end
         else
           can :read, Pool, id: pool.id
@@ -32,7 +31,6 @@ class Ability
           can :read, Bracket, pool_id: pool.id
         else
           can :manage, Bracket, pool_id: pool.id, user_id: user.id
-          can :update, Pick, bracket: { pool_id: pool.id, user_id: user.id }
         end
       end
     end

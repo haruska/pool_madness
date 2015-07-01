@@ -36,6 +36,7 @@ PoolMadness::Application.configure do
     Bullet.add_footer = true
   end
 
-  config.active_job.queue_adapter = :sidekiq
+  # config.active_job.queue_adapter = :sidekiq
   # config.cache_store = :dalli_store
+  config.cache_store = :null_store
 end

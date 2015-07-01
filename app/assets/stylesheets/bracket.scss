@@ -152,18 +152,6 @@
         .m2 {
           right: 0;
           border-right: none;
-
-          //fixme: flip slot1 and slot2
-
-          .slot1 {
-            top: auto;
-            bottom: 0px;
-          }
-
-          .slot2 {
-            top: 0px;
-            bottom: auto;
-          }
         }
       }
 
@@ -189,11 +177,11 @@
         .slot1 {
           border-bottom: 1px solid #666;
           top: 22px;
-          text-align: right;
         }
 
         .slot2 {
           top: 48px;
+          text-align: right;
         }
       }
 
@@ -338,18 +326,6 @@
         .m2 {
           right: 0;
           border-right: none;
-
-          //fixme: flip slot1 and slot2
-
-          .slot1 {
-            top: auto;
-            bottom: 0px;
-          }
-
-          .slot2 {
-            top: 0px;
-            bottom: auto;
-          }
         }
       }
 
@@ -375,11 +351,11 @@
         .slot1 {
           border-bottom: 1px solid #666;
           top: 22px;
-          text-align: right;
         }
 
         .slot2 {
           top: 48px;
+          text-align: right;
         }
       }
     }

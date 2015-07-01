@@ -32,6 +32,14 @@ class TournamentTree < BinaryDecisionTree::Tree
     mask
   end
 
+  def complete?
+    marshal.mask == all_games_mask
+  end
+
+  def incomplete?
+    !complete?
+  end
+
   def update_game(position, choice)
     at(position).decision = choice
   end

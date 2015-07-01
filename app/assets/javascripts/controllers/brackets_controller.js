@@ -5,7 +5,8 @@ App.createController("Brackets", {
     this.highlightBracketRows(bracketIds);
   },
 
-  edit: function(games) {
+  edit: function(bracketId, games) {
+    this.bracketId = bracketId;
     this.games = games;
     this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
 
@@ -15,10 +16,17 @@ App.createController("Brackets", {
     this.fillInPicks();
   },
 
-  show: function(eliminatedTeamIds, gamesPlayedSlots) {
-    this.strikeEliminatedTeams(eliminatedTeamIds);
-    this.highlightCorrectPicks(gamesPlayedSlots);
-    this.cleanupStrikesOnCorrectPicks();
+  show: function(bracketId, games) {
+    this.bracketId = bracketId;
+    this.games = games;
+    this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
+
+    this.cacheElements();
+    this.fillInPicks();
+
+    //this.strikeEliminatedTeams(eliminatedTeamIds);
+    this.highlightCorrectPicks();
+    //this.cleanupStrikesOnCorrectPicks();
   },
 
   cacheElements: function() {
@@ -49,9 +57,9 @@ App.createController("Brackets", {
     this.fillInPicks();
 
     $.ajax({
-      url: '/picks/' + currentGame.pickId,
+      url: '/brackets/' + this.bracketId + '/picks/' + currentGame.id,
       type: 'PATCH',
-      data: { pick: {choice: currentGame.choice} }
+      data: { choice: currentGame.choice }
     });
 
   },
@@ -109,29 +117,34 @@ App.createController("Brackets", {
     $('#bracket-row-' + bracketId).addClass("current-user-bracket");
   },
 
-  strikeEliminatedTeams: function(eliminatedTeamIds) {
-    _.each(eliminatedTeamIds, function(eliminatedTeamId) {
-      $('.team' + eliminatedTeamId).addClass("eliminated");
-    });
+  highlightCorrectPicks: function() {
+    _.each(this.games, this.highlightCorrectPick);
+    this.highlightChampionship();
   },
 
-  highlightCorrectPicks: function(gamesPlayedSlots) {
-    _.each(gamesPlayedSlots, this.highlightCorrectPick);
-  },
-
-  highlightCorrectPick: function(gamePlayedSlot) {
-    var gameId = gamePlayedSlot[0];
-    var slotId = gamePlayedSlot[1];
-    var teamId = gamePlayedSlot[2];
-
-    var game = $('#match' + gameId);
-    var slot = game.find(".slot" + slotId);
-    if (slot.hasClass("team" + teamId)) {
-      slot.addClass("correct-pick");
+  highlightCorrectPick: function(game) {
+    if (game.winningTeam != null && game.nextGameId != null) {
+      var pickedTeam = this.pickTeam(game);
+      var nextGame = this.findGame(game.nextGameId);
+      var slotDiv = $("#match" + nextGame.id).find(".slot" + game.nextSlot);
+      if (game.winningTeam.id == pickedTeam.id) {
+        slotDiv.addClass("correct-pick");
+      }
+      else {
+        slotDiv.addClass("eliminated");
+      }
     }
   },
 
-  cleanupStrikesOnCorrectPicks: function() {
-    $(".eliminated.correct-pick").removeClass("eliminated");
+  highlightChampionship: function() {
+    if (this.championshipGame.winningTeam != null) {
+      var pickedTeam = this.pickTeam(this.championshipGame);
+      if (this.championshipGame.winningTeam.id == pickedTeam.id) {
+        this.$championshipBox.addClass("correct-pick");
+      }
+      else {
+        this.$championshipBox.addClass("eliminated");
+      }
+    }
   }
 });

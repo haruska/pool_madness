@@ -65,39 +65,30 @@ class BracketsController < ApplicationController
   end
 
   def set_jskit_show_payload
-    max_updated_at = @bracket.tournament.games.maximum(:updated_at).to_i
-    teams_cache_key = "tournament-#{@bracket.tournament.id}/eliminated/all-#{max_updated_at}"
-    games_cache_key = "tournament-#{@bracket.tournament.id}/games-played/all-#{max_updated_at}"
-
-    eliminated_team_ids = Rails.cache.fetch(teams_cache_key) do
-      @bracket.tournament.teams.to_a.select(&:eliminated?).map(&:id)
-    end
-
-    games_played_slots = Rails.cache.fetch(games_cache_key) do
-      @bracket.tournament.games.already_played.map do |game|
-        [game.next_game.try(:id), game.next_slot, game.winner.id]
-      end
-    end
-
-    set_action_payload(eliminated_team_ids, games_played_slots)
+    set_action_payload(@bracket.id, js_games)
   end
 
   def set_jskit_edit_payload
-    games = @bracket.picks.map do |pick|
+    set_action_payload(@bracket.id, js_games)
+  end
+
+  def js_games
+    tree = @bracket.tree
+    (1..@bracket.tournament.num_games).map do |slot|
+      node = tree.at(slot)
       {
-          id: pick.game.id,
-          teamOne: team_hash(pick.game.team_one),
-          teamTwo: team_hash(pick.game.team_two),
-          gameOneId: pick.game.game_one_id,
-          gameTwoId: pick.game.game_two_id,
-          nextGameId: pick.game.next_game.try(:id),
-          nextSlot: pick.game.next_slot,
-          pickId: pick.id,
-          choice: pick.choice < 0 ? nil : pick.choice
+          id: slot,
+          teamOne: team_hash(node.team_one),
+          teamTwo: team_hash(node.team_two),
+          winningTeam: team_hash(node.game.winner),
+          gameOneId: node.left_position,
+          gameTwoId: node.right_position,
+          nextGameId: node.next_game_slot,
+          nextSlot: node.next_slot,
+          pickId: slot,
+          choice: node.decision
       }
     end
-
-    set_action_payload(games)
   end
 
   def team_hash(team)

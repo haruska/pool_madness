@@ -131,7 +131,7 @@ describe PossibleGame do
       let(:team_id) { subject.winner.id }
 
       it "is the points for the round + seed" do
-        expect(subject.points_for_pick(team_id)).to eq(Pick::POINTS_PER_ROUND[3] + subject.winner.seed)
+        expect(subject.points_for_pick(team_id)).to eq(BracketPoint::POINTS_PER_ROUND[3] + subject.winner.seed)
       end
     end
 
