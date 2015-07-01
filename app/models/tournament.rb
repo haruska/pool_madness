@@ -12,32 +12,48 @@ class Tournament < ActiveRecord::Base
   end
 
   def start_eliminating?
-    games.not_played.count < 16
+    num_games_remaining < 16
   end
 
   def championship
-    game = games.first
-    game = game.next_game while game.next_game.present?
-    game
+    tree.championship
   end
 
   def num_games
     2**num_rounds - 1
   end
 
-  def round_for(round_number, region = nil)
-    case round_number
-    when num_rounds - 1
-      [championship.game_two, championship.game_one]
-    when num_rounds
-      [championship]
-    when 1
-      sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
-      t = region.present? ? teams.where(region: region) : teams.all
+  def num_games_played
+    game_mask.to_s(2).count("1")
+  end
 
-      t.collect(&:first_game).uniq.sort_by { |x| sort_order.index(x.first_team.seed) }
+  def num_games_remaining
+    num_games - num_games_played
+  end
+
+  def round_for(round_number, region = nil)
+    games = tree.round_for(round_number)
+
+    if region.present? && games.size > Team::REGIONS.size
+      slice_size = games.size / Team::REGIONS.size
+      slice_index = Team::REGIONS.index(region)
+      slices = games.each_slice(slice_size).to_a
+      slices[slice_index]
     else
-      round_for(round_number - 1, region).collect(&:next_game).uniq
+      games
     end
+  end
+
+  def tree
+    TournamentTree.unmarshal(self, game_decisions, game_mask)
+  end
+
+  def update_game(position, choice)
+    working_tree = tree
+    working_tree.update_game(position, choice)
+
+    marshalled_tree = working_tree.marshal
+    self.game_decisions = marshalled_tree.decisions
+    self.game_mask = marshalled_tree.mask
   end
 end
