@@ -12,34 +12,9 @@ describe BracketsController, type: :controller do
     end
 
     it "sets the jskit payload" do
-      expect(subject).to receive(:set_action_payload).with(bracket.id, js_games(bracket))
+      expect(subject).to receive(:set_action_payload).with(bracket.id, bracket.games_hash)
 
       get :show, id: bracket
     end
-  end
-
-  private
-
-  def js_games(bracket)
-    tree = bracket.tree
-    (1..bracket.tournament.num_games).map do |slot|
-      node = tree.at(slot)
-      {
-          id: slot,
-          teamOne: team_hash(node.team_one),
-          teamTwo: team_hash(node.team_two),
-          winningTeam: team_hash(node.game.winner),
-          gameOneId: node.left_position,
-          gameTwoId: node.right_position,
-          nextGameId: node.next_game_slot,
-          nextSlot: node.next_slot,
-          pickId: slot,
-          choice: node.decision
-      }
-    end
-  end
-
-  def team_hash(team)
-    team.present? ? { id: team.id, seed: team.seed, name: team.name } : nil
   end
 end

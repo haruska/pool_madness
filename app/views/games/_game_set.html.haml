@@ -1,20 +1,8 @@
 - games.each_with_index do |game, i|
-  = cache game do
-    - first_team = game.first_team
-    - second_team = game.second_team
-
-    %div{id: "match#{game.id}", class: "match m#{i+1}"}
-
-      - if first_team.present?
-        %p{class: "slot slot1 team#{first_team.id}"}
-          %span.seed= first_team.seed
-          = first_team.name
-      - else
-        %p.slot.slot1
-
-      - if second_team.present?
-        %p{class: "slot slot2 team#{second_team.id}"}
-          %span.seed= second_team.seed
-          = second_team.name
-      - else
-        %p.slot.slot2
+  %div{id: "match#{game.slot}", class: "match m#{i+1}"}
+    %p.slot.slot1
+      %span.seed= game.first_team.try(:seed)
+      = game.first_team.try(:name)
+    %p.slot.slot2
+      %span.seed= game.second_team.try(:seed)
+      = game.second_team.try(:name)

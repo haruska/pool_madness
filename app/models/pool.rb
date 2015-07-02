@@ -4,7 +4,6 @@ class Pool < ActiveRecord::Base
   has_many :bracket_points, through: :brackets
   has_many :pool_users, dependent: :destroy
   has_many :users, through: :pool_users
-  has_many :games, through: :tournament
 
   delegate :tip_off, :started?, :start_eliminating?, to: :tournament
 

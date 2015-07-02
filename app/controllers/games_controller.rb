@@ -1,13 +1,10 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!
 
-  load_and_authorize_resource only: [:edit, :update]
-
   before_action :load_tournament, only: [:edit, :update]
   before_action :load_pool_tournament, :set_jskit_payload, only: [:index]
 
   def index
-    @games = @tournament.games
   end
 
   def edit
@@ -44,6 +41,6 @@ class GamesController < ApplicationController
   end
 
   def set_jskit_payload
-    set_action_payload(can?(:edit, @tournament), games_url)
+    set_action_payload(@tournament.games_hash)
   end
 end

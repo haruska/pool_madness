@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150701144616) do
+ActiveRecord::Schema.define(version: 20150701215158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,26 +64,19 @@ ActiveRecord::Schema.define(version: 20150701144616) do
 
   add_index "charges", ["bracket_id"], name: "index_charges_on_bracket_id", unique: true, using: :btree
 
-  create_table "games", force: :cascade do |t|
-    t.integer  "team_one_id"
-    t.integer  "team_two_id"
-    t.integer  "game_one_id"
-    t.integer  "game_two_id"
-    t.integer  "score_one"
-    t.integer  "score_two"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.integer  "tournament_id", null: false
-    t.integer  "slot"
+  create_table "picks", force: :cascade do |t|
+    t.integer  "bracket_id",              null: false
+    t.integer  "game_id",                 null: false
+    t.integer  "team_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "choice",     default: -1, null: false
   end
 
-  add_index "games", ["game_one_id"], name: "index_games_on_game_one_id", using: :btree
-  add_index "games", ["game_two_id"], name: "index_games_on_game_two_id", using: :btree
-  add_index "games", ["slot"], name: "index_games_on_slot", using: :btree
-  add_index "games", ["team_one_id"], name: "index_games_on_team_one_id", using: :btree
-  add_index "games", ["team_two_id"], name: "index_games_on_team_two_id", using: :btree
-  add_index "games", ["tournament_id", "slot"], name: "index_games_on_tournament_id_and_slot", unique: true, using: :btree
-  add_index "games", ["tournament_id"], name: "index_games_on_tournament_id", using: :btree
+  add_index "picks", ["bracket_id", "game_id"], name: "index_picks_on_bracket_id_and_game_id", unique: true, using: :btree
+  add_index "picks", ["bracket_id"], name: "index_picks_on_bracket_id", using: :btree
+  add_index "picks", ["game_id"], name: "index_picks_on_game_id", using: :btree
+  add_index "picks", ["team_id"], name: "index_picks_on_team_id", using: :btree
 
   create_table "pool_users", force: :cascade do |t|
     t.integer  "pool_id",                null: false

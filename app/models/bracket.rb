@@ -73,4 +73,13 @@ class Bracket < ActiveRecord::Base
     self.tree_decisions = marshalled_tree.decisions
     self.tree_mask = marshalled_tree.mask
   end
+
+  def games_hash
+    working_tree = tree
+    games_hash = tournament.games_hash
+    games_hash.each do |game_hash|
+      game_hash[:choice] = working_tree.at(game_hash[:id]).decision
+    end
+    games_hash
+  end
 end

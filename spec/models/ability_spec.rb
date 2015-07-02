@@ -11,7 +11,6 @@ describe Ability, type: :model do
 
     it { should_not be_able_to(:read, User) }
     it { should_not be_able_to(:read, Bracket) }
-    it { should_not be_able_to(:read, Game) }
     it { should_not be_able_to(:read, Tournament) }
   end
 
@@ -30,9 +29,6 @@ describe Ability, type: :model do
 
       it { should be_able_to(:read, Tournament) }
       it { should_not be_able_to(:create, Tournament) }
-
-      it { should be_able_to(:read, Game) }
-      it { should_not be_able_to(:update, Game.first) }
 
       it { should be_able_to(:read, pool) }
       it { should_not be_able_to(:manage, pool) }

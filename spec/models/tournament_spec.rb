@@ -8,10 +8,10 @@ describe Tournament, type: :model do
   it { should validate_uniqueness_of :name }
 
   describe "#championship" do
-    let(:expected_game) { subject.games.to_a.find { |g| g.next_game.blank? } }
+    let(:expected_game) { subject.tree.at(1) }
 
     it "returns the championship game" do
-      expect(subject.championship).to eq(expected_game)
+      expect(subject.championship.slot).to eq(expected_game.slot)
     end
   end
 
@@ -26,19 +26,19 @@ describe Tournament, type: :model do
       end
 
       it "returns games for the region ordered by team seed (1,8,5,4,6,3,7,2)" do
-        expect(subject.round_for(1, region)).to eq(expected_games)
+        expect(subject.round_for(1, region).map(&:slot)).to eq(expected_games.map(&:slot))
       end
     end
 
     context "round 5" do
       it "returns the semi-final games" do
-        expect(subject.round_for(5)).to eq([subject.championship.game_two, subject.championship.game_one])
+        expect(subject.round_for(5).map(&:slot)).to eq([subject.championship.game_one.slot, subject.championship.game_two.slot])
       end
     end
 
     context "round 6" do
       it "returns a singleton list of the championship game" do
-        expect(subject.round_for(6)).to eq([subject.championship])
+        expect(subject.round_for(6).map(&:slot)).to eq([subject.championship.slot])
       end
     end
 
@@ -46,7 +46,7 @@ describe Tournament, type: :model do
       it "returns the previous round_for's next_games" do
         (2..4).each do |round|
           expected_games = subject.round_for(round - 1, region).map(&:next_game).uniq
-          expect(subject.round_for(round, region)).to eq(expected_games)
+          expect(subject.round_for(round, region).map(&:slot)).to eq(expected_games.map(&:slot))
         end
       end
     end

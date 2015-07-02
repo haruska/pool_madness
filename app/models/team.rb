@@ -17,14 +17,14 @@ class Team < ActiveRecord::Base
             uniqueness: { scope: [:tournament_id, :region] }
 
   def first_game
-    tournament.games.find_by(team_one_id: id) || tournament.games.find_by(team_two_id: id)
+    tournament.tree.at(starting_slot / 2)
   end
 
   def still_playing?
     game = first_game
-    while game.try(:winner).present?
-      return false if game.winner != self
-      game = game.next_game
+    while game.present? && !game.decision.nil?
+      return false if game.value != starting_slot
+      game = game.parent
     end
     true
   end

@@ -27,10 +27,8 @@ PoolMadness::Application.routes.draw do
   resources :charges, only: [:create]
 
   resources :tournaments, only: [:edit, :update] do
-    resources :games, only: [:index]
+    resources :games, only: [:edit, :update, :index]
   end
-
-  resources :games, only: [:edit, :update, :index]
 
   namespace :admin do
     resources :tournaments, only: [] do

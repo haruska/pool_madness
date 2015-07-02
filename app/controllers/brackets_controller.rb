@@ -65,33 +65,10 @@ class BracketsController < ApplicationController
   end
 
   def set_jskit_show_payload
-    set_action_payload(@bracket.id, js_games)
+    set_action_payload(@bracket.id, @bracket.games_hash)
   end
 
   def set_jskit_edit_payload
-    set_action_payload(@bracket.id, js_games)
-  end
-
-  def js_games
-    tree = @bracket.tree
-    (1..@bracket.tournament.num_games).map do |slot|
-      node = tree.at(slot)
-      {
-          id: slot,
-          teamOne: team_hash(node.team_one),
-          teamTwo: team_hash(node.team_two),
-          winningTeam: team_hash(node.game.winner),
-          gameOneId: node.left_position,
-          gameTwoId: node.right_position,
-          nextGameId: node.next_game_slot,
-          nextSlot: node.next_slot,
-          pickId: slot,
-          choice: node.decision
-      }
-    end
-  end
-
-  def team_hash(team)
-    team.present? ? { id: team.id, seed: team.seed, name: team.name } : nil
+    set_action_payload(@bracket.id, @bracket.games_hash)
   end
 end

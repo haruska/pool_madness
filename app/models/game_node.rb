@@ -1,4 +1,8 @@
 class GameNode < BinaryDecisionTree::Node
+  def round
+    current_depth
+  end
+
   def next_slot
     return nil unless parent.present?
     parent.left == self ? LEFT + 1 : RIGHT + 1
@@ -9,7 +13,7 @@ class GameNode < BinaryDecisionTree::Node
   end
 
   def game
-    tree.tournament.games.find_by(slot: slot)
+    tree.tournament.tree.at(slot)
   end
 
   def team_one
@@ -22,12 +26,24 @@ class GameNode < BinaryDecisionTree::Node
     tree.tournament.teams.find_by(starting_slot: right_position)
   end
 
+  def game_one
+    left
+  end
+
+  def game_two
+    right
+  end
+
+  def next_game
+    parent
+  end
+
   def first_team
-    tree.tournament.teams.find_by(starting_slot: left.value)
+    team_one || tree.tournament.teams.find_by(starting_slot: left.try(:value))
   end
 
   def second_team
-    tree.tournament.teams.find_by(starting_slot: right.value)
+    team_two || tree.tournament.teams.find_by(starting_slot: right.try(:value))
   end
 
   def team
@@ -37,16 +53,16 @@ class GameNode < BinaryDecisionTree::Node
   def points(possible_game = nil)
     this_game = possible_game || game
 
-    if team.present? && this_game.winner.present? && team == this_game.winner
-      BracketPoint::POINTS_PER_ROUND[this_game.round] + team.seed
+    if value.present? && this_game.value == value
+      BracketPoint::POINTS_PER_ROUND[round] + team.seed
     else
       0
     end
   end
 
   def possible_points
-    if game.winner.blank? && team.try(:still_playing?)
-      BracketPoint::POINTS_PER_ROUND[game.round] + team.seed
+    if game.value.blank? && team.try(:still_playing?)
+      BracketPoint::POINTS_PER_ROUND[round] + team.seed
     else
       points
     end

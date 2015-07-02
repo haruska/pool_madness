@@ -1,5 +1,4 @@
 class Tournament < ActiveRecord::Base
-  has_many :games, dependent: :destroy
   has_many :pools, dependent: :destroy
   has_many :teams, dependent: :destroy
 
@@ -34,7 +33,7 @@ class Tournament < ActiveRecord::Base
   def round_for(round_number, region = nil)
     games = tree.round_for(round_number)
 
-    if region.present? && games.size > Team::REGIONS.size
+    if region.present? && games.size >= Team::REGIONS.size
       slice_size = games.size / Team::REGIONS.size
       slice_index = Team::REGIONS.index(region)
       slices = games.each_slice(slice_size).to_a
@@ -55,5 +54,34 @@ class Tournament < ActiveRecord::Base
     marshalled_tree = working_tree.marshal
     self.game_decisions = marshalled_tree.decisions
     self.game_mask = marshalled_tree.mask
+  end
+
+  def update_game!(position, choice)
+    update_game(position, choice)
+    save!
+  end
+
+  def games_hash
+    working_tree = tree
+    (1..num_games).map do |slot|
+      node = working_tree.at(slot)
+      {
+          id: slot,
+          teamOne: team_hash(node.team_one),
+          teamTwo: team_hash(node.team_two),
+          winningTeam: team_hash(node.team),
+          gameOneId: node.left_position,
+          gameTwoId: node.right_position,
+          nextGameId: node.next_game_slot,
+          nextSlot: node.next_slot,
+          choice: node.decision
+      }
+    end
+  end
+
+  private
+
+  def team_hash(team)
+    team.present? ? { id: team.id, seed: team.seed, name: team.name } : nil
   end
 end

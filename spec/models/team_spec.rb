@@ -1,11 +1,10 @@
 require "spec_helper"
 
 describe Team, type: :model do
-  before(:all) { @tournament = create(:tournament) }
-  let(:tournament) { @tournament }
+  let(:tournament) { create(:tournament) }
 
   context do
-    subject { tournament.games.first.team_one }
+    subject { tournament.teams.order(:starting_slot).first }
 
     it { should validate_uniqueness_of(:name).scoped_to(:tournament_id) }
     it { should validate_length_of(:name).is_at_most(15) }
@@ -20,16 +19,16 @@ describe Team, type: :model do
   end
 
   describe "#first_game" do
-    let(:game) { tournament.games.where.not(team_two_id: nil).first }
+    let(:game) { tournament.round_for(1).sample }
 
     it "returns the first game the team plays" do
-      expect(game.team_one.first_game).to eq(game)
-      expect(game.team_two.first_game).to eq(game)
+      expect(game.team_one.first_game.slot).to eq(game.slot)
+      expect(game.team_two.first_game.slot).to eq(game.slot)
     end
   end
 
   describe "#still_playing? / #eliminated?" do
-    let(:game) { tournament.round_for(1).sample }
+    let(:game) { tournament.round_for(1).first }
 
     subject { game.team_one }
 
@@ -41,7 +40,8 @@ describe Team, type: :model do
     end
 
     context "won the first game" do
-      before { game.update_attributes(score_one: 2, score_two: 1) }
+      subject { game.first_team }
+      before { tournament.update_game!(game.slot, 0) }
 
       it "is true" do
         expect(subject).to be_still_playing
@@ -49,7 +49,7 @@ describe Team, type: :model do
       end
 
       context "and won the next game" do
-        before { game.next_game.update_attributes(score_one: 2, score_two: 1) }
+        before { tournament.update_game!(game.parent.slot, 0) }
 
         it "is true" do
           expect(subject).to be_still_playing
@@ -58,10 +58,7 @@ describe Team, type: :model do
       end
 
       context "lost the next game" do
-        before do
-          game.next_game.update_attributes(score_one: 1, score_two: 2)
-          game.next_game.game_two.update_attributes(score_one: 1, score_two: 2)
-        end
+        before { tournament.update_game!(game.parent.slot, 1) }
 
         it "is false" do
           expect(subject).to_not be_still_playing
@@ -71,7 +68,7 @@ describe Team, type: :model do
 
       context "won the championship" do
         let(:tournament) { create(:tournament, :completed) }
-        subject { tournament.championship.winner }
+        subject { tournament.championship.team }
 
         it "is true" do
           expect(subject).to_not be_eliminated
@@ -81,7 +78,8 @@ describe Team, type: :model do
     end
 
     context "lost the first game" do
-      before { game.update_attributes(score_one: 1, score_two: 2) }
+      subject { game.first_team }
+      before { tournament.update_game!(game.slot, 1) }
 
       it "is false" do
         expect(subject).to_not be_still_playing

@@ -88,7 +88,7 @@ FactoryGirl.define do
         end
       end
 
-      team_slot = 64
+      team_slot = tournament.teams.count
 
       sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
       ["South", "East", "West", "Midwest"].each do |region|
@@ -99,16 +99,8 @@ FactoryGirl.define do
           team_one.update(starting_slot: team_slot)
           team_two.update(starting_slot: team_slot + 1)
 
-          tournament.games.create team_one: team_one, team_two: team_two, slot: team_slot / 2
-
           team_slot += 2
         end
-      end
-
-      (2..63).to_a.reverse.each_slice(2) do |slot_1, slot_2|
-        game_one = tournament.games.find_by(slot: slot_1)
-        game_two = tournament.games.find_by(slot: slot_2)
-        tournament.games.create game_one: game_one, game_two: game_two, slot: slot_1 / 2
       end
     end
 
@@ -117,12 +109,8 @@ FactoryGirl.define do
 
       after(:create) do |tournament|
         (1..2).each do |round|
-          Team::REGIONS.each do |region|
-            tournament.round_for(round, region).each do |game|
-              while game.score_one.nil? || game.score_one == game.score_two
-                game.update_attributes!(score_one: Faker::Number.between(60, 90), score_two: Faker::Number.between(60, 90))
-              end
-            end
+          tournament.round_for(round).each do |game|
+            tournament.update_game(game.slot, [0, 1].sample)
           end
         end
       end
@@ -132,11 +120,10 @@ FactoryGirl.define do
       tip_off { 4.weeks.ago }
 
       after(:create) do |tournament|
-        tournament.games.all.each do |game|
-          while game.score_one.nil? || game.score_one == game.score_two
-            game.update_attributes(score_one: Faker::Number.between(60, 90), score_two: Faker::Number.between(60, 90))
-          end
+        tournament.num_games.times do |i|
+          tournament.update_game(i+1, [0, 1].sample)
         end
+        tournament.save
       end
     end
 

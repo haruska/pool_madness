@@ -9,7 +9,6 @@ class Ability
     if user.persisted?
       can :manage, User, id: user.id
       can :read, Tournament
-      can :read, Game
 
       user.pool_users.includes(:pool).each do |pool_user|
         pool = pool_user.pool
