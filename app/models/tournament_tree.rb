@@ -49,4 +49,10 @@ class TournamentTree < BinaryDecisionTree::Tree
     slots = depth_for == 0 ? [1] : (2**(depth_for - 1)..(2**depth_for - 1)).to_a
     slots.map { |s| at(s) }
   end
+
+  def ==(obj)
+    obj.class == self.class && obj.depth == depth && obj.tournament == tournament && obj.marshal == marshal
+  end
+
+  alias_method :eql?, :==
 end

@@ -1,59 +1,50 @@
 class GameNode < BinaryDecisionTree::Node
-  def round
-    current_depth
-  end
+  alias_method :round, :current_depth
+  alias_method :game_one, :left
+  alias_method :game_two, :right
+  alias_method :next_game, :parent
 
-  def next_slot
-    return nil unless parent.present?
-    parent.left == self ? LEFT + 1 : RIGHT + 1
-  end
-
-  def next_game_slot
-    parent_position == 0 ? nil : parent_position
+  def championship?
+    parent_position == 0
   end
 
   def game
-    tree.tournament.tree.at(slot)
+    tournament_tree.at(slot)
+  end
+
+  def next_slot
+    return nil if championship?
+    slot.even? ? 1 : 2
+  end
+
+  def next_game_slot
+    championship? ? nil : parent_position
   end
 
   def team_one
-    return nil unless leaf?
-    tree.tournament.teams.find_by(starting_slot: left_position)
+    leaf? ? team_by_slot(left_position) : nil
   end
 
   def team_two
-    return nil unless leaf?
-    tree.tournament.teams.find_by(starting_slot: right_position)
-  end
-
-  def game_one
-    left
-  end
-
-  def game_two
-    right
-  end
-
-  def next_game
-    parent
+    leaf? ? team_by_slot(right_position) : nil
   end
 
   def first_team
-    team_one || tree.tournament.teams.find_by(starting_slot: left.try(:value))
+    team_one || team_by_slot(left)
   end
 
   def second_team
-    team_two || tree.tournament.teams.find_by(starting_slot: right.try(:value))
+    team_two || team_by_slot(right)
   end
 
   def team
-    tree.tournament.teams.find_by(starting_slot: value)
+    team_by_slot(self)
   end
 
   def points(possible_game = nil)
-    this_game = possible_game || game
+    game = possible_game || self
 
-    if value.present? && this_game.value == value
+    if value.present? && game.value == value
       BracketPoint::POINTS_PER_ROUND[round] + team.seed
     else
       0
@@ -66,5 +57,26 @@ class GameNode < BinaryDecisionTree::Node
     else
       points
     end
+  end
+
+  def ==(obj)
+    obj.class == self.class && obj.tree == tree  && obj.slot == slot && obj.value == value
+  end
+
+  alias_method :eql?, :==
+
+  private
+
+  def team_by_slot(in_slot)
+    slot_number = in_slot.try(:value) || in_slot
+    tournament.teams.find_by(starting_slot: slot_number)
+  end
+
+  def tournament
+    tree.tournament
+  end
+
+  def tournament_tree
+    tournament.tree
   end
 end
