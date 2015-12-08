@@ -42,9 +42,9 @@ class GameNode < BinaryDecisionTree::Node
   end
 
   def points(possible_game = nil)
-    game = possible_game || self
+    working_game = possible_game || game
 
-    if value.present? && game.value == value
+    if value.present? && working_game.value == value
       BracketPoint::POINTS_PER_ROUND[round] + team.seed
     else
       0

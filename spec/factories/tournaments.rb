@@ -5,7 +5,7 @@ FactoryGirl.define do
     tip_off { 1.week.ago }
 
     after(:build) do |tournament|
-      tournament.name = "#{tournament.tip_off.strftime('%Y')} #{Faker::Company.name} Tournament"
+      tournament.name ||= "#{tournament.tip_off.strftime('%Y')} #{Faker::Company.name} Tournament"
     end
 
     after(:create) do |tournament|
@@ -113,6 +113,7 @@ FactoryGirl.define do
             tournament.update_game(game.slot, [0, 1].sample)
           end
         end
+        tournament.save
       end
     end
 

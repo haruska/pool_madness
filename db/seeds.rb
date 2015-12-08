@@ -3,13 +3,10 @@ DatabaseCleaner.clean_with :truncation
 user = User.create_with(name: ENV['ADMIN_NAME'].dup, password: ENV['ADMIN_PASSWORD'].dup, password_confirmation: ENV['ADMIN_PASSWORD'].dup).find_or_create_by(email: ENV['ADMIN_EMAIL'].dup)
 user.admin!
 puts "admin user: #{user.name}"
-#
-# [4.days.from_now, 4.days.ago].each do |tip_off|
-#   puts "creating tournament with tip off #{tip_off}"
-#   FactoryGirl.create(:tournament, tip_off: tip_off)
-# end
 
-FactoryGirl.create(:tournament, tip_off: 4.days.ago)
+FactoryGirl.create(:tournament, :completed, name: "Completed Tourney")
+FactoryGirl.create(:tournament, :with_first_two_rounds_completed, name: "Two Rounds Completed Tourney")
+FactoryGirl.create(:tournament, :not_started, name: "Unstarted Tourney")
 
 Tournament.all.each do |tournament|
   puts "creating 2 pools for tournament #{tournament.id}"
@@ -42,3 +39,8 @@ user.update!(email: "user@pool-madness.com")
 puts "creating unpaid brackets"
 
 FactoryGirl.create_list(:bracket, 2, :completed, user: user, pool: user.pools.first)
+
+Bracket.find_each do |bracket|
+  bracket.calculate_points
+  bracket.calculate_possible_points
+end
