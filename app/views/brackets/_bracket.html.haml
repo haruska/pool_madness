@@ -1,4 +1,4 @@
-- num_rounds = @bracket.tournament.num_rounds
+- num_rounds = @tournament.num_rounds
 .bracket
   %div{class: "bracket-heading #{num_rounds == 4 ? 'sweet-16' : 'field-64'}"}
     %table.gridtable
@@ -34,5 +34,6 @@
     - num_rounds.times do |round_num|
       = render partial: "brackets/round", locals: { round_num: round_num + 1 }
     = render partial: "brackets/championship"
-    .tie-breaker
-      Tie Breaker: #{bracket.tie_breaker || "None"}
+    - if @bracket
+      .tie-breaker
+        Tie Breaker: #{@bracket.tie_breaker || "None"}

@@ -44,10 +44,17 @@ class TournamentTree < BinaryDecisionTree::Tree
     at(position).decision = choice
   end
 
-  def round_for(round_number)
+  def game_ids_for(round_number)
     depth_for = (1..depth).to_a.reverse.index(round_number) + 1
-    slots = depth_for == 0 ? [1] : (2**(depth_for - 1)..(2**depth_for - 1)).to_a
-    slots.map { |s| at(s) }
+    depth_for == 0 ? [1] : (2**(depth_for - 1)..(2**depth_for - 1)).to_a
+  end
+
+  def select_games(game_ids = [])
+    game_ids.map {|id| at(id)}
+  end
+
+  def round_for(round_number)
+    select_games(game_ids_for(round_number))
   end
 
   def ==(obj)

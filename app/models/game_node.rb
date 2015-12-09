@@ -3,6 +3,7 @@ class GameNode < BinaryDecisionTree::Node
   alias_method :game_one, :left
   alias_method :game_two, :right
   alias_method :next_game, :parent
+  alias_method :id, :slot
 
   def championship?
     parent_position == 0

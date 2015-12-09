@@ -5,7 +5,7 @@ class BracketsController < ApplicationController
   load_and_authorize_resource :bracket, through: :pool, only: [:create]
   load_and_authorize_resource :bracket, except: [:index, :create]
 
-  before_action :load_pool, except: [:index, :create]
+  before_action :load_pool_and_tournament, except: [:index, :create]
 
   def index
     if @pool.started?
@@ -52,8 +52,9 @@ class BracketsController < ApplicationController
 
   private
 
-  def load_pool
+  def load_pool_and_tournament
     @pool = @bracket.pool
+    @tournament = @bracket.tournament
   end
 
   def update_params

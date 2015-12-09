@@ -13,6 +13,7 @@ App.createController("Brackets", {
     this.cacheElements();
     this.registerEvents();
 
+    this.fillInTeams();
     this.fillInPicks();
   },
 
@@ -22,6 +23,8 @@ App.createController("Brackets", {
     this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
 
     this.cacheElements();
+
+    this.fillInTeams();
     this.fillInPicks();
 
     this.updateEliminatedFlags();
@@ -61,6 +64,17 @@ App.createController("Brackets", {
       data: { choice: currentGame.choice }
     });
 
+  },
+
+  fillInTeams: function() {
+    _.each(this.games, this.fillInTeam);
+  },
+
+  fillInTeam: function(game) {
+    if (game.teamOne && game.teamTwo) {
+      this.fillTeam(game.id, 1, game.teamOne);
+      this.fillTeam(game.id, 2, game.teamTwo);
+    }
   },
 
   fillInPicks: function() {

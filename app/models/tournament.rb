@@ -30,17 +30,21 @@ class Tournament < ActiveRecord::Base
     num_games - num_games_played
   end
 
-  def round_for(round_number, region = nil)
-    games = tree.round_for(round_number)
+  def game_ids_for(round_number, region = nil)
+    game_ids = tree.game_ids_for(round_number)
 
-    if region.present? && games.size >= Team::REGIONS.size
-      slice_size = games.size / Team::REGIONS.size
+    if region.present? && game_ids.size >= Team::REGIONS.size
+      slice_size = game_ids.size / Team::REGIONS.size
       slice_index = Team::REGIONS.index(region)
-      slices = games.each_slice(slice_size).to_a
+      slices = game_ids.each_slice(slice_size).to_a
       slices[slice_index]
     else
-      games
+      game_ids
     end
+  end
+
+  def round_for(round_number, region = nil)
+    tree.select_games(game_ids_for(round_number, region))
   end
 
   def tree
@@ -63,10 +67,10 @@ class Tournament < ActiveRecord::Base
 
   def games_hash
     working_tree = tree
-    (1..num_games).map do |slot|
-      node = working_tree.at(slot)
+    (1..num_games).map do |game_id|
+      node = working_tree.at(game_id)
       {
-          id: slot,
+          id: game_id,
           teamOne: team_hash(node.team_one),
           teamTwo: team_hash(node.team_two),
           winningTeam: team_hash(node.team),
