@@ -1,4 +1,4 @@
-class GameNode < BinaryDecisionTree::Node
+class Game < BinaryDecisionTree::Node
   alias_method :round, :current_depth
   alias_method :game_one, :left
   alias_method :game_two, :right
@@ -9,7 +9,7 @@ class GameNode < BinaryDecisionTree::Node
     parent_position == 0
   end
 
-  def game
+  def tournament_game
     tournament_tree.at(slot)
   end
 
@@ -43,7 +43,7 @@ class GameNode < BinaryDecisionTree::Node
   end
 
   def points(possible_game = nil)
-    working_game = possible_game || game
+    working_game = possible_game || tournament_game
 
     if value.present? && working_game.value == value
       BracketPoint::POINTS_PER_ROUND[round] + team.seed
@@ -53,7 +53,7 @@ class GameNode < BinaryDecisionTree::Node
   end
 
   def possible_points
-    if game.value.blank? && team.try(:still_playing?)
+    if tournament_game.value.blank? && team.try(:still_playing?)
       BracketPoint::POINTS_PER_ROUND[round] + team.seed
     else
       points

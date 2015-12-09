@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe GameNode, type: :model do
+describe Game, type: :model do
   before(:all) { @tournament = create(:tournament, :completed) }
   let(:tournament) { @tournament }
   let(:tournament_tree) { tournament.tree }
@@ -10,7 +10,7 @@ describe GameNode, type: :model do
     subject { tournament_tree.at(slot) }
 
     it "is a BDT node" do
-      expect(subject).to be_a(GameNode)
+      expect(subject).to be_a(Game)
       expect(subject).to be_a(BinaryDecisionTree::Node)
     end
 
@@ -43,14 +43,14 @@ describe GameNode, type: :model do
     end
   end
 
-  describe "#game" do
+  describe "#tournament_game" do
     let(:slot) { rand(tournament_tree.size - 1) + 1 }
 
     context "in a tournament" do
       subject { tournament_tree.at(slot) }
 
       it "is itself" do
-        expect(subject.game).to eq(subject)
+        expect(subject.tournament_game).to eq(subject)
       end
     end
 
@@ -61,8 +61,8 @@ describe GameNode, type: :model do
       subject { bracket.tree.at(slot) }
 
       it "is the corresponding tournament game" do
-        expect(subject.game).to_not eq(subject)
-        expect(subject.game).to eq(tournament_tree.at(slot))
+        expect(subject.tournament_game).to_not eq(subject)
+        expect(subject.tournament_game).to eq(tournament_tree.at(slot))
       end
     end
   end

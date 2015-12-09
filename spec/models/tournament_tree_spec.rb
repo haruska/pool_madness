@@ -20,7 +20,7 @@ describe TournamentTree, type: :model do
   #   it "can be initialized with a Tournament" do
   #     tree = TournamentTree.new(tournament)
   #     expect(tree.class).to eq(TournamentTree)
-  #     expect(tree.at(1).class).to eq(GameNode)
+  #     expect(tree.at(1).class).to eq(Game)
   #     expect(tree.tournament).to eq(tournament)
   #   end
   # end
@@ -29,10 +29,10 @@ describe TournamentTree, type: :model do
   #   expect(subject.tournament).to eq(tournament)
   # end
   #
-  # it "has GameNode children instead of Nodes" do
+  # it "has Game children instead of Nodes" do
   #   subject.size.times do |i|
   #     next if i == 0
-  #     expect(subject.at(i)).to be_a(GameNode)
+  #     expect(subject.at(i)).to be_a(Game)
   #   end
   # end
   #
@@ -53,10 +53,10 @@ describe TournamentTree, type: :model do
   #
   #   it "is based on the child games' values" do
   #     subject.update_game(game.slot, game.first_participant_slot)
-  #     expect(game.decision).to eq(GameNode::LEFT)
+  #     expect(game.decision).to eq(Game::LEFT)
   #
   #     subject.update_game(game.slot, game.second_participant_slot)
-  #     expect(game.decision).to eq(GameNode::RIGHT)
+  #     expect(game.decision).to eq(Game::RIGHT)
   #   end
   #
   #   it "makes no decision if team is not one of the child games' values" do

@@ -5,10 +5,10 @@ class TournamentTree < BinaryDecisionTree::Tree
   def initialize(*args)
     if args[0].is_a?(Tournament)
       @tournament = args[0]
-      super(@tournament.num_rounds, node_class: GameNode)
+      super(@tournament.num_rounds, node_class: Game)
     else
       depth = args[0]
-      options = args.size > 1 ? args[1] : { node_class: GameNode }
+      options = args.size > 1 ? args[1] : { node_class: Game }
       super(depth, options)
     end
   end
