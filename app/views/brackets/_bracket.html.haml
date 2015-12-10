@@ -3,33 +3,15 @@
   %div{class: "bracket-heading #{num_rounds == 4 ? 'sweet-16' : 'field-64'}"}
     %table.gridtable
       %tr
-        - if num_rounds == 6
-          %th.round_1 1st ROUND
-          %th.round_2 2nd ROUND
-        %th.round_3 SWEET 16
-        %th.round_4 ELITE EIGHT
-        %th.round_5 FINAL FOUR
-        %th.round_6 CHAMPION
-        %th.round_5 FINAL FOUR
-        %th.round_4 ELITE EIGHT
-        %th.round_3 SWEET 16
-        - if num_rounds == 6
-          %th.round_2 2nd ROUND
-          %th.round_1 1st ROUND
+        - @tournament.round_name_date_pairs.map(&:first).each do |name|
+          %th= name
+        - @tournament.round_name_date_pairs[0...-1].reverse.map(&:first).each do |name|
+          %th= name
       %tr
-        - if num_rounds == 6
-          %td March 19-20
-          %td March 21-22
-        %td March 26-27
-        %td March 28-29
-        %td April 4
-        %td April 6
-        %td April 4
-        %td March 28-29
-        %td March 26-27
-        - if num_rounds == 6
-          %td March 21-22
-          %td March 19-20
+        - @tournament.round_name_date_pairs.map(&:second).each do |date|
+          %td= date
+        - @tournament.round_name_date_pairs[0...-1].reverse.map(&:second).each do |date|
+          %td= date
   %div{class: "bracket-body #{num_rounds == 4 ? 'sweet-16' : 'field-64'}"}
     - num_rounds.times do |round_num|
       = render partial: "brackets/round", locals: { round_num: round_num + 1 }

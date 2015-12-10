@@ -1,7 +1,7 @@
 .bracket {
   width: 970px;
   padding-top: 10px;
-  margin: 0 auto;
+  margin: 0;
 
   .bracket-heading {
     width: 950px;
@@ -91,21 +91,113 @@
     }
 
 
+    .championship {
+      position: absolute;
+      left: 395px;
+      top: 535px;
+      width: 150px;
+      height: 75px;
+      padding: 0;
+      border: none;
+
+
+      div {
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+
+        &.champion-box {
+          top: 22px;
+          font-size: 13px;
+          font-weight: bolder;
+          padding: 0 10px 0 6px;
+          border: 2px solid #666;
+        }
+
+        &.champion-label {
+          top: 40px;
+          font-size: 16px;
+          font-weight: bold;
+          padding-top: 5px;
+        }
+      }
+
+    }
+
+    .region-label {
+      display: block;
+      position: absolute;
+      width: 150px;
+      font-weight: bold;
+      color: #444;
+      text-transform: uppercase;
+
+      &.region3 {
+        left: auto;
+        right: 170px;
+        top: 170px;
+        text-align: right;
+      }
+
+      &.region4 {
+        left: auto;
+        right: 170px;
+        top: 780px;
+        text-align: right;
+      }
+
+      &.region1 {
+        left: 170px;
+        top: 170px;
+      }
+
+      &.region2 {
+        left: 170px;
+        top: 780px;
+      }
+    }
+
+    .region1, .region2 {
+      .match {
+        border-left: 0px;
+      }
+    }
+
+    .region3, .region4 {
+      .match {
+        border-right: 0px;
+        right: 0px;
+      }
+    }
+
+    .final_pick {
+      font-size: 16px;
+      background: #fff;
+    }
+
+    .loser {
+      font-weight: normal;
+      color: #777777;
+      text-decoration: line-through;
+    }
+
+    .tie-breaker {
+      position: absolute;
+      left: 418px;
+      top: 600px;
+    }
+
 
 
     &.sweet-16 {
       height: 400px;
 
-      .match {
-        width: 110px;
-      }
+      .match { width: 110px; }
 
       .round1 {
         width: 810px;
 
-        .match {
-          height: 40px;
-        }
+        .match { height: 40px; }
 
         .region1, .region3 {
           .m1 { top: 0; }
@@ -200,13 +292,6 @@
         top: 350px;
       }
     }
-
-
-
-
-
-
-
 
 
 
@@ -358,102 +443,6 @@
           text-align: right;
         }
       }
-    }
-
-    .championship {
-      position: absolute;
-      left: 395px;
-      top: 535px;
-      width: 150px;
-      height: 75px;
-      padding: 0;
-      border: none;
-
-
-      div {
-        height: 25px;
-        line-height: 25px;
-        text-align: center;
-
-        &.champion-box {
-          top: 22px;
-          font-size: 13px;
-          font-weight: bolder;
-          padding: 0 10px 0 6px;
-          border: 2px solid #666;
-        }
-
-        &.champion-label {
-          top: 40px;
-          font-size: 16px;
-          font-weight: bold;
-          padding-top: 5px;
-        }
-      }
-
-    }
-
-    .region-label {
-      display: block;
-      position: absolute;
-      width: 150px;
-      font-weight: bold;
-      color: #444;
-      text-transform: uppercase;
-
-      &.region3 {
-        left: auto;
-        right: 170px;
-        top: 170px;
-        text-align: right;
-      }
-
-      &.region4 {
-        left: auto;
-        right: 170px;
-        top: 780px;
-        text-align: right;
-      }
-
-      &.region1 {
-        left: 170px;
-        top: 170px;
-      }
-
-      &.region2 {
-        left: 170px;
-        top: 780px;
-      }
-    }
-
-    .region1, .region2 {
-      .match {
-        border-left: 0px;
-      }
-    }
-
-    .region3, .region4 {
-      .match {
-        border-right: 0px;
-        right: 0px;
-      }
-    }
-
-    .final_pick {
-      font-size: 16px;
-      background: #fff;
-    }
-
-    .loser {
-      font-weight: normal;
-      color: #777777;
-      text-decoration: line-through;
-    }
-
-    .tie-breaker {
-      position: absolute;
-      left: 418px;
-      top: 600px;
     }
   }
 }

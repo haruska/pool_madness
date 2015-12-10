@@ -43,6 +43,17 @@ class Tournament < ActiveRecord::Base
     end
   end
 
+  def round_name_date_pairs
+    [
+        ["1st ROUND", "March 19-20"],
+        ["2nd ROUND", "March 21-22"],
+        ["SWEET 16", "March 26-27"],
+        ["ELITE EIGHT", "March 28-29"],
+        ["FINAL FOUR", "April 4"],
+        ["CHAMPION", "April 6"]
+    ]
+  end
+
   def round_for(round_number, region = nil)
     tree.select_games(game_ids_for(round_number, region))
   end
