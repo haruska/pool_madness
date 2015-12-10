@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150701215158) do
+ActiveRecord::Schema.define(version: 20151210154723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,20 @@ ActiveRecord::Schema.define(version: 20150701215158) do
   add_index "pools", ["invite_code"], name: "index_pools_on_invite_code", unique: true, using: :btree
   add_index "pools", ["tournament_id", "name"], name: "index_pools_on_tournament_id_and_name", unique: true, using: :btree
   add_index "pools", ["tournament_id"], name: "index_pools_on_tournament_id", using: :btree
+
+  create_table "rounds", force: :cascade do |t|
+    t.integer  "tournament_id", null: false
+    t.string   "name",          null: false
+    t.datetime "start_date",    null: false
+    t.datetime "end_date",      null: false
+    t.integer  "number",        null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "rounds", ["tournament_id", "name"], name: "index_rounds_on_tournament_id_and_name", unique: true, using: :btree
+  add_index "rounds", ["tournament_id", "number"], name: "index_rounds_on_tournament_id_and_number", unique: true, using: :btree
+  add_index "rounds", ["tournament_id"], name: "index_rounds_on_tournament_id", using: :btree
 
   create_table "teams", force: :cascade do |t|
     t.string   "name",          null: false

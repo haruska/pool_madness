@@ -4,8 +4,12 @@ describe Tournament, type: :model do
   before(:all) { @tournament = create(:tournament) }
   subject { @tournament }
 
-  it { should validate_presence_of :name }
-  it { should validate_uniqueness_of :name }
+  it { is_expected.to have_many(:rounds) }
+  it { is_expected.to have_many(:pools) }
+  it { is_expected.to have_many(:teams) }
+
+  it { is_expected.to validate_presence_of(:name) }
+  it { is_expected.to validate_uniqueness_of(:name) }
 
   describe "#championship" do
     let(:expected_game) { subject.tree.at(1) }
