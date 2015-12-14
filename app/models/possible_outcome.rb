@@ -2,42 +2,23 @@ class PossibleOutcome
   include ActiveAttr::Model
 
   attribute :possible_outcome_set
-  attribute :possible_games, type: Hash
+  attribute :game_decisions
+  attribute :tree_attr
 
-  delegate :tournament, :games, :teams, :round_for_cache, :pool_brackets_cache, :bracket_picks_cache, to: :possible_outcome_set
+  delegate :tournament, :teams, :pool_brackets_cache, :bracket_trees_cache, to: :possible_outcome_set
 
-  def create_or_update_possible_game(game_hash)
-    self.possible_games ||= {}
-
-    game = game_hash[:game]
-
-    if possible_games[game.id].nil?
-      possible_game = PossibleGame.new(game_hash.merge(possible_outcome: self))
-      self.possible_games[game.id] = possible_game
-    else
-      possible_game = possible_games[game.id]
-    end
-
-    possible_game.update_score(game_hash[:score_one], game_hash[:score_two])
-
-    possible_game
+  def tree
+    self.tree_attr ||= TournamentTree.unmarshal(tournament, game_decisions, tournament.tree.all_games_mask)
   end
 
   def championship
-    possible_game = possible_games.values.first
-    possible_game = possible_game.next_game while possible_game.next_game.present?
-    possible_game
-  end
-
-  def round_for(round_number, region = nil)
-    round_for_cache(round_number, region).map { |game| possible_games[game.id] }
+    tree.championship
   end
 
   def sorted_brackets(pool)
     result = pool_brackets_cache(pool).map do |bracket|
-      points = bracket_picks_cache(bracket).map do |pick|
-        possible_games[pick.game_id].points_for_pick(pick.team.id)
-      end.sum
+      bracket_tree = bracket_trees_cache(bracket)
+      points = (1..tournament.num_games).map { |slot| bracket_tree.at(slot).points(tree.at(slot)) }.sum
       [bracket, points]
     end
 
