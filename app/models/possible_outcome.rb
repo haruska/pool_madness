@@ -5,14 +5,10 @@ class PossibleOutcome
   attribute :game_decisions
   attribute :tree_attr
 
-  delegate :tournament, :teams, :pool_brackets_cache, :bracket_trees_cache, to: :possible_outcome_set
+  delegate :tournament, :all_games_mask, :pool_brackets_cache, :bracket_trees_cache, to: :possible_outcome_set
 
   def tree
-    self.tree_attr ||= TournamentTree.unmarshal(tournament, game_decisions, tournament.tree.all_games_mask)
-  end
-
-  def championship
-    tree.championship
+    self.tree_attr ||= TournamentTree.unmarshal(tournament, game_decisions, all_games_mask)
   end
 
   def sorted_brackets(pool)

@@ -46,7 +46,7 @@ class Game < BinaryDecisionTree::Node
     working_game = possible_game || tournament_game
 
     if value.present? && working_game.value == value
-      BracketPoint::POINTS_PER_ROUND[round] + team.seed
+      BracketPoint::POINTS_PER_ROUND[round] + team_seed
     else
       0
     end
@@ -54,7 +54,7 @@ class Game < BinaryDecisionTree::Node
 
   def possible_points
     if tournament_game.value.blank? && team.try(:still_playing?)
-      BracketPoint::POINTS_PER_ROUND[round] + team.seed
+      BracketPoint::POINTS_PER_ROUND[round] + team_seed
     else
       points
     end
@@ -67,6 +67,10 @@ class Game < BinaryDecisionTree::Node
   alias_method :eql?, :==
 
   private
+
+  def team_seed
+    tournament.team_seed(value)
+  end
 
   def team_by_slot(in_slot)
     slot_number = in_slot.try(:value) || in_slot

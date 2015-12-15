@@ -7,6 +7,7 @@ class PossibleOutcomeSet
   attribute :tournament_tree_attr
   attribute :pool_brackets_cache_attr
   attribute :bracket_trees_cache_attr
+  attribute :all_games_mask_attr
 
   def teams
     self.teams_attr ||= tournament.teams.each_with_object({}) { |team, acc| acc[team.id] = team }
@@ -14,6 +15,10 @@ class PossibleOutcomeSet
 
   def tournament_tree
     self.tournament_tree_attr ||= tournament.tree
+  end
+
+  def all_games_mask
+    self.all_games_mask_attr ||= tournament_tree.all_games_mask
   end
 
   def min_slot_bits

@@ -31,6 +31,14 @@ class Tournament < ActiveRecord::Base
     num_games - num_games_played
   end
 
+  def team_seed(starting_slot)
+    @team_seeds ||= teams.each_with_object({}) do |val, acc|
+      acc[val.starting_slot] = val.seed
+    end
+
+    @team_seeds[starting_slot]
+  end
+
   def game_ids_for(round_number, region = nil)
     game_ids = tree.game_ids_for(round_number)
 
