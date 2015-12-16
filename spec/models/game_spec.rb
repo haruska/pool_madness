@@ -19,9 +19,9 @@ describe Game, type: :model do
     end
 
     it "has a game_one, game_two, and next_game" do
-      expect(subject.game_one).to eq(subject.left)
-      expect(subject.game_two).to eq(subject.right)
-      expect(subject.next_game).to eq(subject.parent)
+      expect(subject.game_one).to be_present
+      expect(subject.game_two).to be_present
+      expect(subject.next_game).to be_present
     end
   end
 
@@ -39,30 +39,6 @@ describe Game, type: :model do
 
       it "is false" do
         expect(subject).to_not be_championship
-      end
-    end
-  end
-
-  describe "#tournament_game" do
-    let(:slot) { rand(tournament_tree.size - 1) + 1 }
-
-    context "in a tournament" do
-      subject { tournament_tree.at(slot) }
-
-      it "is itself" do
-        expect(subject.tournament_game).to eq(subject)
-      end
-    end
-
-    context "in a bracket" do
-      let(:pool) { create(:pool, tournament: tournament) }
-      let(:bracket) { create(:bracket, pool: pool) }
-
-      subject { bracket.tree.at(slot) }
-
-      it "is the corresponding tournament game" do
-        expect(subject.tournament_game).to_not eq(subject)
-        expect(subject.tournament_game).to eq(tournament_tree.at(slot))
       end
     end
   end

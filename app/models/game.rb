@@ -61,7 +61,7 @@ class Game < BinaryDecisionTree::Node
   end
 
   def ==(obj)
-    obj.class == self.class && obj.tree == tree  && obj.slot == slot && obj.value == value
+    obj.class == self.class && obj.tree == tree && obj.slot == slot && obj.value == value
   end
 
   alias_method :eql?, :==
