@@ -2,10 +2,10 @@
   &.index-action {
     .pool {
       @include clearfix;
-      padding: 20px;
       background-color: $light-gray;
       width: 100%;
-      margin-bottom: 25px;
+      margin: 25px 0;
+      padding: 0 10px;
 
       ul {
         @include span-columns(6 of 8);
@@ -16,16 +16,24 @@
         font-weight: bold;
       }
 
+      .admins, .brackets {
+        display: none;
+      }
+
       .invite-code {
-        @include span-columns(2 of 8);
-        @include omega;
-
-        padding-top: 30px;
-
         .code {
           font-weight: bold;
         }
       }
+    }
+  }
+
+  .invite {
+    display: block;
+    text-align: center;
+
+    a {
+      display: inline-block;
     }
   }
 

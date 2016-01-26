@@ -11,8 +11,8 @@
         (#{ link_to "Admin", admin_pool_brackets_path(pool) })
     %li.brackets
       #{pool.brackets.count} Brackets
-  - unless pool.started?
-    .invite-code
-      Invite Code:
-      %span.code= pool.invite_code
+    - unless pool.started?
+      %li.invite-code
+        Invite Code:
+        %span.code= pool.invite_code
 
