@@ -1,26 +1,28 @@
-%header.navigation{:role => "banner"}
-  .navigation-wrapper
-    .js-menu-trigger.sliding-panel-button
-      %i.fa.fa-bars
+%header
+  .title-wrapper
+    .title
+      = link_to "Pool Madness", root_path
+  .js-menu-trigger.sliding-panel-button.menu
+    %i.fa.fa-bars
 
 %nav.js-menu.sliding-panel-content
   %ul
-    - if @pool.present?
-      %li= link_to "Brackets", pool_brackets_path(@pool)
-      - if @pool.started?
-        %li= link_to "Game Results", pool_games_path(@pool)
-      - else
-        %li= link_to "Types of Payment", payments_pool_path(@pool)
-      %li= link_to "Rules and Scoring", rules_pool_path(@pool)
-      - if can? :manage, @pool
-        %li= link_to "Pool Admin", admin_pool_brackets_path(@pool)
-    - else
-      %li= link_to "Pools", root_path
-
-    - if @tournament.present? && can?(:manage, @tournament)
-      %li= link_to "Update Scores", update_bracket_scores_admin_tournament_path(@tournament), method: 'patch'
-
     - if current_user
+      - if @pool.present?
+        %li= link_to "Brackets", pool_brackets_path(@pool)
+        - if @pool.started?
+          %li= link_to "Game Results", pool_games_path(@pool)
+        - else
+          %li= link_to "Types of Payment", payments_pool_path(@pool)
+        %li= link_to "Rules and Scoring", rules_pool_path(@pool)
+        - if can? :manage, @pool
+          %li= link_to "Pool Admin", admin_pool_brackets_path(@pool)
+      - else
+        %li= link_to "Pools", root_path
+
+      - if @tournament.present? && can?(:manage, @tournament)
+        %li= link_to "Update Scores", update_bracket_scores_admin_tournament_path(@tournament), method: 'patch'
+
       %li= link_to 'Edit account', edit_user_registration_path
       %li= link_to 'Logout', destroy_user_session_path, method: 'delete'
     - else

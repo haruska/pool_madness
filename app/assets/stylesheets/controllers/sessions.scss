@@ -1,0 +1,19 @@
+.sessions-controller,
+.registrations-controller {
+  .wrapper {
+    margin: $gutter;
+  }
+
+  h2 {
+    padding-bottom: $gutter / 2;
+  }
+
+  .form-actions {
+    text-align: center;
+    padding: $gutter 0;
+
+    input {
+      width: 100%;
+    }
+  }
+}
