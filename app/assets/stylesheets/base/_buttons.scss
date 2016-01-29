@@ -34,4 +34,10 @@ input[type="submit"] {
   &.danger {
     background-color: $red;
   }
+
+  &.minor {
+    background-color: #FFF;
+    border: 1px $action-color solid;
+    color: $action-color;
+  }
 }

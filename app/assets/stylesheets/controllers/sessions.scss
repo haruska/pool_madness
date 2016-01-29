@@ -1,5 +1,23 @@
 .sessions-controller,
-.registrations-controller {
+.registrations-controller,
+.passwords-controller
+{
+  #error_explanation {
+    color: red;
+
+    h2 {
+      display: none;
+    }
+
+    ul {
+      padding-bottom: $gutter;
+    }
+
+    li {
+      padding-bottom: $gutter / 2;
+    }
+  }
+
   .wrapper {
     margin: $gutter;
   }
@@ -8,9 +26,23 @@
     padding-bottom: $gutter / 2;
   }
 
+  .auth-links {
+    padding-top: $gutter;
+  }
+
+  .button {
+    &.minor {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: $gutter / 2;
+    }
+  }
+
   .form-actions {
     text-align: center;
     padding: $gutter 0;
+    border-bottom: 1px solid $medium-gray;
 
     input {
       width: 100%;

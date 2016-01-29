@@ -1,10 +1,10 @@
-%h2
-  Change Password
-= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
-  = f.error_notification
+%h2 Change Password
+
+= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+  = devise_error_messages!
   .form-inputs
-    = f.input :password, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false
-    = f.input :password_confirmation, required: false
-    = f.input :current_password, hint: "we need your current password to confirm your changes", required: true
+    = f.password_field :password, required: true, autofill: false, placeholder: "New Password", pattern: (".{#{@minimum_password_length},}" if @minimum_password_length)
+    = f.password_field :password_confirmation, required: true, autofill: false, placeholder: "New Password Confirmation", pattern: (".{#{@minimum_password_length},}" if @minimum_password_length)
+    = f.password_field :current_password, required: true, placeholder: "Current Password", required: true
   .form-actions
-    = f.button :submit, "Change Password"
+    = f.submit "Change Password"
