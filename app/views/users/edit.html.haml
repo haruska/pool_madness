@@ -1,11 +1,13 @@
-%h2
-  Edit Profile
-= form_for @user do |f|
-  .form-inputs
-    = f.label :name, "Full Name"
-    = f.text_field :name, required: true
+.title-wrapper
+  %h2 Edit Profile
 
-    = f.label :email, "Email Address"
-    = f.email_field :email, required: true
-  .form-actions
-    = f.submit "Update"
+.content-wrapper
+  = form_for @user, url: profile_path do |f|
+    .form-inputs
+      = f.label :name, "Full Name"
+      = f.text_field :name, required: true
+
+      = f.label :email, "Email Address"
+      = f.email_field :email, required: true
+    .form-actions
+      = f.submit "Update"

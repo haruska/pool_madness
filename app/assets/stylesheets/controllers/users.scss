@@ -1,0 +1,38 @@
+.users-controller
+{
+  header {
+    margin: 0;
+  }
+
+  .title-wrapper {
+    border-bottom: 1px solid $medium-gray;
+    display: block;
+    width: 100%;
+    //padding-bottom: $gutter / 2;
+
+    h2 {
+      padding: 0;
+      display: inline-block;
+      margin: 10px 25px;
+    }
+  }
+
+  .content-wrapper {
+      margin: 25px;
+  }
+
+  .button, input[type='submit'] {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .actions {
+    padding: $gutter 0;
+    border-bottom: 1px solid $medium-gray;
+  }
+
+  .other-actions, .form-actions {
+    padding: $gutter 0;
+  }
+}

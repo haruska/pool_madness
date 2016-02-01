@@ -1,5 +1,13 @@
-%h3 User
-%p
-  User: #{@user.name}
-%p
-  Email: #{@user.email if @user.email}
+.title-wrapper
+  %h2 Profile
+
+.content-wrapper
+  .name
+    #{@user.name}
+  .email
+    #{@user.email}
+
+  .actions
+    = link_to "Edit Profile", edit_profile_path, class: :button
+  .other-actions
+    = link_to "Change Password", edit_user_registration_path, class: [:button, :minor]

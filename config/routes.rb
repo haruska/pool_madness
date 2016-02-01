@@ -5,7 +5,7 @@ PoolMadness::Application.routes.draw do
 
   devise_for :users, path: "auth", path_names: { sign_in: "login", sign_up: "signup" }
 
-  resources :users, only: [:show]
+  resource :user, only: [:show, :edit, :update], as: :profile
 
   match "pools/join", to: "pools#join", via: :post, as: "join_pool"
   match "pools/invite_code", to: "pools#invite_code", via: :get, as: "invite_code"

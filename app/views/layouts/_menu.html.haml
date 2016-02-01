@@ -16,7 +16,7 @@
       - if @tournament.present? && can?(:manage, @tournament)
         %li= link_to "Update Scores", update_bracket_scores_admin_tournament_path(@tournament), method: 'patch'
 
-      %li= link_to 'Change Password', edit_user_registration_path
+      %li= link_to 'Profile', profile_path
       %li= link_to 'Logout', destroy_user_session_path, method: 'delete'
     - else
       %li= link_to "Login", new_user_session_path
