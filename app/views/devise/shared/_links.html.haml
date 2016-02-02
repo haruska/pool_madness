@@ -1,4 +1,4 @@
-.auth-links
+.auth-links.other-actions
   - if controller_name != 'sessions'
     = link_to "Login", new_session_path(resource_name), class: [:button, :minor]
   - if devise_mapping.registerable? && controller_name != 'registrations'

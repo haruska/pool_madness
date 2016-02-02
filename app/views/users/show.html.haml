@@ -1,13 +1,11 @@
-.title-wrapper
-  %h2 Profile
+- content_for(:title, "Profile")
 
-.content-wrapper
-  .name
-    #{@user.name}
-  .email
-    #{@user.email}
+.name
+  #{@user.name}
+.email
+  #{@user.email}
 
-  .actions
-    = link_to "Edit Profile", edit_profile_path, class: :button
-  .other-actions
-    = link_to "Change Password", edit_user_registration_path, class: [:button, :minor]
+.actions
+  = link_to "Edit Profile", edit_profile_path, class: :button
+.other-actions
+  = link_to "Change Password", edit_user_registration_path, class: [:button, :minor]

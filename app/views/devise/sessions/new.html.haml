@@ -1,4 +1,5 @@
-%h2 Login
+- content_for(:title, "Login")
+
 = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
   = devise_error_messages!
   .form-inputs

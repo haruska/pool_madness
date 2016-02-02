@@ -1,4 +1,4 @@
-%h2 Change Password
+- content_for(:title, "Change Password")
 
 = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
   = devise_error_messages!
@@ -8,3 +8,5 @@
     = f.password_field :current_password, required: true, placeholder: "Current Password", required: true
   .form-actions
     = f.submit "Change Password"
+.other-actions
+  = link_to "Cancel", profile_path, class: [:button, :minor]

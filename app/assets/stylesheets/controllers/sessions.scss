@@ -17,35 +17,4 @@
       padding-bottom: $gutter / 2;
     }
   }
-
-  .wrapper {
-    margin: $gutter;
-  }
-
-  h2 {
-    padding-bottom: $gutter / 2;
-  }
-
-  .auth-links {
-    padding-top: $gutter;
-  }
-
-  .button {
-    &.minor {
-      display: block;
-      width: 100%;
-      text-align: center;
-      margin-top: $gutter / 2;
-    }
-  }
-
-  .form-actions {
-    text-align: center;
-    padding: $gutter 0;
-    border-bottom: 1px solid $medium-gray;
-
-    input {
-      width: 100%;
-    }
-  }
 }
