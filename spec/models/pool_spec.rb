@@ -1,20 +1,20 @@
-require "spec_helper"
+require "rails_helper"
 
-describe Pool, type: :model do
+RSpec.describe Pool, type: :model do
   before(:all) { @tournament = create(:tournament) }
   let(:tournament) { @tournament }
   subject { create(:pool, tournament: tournament) }
 
-  it { should belong_to(:tournament) }
-  it { should have_many(:brackets) }
-  it { should have_many(:pool_users) }
-  it { should have_many(:users).through(:pool_users) }
+  it { is_expected.to belong_to(:tournament) }
+  it { is_expected.to have_many(:brackets) }
+  it { is_expected.to have_many(:pool_users) }
+  it { is_expected.to have_many(:users).through(:pool_users) }
 
-  it { should delegate_method(:tip_off).to(:tournament) }
+  it { is_expected.to delegate_method(:tip_off).to(:tournament) }
 
-  it { should validate_uniqueness_of :invite_code }
-  it { should validate_presence_of :name }
-  it { should validate_uniqueness_of(:name).scoped_to(:tournament_id) }
+  it { is_expected.to validate_uniqueness_of :invite_code }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_uniqueness_of(:name).scoped_to(:tournament_id) }
 
   context "before validation" do
     subject { build(:pool, tournament: tournament) }

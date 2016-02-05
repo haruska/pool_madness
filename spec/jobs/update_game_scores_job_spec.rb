@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe UpdateGameScoresJob, type: :job do
+RSpec.describe UpdateGameScoresJob, type: :job do
   before(:all) { @tournament = create(:tournament, :with_first_two_rounds_completed) }
 
   let(:pool) { create(:pool, tournament: @tournament) }

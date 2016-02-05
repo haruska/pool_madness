@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
-describe ChargesController, type: :controller do
+RSpec.describe ChargesController, type: :controller do
 end

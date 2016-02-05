@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe BracketPoint, type: :model do
+RSpec.describe BracketPoint, type: :model do
   before(:all) { @tournament = create(:tournament, :completed) }
 
   let(:tournament) { @tournament }

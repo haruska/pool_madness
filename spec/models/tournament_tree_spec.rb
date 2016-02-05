@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe TournamentTree, type: :model do
+RSpec.describe TournamentTree, type: :model do
   # let(:tournament) { create(:march_madness_tournament, :with_participants) }
   # subject { tournament.tree }
   #

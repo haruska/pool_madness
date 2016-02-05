@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe "User creation, authentication, deletion", type: :feature, js: true do
+RSpec.describe "User creation, authentication, deletion", type: :feature, js: true do
   # describe "Signing up" do
   #   let(:email) { Faker::Internet.email }
   #   let(:password) { Faker::Internet.password }

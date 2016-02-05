@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe Admin::TournamentsController, type: :controller do
+RSpec.describe Admin::TournamentsController, type: :controller do
   before(:all) { @tournament = create(:tournament) }
   let(:tournament) { @tournament }
 

@@ -1,5 +1,5 @@
-require "spec_helper"
+require "rails_helper"
 
-describe GamesHelper, type: :helper do
+RSpec.describe GamesHelper, type: :helper do
 
 end

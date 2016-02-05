@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe PossibleOutcomeSet, type: :model do
+RSpec.describe PossibleOutcomeSet, type: :model do
   # before(:all) do
   #   @tournament = create(:tournament, :with_first_two_rounds_completed)
   #   @pool = create(:pool, tournament: @tournament)

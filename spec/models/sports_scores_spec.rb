@@ -1,5 +1,5 @@
-require "spec_helper"
+require "rails_helper"
 
-describe SportsScores, type: :model do
+RSpec.describe SportsScores, type: :model do
 
 end

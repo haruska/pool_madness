@@ -1,5 +1,5 @@
-require "spec_helper"
+require "rails_helper"
 
-describe BracketsHelper, type: :helper do
+RSpec.describe BracketsHelper, type: :helper do
 
 end
