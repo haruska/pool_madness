@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.2.2"
+ruby "2.2.4"
 
 gem "active_attr", github: "haruska/active_attr"
 gem "binary_decision_tree"
@@ -79,7 +79,7 @@ end
 
 group :test do
   gem "fuubar"
-  gem "shoulda-matchers", require: false
+  gem "shoulda-matchers"
   gem "simplecov", require: false
   gem "stripe-ruby-mock"
   gem "webmock"

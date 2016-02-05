@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe Admin::BracketsController, type: :controller do
+RSpec.describe Admin::BracketsController, type: :controller do
   before(:all) do
     @tournament = create(:tournament)
   end

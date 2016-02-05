@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe BracketsController, type: :controller do
+RSpec.describe BracketsController, type: :controller do
   describe "#show" do
     let!(:tournament) { create(:tournament, :completed) }
     let!(:pool) { create(:pool, tournament: tournament) }

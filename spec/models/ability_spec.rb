@@ -1,7 +1,7 @@
-require "spec_helper"
+require "rails_helper"
 require "cancan/matchers"
 
-describe Ability, type: :model do
+RSpec.describe Ability, type: :model do
   before(:all) { @pool = create(:pool) }
   let(:pool) { @pool }
 

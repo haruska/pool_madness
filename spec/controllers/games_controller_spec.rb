@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
-describe GamesController, type: :controller do
+RSpec.describe GamesController, type: :controller do
 end

@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe Bracket, type: :model do
+RSpec.describe Bracket, type: :model do
   before(:all) { @tournament = create(:tournament) }
 
   let(:tournament) { @tournament }
@@ -12,11 +12,11 @@ describe Bracket, type: :model do
     expect(subject).to be_valid
   end
 
-  it { should belong_to(:user) }
-  it { should belong_to(:payment_collector) }
+  it { is_expected.to belong_to(:user) }
+  it { is_expected.to belong_to(:payment_collector) }
 
-  it { should validate_presence_of(:user) }
-  it { should validate_uniqueness_of(:name).scoped_to(:pool_id) }
+  it { is_expected.to validate_presence_of(:user) }
+  it { is_expected.to validate_uniqueness_of(:name).scoped_to(:pool_id) }
 
   context "before validation" do
     it "resets tie_breaker to nil if it is <= 0" do

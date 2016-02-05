@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
-describe PoolsController, type: :controller do
+RSpec.describe PoolsController, type: :controller do
 end

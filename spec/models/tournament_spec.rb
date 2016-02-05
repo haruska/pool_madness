@@ -1,6 +1,6 @@
-require "spec_helper"
+require "rails_helper"
 
-describe Tournament, type: :model do
+RSpec.describe Tournament, type: :model do
   before(:all) { @tournament = create(:tournament) }
   subject { @tournament }
 
