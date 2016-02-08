@@ -18,7 +18,7 @@ App.createController("Brackets", {
   edit: function(bracketId, games) {
     this.bracketId = bracketId;
     this.games = games;
-    this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
+    this.championshipGame = _.find(this.games, {"nextGameId": null});
 
     this.fillInTeams();
     this.fillInPicks();
@@ -27,7 +27,7 @@ App.createController("Brackets", {
   show: function(bracketId, games) {
     this.bracketId = bracketId;
     this.games = games;
-    this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
+    this.championshipGame = _.find(this.games, {"nextGameId": null});
 
     this.fillInTeams();
     this.fillInPicks();
@@ -41,7 +41,7 @@ App.createController("Brackets", {
   },
 
   findGame: function(id) {
-    return _.findWhere(this.games, { "id": id });
+    return _.find(this.games, { "id": id });
   },
 
   handleSlotClick: function (event) {
