@@ -1,6 +1,16 @@
 App.createController("Brackets", {
   actions: ["index", "edit", "show"],
 
+  elements: {
+    edit: {
+      slots: ['.slot', {click: "handleSlotClick"}],
+      championshipBox: ".champion-box"
+    },
+    show: {
+      slots: '.slot', championshipBox: '.champion-box'
+    }
+  },
+
   index: function(bracketIds) {
     this.highlightBracketRows(bracketIds);
   },
@@ -9,9 +19,6 @@ App.createController("Brackets", {
     this.bracketId = bracketId;
     this.games = games;
     this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
-
-    this.cacheElements();
-    this.registerEvents();
 
     this.fillInTeams();
     this.fillInPicks();
@@ -22,22 +29,11 @@ App.createController("Brackets", {
     this.games = games;
     this.championshipGame = _.findWhere(this.games, {"nextGameId": null});
 
-    this.cacheElements();
-
     this.fillInTeams();
     this.fillInPicks();
 
     this.updateEliminatedFlags();
     this.highlightCorrectPicks();
-  },
-
-  cacheElements: function() {
-    this.$slots = $('.slot');
-    this.$championshipBox = $(".champion-box");
-  },
-
-  registerEvents: function() {
-    this.$slots.click(this.handleSlotClick);
   },
 
   isChampionshipGame: function(game) {

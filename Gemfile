@@ -15,9 +15,9 @@ gem "espn_scraper", github: "MikeSilvis/espn-scraper"
 gem "font-awesome-rails"
 gem "haml"
 gem "httparty"
-gem "jskit_rails"
+gem "rails_jskit", "=5.1.0" # 5.1.3 breaks binding this to functions
 gem "jquery-rails"
-gem "lodash-rails"
+gem "lodash-rails", "~> 3.10" # support of jskit
 gem "neat"
 gem "pg"
 gem "rails", "~> 4.2"
