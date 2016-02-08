@@ -1,5 +1,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require lodash
-//= require jskit_rails
+//= require rails_jskit
 //= require_tree ./controllers

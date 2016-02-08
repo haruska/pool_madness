@@ -1,17 +1,12 @@
 App.createController("Application", {
-  all: function() {
-    this.cacheElements();
-    this.registerEvents();
-  },
-
-  cacheElements: function() {
-    this.$slidingButton = $('.sliding-panel-button,.sliding-panel-fade-screen,.sliding-panel-close');
-    this.$slidingContent = $('.sliding-panel-content,.sliding-panel-fade-screen');
-  },
-
-  registerEvents: function() {
-    this.$slidingButton.on('click touchstart', this.toggleHamburger);
-
+  elements: {
+    all: {
+      slidingButton: [
+        ".sliding-panel-button,.sliding-panel-fade-screen,.sliding-panel-close",
+        { "click touchstart": "toggleHamburger" }
+      ],
+      slidingContent: ".sliding-panel-content,.sliding-panel-fade-screen"
+    }
   },
 
   toggleHamburger: function(e) {
@@ -19,5 +14,3 @@ App.createController("Application", {
     e.preventDefault();
   }
 });
-
-
