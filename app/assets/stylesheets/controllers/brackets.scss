@@ -1,24 +1,60 @@
 .brackets-controller {
 
   &.index-action {
-    table {
-      font-size: 0.9em;
-      table-layout: auto;
+    .wrapper {
+      margin: 0 !important;
     }
 
-    h3 {
-      font-size: small;
-      padding-bottom: 25px;
-
-    }
-
-    .actions {
-      padding-top: 25px;
-
-      .payment {
-        display: inline-block;
-        float: right;
+    .brackets {
+      a {
+        display: block;
+        color: $base-font-color;
+        border-top: 1px solid $medium-gray;
+        &:last-child {
+          border-bottom: 1px solid $medium-gray;
+        }
       }
+    }
+
+    .bracket-attributes {
+      .position {
+        margin: 0 $gutter/2;
+        position: relative;
+        top: 0%;
+        transform: translateY(-50%);
+      }
+    }
+
+    .bracket {
+      div {
+        display: inline-block;
+      }
+
+      .final-four-teams {
+        //display: block;
+        display: none;
+        font-size: 0.9em;
+      }
+
+      .name {
+        //font-size: large;
+        font-weight: bold;
+      }
+
+      .points {
+        display: block;
+        font-size: 0.9em;
+
+        .total::after {
+            content: " points /";
+        }
+
+        .possible::after {
+          content: " possible";
+        }
+      }
+
+      padding: ($gutter/2) 0;
     }
 
     .current-user-bracket {
