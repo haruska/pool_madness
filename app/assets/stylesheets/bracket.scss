@@ -1,446 +1,226 @@
-.bracket {
-  width: 970px;
-  padding-top: 10px;
-  margin: 0;
+$match-width: 150px;
 
-  .bracket-heading {
-    width: 950px;
-
-    table.gridtable {
-      font-size: 11px;
-      color: #333333;
-      border-width: 1px;
-      border-color: #fff;
-      border-collapse: collapse;
-
-      th {
-        background-color: #b3d4ef;
-        padding: 8px;
-        width: 69.4px;
-        border: 1px solid #fff;
-      }
-
-      td {
-        border-width: 1px;
-        padding: 8px;
-        border-style: solid;
-        border-color: #fff;
-        background-color: #ffffff;
-        text-align: center;
-      }
-
-      td.title {
-        background: #ccc;
-        font-weight: bold;
-      }
+.brackets-controller {
+  &.show-action {
+    .wrapper {
+      margin: 25px 0 !important;
+      vertical-align: text-top;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
     }
 
-    &.sweet-16 {
-      width: 810px;
-    }
-  }
+    .bracket {
+      margin: 0;
 
-  .bracket-body {
-    margin-top: 15px;
-    height: 1050px;
-    position: relative;
+      width: $match-width * 6;
 
-    .round {
-      position: absolute;
-      top: 0;
-      width: 950px;
-    }
+      .bracket-body {
+        height: 3200px;
 
-    .match {
-      border: 1px solid #444;
-      padding: 0;
-      width: 114px;
-      position: absolute;
-      font-size: 12px;
+        @include transition(all 0.5s ease-in);
 
-      .slot {
-        margin: 0;
-        position: absolute;
-        left: 0;
-        right: 0;
-        padding: 0 4px;
-      }
+        .round1 {
+          .slot-content {
+            padding: 0 5px;
+            &:before {
+              content: "" !important;
+            }
 
-      .slot1 {
-        top: 0px;
-      }
-
-      .slot2 {
-        bottom: 0px;
-      }
-
-      .score {
-        position: absolute;
-        right: 4px;
-        font-style: normal;
-      }
-
-      .seed {
-        color: #777;
-        font-size: 10px;
-      }
-
-      .winner, .winner em {
-        font-weight: bold;
-      }
-    }
-
-
-    .championship {
-      position: absolute;
-      left: 395px;
-      top: 535px;
-      width: 150px;
-      height: 75px;
-      padding: 0;
-      border: none;
-
-
-      div {
-        height: 25px;
-        line-height: 25px;
-        text-align: center;
-
-        &.champion-box {
-          top: 22px;
-          font-size: 13px;
-          font-weight: bolder;
-          padding: 0 10px 0 6px;
-          border: 2px solid #666;
+            .seed:before {
+              content: "" !important;
+            }
+          }
         }
 
-        &.champion-label {
-          top: 40px;
+        .match {
+          border: {
+            top: 2px solid #444;
+            right: 2px solid #444;
+          }
+
+          margin: 0;
+          padding: 0;
+          width: $match-width;
+
+          .slot {
+            margin: 0;
+            height: 50%;
+            position: relative;
+          }
+
+          .slot-content {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-top: -2px;
+
+            &:before {
+              content: "\2022\2022";
+              font-size: 11px;
+              color: #CCC;
+            }
+
+            .seed:before {
+                content: "\003e\00a0";
+                font-size: 15px;
+                color: #CCC;
+              }
+
+          }
+
+          .slot1 {
+
+          }
+
+          .slot2 {
+            border-top: 2px dotted #CCCCCC;
+          }
+
+          .seed {
+            color: #777;
+          }
+
+          .winner, .winner em {
+            font-weight: bold;
+          }
+        }
+
+        .championship {
+          display: none;
+          position: absolute;
+          left: 395px;
+          top: 535px;
+          width: 150px;
+          height: 75px;
+          padding: 0;
+          border: none;
+
+          div {
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+
+            &.champion-box {
+              top: 22px;
+              font-size: 13px;
+              font-weight: bolder;
+              padding: 0 10px 0 6px;
+              border: 2px solid #666;
+            }
+
+            &.champion-label {
+              top: 40px;
+              font-size: 16px;
+              font-weight: bold;
+              padding-top: 5px;
+            }
+          }
+
+        }
+
+        .final_pick {
           font-size: 16px;
-          font-weight: bold;
-          padding-top: 5px;
-        }
-      }
-
-    }
-
-    .region-label {
-      display: block;
-      position: absolute;
-      width: 150px;
-      font-weight: bold;
-      color: #444;
-      text-transform: uppercase;
-
-      &.region3 {
-        left: auto;
-        right: 170px;
-        top: 170px;
-        text-align: right;
-      }
-
-      &.region4 {
-        left: auto;
-        right: 170px;
-        top: 780px;
-        text-align: right;
-      }
-
-      &.region1 {
-        left: 170px;
-        top: 170px;
-      }
-
-      &.region2 {
-        left: 170px;
-        top: 780px;
-      }
-    }
-
-    .region1, .region2 {
-      .match {
-        border-left: 0px;
-      }
-    }
-
-    .region3, .region4 {
-      .match {
-        border-right: 0px;
-        right: 0px;
-      }
-    }
-
-    .final_pick {
-      font-size: 16px;
-      background: #fff;
-    }
-
-    .loser {
-      font-weight: normal;
-      color: #777777;
-      text-decoration: line-through;
-    }
-
-    .tie-breaker {
-      position: absolute;
-      left: 418px;
-      top: 600px;
-    }
-
-
-
-    &.sweet-16 {
-      height: 400px;
-
-      .match { width: 110px; }
-
-      .round1 {
-        width: 810px;
-
-        .match { height: 40px; }
-
-        .region1, .region3 {
-          .m1 { top: 0; }
-          .m2 { top: 50px; }
+          background: #fff;
         }
 
-        .region2, .region4 {
-          .m1 { top: 200px; }
-          .m2 { top: 250px; }
-        }
-      }
-
-      .round2 {
-        left: 110px;
-        width: 590px;
-
-        .match {
-          height: 40px;
-          margin-top: 24px;
+        .loser {
+          font-weight: normal;
+          color: #777777;
+          text-decoration: line-through;
         }
 
-        .region1, .region3 {
-          .m1 { top: 0; }
-        }
-        .region2, .region4 {
-          .m1 { top: 200px; }
-        }
-      }
-
-      .round3 {
-        left: 220px;
-        width: 370px;
-
-        .match {
-          height: 205px;
-          top: 43px;
+        .tie-breaker {
+          display: none;
+          position: absolute;
+          left: 418px;
+          top: 600px;
         }
 
-        .m1 {
-          left: 0;
-          border-left: none;
-        }
+        $base-match-height: 12.5%;
 
-        .m2 {
-          right: 0;
-          border-right: none;
-        }
-      }
+        .round {
+          display: inline-block;
+          vertical-align: text-top;
+          height: 100%;
+          margin-left: -5px;
 
-      .round4 {
-        left: 330px;
+          .region {
+            height: 25%;
 
-
-        .match {
-          height: 75px;
-          top: 100px;
-          border: none;
-          width: 150px;
-          padding: 0;
-        }
-
-        .slot {
-          font-size: 13px;
-          height: 25px;
-          line-height: 25px;
-          padding: 0 10px 0 6px;
-        }
-
-        .slot1 {
-          border-bottom: 1px solid #666;
-          top: 22px;
-        }
-
-        .slot2 {
-          top: 48px;
-          text-align: right;
-        }
-      }
-
-      .region-label {
-        display: none;
-      }
-
-      .championship {
-        left: 330px;
-        top: 275px;
-      }
-
-      .tie-breaker {
-        position: absolute;
-        left: 345px;
-        top: 350px;
-      }
-    }
-
-
-
-
-
-
-
-
-
-
-    &.field-64 {
-      .round1 {
-        .match { height: 40px; }
-
-        .region1, .region3 {
-          .m1 { top: 0; }
-          .m2 { top: 50px; }
-          .m3 { top: 100px; }
-          .m4 { top: 150px; }
-          .m5 { top: 200px; }
-          .m6 { top: 250px; }
-          .m7 { top: 300px; }
-          .m8 { top: 350px; }
-        }
-
-        .region2, .region4 {
-          .m1 { top: 600px; }
-          .m2 { top: 650px; }
-          .m3 { top: 700px; }
-          .m4 { top: 750px; }
-          .m5 { top: 800px; }
-          .m6 { top: 850px; }
-          .m7 { top: 900px; }
-          .m8 { top: 950px; }
-        }
-      }
-
-      .round2 {
-        left: 115px;
-        width: 720px;
-
-        .match {
-          height: 40px;
-          margin-top: 24px;
-        }
-
-        .region1, .region3 {
-          .m1 { top: 0; }
-          .m2 { top: 100px; }
-          .m3 { top: 200px; }
-          .m4 { top: 300px; }
-        }
-
-        .region2, .region4 {
-          .m1 { top: 600px; }
-          .m2 { top: 700px; }
-          .m3 { top: 800px; }
-          .m4 { top: 900px; }
-        }
-      }
-
-      .round3 {
-        left: 230px;
-        width: 490px;
-
-        .match {
-          height: 90px;
-          margin-top: 50px;
-        }
-
-        .region1, .region3 {
-          .m1 { top: 0; }
-          .m2 { top: 200px; }
-        }
-
-        .region2, .region4 {
-          .m1 {
-            top: 600px;
+            &:last-of-type {
+              .match:last-of-type {
+                border-bottom: 2px solid #444;
+              }
+            }
           }
-          .m2 {
-            top: 800px;
+
+          &.round5, &.round6 {
+            .match:last-of-type {
+              border-bottom: 2px solid #444;
+            }
           }
         }
-      }
 
-      .round4 {
-        left: 345px;
-        width: 260px;
 
-        .match {
-          height: 190px;
-          margin-top: 100px;
+
+        .round1 {
+          margin-left: 0;
+
+          .match {
+            height: $base-match-height;
+          }
+
+          .slot {
+            //line-height: 39px;
+          }
         }
 
-        .region1, .region3 {
-          .m1 { top: 0; }
-        }
-        .region2, .region4 {
-          .m1 { top: 600px; }
-        }
-      }
+        .round2 {
+          .match {
+            height: $base-match-height * 2;
+          }
 
-      .round5 {
-        left: 280px;
-        width: 380px;
-
-        .match {
-          height: 75px;
-          top: 425px;
+          .slot {
+            //line-height: 78px;
+          }
         }
 
-        .m1 {
-          left: 0;
-          border-left: none;
+        .round3 {
+          .match {
+            height: $base-match-height * 4;
+          }
+
+          .slot {
+            //line-height: 158px;
+          }
         }
 
-        .m2 {
-          right: 0;
-          border-right: none;
-        }
-      }
+        .round4 {
+          .match {
+            height: $base-match-height * 8;
+          }
 
-      .round6 {
-        left: 395px;
-        width: 150px;
-
-        .match {
-          height: 75px;
-          top: 415px;
-          border: none;
-          width: 150px;
-          padding: 0;
+          .slot {
+          }
         }
 
-        .slot {
-          font-size: 13px;
-          height: 25px;
-          line-height: 25px;
-          padding: 0 10px 0 6px;
+        .round5 {
+          .match {
+            height: 50%;
+          }
+
+          .slot {
+          }
         }
 
-        .slot1 {
-          border-bottom: 1px solid #666;
-          top: 22px;
-        }
+        .round6 {
+          .match {
+            height: 100%;
+          }
 
-        .slot2 {
-          top: 48px;
-          text-align: right;
+          .slot {
+          }
         }
       }
     }

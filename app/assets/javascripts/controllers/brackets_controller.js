@@ -7,7 +7,9 @@ App.createController("Brackets", {
       championshipBox: ".champion-box"
     },
     show: {
-      slots: '.slot', championshipBox: '.champion-box'
+      slots: '.slot',
+      championshipBox: '.champion-box',
+      bracketBody: ['.bracket-body', {touchend: "handleBracketBodySwipe"}]
     }
   },
 
@@ -34,6 +36,7 @@ App.createController("Brackets", {
 
     this.updateEliminatedFlags();
     this.highlightCorrectPicks();
+    this.repositionBracketBody();
   },
 
   isChampionshipGame: function(game) {
@@ -42,6 +45,29 @@ App.createController("Brackets", {
 
   findGame: function(id) {
     return _.find(this.games, { "id": id });
+  },
+
+  handleBracketBodySwipe: function() {
+    this.repositionBracketBody();
+  },
+
+  repositionBracketBody: function() {
+    var roundWidth = 150;
+    var maxHeight = 3200;
+    var minHeight = $(".wrapper").height() - $("header").height() - 50;
+
+    var currentOffset = this.$bracketBody.offset();
+    var swipePosition = currentOffset["left"];
+    var round = Math.abs(Math.round(swipePosition / roundWidth));
+    var newPosition = round * roundWidth * -1;
+
+    var newHeight = maxHeight /  Math.pow(2, round);
+    newHeight = Math.max(minHeight, newHeight);
+
+    var topPosition = currentOffset['top'];
+
+    this.$bracketBody.css('overflow', 'none');
+    this.$bracketBody.offset({left: newPosition, top: topPosition}).height(newHeight);
   },
 
   handleSlotClick: function (event) {
@@ -95,7 +121,7 @@ App.createController("Brackets", {
 
   fillTeam: function(gameId, slot, team) {
     var slotHTML = '<span class="seed">' + team.seed + '</span>' + ' ' + team.name;
-    $("#match" + gameId + ' > .slot' + slot).html(slotHTML);
+    $("#match" + gameId + ' .slot' + slot + ' .slot-content').html(slotHTML);
   },
 
   pickTeam: function(game) {
@@ -151,7 +177,7 @@ App.createController("Brackets", {
       var slotDiv = $("#match" + nextGame.id).find(".slot" + game.nextSlot);
 
       if (game.winningTeam != null && game.winningTeam.id == pickedTeam.id) {
-          slotDiv.addClass("correct-pick");
+        slotDiv.addClass("correct-pick");
       }
       else if (pickedTeam.eliminated === true) {
         slotDiv.addClass("eliminated");
@@ -164,7 +190,7 @@ App.createController("Brackets", {
 
     if (pickedTeam) {
       if (this.championshipGame.winningTeam && this.championshipGame.winningTeam.id == pickedTeam.id) {
-          this.$championshipBox.addClass("correct-pick");
+        this.$championshipBox.addClass("correct-pick");
       }
       else if (pickedTeam.eliminated) {
         this.$championshipBox.addClass("eliminated");

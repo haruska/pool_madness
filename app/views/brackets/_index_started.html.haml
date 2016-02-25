@@ -4,7 +4,7 @@
   .brackets
     - @brackets.each_with_index do |bracket, i|
       =link_to bracket do
-        .bracket{:id => "bracket-row-#{bracket.id}"}
+        .bracket-row{:id => "bracket-row-#{bracket.id}"}
           .bracket-attributes
             .position
               = "*" if @pool.display_best? && bracket.best_possible > 2

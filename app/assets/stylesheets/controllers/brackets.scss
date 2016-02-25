@@ -25,7 +25,7 @@
       }
     }
 
-    .bracket {
+    .bracket-row {
       div {
         display: inline-block;
       }
@@ -62,25 +62,25 @@
     }
   }
 
-  &.show-action {
-    .wrapper { min-width: 1024px; }
-    .eliminated {
-      text-decoration: line-through;
-      color: $middark-gray;
-    }
-
-    .correct-pick {
-      //background-color: lightyellow;
-      font-weight: 500;
-      background-color: $light-blue;
-    }
-    .round1 {
-      .eliminated {
-        text-decoration: none;
-        color: $dark-gray;
-      }
-    }
-  }
+  //&.show-action {
+  //  .wrapper { min-width: 1024px; }
+  //  .eliminated {
+  //    text-decoration: line-through;
+  //    color: $middark-gray;
+  //  }
+  //
+  //  .correct-pick {
+  //    //background-color: lightyellow;
+  //    font-weight: 500;
+  //    background-color: $light-blue;
+  //  }
+  //  .round1 {
+  //    .eliminated {
+  //      text-decoration: none;
+  //      color: $dark-gray;
+  //    }
+  //  }
+  //}
 
   &.edit-action {
     .wrapper { min-width: 1024px; }

@@ -1,12 +1,12 @@
-%h2
-  = @bracket.name
-  - unless @bracket.name.downcase.match(@bracket.user.name.downcase)
-    (#{@bracket.user.name})
-
-.bracket-actions
-  - if can?(:edit, @bracket)
-    = link_to "Edit Bracket", edit_bracket_path(@bracket)
-
+-#%h2
+-#  = @bracket.name
+-#  - unless @bracket.name.downcase.match(@bracket.user.name.downcase)
+-#    (#{@bracket.user.name})
+-#
+-#.bracket-actions
+-#  - if can?(:edit, @bracket)
+-#    = link_to "Edit Bracket", edit_bracket_path(@bracket)
+-#
 = cache_if @pool.started?, @bracket do
   = render @bracket
 
