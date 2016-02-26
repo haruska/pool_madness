@@ -79,7 +79,7 @@ FactoryGirl.define do
           "Harvard",
           "Delaware",
           "NC Central",
-          "UW Milwaukee",
+          "UW Milwauk",
           "Coast Car"
         ]
       }.each do |region, team_names|

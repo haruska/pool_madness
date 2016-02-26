@@ -2,6 +2,7 @@
   - if round_num < @tournament.num_rounds - 1
     - Team::REGIONS.each_with_index do |region, region_num|
       %div{:class => "region region#{region_num + 1}"}
-        = render partial: 'brackets/game_set', locals: {game_ids: @tournament.game_ids_for(round_num, region)}
+        .matches
+          = render partial: 'brackets/game_set', locals: {game_ids: @tournament.game_ids_for(round_num, region)}
   - else
     = render partial: 'brackets/game_set', locals: {game_ids: @tournament.game_ids_for(round_num)}

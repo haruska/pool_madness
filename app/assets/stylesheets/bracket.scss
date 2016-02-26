@@ -3,10 +3,12 @@ $match-width: 150px;
 .brackets-controller {
   &.show-action {
     .wrapper {
-      margin: 75px 0 !important;
+      position: fixed;
+      top: 75px;
+      margin: 0 !important;
       vertical-align: text-top;
       width: 100vw;
-      height: 100vh;
+      height: 80vh;
       overflow: auto;
     }
 
@@ -14,6 +16,64 @@ $match-width: 150px;
       margin: 0;
 
       width: $match-width * 8;
+
+
+      .regions { display: none; }
+
+      //.regions {
+      //  //margin-left: 30px;
+      //  //height: 100%;
+      //  display: block;
+      //  border: 1px solid green;
+      //  //vertical-align: text-top;
+      //  //width: 20px;
+      //  //transform-origin: left top 0;
+      //  width: 50px;
+      //
+      //  .region-name {
+      //    //position: relative;
+      //    //transform: rotate(90deg);
+      //    //float: left;
+      //    //display: inline-block;
+      //    //height: 20px;
+      //    transform: rotate(-90deg);
+      //    border: 1px solid red;
+      //  }
+      //}
+
+      .round-names {
+        position: absolute;
+        top: 0px;
+        background-color: #FFF;
+        z-index: 100;
+        //@include transition(all 0.01s ease-in);
+
+        .round-name {
+          margin: 0;
+          padding: 0;
+          margin-left: -5px;
+
+          &:first-of-type {
+            margin-left: 0;
+          }
+
+          display: inline-block;
+          width: $match-width;
+          text-align: center;
+          border: {
+            top: 2px solid #444;
+            right: 2px solid #444;
+            bottom: 2px solid #444;
+          }
+        }
+      }
+
+      .rounds {
+        margin-top: 20px;
+        height: 100%;
+        display: inline-block;
+        vertical-align: text-top;
+      }
 
       .bracket-body {
         height: 3200px;
@@ -31,6 +91,16 @@ $match-width: 150px;
               content: "" !important;
             }
           }
+
+
+          .matches {
+            display: inline-block;
+          }
+        }
+
+
+        .matches {
+          height: 100%;
         }
 
         .match {

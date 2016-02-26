@@ -1,9 +1,16 @@
 - num_rounds = @tournament.num_rounds
 .bracket
   %div{class: "bracket-body #{num_rounds == 4 ? 'sweet-16' : 'field-64'}"}
-    - num_rounds.times do |round_num|
-      = render partial: "brackets/round", locals: { round_num: round_num + 1 }
-    = render partial: "brackets/championship"
-    - if @bracket
-      .tie-breaker
-        Tie Breaker: #{@bracket.tie_breaker || "None"}
+    .regions
+      - Team::REGIONS.each do |region|
+        .region-name= region
+    .round-names
+      - num_rounds.times do |round_num|
+        .round-name Round #{round_num}
+    .rounds
+      - num_rounds.times do |round_num|
+        = render partial: "brackets/round", locals: { round_num: round_num + 1 }
+      = render partial: "brackets/championship"
+    -#- if @bracket
+    -#  .tie-breaker
+    -#    Tie Breaker: #{@bracket.tie_breaker || "None"}

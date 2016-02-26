@@ -9,7 +9,9 @@ App.createController("Brackets", {
     show: {
       slots: '.slot',
       championshipBox: '.champion-box',
-      bracketBody: ['.bracket-body', {touchend: "handleBracketBodySwipe"}]
+      bracketBody: ['.bracket-body', {}],
+      roundNames: '.round-names',
+      wrapper: ['.wrapper', {scroll: "keepHeader", touchend: "handleBracketBodySwipe"}]
     }
   },
 
@@ -49,6 +51,11 @@ App.createController("Brackets", {
 
   handleBracketBodySwipe: function() {
     this.repositionBracketBody();
+  },
+
+  keepHeader: function(e) {
+    var curOffset = this.$roundNames.offset();
+    this.$roundNames.offset({top: 75, left: curOffset["left"]});
   },
 
   repositionBracketBody: function() {
