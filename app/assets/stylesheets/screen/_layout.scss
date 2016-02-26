@@ -16,10 +16,13 @@ header {
   background-image: image-url('wood_pattern.png');
   box-shadow: 0px 2px 2px #CCC;
 
-  position: relative;
-  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 50px;
   margin: 0;
+  z-index: 100;
 
   .menu, .title-wrapper {
     background-color: rgba(249, 248, 242, 0.15);
@@ -28,6 +31,7 @@ header {
     height: 100%;
     top: 0;
     left: 0;
+    z-index: 110;
   }
 
   .title {
