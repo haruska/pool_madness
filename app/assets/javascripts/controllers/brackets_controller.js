@@ -54,7 +54,7 @@ App.createController("Brackets", {
   repositionBracketBody: function() {
     var roundWidth = 150;
     var maxHeight = 3200;
-    var minHeight = $(".wrapper").height() - $("header").height() - 50;
+    var minHeight = $(".wrapper").height() - $("header").height() - 250;
 
     var currentOffset = this.$bracketBody.offset();
     var swipePosition = currentOffset["left"];
@@ -65,8 +65,6 @@ App.createController("Brackets", {
     newHeight = Math.max(minHeight, newHeight);
 
     var topPosition = currentOffset['top'];
-
-    this.$bracketBody.css('overflow', 'none');
     this.$bracketBody.offset({left: newPosition, top: topPosition}).height(newHeight);
   },
 

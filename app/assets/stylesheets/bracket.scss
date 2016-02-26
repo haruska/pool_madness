@@ -13,7 +13,7 @@ $match-width: 150px;
     .bracket {
       margin: 0;
 
-      width: $match-width * 6;
+      width: $match-width * 8;
 
       .bracket-body {
         height: 3200px;
@@ -69,10 +69,6 @@ $match-width: 150px;
 
           }
 
-          .slot1 {
-
-          }
-
           .slot2 {
             border-top: 2px dotted #CCCCCC;
           }
@@ -87,36 +83,48 @@ $match-width: 150px;
         }
 
         .championship {
-          display: none;
-          position: absolute;
-          left: 395px;
-          top: 535px;
-          width: 150px;
-          height: 75px;
+          display: inline-block;
+          width: $match-width * 1.5;
+          height: 100%;
           padding: 0;
-          border: none;
+          margin: 0;
+          margin-left: -5px;
+          vertical-align: text-top;
+          position: relative;
 
-          div {
-            height: 25px;
-            line-height: 25px;
-            text-align: center;
-
-            &.champion-box {
-              top: 22px;
-              font-size: 13px;
-              font-weight: bolder;
-              padding: 0 10px 0 6px;
-              border: 2px solid #666;
-            }
-
-            &.champion-label {
-              top: 40px;
-              font-size: 16px;
-              font-weight: bold;
-              padding-top: 5px;
-            }
+          &:after {
+            position: absolute;
+            display: block;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-top: 1px;
+            content: "\2022\2022\003e\00a0";
+            font-size: 11px;
+            color: #CCC;
           }
+        }
 
+        .championship-content {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .championship-wrapper {
+          display: inline-block;
+          margin-left: 20px;
+          padding: 5px;
+        }
+
+        .champion-label {
+          width: $match-width;
+          text-align: center;
+        }
+
+        .champion-box {
+          width: $match-width;
+          text-align: center;
+          border-top: 2px solid #444;
         }
 
         .final_pick {
@@ -132,18 +140,17 @@ $match-width: 150px;
 
         .tie-breaker {
           display: none;
-          position: absolute;
-          left: 418px;
-          top: 600px;
         }
-
-        $base-match-height: 12.5%;
 
         .round {
           display: inline-block;
           vertical-align: text-top;
           height: 100%;
           margin-left: -5px;
+
+          &.round1 {
+            margin-left: 0;
+          }
 
           .region {
             height: 25%;
@@ -162,66 +169,14 @@ $match-width: 150px;
           }
         }
 
+        $base-match-height: 12.5%;
 
-
-        .round1 {
-          margin-left: 0;
-
-          .match {
-            height: $base-match-height;
-          }
-
-          .slot {
-            //line-height: 39px;
-          }
-        }
-
-        .round2 {
-          .match {
-            height: $base-match-height * 2;
-          }
-
-          .slot {
-            //line-height: 78px;
-          }
-        }
-
-        .round3 {
-          .match {
-            height: $base-match-height * 4;
-          }
-
-          .slot {
-            //line-height: 158px;
-          }
-        }
-
-        .round4 {
-          .match {
-            height: $base-match-height * 8;
-          }
-
-          .slot {
-          }
-        }
-
-        .round5 {
-          .match {
-            height: 50%;
-          }
-
-          .slot {
-          }
-        }
-
-        .round6 {
-          .match {
-            height: 100%;
-          }
-
-          .slot {
-          }
-        }
+        .round1 .match { height: $base-match-height * 1; }
+        .round2 .match { height: $base-match-height * 2; }
+        .round3 .match { height: $base-match-height * 4; }
+        .round4 .match { height: $base-match-height * 8; }
+        .round5 .match { height: $base-match-height * 4; }
+        .round6 .match { height: $base-match-height * 8; }
       }
     }
   }
