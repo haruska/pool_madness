@@ -4,11 +4,13 @@ $match-width: 150px;
   &.show-action {
     .wrapper {
       position: fixed;
+      
       top: 75px;
+      height: calc(100vh - 75px);
+
       margin: 0 !important;
       vertical-align: text-top;
       width: 100vw;
-      height: 80vh;
       overflow: auto;
     }
 
