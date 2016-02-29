@@ -1,5 +1,12 @@
 .brackets-controller {
 
+  //admin
+  &.index-action {
+    .tables {
+      min-width: 600px;
+    }
+  }
+
   &.index-action {
     .wrapper {
       margin: 0 !important;
