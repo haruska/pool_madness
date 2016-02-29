@@ -1,31 +1,38 @@
 = cache cache_key_for_bracket_points(@pool) do
-  %h2 Brackets (#{@brackets.size} total)
+  - content_for :title, "Brackets (#{@brackets.size} total)"
 
-  %table.tables
-    %thead
-      %tr
-        %th
-        %th Name
-        %th Score
-        %th Possible
-        - if @pool.display_best?
-          %th Best
-        %th Final Four
-        %th Final Four
-        %th Second
-        %th Winner
-    %tbody
-      - @brackets.each_with_index do |bracket, i|
-        %tr{:id => "bracket-row-#{bracket.id}"}
-          %td
-            = "*" if @pool.display_best? && bracket.best_possible > 2
-            = "#{i+1}."
-          %td
-            = link_to bracket.name, bracket
-          %td= bracket.points
-          %td= bracket.possible_points
+  .brackets
+    .bracket-row.bracket-list-header
+      .bracket-attributes
+        .position #
+        .bracket-details
+          .name Name
+          .points
+            .total Tot
+            .possible Pos
           - if @pool.display_best?
-            %td= bracket.best_possible > 2 ? '-' : bracket.best_possible + 1
-          = cache cache_key_for_bracket_final_four(bracket) do
-            - bracket.sorted_four.each do |team|
-              %td= team.name
+            .best-possible Best
+          .final-four-teams
+            .final-four-team.final-four-team0 Final
+            .final-four-team.final-four-team1 Four
+            .final-four-team.final-four-team2 Second
+            .final-four-team.final-four-team3 Champion
+    - @brackets.each_with_index do |bracket, i|
+      =link_to bracket do
+        .bracket-row{:id => "bracket-row-#{bracket.id}"}
+          .bracket-attributes
+            .position
+              = "*" if @pool.display_best? && bracket.best_possible > 2
+              = "#{i+1}."
+            .bracket-details
+              .name= bracket.name
+              .points
+                .total= bracket.points
+                .possible= bracket.possible_points
+              - if @pool.display_best?
+                .best-possible= bracket.best_possible > 2 ? '-' : bracket.best_possible + 1
+              .final-four-teams
+                = cache cache_key_for_bracket_final_four(bracket) do
+                  - bracket.sorted_four.each_with_index do |team, i|
+                    %div{class: "final-four-team final-four-team#{i}"}
+                      = team.name

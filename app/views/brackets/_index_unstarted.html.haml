@@ -1,32 +1,36 @@
-%h2 My Brackets
-
-%h3 * All brackets in pool will be displayed after tournament start
+- content_for :title, "My Brackets"
 
 - if @brackets.present?
-  %table.table-minimal
-    %thead
-      %tr
-        %th Name
-        %th Final Four
-        %th Final Four
-        %th Second
-        %th Winner
-        %th Tie
-        %th Status
-    %tbody
-      - @brackets.each do |bracket|
-        %tr
-          %td
-            - if bracket.status == :ok
-              = link_to bracket.name, bracket
-            - else
-              = link_to bracket.name, edit_bracket_path(bracket)
-          - bracket.sorted_four.each do |team|
-            %td= team.name
-          - (4 - bracket.sorted_four.size).times do
-            %td
-          %td= bracket.tie_breaker
-          %td= status_to_label(bracket.status)
+
+  .brackets
+    .bracket-row.bracket-list-header
+      .bracket-attributes
+        .position &nbsp;
+        .bracket-details
+          .name Name
+          .final-four-teams
+            .final-four-team.final-four-team0 Final
+            .final-four-team.final-four-team1 Four
+            .final-four-team.final-four-team2 Second
+            .final-four-team.final-four-team3 Champion
+          .tie-breaker Tie
+          .status Status
+
+    - @brackets.each_with_index do |bracket, i|
+      =link_to bracket do
+        .bracket-row{:id => "bracket-row-#{bracket.id}"}
+          .bracket-attributes
+            .position &nbsp;
+            .bracket-details
+              .name= bracket.name
+              .final-four-teams
+                - bracket.sorted_four.each_with_index do |team, i|
+                  %div{class: "final-four-team final-four-team#{i}"}
+                    = team.name
+                - (4 - bracket.sorted_four.size).times do |i|
+                  %div{class: "final-four-team final-four-team#{i + bracket.sorted_four.size}"}
+              .tie-breaker= bracket.tie_breaker
+              .status= status_to_label(bracket.status)
 
 .actions
   - if can? :create, @pool.brackets.build(user_id: current_user.id)

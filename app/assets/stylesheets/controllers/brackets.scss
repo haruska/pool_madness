@@ -1,23 +1,235 @@
 .brackets-controller {
 
   &.index-action {
-    table {
-      font-size: 0.9em;
-      table-layout: auto;
+    .wrapper {
+      margin: 0 !important;
+      min-width: 220px;
     }
 
-    h3 {
-      font-size: small;
-      padding-bottom: 25px;
-
+    .brackets {
+      a {
+        display: block;
+        color: $base-font-color;
+        border-top: 1px solid $medium-gray;
+        &:last-child {
+          border-bottom: 1px solid $medium-gray;
+        }
+      }
     }
 
-    .actions {
-      padding-top: 25px;
-
-      .payment {
+    .bracket-attributes {
+      .position {
         display: inline-block;
-        float: right;
+        margin: 0 $gutter/2;
+        vertical-align: top;
+
+
+        @include media($large-screen) {
+          width: 25px;
+          vertical-align: inherit;
+        }
+
+      }
+
+      .bracket-details {
+        display: inline-block;
+        width: calc(100% - 55px);
+      }
+    }
+
+    .bracket-list-header {
+      display: none;
+
+      @include media($large-screen) {
+        display: block;
+
+        .name {
+          font-weight: inherit !important;
+        }
+
+        .final-four-team0 {
+          border: none !important;
+          text-align: right !important;
+        }
+
+        .final-four-team1 {
+          text-align: left !important;
+        }
+      }
+    }
+
+    .bracket-row {
+      margin: ($gutter/2) 0;
+
+      .name {
+        font-weight: bold;
+      }
+
+      .points {
+        display: block;
+        font-size: 0.9em;
+
+        div {
+          display: inline-block;
+        }
+
+        .total::after {
+          content: " points /";
+        }
+
+        .possible::after {
+          content: " possible";
+        }
+      }
+
+      .final-four-teams {
+        display: block;
+
+        .final-four-team {
+          display: inline-block;
+          font-size: 0.9em;
+          white-space: nowrap;
+
+          &:empty {
+            display: none;
+          }
+
+          &:after {
+            content: ", ";
+            margin-left: -4px;
+          }
+
+          &:last-of-type {
+            &:after {
+              display: none;
+            }
+          }
+        }
+      }
+
+
+      .bracket-details {
+        position: relative;
+      }
+
+      .tie-breaker {
+        font-size: 0.9em;
+        &:before {
+          content: "Tie Breaker: ";
+        }
+
+        &:empty {
+          display: none;
+        }
+      }
+
+      .status {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+      }
+
+      @include media($large-screen) {
+        .bracket-details {
+          position: inherit;
+        }
+
+        .tie-breaker {
+          font-size: inherit;
+          &:before {
+            display: none;
+          }
+        }
+
+        .status {
+          position: inherit;
+        }
+
+        .name {
+          width: 200px;
+        }
+
+        .points {
+          font-size: inherit;
+          text-align: center;
+          .total {
+            width: 40px;
+
+            &::after {
+              display: none;
+            }
+          }
+
+          .possible {
+            width: 40px;
+
+            &::after {
+              display: none;
+            }
+          }
+        }
+
+        .bracket-details {
+          display: inline-block;
+
+          div {
+            display: inline-block;
+          }
+
+          .name, .total, .possible, .final-four-team, .tie-breaker {
+            border-right: 1px solid $light-gray;
+          }
+        }
+
+        .position {
+          display: inline;
+        }
+
+        .final-four-teams {
+          display: inline-block;
+
+          .final-four-team {
+            font-size: inherit;
+            width: 120px;
+            text-align: center;
+
+            &:after {
+              display: inherit;
+              content: "\00a0";
+            }
+
+            &:before {
+              content: "\00a0";
+            }
+
+            &:empty {
+              display: inherit;
+            }
+
+          }
+        }
+
+        .tie-breaker {
+          width: 40px;
+          text-align: center;
+
+          &:after {
+            display: inherit;
+            content: "\00a0";
+          }
+
+          &:before {
+            content: "\00a0";
+          }
+
+          &:empty {
+            display: inherit;
+          }
+        }
+
+        .status {
+          margin-left: 5px;
+        }
       }
     }
 
@@ -25,6 +237,33 @@
       background-color: $light-blue;
     }
   }
+
+  //
+  //&.index-action {
+  //  table {
+  //    font-size: 0.9em;
+  //    table-layout: auto;
+  //  }
+  //
+  //  h3 {
+  //    font-size: small;
+  //    padding-bottom: 25px;
+  //
+  //  }
+  //
+  //  .actions {
+  //    padding-top: 25px;
+  //
+  //    .payment {
+  //      display: inline-block;
+  //      float: right;
+  //    }
+  //  }
+  //
+  //  .current-user-bracket {
+  //    background-color: $light-blue;
+  //  }
+  //}
 
   &.show-action {
     .wrapper { min-width: 1024px; }

@@ -28,6 +28,7 @@ class BracketsController < ApplicationController
 
   def create
     @bracket.pool = @pool
+    @bracket.user = current_user
 
     if @bracket.save
       redirect_to edit_bracket_path(@bracket)
