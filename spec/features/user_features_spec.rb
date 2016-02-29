@@ -47,7 +47,7 @@ RSpec.describe "User creation, authentication, deletion", type: :feature, js: tr
     it "allows you to login with a email address and password" do
       fill_in "user[email]", with: subject.email
       fill_in "user[password]", with: password
-      click_button "Log in"
+      click_button "Login"
       expect(page).to have_content("Signed in successfully")
     end
   end
