@@ -1,6 +1,9 @@
 %header
   .title-wrapper
     .title
-      = link_to "Pool Madness", root_path
+      - if content_for?(:title)
+        = yield :title
+      - else
+        Pool Madness
   .js-menu-trigger.sliding-panel-button.menu
     %i.fa.fa-bars

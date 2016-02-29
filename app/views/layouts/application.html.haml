@@ -15,9 +15,6 @@
     = render "layouts/menu"
     = render "layouts/messages"
     %section#content.container
-      .page-title
-        - if content_for?(:title)
-          %h2= yield :title
       .wrapper
         = yield
     = render "layouts/footer"

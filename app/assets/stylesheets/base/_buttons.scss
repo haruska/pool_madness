@@ -22,6 +22,7 @@ input[type="submit"] {
 
   //mobile
   width: 100%;
+  max-width: 350px;
   text-align: center;
 
 
@@ -50,4 +51,6 @@ input[type="submit"] {
 
 .actions, .other-actions, .form-actions {
   padding: $gutter 0;
+  margin: 0 auto;
+  text-align: center;
 }

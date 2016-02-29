@@ -7,8 +7,11 @@ body {
   @include clearfix;
   @include outer-container;
 
+  margin-top: 50px;
+
   .wrapper {
-    margin: 25px;
+    padding-top: 50px;
+    margin: 0 25px;
   }
 }
 
@@ -27,22 +30,23 @@ header {
   .menu, .title-wrapper {
     background-color: rgba(249, 248, 242, 0.15);
     position: absolute;
-    width: 100%;
     height: 100%;
     top: 0;
     left: 0;
     z-index: 110;
   }
 
+  .title-wrapper {
+    width: 100%;
+  }
+
   .title {
-    a {
-      font-family: 'Dosis', sans-serif;
-      font-weight: 600;
-      font-size: 25px;
-      color: #FF530D;
-      text-shadow: 1px 1px 2px rgba(138, 119, 0, 0.6);
-      filter: dropshadow(color=rgba(138, 119, 0, 0.6), offx=1, offy=1);
-    }
+    font-family: 'Dosis', sans-serif;
+    font-weight: 600;
+    font-size: 25px;
+    color: #FF530D;
+    text-shadow: 1px 1px 2px rgba(138, 119, 0, 0.6);
+    filter: dropshadow(color=rgba(138, 119, 0, 0.6), offx=1, offy=1);
 
     z-index: 120;
     text-align: center;
@@ -52,23 +56,9 @@ header {
   }
 }
 
-.page-title {
-  display: block;
-  width: 100%;
-  //padding-bottom: $gutter / 2;
-  //border-bottom: 1px solid $medium-gray;
-
-  h2 {
-    padding: 0;
-    display: block;
-    margin: $gutter 25px;
-  }
-}
-
 footer {
   margin-bottom: 25px;
 }
-
 
 .sliding-panel-content {
   $action-color: #477DCA !default;
