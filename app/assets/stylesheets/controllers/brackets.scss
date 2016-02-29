@@ -273,7 +273,10 @@
   //}
 
   &.show-action {
-    .wrapper { min-width: 1024px; }
+    .wrapper {
+      margin: 0 !important;
+    }
+
     .eliminated {
       text-decoration: line-through;
       color: $middark-gray;
@@ -293,7 +296,10 @@
   }
 
   &.edit-action {
-    .wrapper { min-width: 1024px; }
+    .wrapper {
+      margin: 0 !important;
+    }
+
     .slot {
       cursor: pointer;
       &:hover { background-color: #D6F5FF; }
@@ -304,9 +310,24 @@
     .tie-breaker { display: none; }
     .champion-box .seed { display: none; }
 
-    .destroy {
-      display: inline-block;
-      float: right;
+    .actions {
+      margin: {
+        top: -50px;
+        bottom: 20px;
+        left: auto;
+        right: auto;
+      }
+
+      .button, input[type='submit'] {
+        margin-top: $gutter;
+        width: 48% !important;
+      }
+
+      width: 300px;
+
+      label {
+        text-align: left;
+      }
     }
   }
 }

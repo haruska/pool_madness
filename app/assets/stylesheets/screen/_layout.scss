@@ -5,9 +5,14 @@ body {
 
 #content {
   @include clearfix;
-  @include outer-container;
 
-  margin-top: 50px;
+  max-width: 960px;
+
+  margin: {
+    top: 50px;
+    left: auto;
+    right: auto;
+  }
 
   .wrapper {
     padding-top: 50px;
