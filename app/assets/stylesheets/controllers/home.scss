@@ -5,6 +5,30 @@
 /* Sidenav for Docs
 -------------------------------------------------- */
 
+.home-controller {
+  &.index-action {
+    header {
+      box-shadow: none;
+      background-color: inherit;
+
+      .menu {
+        background-color: inherit;
+      }
+      .title-wrapper {
+        display: none;
+      }
+    }
+
+    .page-title {
+      display: none;
+    }
+
+    .flash-notice {
+      display: none;
+    }
+  }
+}
+
 .bs-docs-sidenav {
   width: 228px;
   margin: 30px 0 0;

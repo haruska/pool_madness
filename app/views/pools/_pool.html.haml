@@ -1,18 +1,11 @@
 .pool
-  %ul
-    %li.name
-      = link_to "#{pool.name} Pool", pool
-    %li.tournament-name
-      = pool.tournament.name
-    %li.admins
-      Admins:
-      = pool.admins.map(&:name).join(", ")
-      - if can?(:manage, pool)
-        (#{ link_to "Admin", admin_pool_brackets_path(pool) })
-    %li.brackets
-      #{pool.brackets.count} Brackets
-  - unless pool.started?
-    .invite-code
-      Invite Code:
-      %span.code= pool.invite_code
+  = link_to pool do
+    %ul
+      %li.name #{pool.name} Pool
+      %li.tournament-name= pool.tournament.name
+      %li.brackets #{pool.brackets.count} Brackets
+      - unless pool.started?
+        %li.invite-code
+          Invite Code:
+          %span.code= pool.invite_code
 

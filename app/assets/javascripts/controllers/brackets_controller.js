@@ -151,7 +151,7 @@ App.createController("Brackets", {
       var slotDiv = $("#match" + nextGame.id).find(".slot" + game.nextSlot);
 
       if (game.winningTeam != null && game.winningTeam.id == pickedTeam.id) {
-          slotDiv.addClass("correct-pick");
+        slotDiv.addClass("correct-pick");
       }
       else if (pickedTeam.eliminated === true) {
         slotDiv.addClass("eliminated");
@@ -164,7 +164,7 @@ App.createController("Brackets", {
 
     if (pickedTeam) {
       if (this.championshipGame.winningTeam && this.championshipGame.winningTeam.id == pickedTeam.id) {
-          this.$championshipBox.addClass("correct-pick");
+        this.$championshipBox.addClass("correct-pick");
       }
       else if (pickedTeam.eliminated) {
         this.$championshipBox.addClass("eliminated");

@@ -1,0 +1,10 @@
+- content_for(:title, "Login")
+
+= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+  = devise_error_messages!
+  .form-inputs
+    = f.email_field :email, required: true, placeholder: "Email"
+    = f.password_field :password, required: true, placeholder: "Password"
+  .form-actions
+    = f.submit "Login"
+= render "devise/shared/links"

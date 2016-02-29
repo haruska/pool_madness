@@ -20,6 +20,11 @@ input[type="submit"] {
   vertical-align: middle;
   white-space: nowrap;
 
+  //mobile
+  width: 100%;
+  text-align: center;
+
+
   &:hover,
   &:focus {
     background-color: darken($action-color, 15%);
@@ -34,4 +39,15 @@ input[type="submit"] {
   &.danger {
     background-color: $red;
   }
+
+  &.minor {
+    background-color: #FFF;
+    border: 1px $action-color solid;
+    color: $action-color;
+    margin-bottom: $gutter / 2;
+  }
+}
+
+.actions, .other-actions, .form-actions {
+  padding: $gutter 0;
 }

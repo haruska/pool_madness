@@ -1,7 +1,9 @@
+- content_for(:title, "Pools")
+
 - if @pools.empty?
   %p You are not a member of any tournament pools.
 - else
-  %ul.pools= render @pools, partial: "pools/pool_li"
+  .pools= render @pools
 
 .invite
-  = link_to "Enter Invite Code", invite_code_path
+  = link_to "Enter Invite Code", invite_code_path, class: :button

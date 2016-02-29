@@ -1,41 +1,6 @@
-%header.navigation{:role => "banner"}
-  .navigation-wrapper
-    = link_to image_tag("basketball_icon.png"), root_path, class: :logo
-    - if user_signed_in?
-      %nav{:role => "navigation"}
-        %ul.navigation-menu.show
-          - if @pool.present?
-            %li.nav-link= link_to "Brackets", pool_brackets_path(@pool)
-            - if @pool.started?
-              %li.nav-link
-                = link_to "Game Results", pool_games_path(@pool)
-            - else
-              %li.nav-link
-                = link_to "Types of Payment", payments_pool_path(@pool)
-            %li.nav-link
-              = link_to "Rules and Scoring", rules_pool_path(@pool)
-            - if can? :manage, @pool
-              %li.nav-link
-                = link_to "Pool Admin", admin_pool_brackets_path(@pool)
-          - else
-            %li.nav-link= link_to "Pool Madness", root_path
-          - if @tournament.present? && can?(:manage, @tournament)
-            %li.nav-link
-              = link_to "Update Scores", update_bracket_scores_admin_tournament_path(@tournament), method: 'patch'
-      .navigation-tools
-        %ul.navigation-menu
-          %li.nav-link.more
-            = link_to current_user.email, "javascript:void(0)"
-            %ul.submenu
-              -#%li= link_to 'Billing/Payments', user_stripes_path(current_user)
-              %li= link_to 'Edit account', edit_user_registration_path
-              %li= link_to 'Logout', destroy_user_session_path, method: 'delete'
-    - else
-      %nav{:role => "navigation"}
-        %ul.navigation-menu.show
-          %li.nav-link= link_to "Pool Madness", root_path
-      .navigation-tools
-        %ul.navigation-menu
-          %li.nav-link= link_to "Login", new_user_session_path
-        = link_to "Sign Up", new_user_registration_path, class: "sign-up"
-
+%header
+  .title-wrapper
+    .title
+      = link_to "Pool Madness", root_path
+  .js-menu-trigger.sliding-panel-button.menu
+    %i.fa.fa-bars

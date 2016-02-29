@@ -1,0 +1,20 @@
+.sessions-controller,
+.registrations-controller,
+.passwords-controller
+{
+  #error_explanation {
+    color: red;
+
+    h2 {
+      display: none;
+    }
+
+    ul {
+      padding-bottom: $gutter;
+    }
+
+    li {
+      padding-bottom: $gutter / 2;
+    }
+  }
+}

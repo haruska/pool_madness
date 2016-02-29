@@ -1,11 +1,12 @@
-%h2 Sign up
-= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-  = f.error_notification
+- content_for(:title, "Sign Up")
+
+= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  = devise_error_messages!
   .form-inputs
-    = f.input :name, label: "Full Name", required: true, autofocus:true
-    = f.input :email, required: true
-    = f.input :password, required: true
-    = f.input :password_confirmation, required: true
+    = f.text_field :name, required: true, placeholder: "Full Name"
+    = f.email_field :email, required: true, placeholder: "Email"
+    = f.password_field :password, required: true, placeholder: "Password", pattern: (".{#{@minimum_password_length},}" if @minimum_password_length)
+    = f.password_field :password_confirmation, required: true, placeholder: "Password Confirmation", pattern: (".{#{@minimum_password_length},}" if @minimum_password_length)
   .form-actions
-    = f.button :submit, "Sign up"
+    = f.submit "Sign Up"
 = render "devise/shared/links"

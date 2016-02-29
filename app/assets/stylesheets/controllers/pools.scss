@@ -1,31 +1,64 @@
 .pools-controller {
   &.index-action {
+    .page-title {
+      display: none
+    }
+
+    .wrapper {
+      margin: 0 !important;
+    }
+
+    .pools {
+      a {
+        color: $dark-gray;
+        display: block;
+      }
+      margin: $gutter 0;
+    }
+
     .pool {
-      @include clearfix;
-      padding: 20px;
-      background-color: $light-gray;
       width: 100%;
-      margin-bottom: 25px;
+      padding: ($gutter/2) 0;
+      border-top: 1px solid $medium-gray;
+
+
+      &:last-child {
+        border-bottom: 1px solid $medium-gray;
+      }
 
       ul {
-        @include span-columns(6 of 8);
+        margin: 0 $gutter;
       }
 
       .name {
-        font-size: larger;
         font-weight: bold;
+        font-size: large;
+      }
+
+      .tournament-name {
+        font-size: small;
+      }
+
+      .admins, .brackets {
+        display: none;
       }
 
       .invite-code {
-        @include span-columns(2 of 8);
-        @include omega;
-
-        padding-top: 30px;
-
+        font-size: small;
+        
         .code {
           font-weight: bold;
         }
       }
+    }
+  }
+
+  .invite {
+    display: block;
+    text-align: center;
+
+    a {
+      display: inline-block;
     }
   }
 

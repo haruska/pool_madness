@@ -12,8 +12,6 @@
 @import "controllers/picks";
 @import "controllers/woody-landing";
 @import "controllers/pools";
+@import "controllers/sessions";
+@import "controllers/users";
 @import "print";
-
-body {
-  min-width: 800px;
-}

@@ -1,0 +1,9 @@
+- content_for(:title, "Forgot your password?")
+
+= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+  = devise_error_messages!
+  .form-inputs
+    = f.email_field :email, required: true, placeholder: "Email Address"
+  .form-actions
+    = f.submit "Send Reset Password Link"
+= render "devise/shared/links"
