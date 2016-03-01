@@ -1,9 +1,13 @@
 class Game < BinaryDecisionTree::Node
-  alias_method :round, :current_depth
   alias_method :game_one, :left
   alias_method :game_two, :right
   alias_method :next_game, :parent
   alias_method :id, :slot
+
+  def round
+    rounds = (1..tournament_tree.depth).to_a.reverse
+    rounds[current_depth - 1]
+  end
 
   def championship?
     parent_position == 0

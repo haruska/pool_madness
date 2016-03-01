@@ -6,7 +6,7 @@ RSpec.describe Game, type: :model do
   let(:tournament_tree) { tournament.tree }
 
   describe "aliased methods" do
-    let(:slot) { rand(tournament_tree.size - 1) + 1 }
+    let(:slot) { rand(tournament_tree.size / 2 - 1) + 1 }
     subject { tournament_tree.at(slot) }
 
     it "is a BDT node" do
@@ -14,14 +14,19 @@ RSpec.describe Game, type: :model do
       expect(subject).to be_a(BinaryDecisionTree::Node)
     end
 
-    it "knows it's current round (depth)" do
-      expect(subject.round).to eq(subject.current_depth)
-    end
-
-    xit "has a game_one, game_two, and next_game" do
+    it "has a game_one, game_two, and next_game" do
       expect(subject.game_one).to be_present
       expect(subject.game_two).to be_present
       expect(subject.next_game).to be_present
+    end
+  end
+
+  describe "#round" do
+    it "is the current round of the game" do
+      (1..6).to_a.each do |round_num|
+        game = tournament_tree.round_for(round_num).sample
+        expect(game.round).to eq(round_num)
+      end
     end
   end
 
@@ -170,29 +175,76 @@ RSpec.describe Game, type: :model do
   end
 
   describe "#points" do
+    let(:pool) { create(:pool, tournament: tournament) }
+    let(:bracket) { create(:bracket, :completed, pool: pool) }
+    let(:tournament_game) { tournament_tree.at(subject.slot)  }
+    subject { bracket.tree.round_for(1).sample }
+
     context "with a possible_game" do
+      let(:possible_game) { Game.new(tournament_tree, subject.slot) }
+      let(:result) { subject.points(possible_game)}
+      let(:expected) { BracketPoint::POINTS_PER_ROUND[1] + subject.team.seed }
+
       context "and the winner was picked" do
-        it "is the points per round + the team seed"
+        before { possible_game.decision = subject.decision }
+
+        it "is the points per round + the team seed" do
+          expect(result).to eq(expected)
+        end
       end
 
       context "and the winner was not picked" do
-        it "is zero"
+        before { possible_game.decision = subject.decision == 1 ? 0 : 1 }
+
+        it "is zero" do
+          expect(result).to be_zero
+        end
       end
     end
 
     context "without a possible_game" do
+      let(:result) { subject.points }
+      let(:expected) { BracketPoint::POINTS_PER_ROUND[1] + subject.team.seed }
+
       context "and the game has a winner" do
+        before do
+          expect(tournament_game.team).to be_present
+        end
+
         context "and the winner was picked" do
-          it "is the points per round + the team seed"
+          before do
+            subject.decision = tournament_game.decision
+            expect(tournament_game.team).to eq(subject.team)
+          end
+
+          it "is the points per round + the team seed" do
+            expect(result).to eq(expected)
+          end
         end
 
         context "and the winner was not picked" do
-          it "is zero"
+          before do
+            subject.decision = tournament_game.decision == 1 ? 0 : 1
+            expect(tournament_game.team).to_not eq(subject.team)
+          end
+
+          it "is zero" do
+            expect(result).to be_zero
+          end
         end
       end
 
       context "and there is no winner" do
-        it "is zero"
+        before do
+          tournament_game.decision = nil
+
+          expect(subject.team).to be_present
+          expect(tournament_game.team).to_not be_present
+        end
+
+        it "is zero" do
+          expect(subject.points).to be_zero
+        end
       end
     end
   end
