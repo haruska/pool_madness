@@ -16,32 +16,22 @@ App.createController("Brackets", {
   },
 
   edit: function(bracketId, games) {
-    this.bracketId = bracketId;
-    this.games = games;
-    this.championshipGame = _.find(this.games, {"nextGameId": null});
-
-    this.fillInTeams();
-    this.fillInPicks();
+    this.mixinSharedBracket();
+    this.populateBracket(bracketId, games);
   },
 
   show: function(bracketId, games) {
-    this.bracketId = bracketId;
-    this.games = games;
-    this.championshipGame = _.find(this.games, {"nextGameId": null});
-
-    this.fillInTeams();
-    this.fillInPicks();
+    this.mixinSharedBracket();
+    this.populateBracket(bracketId, games);
 
     this.updateEliminatedFlags();
     this.highlightCorrectPicks();
   },
 
-  isChampionshipGame: function(game) {
-    return this.championshipGame.id === game.id;
-  },
-
-  findGame: function(id) {
-    return _.find(this.games, { "id": id });
+  mixinSharedBracket: function() {
+    _.forEach(App.SharedBracket, function(func, name) {
+      this[name] = func;
+    }.bind(this));
   },
 
   handleSlotClick: function (event) {
@@ -60,75 +50,6 @@ App.createController("Brackets", {
       data: { choice: currentGame.choice }
     });
 
-  },
-
-  fillInTeams: function() {
-    _.each(this.games, this.fillInTeam);
-  },
-
-  fillInTeam: function(game) {
-    if (game.teamOne && game.teamTwo) {
-      this.fillTeam(game.id, 1, game.teamOne);
-      this.fillTeam(game.id, 2, game.teamTwo);
-    }
-  },
-
-  fillInPicks: function() {
-    _.each(this.games, this.fillInPick);
-  },
-
-  fillInPick: function(game) {
-    var team = this.pickTeam(game);
-    if (team != null) {
-      if (this.isChampionshipGame(game)) {
-        this.fillChampionship(team);
-      }
-      else {
-        this.fillTeam(game.nextGameId, game.nextSlot, team);
-      }
-    }
-  },
-
-  fillChampionship: function(team) {
-    this.$championshipBox.html(team.name);
-  },
-
-  fillTeam: function(gameId, slot, team) {
-    var slotHTML = '<span class="seed">' + team.seed + '</span>' + ' ' + team.name;
-    $("#match" + gameId + ' > .slot' + slot).html(slotHTML);
-  },
-
-  pickTeam: function(game) {
-    if(game.choice == 0) {
-      if(game.teamOne == null) {
-        return this.pickTeam(this.findGame(game.gameOneId));
-      }
-      else {
-        return game.teamOne;
-      }
-    } else if(game.choice == 1) {
-      if (game.teamTwo == null) {
-        return this.pickTeam(this.findGame(game.gameTwoId));
-      }
-      else {
-        return game.teamTwo;
-      }
-    } else {
-      return null;
-    }
-  },
-
-  updateEliminatedFlags: function() {
-    _.each(this.games, this.updateEliminatedFlag);
-  },
-
-  updateEliminatedFlag: function(game) {
-    if (game.nextGameId != null && game.winningTeam != null) {
-      var pickedTeam = this.pickTeam(game);
-      if (game.winningTeam.id != pickedTeam.id) {
-        pickedTeam.eliminated = true;
-      }
-    }
   },
 
   highlightBracketRows: function(bracketIds) {

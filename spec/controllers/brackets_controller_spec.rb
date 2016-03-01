@@ -2,10 +2,9 @@ require "rails_helper"
 
 RSpec.describe BracketsController, type: :controller do
   describe "#show" do
-    let!(:tournament) { create(:tournament, :completed) }
-    let!(:pool) { create(:pool, tournament: tournament) }
-    let!(:bracket) { create(:bracket, :completed, pool: pool) }
-    let!(:pool_user) { create(:pool_user, user: bracket.user, pool: pool) }
+    let(:tournament) { create(:tournament, :completed) }
+    let(:pool) { create(:pool, tournament: tournament) }
+    let(:bracket) { create(:bracket, :completed, pool: pool) }
 
     before do
       sign_in bracket.user

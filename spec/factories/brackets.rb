@@ -14,5 +14,9 @@ FactoryGirl.define do
         end
       end
     end
+
+    before(:create) do |bracket|
+      PoolUser.find_or_create_by(user_id: bracket.user_id, pool_id: bracket.pool_id)
+    end
   end
 end

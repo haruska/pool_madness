@@ -15,11 +15,11 @@ RSpec.describe Ability, type: :model do
   end
 
   context "logged in" do
-    let(:user) { create(:user) }
-    let!(:pool_user) { create(:pool_user, user: user, pool: pool) }
-    let(:bracket) { create(:bracket, pool: pool, user: user) }
+    let!(:bracket) { create(:bracket, pool: pool) }
+    let(:user) { bracket.user }
+    let(:pool_user) { PoolUser.find_by(user_id: user.id, pool_id: pool.id) }
+
     let(:another_bracket) { create(:bracket, pool: pool) }
-    let!(:another_pool_user) { create(:pool_user, user: another_bracket.user, pool: pool) }
 
     context "as a regular user" do
       subject { Ability.new(user) }
@@ -59,7 +59,6 @@ RSpec.describe Ability, type: :model do
 
     context "as a pool admin" do
       let(:another_pool_bracket) { create(:bracket) }
-      let!(:different_pool_user) { create(:pool_user, pool: another_pool_bracket.pool, user: another_pool_bracket.user) }
 
       before { pool_user.admin! }
 
