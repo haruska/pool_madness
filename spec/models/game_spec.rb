@@ -175,13 +175,14 @@ RSpec.describe Game, type: :model do
   end
 
   describe "#points" do
-    let(:pool) { create(:pool, tournament: tournament) }
+    let(:pool) { create(:pool) }
     let(:bracket) { create(:bracket, :completed, pool: pool) }
-    let(:tournament_game) { tournament_tree.at(subject.slot)  }
+    let(:tournament) { pool.tournament }
+
     subject { bracket.tree.round_for(1).sample }
 
     context "with a possible_game" do
-      let(:possible_game) { Game.new(tournament_tree, subject.slot) }
+      let(:possible_game) { Game.new(tournament.tree, subject.slot) }
       let(:result) { subject.points(possible_game)}
       let(:expected) { BracketPoint::POINTS_PER_ROUND[1] + subject.team.seed }
 
@@ -203,43 +204,44 @@ RSpec.describe Game, type: :model do
     end
 
     context "without a possible_game" do
-      let(:result) { subject.points }
-      let(:expected) { BracketPoint::POINTS_PER_ROUND[1] + subject.team.seed }
+      let(:slot) { subject.slot }
 
       context "and the game has a winner" do
         before do
-          expect(tournament_game.team).to be_present
+          tournament.update_game!(slot, [0, 1].sample)
+          expect(tournament.tree.at(slot).team).to be_present
         end
 
         context "and the winner was picked" do
           before do
-            subject.decision = tournament_game.decision
-            expect(tournament_game.team).to eq(subject.team)
+            bracket.update_choice(slot, tournament.tree.at(slot).decision)
+            bracket.save!
+            expect(tournament.tree.at(subject.slot).team).to eq(bracket.tree.at(slot).team)
           end
 
           it "is the points per round + the team seed" do
-            expect(result).to eq(expected)
+            pick = bracket.reload.tree.at(slot)
+            expect(pick.points).to eq(BracketPoint::POINTS_PER_ROUND[1] + pick.team.seed)
           end
         end
 
         context "and the winner was not picked" do
           before do
-            subject.decision = tournament_game.decision == 1 ? 0 : 1
-            expect(tournament_game.team).to_not eq(subject.team)
+            bracket.update_choice(slot, tournament.tree.at(slot).decision == 1 ? 0 : 1)
+            expect(tournament.tree.at(subject.slot).team).to_not eq(bracket.tree.at(slot).team)
           end
 
           it "is zero" do
-            expect(result).to be_zero
+            pick = bracket.tree.at(slot)
+            expect(pick.points).to be_zero
           end
         end
       end
 
       context "and there is no winner" do
         before do
-          tournament_game.decision = nil
-
+          tournament.update_game(subject.slot, nil)
           expect(subject.team).to be_present
-          expect(tournament_game.team).to_not be_present
         end
 
         it "is zero" do
@@ -250,17 +252,59 @@ RSpec.describe Game, type: :model do
   end
 
   describe "#possible_points" do
+    let(:pool) { create(:pool) }
+    let(:bracket) { create(:bracket, :completed, pool: pool) }
+    let(:tournament) { pool.tournament }
+    let(:slot) { subject.slot }
+
+    subject { bracket.tree.round_for(1).sample }
+
     context "the game has a winner" do
-      it "is the actual points"
+
+      before do
+        tournament.update_game!(slot, [0,1].sample)
+        expect(tournament.tree.at(slot).team).to be_present
+      end
+
+      it "is the actual points" do
+        pick = bracket.reload.tree.at(slot)
+        expect(pick.possible_points).to eq(pick.points)
+      end
     end
 
     context "the game does not have a winner" do
+      let(:tournament_game) { tournament.tree.at(subject.slot)  }
+
+      before do
+        expect(tournament_game.team).to_not be_present
+      end
+
       context "the picked team is still playing" do
-        it "is the points per round + the team seed"
+        before do
+          expect(subject.team).to_not be_eliminated
+        end
+
+        it "is the points per round + the team seed" do
+          BracketPoint::POINTS_PER_ROUND[1] + subject.team.seed
+        end
       end
 
       context "the picked team is eliminated" do
-        it "is the actual points"
+        let(:next_game_slot) { subject.next_game_slot }
+
+        before do
+          tournament.update_game!(slot, 0)
+          bracket.update_choice!(slot, 1)
+          bracket.update_choice!(next_game_slot, subject.next_slot - 1)
+
+          expect(bracket.tree.at(slot).team).to be_eliminated
+          expect(bracket.tree.at(next_game_slot).team).to eq(bracket.tree.at(slot).team)
+          expect(tournament.tree.at(next_game_slot).decision).to be_nil
+        end
+
+        it "is the actual points" do
+          expect(bracket.tree.at(next_game_slot).possible_points).to be_zero
+        end
       end
     end
   end

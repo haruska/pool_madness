@@ -74,6 +74,11 @@ class Bracket < ActiveRecord::Base
     self.tree_mask = marshalled_tree.mask
   end
 
+  def update_choice!(position, choice)
+    update_choice(position, choice)
+    save!
+  end
+
   def games_hash
     working_tree = tree
     games_hash = tournament.games_hash
