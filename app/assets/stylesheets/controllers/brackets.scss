@@ -22,6 +22,10 @@
           border-bottom: 1px solid $medium-gray;
         }
       }
+
+      @include media($large-screen) {
+        min-width: 900px;
+      }
     }
 
     .bracket-attributes {
@@ -40,7 +44,7 @@
 
       .bracket-details {
         display: inline-block;
-        width: calc(100% - 55px);
+        width: calc(100% - 65px);
       }
     }
 
@@ -183,7 +187,12 @@
             display: inline-block;
           }
 
-          .name, .total, .possible, .final-four-team, .tie-breaker {
+          .best-possible {
+            width: 35px;
+            text-align: center;
+          }
+
+          .name, .total, .possible, .final-four-team, .tie-breaker, .best-possible {
             border-right: 1px solid $light-gray;
           }
         }

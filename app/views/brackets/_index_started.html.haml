@@ -22,10 +22,11 @@
         .bracket-row{:id => "bracket-row-#{bracket.id}"}
           .bracket-attributes
             .position
-              = "*" if @pool.display_best? && bracket.best_possible > 2
               = "#{i+1}."
             .bracket-details
-              .name= bracket.name
+              .name
+                = "*" if @pool.display_best? && bracket.best_possible > 2
+                = bracket.name
               .points
                 .total= bracket.points
                 .possible= bracket.possible_points
