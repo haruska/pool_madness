@@ -5,6 +5,8 @@ class PoolsController < ApplicationController
 
   def index
     @pools = Pool.accessible_by(current_ability)
+    @pools = params[:archived] ? @pools.archived : @pools.current
+
     redirect_to invite_code_path if @pools.empty?
   end
 

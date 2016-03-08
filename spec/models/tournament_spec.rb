@@ -11,6 +11,28 @@ RSpec.describe Tournament, type: :model do
   it { is_expected.to validate_presence_of(:name) }
   it { is_expected.to validate_uniqueness_of(:name) }
 
+  context "scopes" do
+    let!(:archived_tournament) { create(:tournament, tip_off: 1.year.ago) }
+
+    describe "current" do
+      let(:tournaments) { Tournament.current }
+
+      it "is tournaments in the current year" do
+        expect(tournaments).to include(subject)
+        expect(tournaments).to_not include(archived_tournament)
+      end
+    end
+
+    describe "archived" do
+      let(:tournaments) { Tournament.archived }
+
+      it "is tournaments in the current year" do
+        expect(tournaments).to include(archived_tournament)
+        expect(tournaments).to_not include(subject)
+      end
+    end
+  end
+
   describe "#championship" do
     let(:expected_game) { subject.tree.at(1) }
 

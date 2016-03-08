@@ -1,4 +1,8 @@
-- content_for(:title, "Pools")
+- content_for(:title) do
+  - if params[:archived]
+    Archived Pools
+  - else
+    Pools
 
 - if @pools.empty?
   %p You are not a member of any tournament pools.
@@ -6,4 +10,9 @@
   .pools= render @pools
 
 .invite
-  = link_to "Enter Invite Code", invite_code_path, class: :button
+  - if params[:archived]
+    = link_to pools_path, class: :button do
+      %i.fa.fa-arrow-left
+      Current Pools
+  - else
+    = link_to "Enter Invite Code", invite_code_path, class: :button

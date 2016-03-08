@@ -12,6 +12,9 @@ class Pool < ActiveRecord::Base
 
   before_validation :set_invite_code
 
+  scope :current, -> { joins(:tournament).merge(Tournament.current) }
+  scope :archived, -> { joins(:tournament).merge(Tournament.archived) }
+
   def admins
     pool_users.admin.map(&:user)
   end

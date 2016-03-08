@@ -7,6 +7,9 @@ class Tournament < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
 
+  scope :current, -> { where("tip_off > ?", 6.months.ago) }
+  scope :archived, -> { where("tip_off < ?", 6.months.ago) }
+
   def started?
     DateTime.now > tip_off
   end

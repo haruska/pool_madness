@@ -16,6 +16,29 @@ RSpec.describe Pool, type: :model do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_uniqueness_of(:name).scoped_to(:tournament_id) }
 
+  context "scopes" do
+    let(:archived_tournament) { create(:tournament, tip_off: 1.year.ago) }
+    let!(:archived_pool) { create(:pool, tournament: archived_tournament) }
+
+    describe "current" do
+      let(:pools) { Pool.current }
+
+      it "is tournaments in the current year" do
+        expect(pools).to include(subject)
+        expect(pools).to_not include(archived_pool)
+      end
+    end
+
+    describe "archived" do
+      let(:pools) { Pool.archived }
+
+      it "is tournaments in previous years" do
+        expect(pools).to include(archived_pool)
+        expect(pools).to_not include(subject)
+      end
+    end
+  end
+
   context "before validation" do
     subject { build(:pool, tournament: tournament) }
 
