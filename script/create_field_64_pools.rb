@@ -25,42 +25,6 @@ tournament = Tournament.create(
 end
 
 team_name_hash = {
-    Team::MIDWEST => [
-        "Wichita St",
-        "Michigan",
-        "Duke",
-        "Louisville",
-        "St Louis",
-        "UMass",
-        "Texas",
-        "Kentucky",
-        "Kansas St",
-        "Arizona St",
-        "Play-In MW11",
-        "Play-In MW12",
-        "Manhattan",
-        "Mercer",
-        "Wofford",
-        "Play-In MW16"
-    ],
-    Team::WEST => [
-        "Arizona",
-        "Wisconsin",
-        "Creighton",
-        "San Diego St",
-        "Oklahoma",
-        "Baylor",
-        "Oregon",
-        "Gonzaga",
-        "Oklahoma St",
-        "BYU",
-        "Nebraska",
-        "N Dakota St",
-        "New Mex St",
-        "UL-Lafayette",
-        "American",
-        "Weber St"
-    ],
     Team::SOUTH => [
         "Florida",
         "Kansas",
@@ -96,6 +60,42 @@ team_name_hash = {
         "NC Central",
         "UW Milwaukee",
         "Coast Car"
+    ],
+    Team::WEST => [
+        "Arizona",
+        "Wisconsin",
+        "Creighton",
+        "San Diego St",
+        "Oklahoma",
+        "Baylor",
+        "Oregon",
+        "Gonzaga",
+        "Oklahoma St",
+        "BYU",
+        "Nebraska",
+        "N Dakota St",
+        "New Mex St",
+        "UL-Lafayette",
+        "American",
+        "Weber St"
+    ],
+    Team::MIDWEST => [
+        "Wichita St",
+        "Michigan",
+        "Duke",
+        "Louisville",
+        "St Louis",
+        "UMass",
+        "Texas",
+        "Kentucky",
+        "Kansas St",
+        "Arizona St",
+        "Play-In MW11",
+        "Play-In MW12",
+        "Manhattan",
+        "Mercer",
+        "Wofford",
+        "Play-In MW16"
     ]
 }
 
@@ -110,7 +110,7 @@ team_slot = tournament.teams.count
 
 sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
 
-[Team::SOUTH, Team::EAST, Team::WEST, Team::MIDWEST].each do |region|
+team_name_hash.keys.each do |region|
   sort_order.each_slice(2) do |i, j|
     team_one = tournament.teams.find_by(region: region, seed: i)
     team_two = tournament.teams.find_by(region: region, seed: j)
