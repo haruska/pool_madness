@@ -8,6 +8,9 @@
   }
 
   &.index-action {
+    #content {
+      margin-top: $gutter;
+    }
     .wrapper {
       margin: 0 !important;
       min-width: 220px;
@@ -289,6 +292,10 @@
         background-color: darken($action-color, 15%);
         color: #fff;
       }
+    }
+
+    .actions {
+      margin: 0 25px;
     }
   }
 
