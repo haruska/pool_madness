@@ -1,7 +1,6 @@
 require "rails_helper"
 
 RSpec.describe "Pools", js: true do
-
   describe "Pool List" do
     let(:tournament) { create(:tournament, :completed) }
     let(:archived_tournament) { create(:tournament, :completed, tip_off: 1.year.ago) }
@@ -19,6 +18,30 @@ RSpec.describe "Pools", js: true do
       it "shows current pools only" do
         expect(page).to have_text(pool.name)
         expect(page).to_not have_text(archived_pool.name)
+      end
+
+      it "shows the tournament name" do
+        expect(page).to have_text(pool.tournament.name)
+      end
+
+      context "before tip off" do
+        let(:tournament) { create(:tournament, :not_started) }
+
+        it "shows the invite code" do
+          expect(page).to have_text(pool.invite_code)
+        end
+      end
+
+      context "after tip off" do
+        let(:tournament) { create(:tournament, :started) }
+
+        before do
+          expect(page).to have_text(pool.name)
+        end
+
+        it "does not show the invite code" do
+          expect(page).to_not have_text(pool.invite_code)
+        end
       end
     end
 
