@@ -2,6 +2,10 @@
   header { display: none }
 
   .brackets-controller {
+    #content .wrapper {
+      padding-top: 0;
+    }
+
     &.show-action {
       .bracket-actions { display: none }
     }
