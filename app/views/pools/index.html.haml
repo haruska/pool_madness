@@ -9,10 +9,11 @@
 - else
   .pools= render @pools
 
-.invite
+.actions
   - if params[:archived]
     = link_to pools_path, class: :button do
       %i.fa.fa-arrow-left
       Current Pools
   - else
     = link_to "Enter Invite Code", invite_code_path, class: :button
+    = link_to "Previous Years", pools_path(archived: true), class: [:button, :minor]

@@ -64,8 +64,13 @@
   }
 
   &.invite_code-action {
+    #content {
+      text-align: center;
+    }
+
     .wrapper {
-      text-align: left;
+      display: inline-block;
+      text-align: center;
       width: 200px;
     }
   }
