@@ -12,5 +12,6 @@
       = f.text_field :tie_breaker, placeholder: "Final Score of Championship Game Added Together (ex: 147)"
 
       = f.submit "Done"
-      = link_to "Delete Bracket", @bracket, class: "button danger", method: :delete, data: { confirm: "Are you sure you want to delete your bracket?"}
+      - if @bracket.unpaid?
+        = link_to "Delete Bracket", @bracket, class: "button danger", method: :delete, data: { confirm: "Are you sure you want to delete your bracket?"}
 

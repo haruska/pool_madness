@@ -34,7 +34,10 @@
 
 .actions
   - if can? :create, @pool.brackets.build(user_id: current_user.id)
-    = link_to "New Bracket Entry", pool_brackets_path, :method => :post, :class => "button"
+    - if @brackets.present?
+      = link_to "Another Bracket Entry", pool_brackets_path, method: :post, class: [:button, :minor]
+    - else
+      = link_to "New Bracket Entry", pool_brackets_path, :method => :post, :class => "button"
   - if @unpaid_brackets.present?
     .payment
       = form_tag charges_path, method: :post do

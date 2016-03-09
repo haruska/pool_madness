@@ -19,6 +19,10 @@ class BracketsController < ApplicationController
   end
 
   def show
+    if !@pool.started? && current_user == @bracket.user
+      redirect_to edit_bracket_path(@bracket)
+    end
+
     set_jskit_show_payload
   end
 

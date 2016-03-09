@@ -252,34 +252,45 @@
     .current-user-bracket {
       background-color: $light-blue;
     }
-  }
 
-  //
-  //&.index-action {
-  //  table {
-  //    font-size: 0.9em;
-  //    table-layout: auto;
-  //  }
-  //
-  //  h3 {
-  //    font-size: small;
-  //    padding-bottom: 25px;
-  //
-  //  }
-  //
-  //  .actions {
-  //    padding-top: 25px;
-  //
-  //    .payment {
-  //      display: inline-block;
-  //      float: right;
-  //    }
-  //  }
-  //
-  //  .current-user-bracket {
-  //    background-color: $light-blue;
-  //  }
-  //}
+    button.stripe-button-el {
+      @include appearance(none);
+      -webkit-font-smoothing: antialiased;
+      background-color: $action-color;
+      border-radius: $base-border-radius;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: inline-block;
+      padding: 0.75em 1em !important;
+      text-decoration: none;
+      user-select: none;
+      vertical-align: middle;
+      white-space: nowrap;
+
+      //mobile
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+
+      span {
+        display: inline !important;
+        min-height: auto !important;
+        font-size: $base-font-size;
+        font-weight: 600;
+        line-height: 1;
+        background-color: transparent !important;
+        background-image: none !important;
+        box-shadow: none !important;
+      }
+
+      &:hover,
+      &:focus {
+        background-color: darken($action-color, 15%);
+        color: #fff;
+      }
+    }
+  }
 
   &.show-action {
     .wrapper {
