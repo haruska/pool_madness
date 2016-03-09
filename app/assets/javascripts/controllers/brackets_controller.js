@@ -57,7 +57,7 @@ App.createController("Brackets", {
   },
 
   highlightBracketRow: function(bracketId) {
-    $('#bracket-row-' + bracketId).addClass("current-user-bracket");
+    $('.bracket-row-' + bracketId).addClass("current-user-bracket");
   },
 
   highlightCorrectPicks: function() {

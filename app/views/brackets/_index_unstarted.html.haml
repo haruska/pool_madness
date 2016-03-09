@@ -1,8 +1,7 @@
 - content_for :title, "My Brackets"
 
 - if @brackets.present?
-
-  .brackets
+  .brackets.small-screen
     .bracket-row.bracket-list-header
       .bracket-attributes
         .position &nbsp;
@@ -18,7 +17,7 @@
 
     - @brackets.each_with_index do |bracket, i|
       =link_to bracket do
-        .bracket-row{:id => "bracket-row-#{bracket.id}"}
+        .bracket-row
           .bracket-attributes
             .position &nbsp;
             .bracket-details
@@ -31,6 +30,32 @@
                   %div{class: "final-four-team final-four-team#{i + bracket.sorted_four.size}"}
               .tie-breaker= bracket.tie_breaker
               .status= status_to_label(bracket.status)
+
+  .brackets.large-screen
+    %table.table-minimal
+      %thead
+        %tr
+          %th Name
+          %th Final Four
+          %th Final Four
+          %th Second
+          %th Winner
+          %th Tie
+          %th Status
+      %tbody
+        - @brackets.each do |bracket|
+          %tr
+            %td
+              - if bracket.status == :ok
+                = link_to bracket.name, bracket
+              - else
+                = link_to bracket.name, edit_bracket_path(bracket)
+            - bracket.sorted_four.each do |team|
+              %td= team.name
+            - (4 - bracket.sorted_four.size).times do
+              %td
+            %td= bracket.tie_breaker
+            %td= status_to_label(bracket.status)
 
 .actions
   - if can? :create, @pool.brackets.build(user_id: current_user.id)

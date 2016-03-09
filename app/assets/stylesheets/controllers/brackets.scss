@@ -8,15 +8,51 @@
   }
 
   &.index-action {
+
+    .large-screen { display: none; }
+    .small-screen { display: block; }
+
+    @include media($large-screen) {
+      .large-screen { display: block; }
+      .small-screen { display: none; }
+    }
+
+    .large-screen {
+      table {
+        font-size: 0.9em;
+        table-layout: auto;
+      }
+
+      h3 {
+        font-size: small;
+        padding-bottom: 25px;
+
+      }
+
+      .actions {
+        padding-top: 25px;
+
+        .payment {
+          display: inline-block;
+          float: right;
+        }
+      }
+
+      .current-user-bracket {
+        background-color: $light-blue;
+      }
+    }
+
     #content {
       margin-top: $gutter;
     }
+
     .wrapper {
       margin: 0 !important;
       min-width: 220px;
     }
 
-    .brackets {
+    .small-screen {
       a {
         display: block;
         color: $base-font-color;
@@ -26,230 +62,99 @@
         }
       }
 
-      @include media($large-screen) {
-        min-width: 900px;
-      }
-    }
-
-    .bracket-attributes {
-      .position {
-        display: inline-block;
-        margin: 0 $gutter/2;
-        vertical-align: top;
-
-
-        @include media($large-screen) {
-          width: 25px;
-          vertical-align: inherit;
-        }
-
-      }
-
-      .bracket-details {
-        display: inline-block;
-        width: calc(100% - 65px);
-      }
-    }
-
-    .bracket-list-header {
-      display: none;
-
-      @include media($large-screen) {
-        display: block;
-
-        .name {
-          font-weight: inherit !important;
-        }
-
-        .final-four-team0 {
-          border: none !important;
-          text-align: right !important;
-        }
-
-        .final-four-team1 {
-          text-align: left !important;
-        }
-      }
-    }
-
-    .bracket-row {
-      margin: ($gutter/2) 0;
-
-      .name {
-        font-weight: bold;
-      }
-
-      .points {
-        display: block;
-        font-size: 0.9em;
-
-        div {
+      .bracket-attributes {
+        .position {
           display: inline-block;
+          margin: 0 $gutter/2;
+          vertical-align: top;
         }
 
-        .total::after {
-          content: " points /";
-        }
-
-        .possible::after {
-          content: " possible";
-        }
-      }
-
-      .final-four-teams {
-        display: block;
-
-        .final-four-team {
-          display: inline-block;
-          font-size: 0.9em;
-          white-space: nowrap;
-
-          &:empty {
-            display: none;
-          }
-
-          &:after {
-            content: ", ";
-            margin-left: -4px;
-          }
-
-          &:last-of-type {
-            &:after {
-              display: none;
-            }
-          }
-        }
-      }
-
-
-      .bracket-details {
-        position: relative;
-      }
-
-      .tie-breaker {
-        font-size: 0.9em;
-        &:before {
-          content: "Tie Breaker: ";
-        }
-
-        &:empty {
-          display: none;
-        }
-      }
-
-      .status {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-      }
-
-      @include media($large-screen) {
         .bracket-details {
-          position: inherit;
+          display: inline-block;
+          width: calc(100% - 65px);
         }
+      }
 
-        .tie-breaker {
-          font-size: inherit;
-          &:before {
-            display: none;
-          }
-        }
+      .bracket-list-header {
+        display: none;
+      }
 
-        .status {
-          position: inherit;
-        }
+      .bracket-row {
+        margin: ($gutter/2) 0;
 
         .name {
-          width: 200px;
+          font-weight: bold;
         }
 
         .points {
-          font-size: inherit;
-          text-align: center;
-          .total {
-            width: 40px;
-
-            &::after {
-              display: none;
-            }
-          }
-
-          .possible {
-            width: 40px;
-
-            &::after {
-              display: none;
-            }
-          }
-        }
-
-        .bracket-details {
-          display: inline-block;
+          display: block;
+          font-size: 0.9em;
 
           div {
             display: inline-block;
           }
 
-          .best-possible {
-            width: 35px;
-            text-align: center;
+          .total::after {
+            content: " points /";
           }
 
-          .name, .total, .possible, .final-four-team, .tie-breaker, .best-possible {
-            border-right: 1px solid $light-gray;
+          .possible::after {
+            content: " possible";
           }
+
         }
 
-        .position {
-          display: inline;
+        .best-possible {
+          font-size: 0.9em;
         }
 
         .final-four-teams {
-          display: inline-block;
+          display: block;
 
           .final-four-team {
-            font-size: inherit;
-            width: 120px;
-            text-align: center;
-
-            &:after {
-              display: inherit;
-              content: "\00a0";
-            }
-
-            &:before {
-              content: "\00a0";
-            }
+            display: inline-block;
+            font-size: 0.9em;
+            white-space: nowrap;
 
             &:empty {
-              display: inherit;
+              display: none;
             }
 
+            &:after {
+              content: ", ";
+              margin-left: -4px;
+            }
+
+            &:last-of-type {
+              &:after {
+                display: none;
+              }
+            }
           }
         }
 
+        .bracket-details {
+          position: relative;
+        }
+
         .tie-breaker {
-          width: 40px;
-          text-align: center;
-
-          &:after {
-            display: inherit;
-            content: "\00a0";
-          }
-
+          font-size: 0.9em;
           &:before {
-            content: "\00a0";
+            content: "Tie Breaker: ";
           }
 
           &:empty {
-            display: inherit;
+            display: none;
           }
         }
 
         .status {
-          margin-left: 5px;
+          position: absolute;
+          top: 0px;
+          right: 0px;
         }
       }
+
     }
 
     .current-user-bracket {
