@@ -62,18 +62,20 @@ PoolMadness::Application.configure do
 
   # ActionMailer Config
   # Setup for production - deliveries, no errors raised
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default charset: "utf-8"
+  response = RestClient::Resource.new("https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV['MAILTRAP_API_TOKEN']}", ssl_version: "TLSv1").get
 
+  first_inbox = JSON.parse(response)[0]
+
+  config.action_mailer.default_url_options = { host: ENV["HOST"] }
+  config.action_mailer.asset_host = "https://#{ENV['HOST']}"
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: "smtp.mandrillapp.com",
-    port: 587, # ports 587 and 2525 are also supported with STARTTLS
-    enable_starttls_auto: true, # detects and uses STARTTLS
-    user_name: ENV["MANDRILL_USERNAME"],
-    password: ENV["MANDRILL_APIKEY"], # SMTP password is any valid API key
-    authentication: "login" # Mandrill supports 'plain' or 'login'
+      user_name: first_inbox["username"],
+      password: first_inbox["password"],
+      address: first_inbox["domain"],
+      domain: first_inbox["domain"],
+      port: first_inbox["smtp_ports"][0],
+      authentication: :plain
   }
 
   config.eager_load = true
