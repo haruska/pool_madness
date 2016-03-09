@@ -5,7 +5,7 @@ end
 
 # so one sidekiq can have 5 connections
 Sidekiq.configure_server do |config|
-  config.redis = { size: 5 }
+  config.redis = { size: 9 }
   database_url = ENV["DATABASE_URL"]
   if database_url
     ENV["DATABASE_URL"] = "#{database_url}?pool=10"
