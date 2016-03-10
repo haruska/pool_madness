@@ -1,20 +1,18 @@
 GIT
-  remote: git://github.com/MikeSilvis/espn-scraper.git
-  revision: a87b09d0d32449df70b0cc273cfd3158f20d02c8
-  specs:
-    espn_scraper (1.0.5)
-      activesupport
-      addressable
-      httparty
-      nokogiri
-
-GIT
   remote: git://github.com/haruska/active_attr.git
   revision: 7977578acabcd57e5571fcaf373c3045ad8ce29f
   specs:
     active_attr (0.8.5)
       activemodel (>= 3.0.2, < 5.0)
       activesupport (>= 3.0.2, < 5.0)
+
+GIT
+  remote: git://github.com/haruska/espn-scraper.git
+  revision: 3c57db58ccf5d852d70ca18e4c8cf2a011c5708a
+  specs:
+    espn_scraper (1.3.0)
+      httparty
+      nokogiri
 
 GEM
   remote: https://rubygems.org/
