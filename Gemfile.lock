@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/haruska/espn-scraper.git
-  revision: 3c57db58ccf5d852d70ca18e4c8cf2a011c5708a
+  revision: f37db3435e1e8194272c555a2aa19ee28dc13db7
   specs:
     espn_scraper (1.3.0)
       httparty
