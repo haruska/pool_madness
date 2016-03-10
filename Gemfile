@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 ruby "2.2.4"
 
+gem "actionpack-action_caching"
 gem "active_attr", github: "haruska/active_attr"
 gem "binary_decision_tree"
 gem "bitters"

@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  caches_action :index
+  
   def index
     redirect_to pools_path if current_user.present?
   end

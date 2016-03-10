@@ -32,6 +32,8 @@ GEM
       rack-test (~> 0.6.2)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    actionpack-action_caching (1.1.1)
+      actionpack (>= 4.0.0, < 5.0)
     actionview (4.2.5.1)
       activesupport (= 4.2.5.1)
       builder (~> 3.1)
@@ -374,6 +376,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionpack-action_caching
   active_attr!
   awesome_print
   better_errors
