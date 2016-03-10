@@ -8,3 +8,11 @@
 //    .round6 strong,  .round6 strong span.seed,  .round6 strong span.score {
 //      color: #c52000;
 //    }
+
+.games-controller {
+  &.index-action {
+    .tie-breaker {
+      display: none;
+    }
+  }
+}

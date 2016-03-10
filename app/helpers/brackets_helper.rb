@@ -1,4 +1,8 @@
 module BracketsHelper
+  def cache_key_for_tournament_bracket(tournament)
+    "tournament-#{tournament.id}/bracket"
+  end
+
   def cache_key_for_bracket_points(pool)
     max_updated_at = pool.bracket_points.maximum(:updated_at).to_i
     "pool-#{pool.id}/bracket_points/all-#{max_updated_at}"

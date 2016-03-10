@@ -71,7 +71,7 @@ class BracketsController < ApplicationController
   end
 
   def set_jskit_show_payload
-    set_action_payload(@bracket.id, @bracket.games_hash)
+    set_action_payload(@bracket.id, @bracket.games_hash, @bracket.tie_breaker)
   end
 
   def set_jskit_edit_payload

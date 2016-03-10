@@ -7,7 +7,9 @@ App.createController("Brackets", {
       championshipBox: ".champion-box"
     },
     show: {
-      slots: '.slot', championshipBox: '.champion-box'
+      slots: '.slot',
+      championshipBox: '.champion-box',
+      tieBreakerValue: '.tie-breaker-value'
     }
   },
 
@@ -20,12 +22,17 @@ App.createController("Brackets", {
     this.populateBracket(bracketId, games);
   },
 
-  show: function(bracketId, games) {
+  show: function(bracketId, games, tieBreaker) {
     this.mixinSharedBracket();
     this.populateBracket(bracketId, games);
 
     this.updateEliminatedFlags();
     this.highlightCorrectPicks();
+    this.fillInTieBreaker(tieBreaker);
+  },
+
+  fillInTieBreaker: function(value) {
+    this.$tieBreakerValue.text(value);
   },
 
   mixinSharedBracket: function() {
