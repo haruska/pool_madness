@@ -11,7 +11,7 @@ RSpec.describe BracketsController, type: :controller do
     end
 
     it "sets the jskit payload" do
-      expect(subject).to receive(:set_action_payload).with(bracket.id, bracket.games_hash)
+      expect(subject).to receive(:set_action_payload).with(bracket.id, bracket.games_hash, bracket.tie_breaker)
 
       get :show, id: bracket
     end
