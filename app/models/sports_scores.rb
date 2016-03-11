@@ -33,7 +33,7 @@ class SportsScores
         winner = espn_game[:home_score] < espn_game[:away_score] ? away_team : home_team
 
         tree = tournament.tree
-        slot = tree.size.downto(1).find do |slot|
+        slot = (tree.size - 1).downto(1).find do |slot|
           g = tree.at(slot)
           g.first_team == home_team && g.second_team == away_team || g.first_team == away_team && g.second_team == home_team
         end
