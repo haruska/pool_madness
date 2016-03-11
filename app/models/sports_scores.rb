@@ -47,9 +47,8 @@ class SportsScores
             self.changed_games = true
           end
         end
+        tournament.save
       end
-
-      tournament.save
     end
   end
 
