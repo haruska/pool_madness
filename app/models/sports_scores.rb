@@ -5,92 +5,92 @@ class SportsScores
   attribute :api_response
   attribute :changed_games, default: false
 
-  class ScoreTeam
-    include ActiveAttr::Model
-
-    attribute :name
-    attribute :seed
-    attribute :score_id
-  end
-
   def self.generate_for(date)
-    new(date: date, api_response: ESPN::Score.find(ESPN::NCB, date))
+    new(date: date, api_response: ESPN.get_ncb_scores(date, nil, false))
   end
 
   def self.list_teams(dates)
-    score_teams = []
+    score_teams = {}
 
     dates.each do |date|
-      ESPN::Score.find(ESPN::NCB, date).each do |game|
-        %w(home_team away_team).each do |team|
-          score_teams << ScoreTeam.new(name: game["#{team}_name".to_sym], seed: game["#{team}_rank".to_sym].to_i, score_id: game[team.to_sym])
-        end
-      end
+      score_teams.merge!(ESPN.get_ncb_abbreviations(date))
     end
 
-    score_teams.sort_by!(&:seed)
-
-    score_teams.each do |score_team|
-      puts "##{score_team.seed} #{score_team.name} (#{score_team.score_id})"
+    score_teams.keys.sort.each do |team_name|
+      abbrev = score_teams[team_name]
+      puts "#{team_name}: #{abbrev}"
     end
+
+    score_teams
   end
 
   def update_scores
-    api_response.select { |g| g[:state] == "postgame" }.each do |espn_game|
-      Tournament.all.each do |tournament|
+    api_response.each do |espn_game|
+      next unless espn_game[:status] =~ /Final/
+      Tournament.current.each do |tournament|
         home_team = tournament.teams.find_by score_team_id: espn_game[:home_team]
         away_team = tournament.teams.find_by score_team_id: espn_game[:away_team]
+        winner = espn_game[:home_score] < espn_game[:away_score] ? away_team : home_team
 
-        game = tournament.games.to_a.find do |g|
+        tree = tournament.tree
+        slot = tree.size.downto(1).find do |slot|
+          g = tree.at(slot)
           g.first_team == home_team && g.second_team == away_team || g.first_team == away_team && g.second_team == home_team
         end
 
-        if game.present? && game.score_one.blank?
-          if game.first_team == home_team
-            game.update!(score_one: espn_game[:home_score], score_two: espn_game[:away_score])
-          else
-            game.update!(score_one: espn_game[:away_score], score_two: espn_game[:home_score])
+
+        if slot.present?
+          game = tree.at(slot)
+
+          if game.decision.nil?
+            tournament.update_game(slot, game.first_team == winner ? Game::LEFT : Game::RIGHT)
+            self.changed_games = true
           end
-
-          game.next_game.try(:touch)
-
-          self.changed_games = true
         end
       end
+
+      tournament.save
     end
   end
 
   def next_poll_time
-    if api_response.find { |g| g[:state] == "in-progress" }.present?
+    if started_games.present?
       5.minutes.from_now
-    elsif api_response.find { |g| g[:state] == "pregame" }.present?
-      next_game = api_response.find { |g| g[:state] == "pregame" }
-      time_str = "#{next_game[:game_date]} #{next_game[:start_time].gsub('ET', 'EDT')}"
-      DateTime.parse(time_str)
+    elsif not_started_games.present?
+      not_started_games.map {|g| g[:game_date] }.sort.first
     else
-      Date.tomorrow.noon.in_time_zone("America/New_York")
+      Date.tomorrow.in_time_zone("America/New_York").noon
     end
   end
 
-  # ESPN::Score.find(ESPN::NCB, Date.today)
-  # {
-  #   :game_date=>Fri, 20 Mar 2015,
-  #   :home_team=>"2305",
-  #   :home_team_name=>"Kansas",
-  #   :away_team=>"166",
-  #   :away_team_name=>"New Mexico St",
-  #   :home_score=>0,
-  #   :away_score=>0,
-  #   :home_team_rank=>"2",
-  #   :away_team_rank=>"15",
-  #   :away_team_logo=>"http://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/166.png&w=200&h=200&transparent=true",
-  #   :home_team_logo=>"http://a.espncdn.com/combiner/i?img=/i/teamlogos/ncaa/500/2305.png&w=200&h=200&transparent=true",
-  #   :home_team_record=>"26-8",
-  #   :away_team_record=>"23-10",
-  #   :state=>"pregame",
-  #   :start_time=>"12:15 PM ET",
-  #   :preview=>"400785345",
-  #   :line=>"KU -10.5 O/U 131.5",
-  #   :league=>"ncb"
-  # }
+  def finished_games
+    api_response.select {|espn_game| espn_game[:status] =~ /Final/}
+  end
+
+  def started_games
+    api_response.select {|espn_game| espn_game[:status] =~ /Half/}
+  end
+
+  def not_started_games
+    api_response - finished_games - started_games
+  end
 end
+
+# ESPN.get_college_basketball_scores(Date.today, nil, false)
+#
+# [
+#     {:home_team=>"ind", :home_score=>20, :away_team=>"mich", :away_score=>23, :game_date=>Fri, 11 Mar 2016 17:00:00 +0000, :status=>"6:17 - 1st Half", :league=>"mens-college-basketball"},
+#     {:home_team=>"tamu", :home_score=>0, :away_team=>"fla", :away_score=>0, :game_date=>Fri, 11 Mar 2016 18:00:00 +0000, :status=>"Fri, March 11th at 1:00 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"pur", :home_score=>0, :away_team=>"ill", :away_score=>0, :game_date=>Fri, 11 Mar 2016 19:00:00 +0000, :status=>"Fri, March 11th at 2:00 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"msu", :home_score=>0, :away_team=>"osu", :away_score=>0, :game_date=>Fri, 11 Mar 2016 23:30:00 +0000, :status=>"Fri, March 11th at 6:30 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"nova", :home_score=>0, :away_team=>"prov", :away_score=>0, :game_date=>Fri, 11 Mar 2016 23:30:00 +0000, :status=>"Fri, March 11th at 6:30 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"ku", :home_score=>0, :away_team=>"bay", :away_score=>0, :game_date=>Sat, 12 Mar 2016 00:00:00 +0000, :status=>"Fri, March 11th at 7:00 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"unc", :home_score=>0, :away_team=>"nd", :away_score=>0, :game_date=>Sat, 12 Mar 2016 00:00:00 +0000, :status=>"Fri, March 11th at 7:00 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"uk", :home_score=>0, :away_team=>"ala", :away_score=>0, :game_date=>Sat, 12 Mar 2016 00:00:00 +0000, :status=>"Fri, March 11th at 7:00 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"md", :home_score=>0, :away_team=>"neb", :away_score=>0, :game_date=>Sat, 12 Mar 2016 01:55:00 +0000, :status=>"Fri, March 11th at 8:55 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"wvu", :home_score=>0, :away_team=>"okla", :away_score=>0, :game_date=>Sat, 12 Mar 2016 02:00:00 +0000, :status=>"Fri, March 11th at 9:00 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"ore", :home_score=>0, :away_team=>"ariz", :away_score=>0, :game_date=>Sat, 12 Mar 2016 02:00:00 +0000, :status=>"Fri, March 11th at 9:00 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"uva", :home_score=>0, :away_team=>"mia", :away_score=>0, :game_date=>Sat, 12 Mar 2016 02:00:00 +0000, :status=>"Fri, March 11th at 9:00 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"xav", :home_score=>0, :away_team=>"hall", :away_score=>0, :game_date=>Sat, 12 Mar 2016 02:00:00 +0000, :status=>"Fri, March 11th at 9:00 PM EST", :league=>"mens-college-basketball"},
+#     {:home_team=>"utah", :home_score=>0, :away_team=>"cal", :away_score=>0, :game_date=>Sat, 12 Mar 2016 04:30:00 +0000, :status=>"Fri, March 11th at 11:30 PM EST", :league=>"mens-college-basketball"}
+# ]
