@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151216144329) do
+ActiveRecord::Schema.define(version: 20160311221645) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 20151216144329) do
     t.integer  "seed",          null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
-    t.integer  "score_team_id"
+    t.string   "score_team_id"
     t.string   "region"
     t.integer  "tournament_id", null: false
     t.integer  "starting_slot"
