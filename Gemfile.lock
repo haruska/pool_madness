@@ -55,6 +55,9 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
+    airbrake (5.1.0)
+      airbrake-ruby (~> 1.1)
+    airbrake-ruby (1.2.0)
     arel (6.0.3)
     ast (2.2.0)
     awesome_print (1.6.1)
@@ -371,6 +374,7 @@ PLATFORMS
 DEPENDENCIES
   actionpack-action_caching
   active_attr!
+  airbrake
   awesome_print
   better_errors
   binary_decision_tree

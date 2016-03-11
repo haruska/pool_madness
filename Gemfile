@@ -59,6 +59,7 @@ group :development, :test do
 end
 
 group :production, :staging do
+  gem "airbrake"
   gem "newrelic_rpm"
   gem "puma"
   gem "rails_12factor"
