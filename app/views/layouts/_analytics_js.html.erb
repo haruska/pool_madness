@@ -3,7 +3,7 @@
     analytics.load("LSbWkP8YIaI9rXQUPgmfjMKYi5jgdTXV");
     analytics.page();
     <% if user_signed_in? %>
-      analytics.identify(<%= current_user.id %>, { name: <%= current_user.name %>, email: <%= current_user.email %>});
+      analytics.identify('<%= current_user.id %>', { name: "<%= current_user.name %>", email: "<%= current_user.email %>"});
     <% end %>
   }}();
 </script>
