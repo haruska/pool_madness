@@ -4,7 +4,7 @@ class Team < ActiveRecord::Base
   EAST = "East"
   MIDWEST = "Midwest"
 
-  REGIONS = [SOUTH, EAST, WEST, MIDWEST]
+  REGIONS = [SOUTH, WEST, EAST, MIDWEST]
 
   belongs_to :tournament
 
