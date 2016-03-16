@@ -25,8 +25,7 @@ class SportsScores
   end
 
   def update_scores
-    api_response.each do |espn_game|
-      next unless espn_game[:status] =~ /Final/
+    finished_games.each do |espn_game|
       Tournament.current.each do |tournament|
         home_team = tournament.teams.find_by score_team_id: espn_game[:home_team]
         away_team = tournament.teams.find_by score_team_id: espn_game[:away_team]
