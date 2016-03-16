@@ -18,6 +18,8 @@ class UpdateGameScoresJob < ActiveJob::Base
       end
     end
 
-    UpdateGameScoresJob.set(wait_until: today.next_poll_time).perform_later
+    next_poll_time = yesterday.started_games.present? ? 5.minutes.from_now : today.next_poll_time
+
+    UpdateGameScoresJob.set(wait_until: next_poll_time).perform_later
   end
 end
