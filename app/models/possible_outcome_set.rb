@@ -21,13 +21,30 @@ class PossibleOutcomeSet
     self.all_games_mask_attr ||= tournament_tree.all_games_mask
   end
 
-  def min_slot_bits
+  def fixed_slot_mask
+    to_slot_bits(tournament.game_mask)
+  end
+
+  def fixed_slot_bits
     to_slot_bits(tournament.game_decisions)
   end
 
-  def max_slot_bits
-    to_play_games_mask = 2**tournament.num_games_remaining - 1
-    min_slot_bits | to_play_games_mask
+  def to_play_games_mask
+    2**tournament.num_games_remaining - 1
+  end
+
+  def slot_bits_for(variable_bits)
+    slot_bits = fixed_slot_bits
+    tournament.num_games.times do |i|
+      slot = 1 << i
+      if fixed_slot_mask & slot == 0 #if not already played
+        bit = variable_bits & 1
+        variable_bits = variable_bits >> 1
+
+        slot_bits = slot_bits | (bit << i)
+      end
+    end
+    slot_bits
   end
 
   def outcome_for(slot_bits)

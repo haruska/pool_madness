@@ -8,19 +8,19 @@ class CalculatePossibleOutcomeJob < ActiveJob::Base
       tournament = Tournament.find(tournament_id)
       pools = tournament.pools.includes(:brackets)
       outcome_set = PossibleOutcomeSet.new(tournament: tournament)
-      max_slot_bits = outcome_set.max_slot_bits
+      max_variable_bits = outcome_set.to_play_games_mask
 
-      bits = pop_bits(tournament_id, timestamp)
+      variable_bits = pop_bits(tournament_id, timestamp)
 
-      until bits > max_slot_bits
-        outcome = outcome_set.outcome_for(bits)
+      until variable_bits > max_variable_bits
+        outcome = outcome_set.outcome_for(outcome_set.slot_bits_for(variable_bits))
         pools.each do |pool|
           outcome.get_best_possible(pool).each do |bracket, rank|
             update_redis_bracket(pool, timestamp, bracket, rank)
           end
         end
 
-        bits = pop_bits(tournament_id, timestamp)
+        variable_bits = pop_bits(tournament_id, timestamp)
       end
 
       if opts[:update_db]
