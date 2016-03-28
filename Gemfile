@@ -83,10 +83,3 @@ group :test do
   gem "stripe-ruby-mock"
   gem "webmock"
 end
-
-
-
-
-
-
-

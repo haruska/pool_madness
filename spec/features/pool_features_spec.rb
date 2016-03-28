@@ -7,7 +7,7 @@ RSpec.describe "Pools", js: true do
     let(:pool) { create(:pool, tournament: tournament) }
     let(:archived_pool) { create(:pool, tournament: archived_tournament) }
     let(:user) { create(:pool_user, pool: pool).user }
-    let!(:archived_pool_user) { create(:pool_user, pool: archived_pool, user: user)}
+    let!(:archived_pool_user) { create(:pool_user, pool: archived_pool, user: user) }
 
     context "current pools" do
       before do

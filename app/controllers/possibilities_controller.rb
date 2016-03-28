@@ -14,6 +14,6 @@ class PossibilitiesController < ApplicationController
   end
 
   def check_num_games_remaining
-     redirect_to(pool_brackets_path) unless tournament.num_games_remaining.between?(1, 3)
+    redirect_to(pool_brackets_path) unless tournament.num_games_remaining.between?(1, 3)
   end
 end

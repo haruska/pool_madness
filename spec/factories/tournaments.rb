@@ -89,51 +89,51 @@ FactoryGirl.define do
       end
 
       tournament.rounds.create(
-          name: "1st ROUND",
-          start_date: DateTime.parse("2015-03-19"),
-          end_date: DateTime.parse("2015-03-20"),
-          number: 1
+        name: "1st ROUND",
+        start_date: Date.parse("2015-03-19"),
+        end_date: Date.parse("2015-03-20"),
+        number: 1
       )
 
       tournament.rounds.create(
-          name: "2nd ROUND",
-          start_date: DateTime.parse("2015-03-21"),
-          end_date: DateTime.parse("2015-03-22"),
-          number: 2
+        name: "2nd ROUND",
+        start_date: Date.parse("2015-03-21"),
+        end_date: Date.parse("2015-03-22"),
+        number: 2
       )
 
       tournament.rounds.create(
-          name: "SWEET 16",
-          start_date: DateTime.parse("2015-03-26"),
-          end_date: DateTime.parse("2015-03-27"),
-          number: 3
+        name: "SWEET 16",
+        start_date: Date.parse("2015-03-26"),
+        end_date: Date.parse("2015-03-27"),
+        number: 3
       )
 
       tournament.rounds.create(
-          name: "ELITE EIGHT",
-          start_date: DateTime.parse("2015-03-28"),
-          end_date: DateTime.parse("2015-03-29"),
-          number: 4
+        name: "ELITE EIGHT",
+        start_date: Date.parse("2015-03-28"),
+        end_date: Date.parse("2015-03-29"),
+        number: 4
       )
 
       tournament.rounds.create(
-          name: "FINAL FOUR",
-          start_date: DateTime.parse("2015-04-04"),
-          end_date: DateTime.parse("2015-04-04"),
-          number: 5
+        name: "FINAL FOUR",
+        start_date: Date.parse("2015-04-04"),
+        end_date: Date.parse("2015-04-04"),
+        number: 5
       )
 
       tournament.rounds.create(
-          name: "CHAMPION",
-          start_date: DateTime.parse("2015-04-06"),
-          end_date: DateTime.parse("2015-04-06"),
-          number: 6
+        name: "CHAMPION",
+        start_date: Date.parse("2015-04-06"),
+        end_date: Date.parse("2015-04-06"),
+        number: 6
       )
 
       team_slot = tournament.teams.count
 
       sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
-      ["South", "East", "West", "Midwest"].each do |region|
+      %w(South East West Midwest).each do |region|
         sort_order.each_slice(2) do |i, j|
           team_one = tournament.teams.find_by(region: region, seed: i)
           team_two = tournament.teams.find_by(region: region, seed: j)
@@ -164,7 +164,7 @@ FactoryGirl.define do
 
       after(:create) do |tournament|
         tournament.num_games.times do |i|
-          tournament.update_game(i+1, [0, 1].sample)
+          tournament.update_game(i + 1, [0, 1].sample)
         end
         tournament.save
       end

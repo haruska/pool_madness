@@ -2,8 +2,8 @@ class UpdateGameScoresJob < ActiveJob::Base
   queue_as :scores
 
   def perform
-    yesterday = SportsScores.generate_for(Date.yesterday)
-    today = SportsScores.generate_for(Date.today)
+    yesterday = SportsScores.generate_for(Time.zone.yesterday)
+    today = SportsScores.generate_for(Time.zone.today)
 
     yesterday.update_scores
     today.update_scores

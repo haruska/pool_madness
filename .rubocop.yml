@@ -11,12 +11,16 @@ AllCops:
     - spec/support/feature_helper.rb
     - scripts/**/*
     - spec/teaspoon_env.rb
-  RunRailsCops: true
+Rails:
+  Enabled: true
+
+Rails/Output:
+  Enabled: false
 
 Style/AlignParameters:
   Enabled: false
 
-Lint/SpaceBeforeFirstArg:
+Style/SpaceBeforeFirstArg:
   Enabled: false
 
 Lint/UnusedBlockArgument:
@@ -30,6 +34,9 @@ Lint/UselessAssignment:
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Metrics/AbcSize:
+  Enabled: false
 
 Metrics/LineLength:
   Enabled: false

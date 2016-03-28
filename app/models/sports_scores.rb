@@ -32,11 +32,10 @@ class SportsScores
         winner = espn_game[:home_score] < espn_game[:away_score] ? away_team : home_team
 
         tree = tournament.tree
-        slot = (tree.size - 1).downto(1).find do |slot|
-          g = tree.at(slot)
+        slot = (tree.size - 1).downto(1).find do |s|
+          g = tree.at(s)
           g.first_team == home_team && g.second_team == away_team || g.first_team == away_team && g.second_team == home_team
         end
-
 
         if slot.present?
           game = tree.at(slot)
@@ -55,18 +54,18 @@ class SportsScores
     if started_games.present?
       5.minutes.from_now
     elsif not_started_games.present?
-      not_started_games.map {|g| g[:game_date] }.sort.first
+      not_started_games.map { |g| g[:game_date] }.sort.first
     else
       Date.tomorrow.in_time_zone("America/New_York").noon
     end
   end
 
   def finished_games
-    api_response.select {|espn_game| espn_game[:status] =~ /Final/}
+    api_response.select { |espn_game| espn_game[:status] =~ /Final/ }
   end
 
   def started_games
-    api_response.select {|espn_game| espn_game[:status] =~ /Half/}
+    api_response.select { |espn_game| espn_game[:status] =~ /Half/ }
   end
 
   def not_started_games

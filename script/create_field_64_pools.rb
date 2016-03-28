@@ -3,102 +3,101 @@ previous_tournament_name = 1.year.ago.year.to_s + name_suffix
 previous_tournament = Tournament.find_by name: previous_tournament_name
 
 tournament = Tournament.create(
-    name: Time.now.year.to_s + name_suffix,
-    num_rounds: 6,
-    tip_off: Time.parse("March 17, #{Time.now.year} 16:00 UTC")
+  name: Time.current.year.to_s + name_suffix,
+  num_rounds: 6,
+  tip_off: Time.parse("March 17, #{Time.current.year} 16:00 UTC").utc
 )
 
 [
-    { name: "FIELD 64", start: "March 17", end: "March 18" },
-    { name: "FIELD 32", start: "March 19", end: "March 20" },
-    { name: "SWEET 16", start: "March 24", end: "March 25" },
-    { name: "ELITE EIGHT", start: "March 26", end: "March 27" },
-    { name: "FINAL FOUR", start: "April 2", end: "April 2" },
-    { name: "CHAMPION", start: "April 4", end: "April 4" },
+  { name: "FIELD 64", start: "March 17", end: "March 18" },
+  { name: "FIELD 32", start: "March 19", end: "March 20" },
+  { name: "SWEET 16", start: "March 24", end: "March 25" },
+  { name: "ELITE EIGHT", start: "March 26", end: "March 27" },
+  { name: "FINAL FOUR", start: "April 2", end: "April 2" },
+  { name: "CHAMPION", start: "April 4", end: "April 4" }
 ].each_with_index do |round, i|
   tournament.rounds.create(
-      number: i + 1,
-      name: round[:name],
-      start_date: Time.parse("#{round[:start]}, #{Time.now.year} 12:00 UTC"),
-      end_date: Time.parse("#{round[:end]}, #{Time.now.year} 12:00 UTC")
+    number: i + 1,
+    name: round[:name],
+    start_date: Time.parse("#{round[:start]}, #{Time.current.year} 12:00 UTC").utc,
+    end_date: Time.parse("#{round[:end]}, #{Time.current.year} 12:00 UTC").utc
   )
 end
 
 team_name_hash = {
-    Team::SOUTH => [
-        "Kansas",
-        "Villanova",
-        "Miami",
-        "California",
-        "Maryland",
-        "Arizona",
-        "Iowa",
-        "Colorado",
-        "UConn",
-        "Temple",
-        "PlayIn S11",
-        "S Dak St",
-        "Hawaii",
-        "Buffalo",
-        "UNC-Ash",
-        "Austin Py"
-    ],
-    Team::WEST => [
-        "Oregon",
-        "Oklahoma",
-        "Texas A&M",
-        "Duke",
-        "Baylor",
-        "Texas",
-        "Oregon St",
-        "St Joe's",
-        "Cincinnati",
-        "VCU",
-        "N Iowa",
-        "Yale",
-        "UNC Wilm",
-        "Green Bay",
-        "Cal Baker",
-        "PlayIn W16"
-    ],
-    Team::EAST => [
-        "N Carolina",
-        "Xaiver",
-        "W Virginia",
-        "Kentucky",
-        "Indiana",
-        "Notre Dame",
-        "Wisconsin",
-        "USC",
-        "Providence",
-        "Pittsburgh",
-        "PlayIn E11",
-        "Chattanooga",
-        "Stony Brook",
-        "SF Austin",
-        "Weber St",
-        "PlayIn E16"
-    ],
-    Team::MIDWEST => [
-        "Virginia",
-        "Michigan St",
-        "Utah",
-        "Iowa St",
-        "Purdue",
-        "Seton Hall",
-        "Dayton",
-        "Texas Tech",
-        "Butler",
-        "Syracuse",
-        "Gonzaga",
-        "Little Rock",
-        "Iona",
-        "Fresno St",
-        "Mid Tenn",
-        "Hampton"
-    ]
+  Team::SOUTH => [
+    "Kansas",
+    "Villanova",
+    "Miami",
+    "California",
+    "Maryland",
+    "Arizona",
+    "Iowa",
+    "Colorado",
+    "UConn",
+    "Temple",
+    "PlayIn S11",
+    "S Dak St",
+    "Hawaii",
+    "Buffalo",
+    "UNC-Ash",
+    "Austin Py"
+  ],
+  Team::WEST => [
+    "Oregon",
+    "Oklahoma",
+    "Texas A&M",
+    "Duke",
+    "Baylor",
+    "Texas",
+    "Oregon St",
+    "St Joe's",
+    "Cincinnati",
+    "VCU",
+    "N Iowa",
+    "Yale",
+    "UNC Wilm",
+    "Green Bay",
+    "Cal Baker",
+    "PlayIn W16"
+  ],
+  Team::EAST => [
+    "N Carolina",
+    "Xaiver",
+    "W Virginia",
+    "Kentucky",
+    "Indiana",
+    "Notre Dame",
+    "Wisconsin",
+    "USC",
+    "Providence",
+    "Pittsburgh",
+    "PlayIn E11",
+    "Chattanooga",
+    "Stony Brook",
+    "SF Austin",
+    "Weber St",
+    "PlayIn E16"
+  ],
+  Team::MIDWEST => [
+    "Virginia",
+    "Michigan St",
+    "Utah",
+    "Iowa St",
+    "Purdue",
+    "Seton Hall",
+    "Dayton",
+    "Texas Tech",
+    "Butler",
+    "Syracuse",
+    "Gonzaga",
+    "Little Rock",
+    "Iona",
+    "Fresno St",
+    "Mid Tenn",
+    "Hampton"
+  ]
 }
-
 
 team_name_hash.each do |region, team_names|
   team_names.each_with_index do |name, i|

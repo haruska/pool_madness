@@ -22,7 +22,7 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
-WebMock.disable_net_connect!(:allow_localhost => true)
+WebMock.disable_net_connect!(allow_localhost: true)
 
 RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

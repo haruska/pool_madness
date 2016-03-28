@@ -183,7 +183,7 @@ RSpec.describe Game, type: :model do
 
     context "with a possible_game" do
       let(:possible_game) { Game.new(tournament.tree, subject.slot) }
-      let(:result) { subject.points(possible_game)}
+      let(:result) { subject.points(possible_game) }
       let(:expected) { BracketPoint::POINTS_PER_ROUND[1] + subject.team.seed }
 
       context "and the winner was picked" do
@@ -260,9 +260,8 @@ RSpec.describe Game, type: :model do
     subject { bracket.tree.round_for(1).sample }
 
     context "the game has a winner" do
-
       before do
-        tournament.update_game!(slot, [0,1].sample)
+        tournament.update_game!(slot, [0, 1].sample)
         expect(tournament.tree.at(slot).team).to be_present
       end
 
@@ -273,7 +272,7 @@ RSpec.describe Game, type: :model do
     end
 
     context "the game does not have a winner" do
-      let(:tournament_game) { tournament.tree.at(subject.slot)  }
+      let(:tournament_game) { tournament.tree.at(subject.slot) }
 
       before do
         expect(tournament_game.team).to_not be_present

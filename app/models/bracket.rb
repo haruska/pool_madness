@@ -22,9 +22,9 @@ class Bracket < ActiveRecord::Base
   enum payment_state: %i(unpaid promised paid)
 
   def status
-    if self.incomplete?
+    if incomplete?
       :incomplete
-    elsif self.unpaid?
+    elsif unpaid?
       :unpaid
     else
       :ok
@@ -58,7 +58,7 @@ class Bracket < ActiveRecord::Base
     slot_count = 2**3 - 1
     values = (1..slot_count).map { |slot| working_tree.at(slot).value }.uniq.compact
 
-    tournament.teams.where(starting_slot: values).sort_by {|x| values.index(x.starting_slot) * -1}
+    tournament.teams.where(starting_slot: values).sort_by { |x| values.index(x.starting_slot) * -1 }
   end
 
   def tree

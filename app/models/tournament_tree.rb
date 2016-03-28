@@ -1,5 +1,5 @@
 class TournamentTree < BinaryDecisionTree::Tree
-  alias_method :championship, :root
+  alias championship root
   attr_accessor :tournament
 
   def initialize(*args)
@@ -50,16 +50,16 @@ class TournamentTree < BinaryDecisionTree::Tree
   end
 
   def select_games(game_ids = [])
-    game_ids.map {|id| at(id)}
+    game_ids.map { |id| at(id) }
   end
 
   def round_for(round_number)
     select_games(game_ids_for(round_number))
   end
 
-  def ==(obj)
-    obj.class == self.class && obj.depth == depth && obj.tournament == tournament && obj.marshal == marshal
+  def ==(other)
+    other.class == self.class && other.depth == depth && other.tournament == tournament && other.marshal == marshal
   end
 
-  alias_method :eql?, :==
+  alias eql? ==
 end

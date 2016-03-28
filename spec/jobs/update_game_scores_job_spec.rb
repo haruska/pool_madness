@@ -7,7 +7,5 @@ RSpec.describe UpdateGameScoresJob, type: :job do
   let(:bracket) { create(:bracket, :completed, pool: pool) }
 
   describe "#perform" do
-
   end
 end
-

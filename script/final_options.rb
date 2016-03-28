@@ -16,9 +16,7 @@ Tournament.current.each do |tournament|
 
       final_four_str = winners.uniq.reverse.join(", ")
 
-      brackets = outcome.get_best_possible(pool).select do |_, rank|
-        rank == 0
-      end.map {|bracket, _| bracket.name}
+      brackets = outcome.get_best_possible(pool).select { |_, rank| rank == 0 }.map { |bracket, _| bracket.name }
 
       bracket_str = brackets.sort.join(", ")
 
@@ -29,12 +27,12 @@ Tournament.current.each do |tournament|
     end
 
     File.open("#{pool.name.downcase.underscore}_possible.txt", "w") do |f|
-      bracket_winner_hash.keys.sort.each do |bracket_str|
-        f.puts bracket_str
-        f.puts '========================================='
-        winners_arr = bracket_winner_hash[bracket_str]
-        winners_arr.sort.each do |final_four_str|
-          f.puts final_four_str
+      bracket_winner_hash.keys.sort.each do |bracket_string|
+        f.puts bracket_string
+        f.puts "========================================="
+        winners_arr = bracket_winner_hash[bracket_string]
+        winners_arr.sort.each do |final_four_string|
+          f.puts final_four_string
         end
         f.puts
         f.puts

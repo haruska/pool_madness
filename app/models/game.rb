@@ -1,8 +1,8 @@
 class Game < BinaryDecisionTree::Node
-  alias_method :game_one, :left
-  alias_method :game_two, :right
-  alias_method :next_game, :parent
-  alias_method :id, :slot
+  alias game_one left
+  alias game_two right
+  alias next_game parent
+  alias id slot
 
   def round
     rounds = (1..tournament_tree.depth).to_a.reverse
@@ -46,7 +46,7 @@ class Game < BinaryDecisionTree::Node
     team_by_slot(self)
   end
 
-  alias_method :winner, :team
+  alias winner team
 
   def loser
     return nil unless winner.present?
@@ -71,11 +71,11 @@ class Game < BinaryDecisionTree::Node
     end
   end
 
-  def ==(obj)
-    obj.class == self.class && obj.tree == tree && obj.slot == slot && obj.value == value
+  def ==(other)
+    other.class == self.class && other.tree == tree && other.slot == slot && other.value == value
   end
 
-  alias_method :eql?, :==
+  alias eql? ==
 
   private
 

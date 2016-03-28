@@ -10,7 +10,7 @@ FactoryGirl.define do
 
       before(:create) do |bracket|
         bracket.tournament.num_games.times do |i|
-          bracket.update_choice(i+1, [0,1].sample)
+          bracket.update_choice(i + 1, [0, 1].sample)
         end
       end
     end

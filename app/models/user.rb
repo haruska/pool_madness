@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
     else
       customer = Stripe::Customer.create(email: email)
       self.stripe_customer_id = customer.id
-      self.save!
+      save!
       customer
     end
   end

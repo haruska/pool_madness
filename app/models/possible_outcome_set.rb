@@ -38,19 +38,18 @@ class PossibleOutcomeSet
     slot_bits = fixed_slot_bits
     tournament.num_games.times do |i|
       slot = 1 << i
-      if fixed_slot_mask & slot == 0 #if not already played
-        bit = variable_bits & 1
-        variable_bits = variable_bits >> 1
+      next unless fixed_slot_mask & slot == 0 # if not already played
+      bit = variable_bits & 1
+      variable_bits = variable_bits >> 1
 
-        slot_bits = slot_bits | (bit << i)
-      end
+      slot_bits |= (bit << i)
     end
     slot_bits
   end
 
   def all_outcomes
-    (2**tournament.num_games_remaining).times.map do |variable_bits|
-        outcome_for(slot_bits_for(variable_bits))
+    Array.new((2**tournament.num_games_remaining)) do |variable_bits|
+      outcome_for(slot_bits_for(variable_bits))
     end
   end
 

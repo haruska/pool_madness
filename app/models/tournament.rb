@@ -11,16 +11,14 @@ class Tournament < ActiveRecord::Base
   scope :archived, -> { where("tip_off < ?", 6.months.ago) }
 
   def started?
-    DateTime.now > tip_off
+    DateTime.current > tip_off
   end
 
   def start_eliminating?
     num_games_remaining < 16
   end
 
-  def championship
-    tree.championship
-  end
+  delegate :championship, to: :tree
 
   def num_games
     2**num_rounds - 1
@@ -88,15 +86,15 @@ class Tournament < ActiveRecord::Base
     (1..num_games).map do |game_id|
       node = working_tree.at(game_id)
       {
-          id: game_id,
-          teamOne: team_hash(node.team_one),
-          teamTwo: team_hash(node.team_two),
-          winningTeam: team_hash(node.team),
-          gameOneId: node.left_position,
-          gameTwoId: node.right_position,
-          nextGameId: node.next_game_slot,
-          nextSlot: node.next_slot,
-          choice: node.decision
+        id: game_id,
+        teamOne: team_hash(node.team_one),
+        teamTwo: team_hash(node.team_two),
+        winningTeam: team_hash(node.team),
+        gameOneId: node.left_position,
+        gameTwoId: node.right_position,
+        nextGameId: node.next_game_slot,
+        nextSlot: node.next_slot,
+        choice: node.decision
       }
     end
   end
