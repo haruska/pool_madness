@@ -67,6 +67,7 @@ end
 
 group :production do
   gem "hirefire-resource"
+  gem "postmark-rails"
 end
 
 group :staging do
