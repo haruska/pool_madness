@@ -2,6 +2,7 @@ class PossibleOutcomeSet
   include ActiveAttr::Model
 
   attribute :tournament
+  attribute :exclude_eliminated
 
   attribute :teams_attr
   attribute :tournament_tree_attr
@@ -47,6 +48,12 @@ class PossibleOutcomeSet
     slot_bits
   end
 
+  def all_outcomes
+    (2**tournament.num_games_remaining).times.map do |variable_bits|
+        outcome_for(slot_bits_for(variable_bits))
+    end
+  end
+
   def outcome_for(slot_bits)
     PossibleOutcome.new possible_outcome_set: self, game_decisions: to_game_decisions(slot_bits)
   end
@@ -54,7 +61,7 @@ class PossibleOutcomeSet
   def pool_brackets_cache(pool)
     self.pool_brackets_cache_attr ||= {}
     if pool_brackets_cache_attr[pool.id].nil?
-      pool_brackets_cache_attr[pool.id] = pool.brackets.to_a
+      pool_brackets_cache_attr[pool.id] = exclude_eliminated ? pool.bracket_points.established.map(&:bracket) : pool.brackets.to_a
     end
     pool_brackets_cache_attr[pool.id]
   end

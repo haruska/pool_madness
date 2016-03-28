@@ -1,0 +1,11 @@
+- content_for(:title, "Possible Outcomes")
+
+= cache cache_key_for_possibilities(@pool) do
+  - all_outcomes_by_winners(@outcome_set, @pool).each do |best_possible, championships|
+    - championships.each do |championship|
+      %h3 #{championship.winner.name} BEATS #{championship.loser.name}
+    %ul
+      - best_possible.each_with_index do |brackets, i|
+        %li
+          #{(i + 1).ordinalize}:
+          = brackets.map(&:name).join(", ")

@@ -21,6 +21,13 @@ class PossibleOutcome
     result.sort_by(&:last).reverse
   end
 
+  def best_possible_by_rank(pool)
+    get_best_possible(pool).each_with_object([]) do |(bracket, rank), rb|
+      rb[rank] ||= []
+      rb[rank] << bracket
+    end
+  end
+
   def get_best_possible(pool)
     s_brackets = sorted_brackets(pool)
 

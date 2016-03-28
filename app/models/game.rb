@@ -46,6 +46,13 @@ class Game < BinaryDecisionTree::Node
     team_by_slot(self)
   end
 
+  alias_method :winner, :team
+
+  def loser
+    return nil unless winner.present?
+    ([first_team, second_team] - [winner]).first
+  end
+
   def points(possible_game = nil)
     working_game = possible_game || tournament_game
 

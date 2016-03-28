@@ -1,0 +1,13 @@
+.possibilities-controller {
+  &.show-action {
+    .wrapper {
+      h3 {
+        margin-bottom: 0px;
+      }
+
+      ul {
+        padding: $gutter;
+      }
+    }
+  }
+}
