@@ -8,7 +8,7 @@ class CalculatePossibleOutcomeJob < ActiveJob::Base
       tournament = Tournament.find(tournament_id)
       pools = tournament.pools.includes(:brackets)
       outcome_set = PossibleOutcomeSet.new(tournament: tournament)
-      max_variable_bits = outcome_set.to_play_games_mask
+      max_variable_bits = 2**tournament.num_games_remaining
 
       variable_bits = pop_bits(tournament_id, timestamp)
 
