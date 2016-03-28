@@ -70,10 +70,6 @@ group :production do
   gem "postmark-rails"
 end
 
-group :staging do
-  gem "recipient_interceptor"
-end
-
 group :development do
   gem "bullet"
   gem "lol_dba"

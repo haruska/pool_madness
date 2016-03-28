@@ -260,8 +260,6 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.1.0)
     rake (11.1.2)
-    recipient_interceptor (0.1.2)
-      mail
     redis (3.2.2)
     refills (0.1.0)
     responders (2.1.2)
@@ -422,7 +420,6 @@ DEPENDENCIES
   rails-erd
   rails_12factor
   rails_jskit
-  recipient_interceptor
   redis
   refills
   rspec-rails
