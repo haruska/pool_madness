@@ -1,6 +1,10 @@
 .possibilities-controller {
   &.show-action {
     .wrapper {
+      h1 {
+        margin-bottom: $gutter;
+      }
+      
       h3 {
         margin-bottom: 0px;
       }
