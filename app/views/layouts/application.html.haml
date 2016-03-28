@@ -5,7 +5,7 @@
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
     %meta{:content => content_for?(:description) ? yield(:description) : "Pool Madness", :name => "description"}/
     %title= content_for?(:title) ? yield(:title) : "Pool Madness"
-    %link{:href => "/favicon.png", :rel => "shortcut icon", :type => "image/png"}/
+    = render "layouts/favicon"
     = stylesheet_link_tag "//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
     = stylesheet_link_tag "application", :media => "all"
     = csrf_meta_tags
