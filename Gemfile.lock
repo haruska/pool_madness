@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/haruska/active_attr.git
-  revision: 7977578acabcd57e5571fcaf373c3045ad8ce29f
-  specs:
-    active_attr (0.8.5)
-      activemodel (>= 3.0.2, < 5.0)
-      activesupport (>= 3.0.2, < 5.0)
-
-GIT
   remote: git://github.com/haruska/espn-scraper.git
   revision: a98d6a439edcab8cfcc4118b6a1f9d3e8f289720
   specs:
@@ -38,6 +30,11 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_attr (0.9.0)
+      activemodel (>= 3.0.2, < 5.1)
+      activesupport (>= 3.0.2, < 5.1)
+    active_attr_extended (0.9.0)
+      active_attr (>= 0.6.0)
     activejob (4.2.6)
       activesupport (= 4.2.6)
       globalid (>= 0.3.0)
@@ -375,7 +372,7 @@ PLATFORMS
 
 DEPENDENCIES
   actionpack-action_caching
-  active_attr!
+  active_attr_extended
   airbrake
   awesome_print
   better_errors

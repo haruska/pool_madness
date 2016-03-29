@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "2.2.4"
 
 gem "actionpack-action_caching"
-gem "active_attr", github: "haruska/active_attr"
+gem "active_attr_extended"
 gem "binary_decision_tree"
 gem "bitters", "~> 1.2"
 gem "bourbon", "~> 4.2"
