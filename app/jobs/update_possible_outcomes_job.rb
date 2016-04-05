@@ -7,7 +7,7 @@ class UpdatePossibleOutcomesJob < ActiveJob::Base
     timestamp = Time.now.to_i
     outcome_set_key = self.class.outcome_set_key(tournament_id, timestamp)
 
-    Sidekiq.redis { |redis| redis.set outcome_set_key, 0 }
+    Sidekiq.redis { |redis| redis.set outcome_set_key, -1 }
 
     5.times { CalculatePossibleOutcomeJob.perform_later(tournament_id, timestamp, opts) }
   end
