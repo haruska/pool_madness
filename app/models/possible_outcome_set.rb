@@ -9,6 +9,7 @@ class PossibleOutcomeSet
   attribute :pool_brackets_cache_attr
   attribute :bracket_trees_cache_attr
   attribute :all_games_mask_attr
+  attribute :variable_slots_attr
 
   def teams
     self.teams_attr ||= tournament.teams.each_with_object({}) { |team, acc| acc[team.id] = team }
@@ -34,15 +35,25 @@ class PossibleOutcomeSet
     2**tournament.num_games_remaining - 1
   end
 
+  def variable_slots
+    if variable_slots_attr.nil?
+      self.variable_slots_attr ||= []
+      tournament.num_games.times do |i|
+        slot = 1 << i
+        self.variable_slots_attr << i if fixed_slot_mask & slot == 0 # if not already played
+      end
+    end
+
+    variable_slots_attr
+  end
+
   def slot_bits_for(variable_bits)
     slot_bits = fixed_slot_bits
-    tournament.num_games.times do |i|
-      slot = 1 << i
-      next unless fixed_slot_mask & slot == 0 # if not already played
+    variable_slots.each do |slot|
       bit = variable_bits & 1
-      variable_bits = variable_bits >> 1
+      slot_bits |= (bit << slot)
 
-      slot_bits |= (bit << i)
+      variable_bits = variable_bits >> 1
     end
     slot_bits
   end
