@@ -139,6 +139,10 @@ GEM
       ruby-progressbar (~> 1.4)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    graphql (0.10.9)
+      parslet (~> 1.6)
+    graphql-relay (0.6.1)
+      graphql (~> 0.8)
     haml (4.0.7)
       tilt
     hashdiff (0.3.0)
@@ -197,6 +201,8 @@ GEM
     orm_adapter (0.5.0)
     parser (2.3.0.7)
       ast (~> 2.2)
+    parslet (1.7.1)
+      blankslate (>= 2.0, <= 4.0)
     pg (0.18.4)
     postmark (1.7.1)
       json
@@ -396,6 +402,8 @@ DEPENDENCIES
   faker
   font-awesome-rails
   fuubar
+  graphql
+  graphql-relay
   haml
   hirefire-resource
   httparty
