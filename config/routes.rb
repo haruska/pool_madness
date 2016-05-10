@@ -1,9 +1,19 @@
 require "sidekiq/web"
 
 PoolMadness::Application.routes.draw do
-  root to: "home#index"
+  if defined?(GraphiqlRails::Engine)
+    mount GraphiqlRails::Engine => "/graphiql", defaults: { endpoint: "/graphql" }
+    mount GraphiqlRails::Engine => "/authed_graphiql", defaults: { endpoint: "/authed_graphql" }, as: :authed_graphiql
+    post "/authed_graphql" => "pages#authed_graphql"
+  end
 
   devise_for :users, path: "auth", path_names: { sign_in: "login", sign_up: "signup" }
+
+  authenticate :user, ->(u) { u.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
+  end
+
+  root to: "home#index"
 
   resource :user, only: [:show, :edit, :update], as: :profile
 
@@ -45,7 +55,8 @@ PoolMadness::Application.routes.draw do
     end
   end
 
-  authenticate :user, ->(u) { u.admin? } do
-    mount Sidekiq::Web => "/sidekiq"
-  end
+  post "/graphql" => "pages#graphql"
+  # root to: "pages#home"
+  get "/*path" => "pages#home"
+
 end

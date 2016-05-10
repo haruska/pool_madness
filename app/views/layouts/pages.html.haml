@@ -10,14 +10,8 @@
     = stylesheet_link_tag "application", :media => "all"
     = csrf_meta_tags
     = yield(:head)
-  %body#application-layout{:class => "#{controller_name}-controller #{action_name}-action"}
-    = render "layouts/header"
-    = render "layouts/menu"
-    = render "layouts/messages"
-    %section#content.container
-      .wrapper
-        = yield
-    = render "layouts/footer"
-    = javascript_include_tag "staticapp"
-    = jskit
+  %body
+    %main#outer-container
+      = yield
+    = javascript_include_tag "application"
     = render partial: "layouts/analytics_js" if Rails.env.production?
