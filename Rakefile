@@ -9,6 +9,26 @@ if Rails.env.development? || Rails.env.test?
   # Jasmine
   require "rspec/core/rake_task"
 
+  desc "Build Webpack bundle"
+  task :webpack do
+    puts "\nRunning `webpack`"
+    puts `./node_modules/.bin/webpack`
+    puts "Webpack finished building\n\n"
+  end
+
+  desc "Run eslint"
+  task :eslint do
+    puts
+    puts "Running eslint..."
+    output = `./node_modules/.bin/eslint -c .eslintrc.json ./web_client`
+    if output.blank?
+      puts "eslint complete"
+    else
+      puts output
+      exit 1
+    end
+  end
+
   namespace :spec do
     desc "runs integration tests only"
     RSpec::Core::RakeTask.new(:integration) do |t|
@@ -38,8 +58,7 @@ if Rails.env.development? || Rails.env.test?
     puts "Finished generating graphql schema json\n"
   end
 
-  # task(:default).clear.enhance(%w(rubocop spec))
-  task(:default).clear.enhance(%w(spec))
+  task(:default).clear.enhance(%w(rubocop eslint graphql_schema webpack spec))
 end
 
 if Rails.env.generator?

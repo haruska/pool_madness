@@ -1,6 +1,6 @@
 module Queries
   NodeInterface = GraphQL::Relay::GlobalNodeIdentification.define do
-    object_from_id lambda { |id, context|
+    object_from_id lambda { |id, _context|
       type_name, id = NodeInterface.from_global_id(id)
       Object.const_get(type_name).find(id)
     }

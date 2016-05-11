@@ -58,5 +58,4 @@ PoolMadness::Application.routes.draw do
   post "/graphql" => "pages#graphql"
   # root to: "pages#home"
   get "/*path" => "pages#home"
-
 end

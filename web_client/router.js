@@ -1,7 +1,5 @@
 import React from 'react'
-import { Router, Route, IndexRoute, Link, browserHistory, applyRouterMiddleware } from 'react-router'
-import { Relay } from 'react-relay'
-import { useRelay } from 'react-router-relay'
+import { Router, Route, browserHistory } from 'react-router'
 
 import Layout from './components/layout/layout'
 import App from './components/app'
