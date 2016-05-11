@@ -21,8 +21,21 @@ RSpec.describe Queries::RootType do
     let(:args) { { "model_id" => pool.id } }
 
     context "signed in" do
-      it "is a pool" do
-        expect(subject.resolve(nil, args, current_user: user, current_ability: ability)).to eq(pool)
+      context "as a user with Pool access" do
+        it "is the pool" do
+          expect(subject.resolve(nil, args, current_user: user, current_ability: ability)).to eq(pool)
+        end
+      end
+
+      context "as a user without access" do
+        let(:another_user) { create(:user) }
+        let(:another_ability) { Ability.new(another_user) }
+
+        it "is an error" do
+          expect do
+            subject.resolve(nil, args, current_user: another_user, current_ability: another_ability)
+          end.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
     end
 

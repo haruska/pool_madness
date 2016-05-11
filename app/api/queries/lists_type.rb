@@ -6,7 +6,11 @@ module Queries
     field :pools, !PoolsType do
       description "All pools associated with current user"
       resolve lambda { |_object, _args, context|
-        Pool.current.accessible_by(context[:current_ability])
+        if context[:current_ability]
+          Pool.current.accessible_by(context[:current_ability])
+        else
+          GraphQL::ExecutionError.new("You must be signed in to view this information")
+        end
       }
     end
   end

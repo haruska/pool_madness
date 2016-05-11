@@ -177,5 +177,9 @@ FactoryGirl.define do
     trait :not_started do
       tip_off { 4.days.from_now }
     end
+
+    trait :archived do
+      tip_off { 7.months.ago }
+    end
   end
 end
