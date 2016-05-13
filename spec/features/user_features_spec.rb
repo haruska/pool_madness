@@ -48,7 +48,7 @@ RSpec.describe "User creation, authentication, deletion", type: :feature, js: tr
       fill_in "user[email]", with: subject.email
       fill_in "user[password]", with: password
       click_button "Login"
-      expect(page).to have_content("Signed in successfully")
+      expect(page).to have_content("Pools")
     end
   end
   #

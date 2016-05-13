@@ -4,8 +4,7 @@ class PoolsController < ApplicationController
   load_and_authorize_resource only: [:show]
 
   def index
-    @pools = Pool.accessible_by(current_ability)
-    @pools = params[:archived] ? @pools.archived : @pools.current
+    @pools = Pool.accessible_by(current_ability).archived
 
     redirect_to invite_code_path if @pools.empty?
   end

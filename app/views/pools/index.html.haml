@@ -1,8 +1,5 @@
 - content_for(:title) do
-  - if params[:archived]
-    Archived Pools
-  - else
-    Pools
+  Archived Pools
 
 - if @pools.empty?
   %p You are not a member of any tournament pools.
@@ -10,9 +7,6 @@
   .pools= render @pools
 
 .actions
-  - if params[:archived]
-    = link_to pools_path, class: :button do
-      %i.fa.fa-arrow-left
-      Current Pools
-  - else
-    = link_to "Previous Years", pools_path(archived: true), class: [:button, :minor]
+  = link_to pools_path, class: :button do
+    %i.fa.fa-arrow-left
+    Current Pools

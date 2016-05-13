@@ -20,7 +20,7 @@ PoolMadness::Application.routes.draw do
   match "pools/join", to: "pools#join", via: :post, as: "join_pool"
   match "pools/invite_code", to: "pools#invite_code", via: :get, as: "invite_code"
 
-  resources :pools, only: [:index, :show] do
+  resources :pools, only: [:show] do
     member do
       get :rules
       get :payments
@@ -57,5 +57,9 @@ PoolMadness::Application.routes.draw do
 
   post "/graphql" => "pages#graphql"
   # root to: "pages#home"
+
+  get "/pools" => "pages#home", as: :pools
+  get "/archived_pools" => "pools#index", as: :archived_pools
+
   get "/*path" => "pages#home"
 end

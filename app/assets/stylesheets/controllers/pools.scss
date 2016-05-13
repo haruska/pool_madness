@@ -1,69 +1,50 @@
-.pools-controller {
-  &.index-action {
-    .page-title {
-      display: none
-    }
-
-    .wrapper {
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-
-    .pools {
-      a {
-        color: $dark-gray;
-        display: block;
-      }
-      margin: $gutter 0;
-    }
-
-    .pool {
-      width: 100%;
-      padding: ($gutter/2) 0;
-      border-top: 1px solid $medium-gray;
-
-
-      &:last-child {
-        border-bottom: 1px solid $medium-gray;
-      }
-
-      ul {
-        margin: 0 $gutter;
-      }
-
-      .name {
-        font-weight: bold;
-        font-size: large;
-        color: $action-color;
-      }
-
-      .tournament-name {
-        font-size: small;
-      }
-
-      .admins, .brackets {
-        display: none;
-      }
-
-      .invite-code {
-        font-size: small;
-        
-        .code {
-          font-weight: bold;
-        }
-      }
-    }
-  }
-
-  .invite {
+.pools {
+  a {
+    color: $dark-gray;
     display: block;
-    text-align: center;
+  }
+  margin: $gutter 0;
 
-    a {
-      display: inline-block;
+
+  .pool {
+    width: 100%;
+    padding: ($gutter/2) 0;
+    border-top: 1px solid $medium-gray;
+
+
+    &:last-child {
+      border-bottom: 1px solid $medium-gray;
+    }
+
+    ul {
+      margin: 0 $gutter;
+    }
+
+    .name {
+      font-weight: bold;
+      font-size: large;
+      color: $action-color;
+    }
+
+    .tournament-name {
+      font-size: small;
+    }
+
+    .admins, .brackets {
+      display: none;
+    }
+
+    .invite-code {
+      font-size: small;
+
+      .code {
+        font-weight: bold;
+      }
     }
   }
+}
 
+.pools-controller {
   &.invite_code-action {
     #content {
       text-align: center;
