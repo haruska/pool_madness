@@ -59,7 +59,5 @@ PoolMadness::Application.routes.draw do
   # root to: "pages#home"
 
   get "/pools" => "pages#home", as: :pools
-  get "/archived_pools" => "pools#index", as: :archived_pools
-
   get "/*path" => "pages#home"
 end

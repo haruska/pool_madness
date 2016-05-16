@@ -3,12 +3,6 @@ class PoolsController < ApplicationController
 
   load_and_authorize_resource only: [:show]
 
-  def index
-    @pools = Pool.accessible_by(current_ability).archived
-
-    redirect_to invite_code_path if @pools.empty?
-  end
-
   def show
     redirect_to pool_brackets_path(@pool)
   end

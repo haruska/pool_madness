@@ -30,15 +30,15 @@ RSpec.describe Queries::ListsType do
         end
 
         it "is a list of the user's pools" do
-          expect(subject.resolve(nil, nil, current_ability: ability)).to match_array(pools)
+          expect(subject.resolve(nil, nil, current_ability: ability)).to match_array(pools + [archived_pool])
+        end
+
+        it "contains previous year's pools" do
+          expect(subject.resolve(nil, nil, current_ability: ability)).to include(archived_pool)
         end
 
         it "does not contain pools the user doesn't belong to" do
           expect(subject.resolve(nil, nil, current_ability: ability)).to_not include(another_pool)
-        end
-
-        it "does not contain previous year's pools" do
-          expect(subject.resolve(nil, nil, current_ability: ability)).to_not include(archived_pool)
         end
       end
 

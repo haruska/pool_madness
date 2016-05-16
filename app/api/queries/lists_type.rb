@@ -7,7 +7,7 @@ module Queries
       description "All pools associated with current user"
       resolve lambda { |_object, _args, context|
         if context[:current_ability]
-          Pool.current.accessible_by(context[:current_ability])
+          Pool.accessible_by(context[:current_ability])
         else
           GraphQL::ExecutionError.new("You must be signed in to view this information")
         end

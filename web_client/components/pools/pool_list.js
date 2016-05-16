@@ -1,5 +1,6 @@
 import React from 'react'
 import Relay from 'react-relay'
+import { size, filter } from 'lodash'
 
 function InviteCode(props) {
   let pool = props.pool
@@ -14,12 +15,9 @@ function InviteCode(props) {
   }
 }
 
-
 function Pool(props) {
   let pool = props.pool
   let poolPath = `/pools/${pool.model_id}`
-
-
 
   return (
     <div className='pool'>
@@ -39,6 +37,12 @@ var Component = React.createClass({
     setPageTitle: React.PropTypes.func.isRequired
   },
 
+  getInitialState() {
+    return {
+      archived: false
+    }
+  },
+
   componentWillMount() {
     this.context.setPageTitle("Pools")
   },
@@ -47,16 +51,57 @@ var Component = React.createClass({
     this.context.setPageTitle()
   },
 
+  currentPools() {
+    return filter(this.props.lists.pools, pool => { return !pool.tournament.archived })
+  },
+
+  archivedPools() {
+    return filter(this.props.lists.pools, pool => { return pool.tournament.archived })
+  },
+
+  hasArchivedPools() {
+    return size(this.archivedPools()) > 0
+  },
+
+  handlePreviousYearsClick() {
+    this.setState({archived: true})
+    this.context.setPageTitle("Archived Pools")
+  },
+
+  handleCurrentPoolsClick() {
+    this.setState({archived: false})
+    this.context.setPageTitle("Pools")
+  },
+
+  poolListButton() {
+    if(this.state.archived) {
+      return (
+        <div className='button' onClick={this.handleCurrentPoolsClick}>
+          <i className='fa fa-arrow-left' />
+          &nbsp;
+          Current Pools
+        </div>
+      )
+    } else if(this.hasArchivedPools()) {
+      return <div className='button minor' onClick={this.handlePreviousYearsClick}>Previous Years</div>
+    }
+  },
+
   render() {
-    let pools = this.props.lists.pools
-    return <div className='pool-list'>
-      <div className='pools'>
-        {pools.map(pool => <Pool key={pool.id} pool={pool} />)}
+    let pools = this.state.archived ? this.archivedPools() : this.currentPools()
+
+    if(size(pools) < 1) {
+      return <div className='pool-list'><p>You are not a member of any tournament pools.</p></div>
+    } else {
+      return <div className='pool-list'>
+        <div className='pools'>
+          {pools.map(pool => <Pool key={pool.id} pool={pool}/>)}
+        </div>
+        <div className='actions'>
+          {this.poolListButton()}
+        </div>
       </div>
-      <div className='actions'>
-        <a className='button minor' href='/archived_pools'>Previous Years</a>
-      </div>
-    </div>
+    }
   }
 })
 
@@ -72,6 +117,7 @@ export default Relay.createContainer(Component, {
           tournament {
             id
             name
+            archived
             tip_off
           }
         }

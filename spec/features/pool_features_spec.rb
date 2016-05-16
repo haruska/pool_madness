@@ -9,6 +9,17 @@ RSpec.describe "Pools", js: true do
     let(:user) { create(:pool_user, pool: pool).user }
     let!(:archived_pool_user) { create(:pool_user, pool: archived_pool, user: user) }
 
+    context "with no current pools" do
+      before do
+        sign_in create(:user)
+        visit "/"
+      end
+
+      it "informs that you are not a member of any pools" do
+        expect(page).to have_text("You are not a member of any tournament pools.")
+      end
+    end
+
     context "current pools" do
       before do
         sign_in user
