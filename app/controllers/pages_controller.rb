@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
   respond_to :json
   skip_before_filter :verify_authenticity_token
+  before_action :authenticate_user!, only: [:graphql]
 
   def home
     respond_to { |f| f.html { render layout: "pages" } }

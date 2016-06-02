@@ -14,14 +14,13 @@
         %li= link_to "Other Pools", pools_path
       - else
         %li= link_to "All Pools", root_path
-        %li= link_to "Archived Pools", archived_pools_path
 
       - if @tournament.present? && can?(:manage, @tournament)
         %li= link_to "Update Scores", update_bracket_scores_admin_tournament_path(@tournament), method: 'patch'
 
       %li= link_to "Enter Invite Code", invite_code_path
-      %li= link_to 'Profile', profile_path
-      %li= link_to 'Logout', destroy_user_session_path, method: 'delete'
+      %li= link_to "Profile", profile_path
+      %li= link_to "Logout", destroy_user_session_path
     - else
       %li= link_to "Login", new_user_session_path
       %li= link_to "Sign Up", new_user_registration_path

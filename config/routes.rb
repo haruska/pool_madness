@@ -1,10 +1,8 @@
 require "sidekiq/web"
 
 PoolMadness::Application.routes.draw do
-  if defined?(GraphiqlRails::Engine)
-    mount GraphiqlRails::Engine => "/graphiql", defaults: { endpoint: "/graphql" }
-    mount GraphiqlRails::Engine => "/authed_graphiql", defaults: { endpoint: "/authed_graphql" }, as: :authed_graphiql
-    post "/authed_graphql" => "pages#authed_graphql"
+  if defined?(GraphiQL::Rails::Engine)
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
 
   devise_for :users, path: "auth", path_names: { sign_in: "login", sign_up: "signup" }

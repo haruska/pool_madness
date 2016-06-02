@@ -91,7 +91,12 @@ var Component = React.createClass({
     let pools = this.state.archived ? this.archivedPools() : this.currentPools()
 
     if(size(pools) < 1) {
-      return <div className='pool-list'><p>You are not a member of any tournament pools.</p></div>
+      return <div className='pool-list'>
+        <p className='no-pools'>You are not a member of any tournament pools.</p>
+        <div className='actions'>
+          {this.poolListButton()}
+        </div>
+      </div>
     } else {
       return <div className='pool-list'>
         <div className='pools'>

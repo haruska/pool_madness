@@ -10,13 +10,37 @@ RSpec.describe "Pools", js: true do
     let!(:archived_pool_user) { create(:pool_user, pool: archived_pool, user: user) }
 
     context "with no current pools" do
-      before do
-        sign_in create(:user)
-        visit "/"
+      context "and no previous year pools" do
+        before do
+          sign_in create(:user)
+          visit "/"
+        end
+
+        it "informs that you are not a member of any pools" do
+          expect(page).to have_text("You are not a member of any tournament pools.")
+        end
+
+        it "does not have a link to previous years" do
+          expect(page).to_not have_link("Previous Years")
+        end
       end
 
-      it "informs that you are not a member of any pools" do
-        expect(page).to have_text("You are not a member of any tournament pools.")
+      context "with previous year pools" do
+        let(:old_user) { create(:user) }
+        let!(:pool_user) { create(:pool_user, pool: archived_pool, user: old_user) }
+
+        before do
+          sign_in old_user
+          visit "/pools"
+        end
+
+        it "informs that you are not a member of any pools" do
+          expect(page).to have_text("You are not a member of any tournament pools.")
+        end
+
+        it "has a link to previous years pools" do
+          expect(page).to have_selector(".button", "Previous Years")
+        end
       end
     end
 
@@ -60,8 +84,7 @@ RSpec.describe "Pools", js: true do
       before do
         sign_in user
         visit "/"
-        find(".fa-bars").click
-        click_link "Archived Pools"
+        find(".button", text: "Previous Years").click
       end
 
       it "shows archived pools only" do
@@ -71,7 +94,7 @@ RSpec.describe "Pools", js: true do
 
       it "has a archived title and a link back to current pools" do
         expect(page).to have_text("Archived Pools")
-        expect(page).to have_css("a", text: /current pools/i)
+        expect(page).to have_css(".button", text: /current pools/i)
       end
     end
   end

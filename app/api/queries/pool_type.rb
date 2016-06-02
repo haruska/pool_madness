@@ -6,12 +6,18 @@ module Queries
     interfaces [NodeInterface.interface]
     global_id_field :id
 
-    field :model_id, !types.Int do
-      resolve -> (object, _args, _context) { object.id }
-    end
-
+    field :model_id, !types.Int, property: :id
     field :tournament, !TournamentType
     field :name, !types.String
     field :invite_code, !types.String
+    connection :brackets, BracketType.connection_type do
+      resolve lambda { |pool, _args, context|
+        if pool.started?
+          pool.brackets.includes(:bracket_point).joins(:bracket_point).order("best_possible asc", "points desc", "possible_points desc")
+        else
+          pool.brackets.where(user_id: context[:current_user])
+        end
+      }
+    end
   end
 end
