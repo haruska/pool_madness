@@ -21,7 +21,7 @@ RSpec.describe "Pools", js: true do
         end
 
         it "does not have a link to previous years" do
-          expect(page).to_not have_link("Previous Years")
+          expect(page).to_not have_selector(".button", text: "Previous Years")
         end
       end
 
@@ -39,7 +39,7 @@ RSpec.describe "Pools", js: true do
         end
 
         it "has a link to previous years pools" do
-          expect(page).to have_selector(".button", "Previous Years")
+          expect(page).to have_selector(".button", text: "Previous Years")
         end
       end
     end
