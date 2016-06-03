@@ -11,7 +11,13 @@ module Queries
     field :status, !types.String
     field :points, !types.Int
     field :possible_points, !types.Int
-    field :best_possible_finish, !types.Int, property: :best_possible
+
+    field :best_possible_finish, !types.String do
+      resolve ->(bracket, _args, _context) {
+        bracket.best_possible < 3 ? (bracket.best_possible + 1).ordinalize : "-"
+      }
+    end
+
     connection :final_four, TeamType.connection_type do
       resolve ->(bracket, _args, _context) { bracket.sorted_four }
     end

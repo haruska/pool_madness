@@ -6,6 +6,7 @@ import useRelay from 'react-router-relay'
 import Layout from './components/layout/layout'
 import App from './components/app'
 import PoolList from './components/pools/pool_list'
+import BracketList from './components/brackets/bracket_list'
 
 function NoMatch() {
   return <Layout>The page you are looking for could not be found :(</Layout>
@@ -15,12 +16,21 @@ const ListsQueries = {
   lists: () => Relay.QL`query { lists }`
 }
 
+const BracketListQueries = {
+  pool: () => Relay.QL`
+    query {
+      pool(model_id: $poolId)
+    }
+  `
+}
+
 export default function() {
   return (
     <Router history={browserHistory} render={applyRouterMiddleware(useRelay)} environment={Relay.Store}>
       <Route path="/" component={App}>
         <Route component={Layout}>
           <Route path="pools" component={PoolList} queries={ListsQueries}/>
+          <Route path="pools/:poolId/brackets" component={BracketList} queries={BracketListQueries}/>
         </Route>
         <Route path='*' component={NoMatch}/>
       </Route>

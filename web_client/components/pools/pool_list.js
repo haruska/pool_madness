@@ -1,5 +1,6 @@
 import React from 'react'
 import Relay from 'react-relay'
+import { Link } from 'react-router'
 import { size, filter } from 'lodash'
 
 function InviteCode(props) {
@@ -17,17 +18,17 @@ function InviteCode(props) {
 
 function Pool(props) {
   let pool = props.pool
-  let poolPath = `/pools/${pool.model_id}`
+  let poolPath = `/pools/${pool.model_id}/brackets`
 
   return (
     <div className='pool'>
-      <a href={poolPath}>
+      <Link to={poolPath}>
         <ul>
           <li className='name'>{pool.name} Pool</li>
           <li className='tournament-name'>{pool.tournament.name}</li>
           <InviteCode pool={pool} />
         </ul>
-      </a>
+      </Link>
     </div>
   )
 }
