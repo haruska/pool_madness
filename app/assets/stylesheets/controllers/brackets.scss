@@ -1,3 +1,195 @@
+.bracket-list {
+  padding-top: $gutter;
+  min-width: 220px;
+
+  .large-screen { display: none; }
+  .small-screen { display: block; }
+
+  @include media($large-screen) {
+    .large-screen { display: block; }
+    .small-screen { display: none; }
+  }
+
+  .large-screen {
+    table {
+      font-size: 0.9em;
+      table-layout: auto;
+    }
+
+    h3 {
+      font-size: small;
+      padding-bottom: 25px;
+
+    }
+
+    .actions {
+      padding-top: 25px;
+
+      .payment {
+        display: inline-block;
+        float: right;
+      }
+    }
+
+    .current-user-bracket {
+      background-color: $light-blue;
+    }
+  }
+
+  .small-screen {
+    a {
+      display: block;
+      color: $base-font-color;
+      border-top: 1px solid $medium-gray;
+      &:last-child {
+        border-bottom: 1px solid $medium-gray;
+      }
+    }
+
+    .bracket-attributes {
+      .position {
+        display: inline-block;
+        margin: 0 $gutter/2;
+        vertical-align: top;
+      }
+
+      .bracket-details {
+        display: inline-block;
+        width: calc(100% - 65px);
+      }
+    }
+
+    .bracket-list-header {
+      display: none;
+    }
+
+    .bracket-row {
+      margin: ($gutter/2) 0;
+
+      .name {
+        font-weight: bold;
+      }
+
+      .points {
+        display: block;
+        font-size: 0.9em;
+
+        div {
+          display: inline-block;
+        }
+
+        .total::after {
+          margin-right: 4px;
+          content: " points /";
+        }
+
+        .possible::after {
+          content: " possible";
+        }
+
+      }
+
+      .best-possible {
+        font-size: 0.9em;
+      }
+
+      .final-four-teams {
+        display: block;
+
+        .final-four-team {
+          display: inline-block;
+          font-size: 0.9em;
+          white-space: nowrap;
+          margin-right: 4px;
+
+          &:empty {
+            display: none;
+          }
+
+          &:after {
+            content: ",";
+          }
+
+          &:last-of-type {
+            margin-right: 0px;
+            &:after {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .bracket-details {
+        position: relative;
+      }
+
+      .tie-breaker {
+        font-size: 0.9em;
+        &:before {
+          content: "Tie Breaker: ";
+        }
+
+        &:empty {
+          display: none;
+        }
+      }
+
+      .status {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+      }
+    }
+
+  }
+
+  .current-user-bracket {
+    background-color: $light-blue;
+  }
+
+  button.stripe-button-el {
+    @include appearance(none);
+    -webkit-font-smoothing: antialiased;
+    background-color: $action-color;
+    border-radius: $base-border-radius;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.75em 1em !important;
+    text-decoration: none;
+    user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+
+    //mobile
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+
+    span {
+      display: inline !important;
+      min-height: auto !important;
+      font-size: $base-font-size;
+      font-weight: 600;
+      line-height: 1;
+      background-color: transparent !important;
+      background-image: none !important;
+      box-shadow: none !important;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: darken($action-color, 15%);
+      color: #fff;
+    }
+  }
+
+  .actions {
+    margin: 0 25px;
+  }
+}
+
 .brackets-controller {
 
   //admin

@@ -10,6 +10,7 @@ module Queries
     field :tournament, !TournamentType
     field :name, !types.String
     field :invite_code, !types.String
+    field :display_best, !types.Boolean, property: :display_best?
     connection :brackets, BracketType.connection_type do
       resolve lambda { |pool, _args, context|
         if pool.started?
