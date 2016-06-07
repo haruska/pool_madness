@@ -18,7 +18,7 @@ function InviteCode(props) {
 
 function Pool(props) {
   let pool = props.pool
-  let poolPath = `/pools/${pool.model_id}/brackets`
+  let poolPath = `/pools/${pool.model_id}`
 
   return (
     <div className='pool'>

@@ -12,18 +12,21 @@ function TeamName(props) {
 
 function SmallBracket(props) {
   let bracket = props.bracket
+  let bracketName = bracket.eliminated ? `* ${bracket.name}` : bracket.name
   let finalFourTeams = bracket.final_four.edges.map(edge => edge.node)
+  let bestPossible = bracket.eliminated ? "eliminated" : `possible ${bracket.best_possible_finish} place finish`
 
   return <a href={`/brackets/${bracket.model_id}`}>
     <div className='bracket-row'>
       <div className='bracket-attributes'>
         <div className='position'>{props.index}.</div>
         <div className='bracket-details'>
-          <div className="name">{bracket.name}</div>
+          <div className="name">{bracketName}</div>
           <div className="points">
             <div className="total">{bracket.points}</div>
             <div className="possible">{bracket.possible_points}</div>
           </div>
+          <div className="best-possible">{bestPossible}</div>
           <div className="final-four-teams">
             {finalFourTeams.map((team, i) => <TeamName key={team.id} team={team} index={i} smallScreen={true}/>)}
           </div>
@@ -39,21 +42,27 @@ function BracketRow(props) {
   let finalFourTeams = bracket.final_four.edges.map(edge => edge.node)
   let bracketPath = `/brackets/${bracket.model_id}`
 
+  var place = `${props.index}.`
+  if (bracket.eliminated) {
+    place = '* ' + place
+  }
+
   return <tr className='bracket-row'>
-    <td>{props.index}.</td>
+    <td>{place}</td>
     <td><a href={bracketPath}>{bracket.name}</a></td>
     <td>{bracket.points}</td>
     <td>{bracket.possible_points}</td>
+    <td>{bracket.best_possible_finish}</td>
     {finalFourTeams.map(team => <TeamName key={team.id} team={team}/>)}
   </tr>
 }
 
 function TableHeader(props) {
-  var headings = ['', 'Name', 'Score', 'Possible', 'Final Four', 'Final Four', 'Second', 'Winner']
+  var headings = ['', 'Name', 'Score', 'Possible', 'Best', 'Final Four', 'Final Four', 'Second', 'Winner']
 
   return <thead>
   <tr>
-    { headings.map(heading => <th>{heading}</th>) }
+    { headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>) }
   </tr>
   </thead>
 }
@@ -108,6 +117,8 @@ export default Relay.createContainer(Component, {
               name
               points
               possible_points
+              best_possible_finish
+              eliminated
               final_four(first: 4) {
                 edges {
                   node {

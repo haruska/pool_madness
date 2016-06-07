@@ -19,9 +19,7 @@ module Queries
     end
 
     field :eliminated, !types.Boolean do
-      resolve ->(bracket, _args, _context) {
-        bracket.pool.display_best? && bracket.best_possible > 2
-      }
+      resolve ->(bracket, _args, _context) { bracket.best_possible > 2 }
     end
 
     connection :final_four, TeamType.connection_type do
