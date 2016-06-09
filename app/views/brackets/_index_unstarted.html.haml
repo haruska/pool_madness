@@ -2,19 +2,6 @@
 
 - if @brackets.present?
   .brackets.small-screen
-    .bracket-row.bracket-list-header
-      .bracket-attributes
-        .position &nbsp;
-        .bracket-details
-          .name Name
-          .final-four-teams
-            .final-four-team.final-four-team0 Final
-            .final-four-team.final-four-team1 Four
-            .final-four-team.final-four-team2 Second
-            .final-four-team.final-four-team3 Champion
-          .tie-breaker Tie
-          .status Status
-
     - @brackets.each_with_index do |bracket, i|
       =link_to bracket do
         .bracket-row
