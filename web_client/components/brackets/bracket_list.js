@@ -17,11 +17,15 @@ var Component = React.createClass({
   brackets() {
     return this.props.pool.brackets.edges.map(edge => edge.node)
   },
+  
+  showEliminated() {
+    return this.props.pool.display_best
+  },
 
   TableHeader() {
     var headings;
 
-    if(this.props.showEliminated) {
+    if(this.showEliminated()) {
       headings = ['', 'Name', 'Score', 'Possible', 'Best', 'Final Four', 'Final Four', 'Second', 'Winner']
     } else {
       headings = ['', 'Name', 'Score', 'Possible', 'Final Four', 'Final Four', 'Second', 'Winner']
@@ -40,7 +44,7 @@ var Component = React.createClass({
     let bracketPath = `/brackets/${bracket.model_id}`
 
     var place = `${props.index}.`
-    if (this.props.showEliminated && bracket.eliminated) { place = `* ${place}` }
+    if (this.showEliminated() && bracket.eliminated) { place = `* ${place}` }
 
     function BestPossible(props) {
       return props.showEliminated ? <td>{bracket.best_possible_finish}</td> : false
@@ -51,7 +55,7 @@ var Component = React.createClass({
       <td><a href={bracketPath}>{bracket.name}</a></td>
       <td>{bracket.points}</td>
       <td>{bracket.possible_points}</td>
-      <BestPossible {...this.props} />
+      <BestPossible {...this.props} showEliminated={this.showEliminated()} />
       {finalFourTeams.map(team => <td key={team.id}>{team.name}</td>)}
     </tr>
   },
@@ -59,7 +63,7 @@ var Component = React.createClass({
   SmallBracket(props) {
     let bracket = props.bracket
     let finalFourTeams = bracket.final_four.edges.map(edge => edge.node)
-    let bracketName = this.props.showEliminated && bracket.eliminated ? `* ${bracket.name}` : bracket.name
+    let bracketName = this.showEliminated() && bracket.eliminated ? `* ${bracket.name}` : bracket.name
     let bracketPath = `/brackets/${bracket.model_id}`
     var place = `${props.index}.`
 
@@ -82,7 +86,7 @@ var Component = React.createClass({
               <div className="total">{bracket.points}</div>
               <div className="possible">{bracket.possible_points}</div>
             </div>
-            <BestPossible {...this.props} />
+            <BestPossible {...this.props} showEliminated={this.showEliminated()} />
             <div className="final-four-teams">
               { finalFourTeams.map((team, i) => <div key={team.id} className={`final-four-team final-four-team${i}`}>{team.name}</div>) }
             </div>
@@ -120,6 +124,7 @@ export default Relay.createContainer(Component, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {
+        display_best
         brackets(first: 1000) {
           edges {
             node {

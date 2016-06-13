@@ -4,18 +4,19 @@ import BracketList from '../brackets/bracket_list'
 import UserBracketList from '../brackets/user_bracket_list'
 
 var Component = React.createClass({
-  render() {
+  bracketList() {
     let pool = this.props.pool
 
-    var bracketList
     if(pool.started) {
-      bracketList = <BracketList pool={pool} showEliminated={pool.display_best}/>
+      return <BracketList pool={pool} />
     } else {
-      bracketList = <UserBracketList pool={pool} />
-    }
-
+      return <UserBracketList pool={pool} />
+    }  
+  },
+  
+  render() {
     return <div className='pool-details'>
-      {bracketList}
+      {this.bracketList()}
     </div>
   }
 })
@@ -25,9 +26,8 @@ export default Relay.createContainer(Component, {
     pool: () => Relay.QL`
       fragment on Pool {
         started
-        display_best
-        ${UserBracketList.getFragment('pool')}
         ${BracketList.getFragment('pool')}
+        ${UserBracketList.getFragment('pool')}
       }
     `
   }
