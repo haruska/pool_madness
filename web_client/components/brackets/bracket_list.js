@@ -32,9 +32,9 @@ var Component = React.createClass({
     }
 
     return <thead>
-    <tr>
-      { headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>) }
-    </tr>
+      <tr>
+        {headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>)}
+      </tr>
     </thead>
   },
 
@@ -88,7 +88,7 @@ var Component = React.createClass({
             </div>
             <BestPossible {...this.props} showEliminated={this.showEliminated()} />
             <div className="final-four-teams">
-              { finalFourTeams.map((team, i) => <div key={team.id} className={`final-four-team final-four-team${i}`}>{team.name}</div>) }
+              {finalFourTeams.map((team, i) => <div key={team.id} className={`final-four-team final-four-team${i}`}>{team.name}</div>)}
             </div>
           </div>
         </div>

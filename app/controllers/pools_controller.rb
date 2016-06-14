@@ -1,12 +1,6 @@
 class PoolsController < ApplicationController
   before_action :authenticate_user!
 
-  load_and_authorize_resource only: [:show]
-
-  def show
-    redirect_to pool_brackets_path(@pool)
-  end
-
   def invite_code
   end
 

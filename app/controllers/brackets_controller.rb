@@ -37,13 +37,13 @@ class BracketsController < ApplicationController
     if @bracket.save
       redirect_to edit_bracket_path(@bracket)
     else
-      redirect_to pool_brackets_path(@pool), alert: "Problem creating a new bracket. Please try again."
+      redirect_to pool_path(@pool), alert: "Problem creating a new bracket. Please try again."
     end
   end
 
   def update
     if @bracket.update(update_params)
-      redirect_to pool_brackets_path(@pool), notice: "Bracket Saved"
+      redirect_to pool_path(@pool), notice: "Bracket Saved"
     else
       flash.now[:error] = "Problem saving bracket. Please try again"
       render :edit
@@ -52,7 +52,7 @@ class BracketsController < ApplicationController
 
   def destroy
     @bracket.destroy
-    redirect_to pool_brackets_path(@pool), notice: "Bracket Destroyed"
+    redirect_to pool_path(@pool), notice: "Bracket Destroyed"
   end
 
   private

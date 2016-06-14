@@ -4,7 +4,7 @@ RSpec.describe Queries::BracketType do
   subject { Queries::BracketType }
 
   context "fields" do
-    let(:fields) { %w(id model_id name tie_breaker status points possible_points best_possible_finish final_four) }
+    let(:fields) { %w(id model_id name tie_breaker status points possible_points best_possible_finish eliminated final_four) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)

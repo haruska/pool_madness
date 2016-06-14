@@ -2,13 +2,17 @@ import React from 'react'
 import Relay from 'react-relay'
 import { times } from 'lodash'
 
-function TableHeader() {
-  let headings = ['Name', 'Final Four', 'Final Four', 'Second', 'Winner', 'Tie', 'Status']
-  return <thead>
-  <tr>
-    { headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>) }
-  </tr>
-  </thead>
+function TableHeader(props) {
+  if (props.brackets.length > 0) {
+    let headings = ['Name', 'Final Four', 'Final Four', 'Second', 'Winner', 'Tie', 'Status']
+    return <thead>
+      <tr>
+        {headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>)}
+      </tr>
+    </thead>
+  } else {
+    return false
+  }
 }
 
 function BracketStatus(props) {
@@ -33,10 +37,25 @@ function BracketRow(props) {
   return <tr className='bracket-row'>
     <td><a href={bracketPath}>{bracket.name}</a></td>
     {finalFourTeams.map(team => <td key={team.id}>{team.name}</td>)}
-    { times(emptyTeamsSize, x => <td key={`bracket-${bracket.id}-empty-${x}`}></td>) }
+    {times(emptyTeamsSize, x => <td key={`bracket-${bracket.id}-empty-${x}`}></td>)}
     <td>{bracket.tie_breaker}</td>
     <td><BracketStatus status={bracket.status} /></td>
   </tr>
+}
+
+function NewBracketButton(props) {
+  var buttonText, buttonClass
+  if (props.brackets.length > 0) {
+    buttonText = "Another Bracket Entry"
+    buttonClass = "minor"
+  } else {
+    buttonText = "New Bracket Entry"
+    buttonClass = ""
+  }
+
+  return <form method="post" action={`/pools/${props.pool.model_id}/brackets`}>
+    <button className={buttonClass}>{buttonText}</button>
+  </form>
 }
 
 var Component = React.createClass({
@@ -57,16 +76,20 @@ var Component = React.createClass({
   },
 
   render() {
+    let pool = this.props.pool
     let brackets = this.brackets()
 
     return <div className='user-bracket-list'>
       <div className='large-screen'>
         <table className='table-minimal'>
-          <TableHeader />
+          <TableHeader brackets={brackets} />
           <tbody>
           {brackets.map(bracket => <BracketRow key={bracket.id} bracket={bracket} />)}
           </tbody>
         </table>
+      </div>
+      <div className='actions'>
+        <NewBracketButton pool={pool} brackets={brackets} />
       </div>
     </div>
   }
@@ -76,6 +99,7 @@ export default Relay.createContainer(Component, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {
+        model_id
         brackets(first: 1000) {
           edges {
             node {

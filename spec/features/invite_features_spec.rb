@@ -17,10 +17,6 @@ RSpec.describe "Using invite codes", js: true do
       click_button "Sign Up"
     end
 
-    xit "shows an invite code after signing up" do
-      expect(page).to have_field("invite_code")
-    end
-
     context "with a valid invite code" do
       it "joins the user to the pool and shows a list of pools" do
         find(".fa-bars").click
