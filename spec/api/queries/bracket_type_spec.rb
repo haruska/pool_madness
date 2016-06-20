@@ -21,6 +21,70 @@ RSpec.describe Queries::BracketType do
     end
   end
 
+  describe "best_possible_finish" do
+    subject { Queries::BracketType.fields["best_possible_finish"] }
+    let(:bracket) { create(:bracket) }
+    let(:bracket_point) { bracket.bracket_point }
+
+    let(:resolved) { subject.resolve(bracket, nil, nil) }
+
+    context "1st place" do
+      before { bracket_point.update(best_possible: 0) }
+
+      it "is '1st'" do
+        expect(resolved).to eq("1st")
+      end
+    end
+
+    context "2nd place" do
+      before { bracket_point.update(best_possible: 1) }
+
+      it "is '2nd'" do
+        expect(resolved).to eq("2nd")
+      end
+    end
+
+    context "3rd place" do
+      before { bracket_point.update(best_possible: 2) }
+
+      it "is '3rd'" do
+        expect(resolved).to eq("3rd")
+      end
+    end
+
+    context "eliminated" do
+      before { bracket_point.update(best_possible: 3) }
+
+      it "is '-'" do
+        expect(resolved).to eq("-")
+      end
+    end
+  end
+
+  describe "eliminated" do
+    subject { Queries::BracketType.fields["eliminated"] }
+    let(:bracket) { create(:bracket) }
+    let(:bracket_point) { bracket.bracket_point }
+
+    let(:resolved) { subject.resolve(bracket, nil, nil) }
+
+    context "is not eliminated" do
+      before { bracket_point.update(best_possible: 0) }
+
+      it "is false" do
+        expect(resolved).to eq(false)
+      end
+    end
+
+    context "is eliminated" do
+      before { bracket_point.update(best_possible: 3) }
+
+      it "is false" do
+        expect(resolved).to eq(true)
+      end
+    end
+  end
+
   describe "final_four" do
     subject { Queries::BracketType.fields["final_four"] }
 
