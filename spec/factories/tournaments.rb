@@ -159,6 +159,19 @@ FactoryGirl.define do
       end
     end
 
+    trait :in_final_four do
+      tip_off { 2.weeks.ago }
+
+      after(:create) do |tournament|
+        (1..4).each do |round|
+          tournament.round_for(round).each do |game|
+            tournament.update_game(game.slot, [0, 1].sample)
+          end
+        end
+        tournament.save
+      end
+    end
+
     trait :completed do
       tip_off { 4.weeks.ago }
 

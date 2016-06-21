@@ -1,35 +1,28 @@
 import React from 'react'
 import Relay from 'react-relay'
-import BracketList from '../brackets/bracket_list'
-import UserBracketList from '../brackets/user_bracket_list'
 
-var Component = React.createClass({
+let Component = React.createClass({
   contextTypes: {
-    setCurrentPool: React.PropTypes.func.isRequired
+    router: React.PropTypes.object.isRequired
   },
 
   componentWillMount() {
-    this.context.setCurrentPool(this.props.pool)
+    this.redirectToBracketList()
   },
 
-  componentWillUnmount() {
-    this.context.setCurrentPool()
-  },
-
-  bracketList() {
+  redirectToBracketList() {
     let pool = this.props.pool
 
     if(pool.started) {
-      return <BracketList pool={pool} />
-    } else {
-      return <UserBracketList pool={pool} />
-    }  
+      this.context.router.push(`/pools/${pool.model_id}/brackets`)
+    }
+    else {
+      this.context.router.push(`/pools/${pool.model_id}/my_brackets`)
+    }
   },
-  
+
   render() {
-    return <div className='pool-details'>
-      {this.bracketList()}
-    </div>
+    return this.props.children
   }
 })
 
@@ -39,8 +32,6 @@ export default Relay.createContainer(Component, {
       fragment on Pool {
         model_id
         started
-        ${BracketList.getFragment('pool')}
-        ${UserBracketList.getFragment('pool')}
       }
     `
   }

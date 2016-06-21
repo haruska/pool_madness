@@ -18,10 +18,9 @@ export default React.createClass({
     links.push(<Link to={`/pools/${pool.model_id}`} onClick={this.handleToggleMenuClick}>Brackets</Link>)
 
     if(pool.started) {
-      // TODO: need games_remaining in graphql
-      // if(pool.tournament.games_remaining > 0 && pool.tournament.games_remaining < 4) {
-      //   links.push(<a href={`/pools/${pool.id}/possibilities`}>Possible Outcomes</a>)
-      // }
+      if(pool.tournament.games_remaining > 0 && pool.tournament.games_remaining < 4) {
+        links.push(<a href={`/pools/${pool.model_id}/possibilities`}>Possible Outcomes</a>)
+      }
       links.push(<a href={`/pools/${pool.model_id}/games`}>Game Results</a>)
     } else {
       links.push(<a href={`/pools/${pool.model_id}/payments`}>Types of Payment</a>)
@@ -50,7 +49,7 @@ export default React.createClass({
     if(pool) {
       return this.poolLinks()
     } else {
-      return [<Link to="/pools" onClick={this.handleToggleMenuClick}>All Pools</Link>]
+      return [<Link key='all-pools-link' to="/pools" onClick={this.handleToggleMenuClick}>All Pools</Link>]
     }
   },
 
@@ -61,10 +60,14 @@ export default React.createClass({
           <i className="fa fa-bars" />
         </a>
         <nav className={contentClass}>
-          { this.buildLinks().map((link, i) => <li key={`link-${i}`}>{link}</li>) }
-          <li><a href="/pools/invite_code">Enter Invite Code</a></li>
-          <li><a href="/user">Profile</a></li>
-          <li><a href="/auth/sign_out">Logout</a></li>
+          <ul>
+            {this.buildLinks().map((link, i) => <li key={`link-${i}`}>{link}</li>)}
+          </ul>
+          <ul>
+            <li><a href="/pools/invite_code">Enter Invite Code</a></li>
+            <li><a href="/user">Profile</a></li>
+            <li><a href="/auth/sign_out">Logout</a></li>
+          </ul>
         </nav>
       </div>
     )

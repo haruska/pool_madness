@@ -19,28 +19,6 @@ RSpec.describe "Bracket Lists", js: true do
       expect(page).to have_selector(".title", text: "My Brackets")
     end
 
-    describe "nav menu" do
-      before do
-        find(".fa-bars").click
-      end
-
-      it "has links pertaining to the current pool" do
-        expect(page).to have_link("Brackets", href: pool_path(pool))
-        expect(page).to have_link("Rules and Scoring", href: rules_pool_path(pool))
-        expect(page).to have_link("Other Pools", href: pools_path)
-        expect(page).to_not have_link("All Pools")
-      end
-
-      it "has a link to types of payment" do
-        expect(page).to have_link("Types of Payment", href: payments_pool_path(pool))
-      end
-
-      it "does not have links to possible outcomes or game results" do
-        expect(page).to_not have_link("Possible Outcomes")
-        expect(page).to_not have_link("Game Results")
-      end
-    end
-
     context "and the current user has not filled out a bracket" do
       it "has a New Bracket Entry action" do
         expect(page).to have_button("New Bracket Entry")
@@ -49,7 +27,7 @@ RSpec.describe "Bracket Lists", js: true do
 
     context "and the current user has filled out brackets" do
       let!(:other_brackets) { create_list(:bracket, 3, :completed, pool: pool) }
-      let!(:brackets) { create_list(:bracket, 3, :completed, user: user, pool: pool)}
+      let!(:brackets) { create_list(:bracket, 3, :completed, user: user, pool: pool) }
 
       before do
         visit "/pools/#{pool.id}"
