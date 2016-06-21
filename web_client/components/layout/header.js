@@ -13,7 +13,7 @@ export default function Header(props) {
   return (
     <header>
       <Title title={props.title}/>
-      <Menu />
+      <Menu pool={props.pool}/>
     </header>
   )
 }

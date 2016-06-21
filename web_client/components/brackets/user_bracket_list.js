@@ -34,12 +34,12 @@ function BracketRow(props) {
   let bracketPath = `/brackets/${bracket.model_id}`
   let emptyTeamsSize = 4 - finalFourTeams.length
 
-  return <tr className='bracket-row'>
-    <td><a href={bracketPath}>{bracket.name}</a></td>
-    {finalFourTeams.map(team => <td key={team.id}>{team.name}</td>)}
-    {times(emptyTeamsSize, x => <td key={`bracket-${bracket.id}-empty-${x}`}></td>)}
-    <td>{bracket.tie_breaker}</td>
-    <td><BracketStatus status={bracket.status} /></td>
+  return <tr className={`bracket-row bracket-${bracket.model_id}`}>
+    <td className='bracket-name'><a href={bracketPath}>{bracket.name}</a></td>
+    {finalFourTeams.map(team => <td className='bracket-final-four' key={team.id}>{team.name}</td>)}
+    {times(emptyTeamsSize, x => <td className='bracket-final-four' key={`bracket-${bracket.id}-empty-${x}`}> </td>)}
+    <td className='bracket-tie-breaker'>{bracket.tie_breaker}</td>
+    <td className='bracket-status'><BracketStatus status={bracket.status} /></td>
   </tr>
 }
 

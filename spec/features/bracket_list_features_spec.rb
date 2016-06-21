@@ -32,7 +32,7 @@ RSpec.describe "Bracket Lists", js: true do
       end
 
       it "has a link to types of payment" do
-        expect(page).to have_link("Types of Payment", href: payments_pool_path(@pool))
+        expect(page).to have_link("Types of Payment", href: payments_pool_path(pool))
       end
 
       it "does not have links to possible outcomes or game results" do
