@@ -47,16 +47,16 @@ var Component = React.createClass({
     if (this.showEliminated() && bracket.eliminated) { place = `* ${place}` }
 
     function BestPossible(props) {
-      return props.showEliminated ? <td>{bracket.best_possible_finish}</td> : false
+      return props.showEliminated ? <td className="best-possible">{bracket.best_possible_finish}</td> : false
     }
 
-    return <tr className='bracket-row'>
-      <td>{place}</td>
-      <td><a href={bracketPath}>{bracket.name}</a></td>
-      <td>{bracket.points}</td>
-      <td>{bracket.possible_points}</td>
+    return <tr className={`bracket-row bracket-${bracket.model_id}`}>
+      <td className="position">{place}</td>
+      <td className="name"><a href={bracketPath}>{bracket.name}</a></td>
+      <td className="points">{bracket.points}</td>
+      <td className="possible">{bracket.possible_points}</td>
       <BestPossible {...this.props} showEliminated={this.showEliminated()} />
-      {finalFourTeams.map(team => <td key={team.id}>{team.name}</td>)}
+      {finalFourTeams.map(team => <td key={team.id} className="final-four-team">{team.name}</td>)}
     </tr>
   },
 
@@ -77,7 +77,7 @@ var Component = React.createClass({
     }
 
     return <a href={bracketPath}>
-      <div className='bracket-row'>
+      <div className={`bracket-row bracket-${bracket.model_id}`}>
         <div className='bracket-attributes'>
           <div className='position'>{place}</div>
           <div className='bracket-details'>

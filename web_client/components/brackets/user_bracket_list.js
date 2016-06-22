@@ -6,9 +6,9 @@ function TableHeader(props) {
   if (props.brackets.length > 0) {
     let headings = ['Name', 'Final Four', 'Final Four', 'Second', 'Winner', 'Tie', 'Status']
     return <thead>
-    <tr>
-      {headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>)}
-    </tr>
+      <tr>
+        {headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>)}
+      </tr>
     </thead>
   } else {
     return false
@@ -41,6 +41,30 @@ function BracketRow(props) {
     <td className='bracket-tie-breaker'>{bracket.tie_breaker}</td>
     <td className='bracket-status'><BracketStatus status={bracket.status} /></td>
   </tr>
+}
+
+function SmallBracket(props) {
+  let bracket = props.bracket
+  let finalFourTeams = bracket.final_four.edges.map(edge => edge.node)
+  let bracketPath = `/brackets/${bracket.model_id}`
+  let emptyTeamsSize = 4 - finalFourTeams.length
+
+  return <a href={bracketPath}>
+    <div className='bracket-row'>
+      <div className='bracket-attributes'>
+        <div className='position'>&nbsp;</div>
+        <div className='bracket-details'>
+          <div className="name">{bracket.name}</div>
+          <div className="final-four-teams">
+            {finalFourTeams.map((team, i) => <div key={team.id} className={`final-four-team final-four-team${i}`}>{team.name}</div>)}
+            {times(emptyTeamsSize, x => <div className='bracket-final-four' key={`bracket-${bracket.id}-empty-${x}`}> </div>)}
+          </div>
+          <div className="tie-breaker">{bracket.tie_breaker}</div>
+          <div className="status"><BracketStatus status={bracket.status} /></div>
+        </div>
+      </div>
+    </div>
+  </a>
 }
 
 function NewBracketButton(props) {
@@ -79,6 +103,9 @@ var Component = React.createClass({
     let brackets = this.brackets()
 
     return <div className='user-bracket-list'>
+      <div className='small-screen'>
+        {brackets.map(bracket => <SmallBracket key={bracket.id} bracket={bracket} />)}
+      </div>
       <div className='large-screen'>
         <table className='table-minimal'>
           <TableHeader brackets={brackets} />

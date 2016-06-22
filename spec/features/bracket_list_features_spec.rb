@@ -60,9 +60,8 @@ RSpec.describe "Bracket Lists", js: true do
       end
     end
 
-
     context "with an incomplete bracket" do
-      let!(:bracket) { create(:bracket, user: user, pool: pool)}
+      let!(:bracket) { create(:bracket, user: user, pool: pool) }
 
       before do
         visit "/pools/#{pool.id}"
@@ -82,9 +81,7 @@ RSpec.describe "Bracket Lists", js: true do
         expect(page).to have_selector(".bracket-status span", text: "Unpaid")
       end
 
-      it "has an action to pay for brackets" do
-
-      end
+      it "has an action to pay for brackets"
     end
 
     context "with a paid bracket" do
@@ -92,6 +89,75 @@ RSpec.describe "Bracket Lists", js: true do
 
       it "indicates the bracket is paid" do
         expect(page).to have_selector(".bracket-status span", text: "OK")
+      end
+
+      it "does not have a payment action"
+    end
+  end
+
+  context "when a pool has started" do
+    let(:tournament) { create(:tournament, :started) }
+    let!(:brackets) { create_list(:bracket, 3, :completed, pool: pool) }
+
+    before { visit "/pools/#{pool.id}/brackets" }
+
+    it "shows a count of all brackets in the title" do
+      expect(page).to have_selector(".title", text: /Brackets.*#{brackets.size} total/i)
+    end
+
+    it "shows details of all brackets" do
+      within(".bracket-list") do
+        brackets.each do |bracket|
+          within(".bracket-#{bracket.id}") do
+            expect(page).to have_selector(".name", text: bracket.name)
+            bracket.sorted_four.each do |team|
+              expect(page).to have_selector(".final-four-team", text: team.name)
+            end
+          end
+        end
+      end
+    end
+
+    it "shows the current place, total points, and points possible" do
+      within(".bracket-list") do
+        brackets.each do |bracket|
+          within(".bracket-#{bracket.id}") do
+            expect(page).to have_selector(".position", text: /\d+\./)
+            expect(page).to have_selector(".points", text: bracket.points)
+            expect(page).to have_selector(".possible", text: bracket.possible_points)
+          end
+        end
+      end
+    end
+
+    it "highlights the current user's brackets"
+
+    context "and eliminations are not calculated" do
+      it "does not show best possible finish" do
+        expect(page).to have_selector("th", text: "Possible")
+        expect(page).to_not have_selector("th", text: "Best")
+        expect(page).to_not have_selector(".best-possible")
+      end
+    end
+
+    context "and there are eliminations" do
+      let(:tournament) { create(:tournament, :with_first_two_rounds_completed) }
+
+      before do
+        brackets.each_with_index do |bracket, i|
+          bracket.bracket_point.update(best_possible: i)
+        end
+
+        visit "/pools/#{pool.id}/brackets"
+      end
+
+      it "shows best possible finish" do
+        expect(page).to have_selector("th", text: "Best")
+        brackets.each do |bracket|
+          within(".bracket-#{bracket.id}") do
+            expect(page).to have_selector(".best-possible", text: (bracket.best_possible + 1).ordinalize)
+          end
+        end
       end
     end
   end
