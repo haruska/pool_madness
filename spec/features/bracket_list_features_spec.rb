@@ -58,18 +58,40 @@ RSpec.describe "Bracket Lists", js: true do
       it "has a Another Bracket Entry action" do
         expect(page).to have_selector("button.minor", text: "Another Bracket Entry")
       end
+    end
 
-      context "with an incomplete bracket" do
-        it "indicates the bracket is incomplete"
+
+    context "with an incomplete bracket" do
+      let!(:bracket) { create(:bracket, user: user, pool: pool)}
+
+      before do
+        visit "/pools/#{pool.id}"
       end
 
-      context "with an unpaid bracket" do
-        it "indicates the bracket is unpaid"
-        it "has an action to pay for brackets"
+      it "indicates the bracket is incomplete" do
+        within(".bracket-#{bracket.id}") do
+          expect(page).to have_selector(".bracket-status span", text: "Incomplete")
+        end
+      end
+    end
+
+    context "with an unpaid bracket" do
+      let!(:bracket) { create(:bracket, :completed, user: user, pool: pool) }
+
+      it "indicates the bracket is unpaid" do
+        expect(page).to have_selector(".bracket-status span", text: "Unpaid")
       end
 
-      context "with a paid bracket" do
-        it "indicates the bracket is paid"
+      it "has an action to pay for brackets" do
+
+      end
+    end
+
+    context "with a paid bracket" do
+      let!(:bracket) { create(:bracket, :completed, :paid, user: user, pool: pool) }
+
+      it "indicates the bracket is paid" do
+        expect(page).to have_selector(".bracket-status span", text: "OK")
       end
     end
   end

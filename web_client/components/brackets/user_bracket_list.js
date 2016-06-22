@@ -6,9 +6,9 @@ function TableHeader(props) {
   if (props.brackets.length > 0) {
     let headings = ['Name', 'Final Four', 'Final Four', 'Second', 'Winner', 'Tie', 'Status']
     return <thead>
-      <tr>
-        {headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>)}
-      </tr>
+    <tr>
+      {headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>)}
+    </tr>
     </thead>
   } else {
     return false
@@ -44,17 +44,16 @@ function BracketRow(props) {
 }
 
 function NewBracketButton(props) {
-  var buttonText, buttonClass
+  let button;
+
   if (props.brackets.length > 0) {
-    buttonText = "Another Bracket Entry"
-    buttonClass = "minor"
+    button = <button className="minor">Another Bracket Entry</button>
   } else {
-    buttonText = "New Bracket Entry"
-    buttonClass = ""
+    button = <button>New Bracket Entry</button>
   }
 
   return <form method="post" action={`/pools/${props.pool.model_id}/brackets`}>
-    <button className={buttonClass}>{buttonText}</button>
+    {button}
   </form>
 }
 

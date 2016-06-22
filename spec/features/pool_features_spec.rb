@@ -98,4 +98,34 @@ RSpec.describe "Pools", js: true do
       end
     end
   end
+
+  describe "Pool details" do
+    let(:pool) { create(:pool, tournament: tournament) }
+    let(:user) { create(:pool_user, pool: pool).user }
+
+    before do
+      sign_in user
+      visit "/pools/#{pool.id}"
+    end
+
+    context "when the pool has started" do
+      let(:tournament) { create(:tournament, :started) }
+
+      it "directs the user to the full bracket list" do
+        within("header") do
+          expect(page).to have_text(/Brackets.*total/)
+        end
+      end
+    end
+
+    context "when the pool has not started" do
+      let(:tournament) { create(:tournament, :not_started) }
+
+      it "directs the user to My Brackets" do
+        within("header") do
+          expect(page).to have_text("My Brackets")
+        end
+      end
+    end
+  end
 end
