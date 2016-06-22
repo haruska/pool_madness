@@ -1,22 +1,11 @@
 class BracketsController < ApplicationController
   before_action :authenticate_user!
 
-  load_and_authorize_resource :pool, only: [:index, :create]
+  load_and_authorize_resource :pool, only: [:create]
   load_and_authorize_resource :bracket, through: :pool, only: [:create]
-  load_and_authorize_resource :bracket, except: [:index, :create]
+  load_and_authorize_resource :bracket, except: [:create]
 
-  before_action :load_pool_and_tournament, except: [:index, :create]
-
-  def index
-    if @pool.started?
-      @brackets = @pool.brackets.includes(:bracket_point).joins(:bracket_point).order("best_possible asc", "points desc", "possible_points desc")
-      set_jskit_index_payload
-    else
-      @brackets = @pool.brackets.where(user_id: current_user).to_a
-      @brackets.sort_by! { |x| [[:ok, :unpaid, :incomplete].index(x.status), x.name] }
-      @unpaid_brackets = @brackets.select(&:unpaid?)
-    end
-  end
+  before_action :load_pool_and_tournament, except: [:create]
 
   def show
     if !@pool.started? && current_user == @bracket.user
@@ -64,10 +53,6 @@ class BracketsController < ApplicationController
 
   def update_params
     params.require(:bracket).permit(:tie_breaker, :name, :points, :possible_points)
-  end
-
-  def set_jskit_index_payload
-    set_action_payload(current_user.brackets.where(pool_id: @pool.id).pluck(:id))
   end
 
   def set_jskit_show_payload
