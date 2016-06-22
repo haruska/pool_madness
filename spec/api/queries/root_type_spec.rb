@@ -4,10 +4,29 @@ RSpec.describe Queries::RootType do
   subject { Queries::RootType }
 
   context "fields" do
-    let(:fields) { %w(node lists pool) }
+    let(:fields) { %w(node lists pool current_user) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)
+    end
+  end
+
+  context "current_user" do
+    subject { Queries::RootType.fields["current_user"] }
+
+    context "signed in" do
+      let(:user) { create(:user) }
+
+      it "is the signed in user" do
+        expect(subject.resolve(nil, nil, current_user: user, current_ability: Ability.new(user))).to eq(user)
+      end
+    end
+    context "not signed in" do
+      it "is a graphql execution error" do
+        result = subject.resolve(nil, nil, {})
+        expect(result).to be_a(GraphQL::ExecutionError)
+        expect(result.message).to match(/must be signed in/i)
+      end
     end
   end
 

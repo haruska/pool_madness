@@ -21,5 +21,12 @@ module Queries
         end
       }
     end
+
+    field :current_user do
+      type !CurrentUserType
+      resolve lambda { |_object, _args, context|
+        context[:current_user] || GraphQL::ExecutionError.new("You must be signed in to view this information")
+      }
+    end
   end
 end
