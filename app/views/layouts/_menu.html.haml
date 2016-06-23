@@ -1,6 +1,7 @@
 %nav.js-menu.sliding-panel-content
   %ul
     - if current_user
+
       - if @pool.present?
         %li= link_to "Brackets", pool_path(@pool)
         - if @pool.started?
@@ -9,14 +10,10 @@
         - else
           %li= link_to "Types of Payment", payments_pool_path(@pool)
         %li= link_to "Rules and Scoring", rules_pool_path(@pool)
-        - if can? :manage, @pool
-          %li= link_to "Pool Admin", admin_pool_brackets_path(@pool)
+        %li= link_to "Pool Admin", admin_pool_brackets_path(@pool) if can? :manage, @pool
         %li= link_to "Other Pools", pools_path
       - else
         %li= link_to "All Pools", root_path
-
-      - if @tournament.present? && can?(:manage, @tournament)
-        %li= link_to "Update Scores", update_bracket_scores_admin_tournament_path(@tournament), method: 'patch'
 
       %li= link_to "Enter Invite Code", invite_code_path
       %li= link_to "Profile", profile_path

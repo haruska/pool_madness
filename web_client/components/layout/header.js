@@ -10,10 +10,12 @@ function Title(props) {
 }
 
 export default function Header(props) {
+  let { title, ...other } = props;
+
   return (
     <header>
-      <Title title={props.title}/>
-      <Menu pool={props.pool}/>
+      <Title title={title}/>
+      <Menu {...other}/>
     </header>
   )
 }

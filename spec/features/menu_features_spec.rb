@@ -100,12 +100,37 @@ RSpec.describe "Menu", js: true do
         end
       end
 
-      context "as a pool admin" do
-        it "has a link to the pool admin page"
-      end
+      describe "pool administrator links" do
+        let(:tournament) { create(:tournament) }
 
-      context "as a site admin" do
-        it "has a link to update tournament scores"
+        before do
+          sign_in user
+          visit "/pools/#{pool.id}"
+          find(".fa-bars").click
+        end
+
+        context "as a regular user" do
+          it "does not have a link to the pool admin page" do
+            expect(page).to have_link("Brackets")
+            expect(page).to_not have_link("Pool Admin", href: admin_pool_brackets_path(pool))
+          end
+        end
+
+        context "as a pool admin" do
+          let(:user) { create(:pool_user, pool: pool, role: :admin).user }
+
+          it "has a link to the pool admin page"
+          #     expect(page).to have_link("Pool Admin", href: admin_pool_brackets_path(pool))
+          #  end
+        end
+
+        context "as a site admin" do
+          let(:user) { create(:admin_user) }
+
+          it "has a link to the pool admin page" do
+            expect(page).to have_link("Pool Admin", href: admin_pool_brackets_path(pool))
+          end
+        end
       end
     end
   end

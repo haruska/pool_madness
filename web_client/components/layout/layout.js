@@ -26,7 +26,7 @@ export default React.createClass({
   render() {
     return (
       <div className='layout'>
-        <Header title={this.state.title} pool={this.props.pool}/>
+        <Header title={this.state.title} {...this.props} />
         <section className='container' id='content'>
           {this.props.children}
         </section>

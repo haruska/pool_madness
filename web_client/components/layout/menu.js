@@ -12,7 +12,7 @@ export default React.createClass({
   },
 
   poolLinks() {
-    let pool = this.props.pool
+    let { pool, current_user } = this.props
     let links = []
 
     links.push(<Link to={`/pools/${pool.model_id}`} onClick={this.handleToggleMenuClick}>Brackets</Link>)
@@ -28,17 +28,11 @@ export default React.createClass({
 
     links.push(<a href={`/pools/${pool.model_id}/rules`}>Rules and Scoring</a>)
 
-    // TODO: need pool admins in graphql
-    // if(pool.adminIds.include(currentUserId)) {
-    //   links.push(<a href={`/admin/pools/${pool.model_id}/brackets`}>Pool Admin</a>)
-    // }
+    if(current_user.admin) {
+      links.push(<a href={`/admin/pools/${pool.model_id}/brackets`}>Pool Admin</a>)
+    }
 
     links.push(<Link to="/pools" onClick={this.handleToggleMenuClick}>Other Pools</Link>)
-
-    // TODO: need current user admin in graphql
-    // if (currentUser.admin) {
-    //   links.push(<a href={`/admin/tournament/${pool.tournament.id}/update_bracket_scores`}>Update Scores</a>)
-    // }
 
     return links
   },

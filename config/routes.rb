@@ -40,10 +40,6 @@ PoolMadness::Application.routes.draw do
   end
 
   namespace :admin do
-    resources :tournaments, only: [] do
-      patch :update_bracket_scores, on: :member
-    end
-
     resources :pools, only: [] do
       resources :brackets, only: [:index]
     end

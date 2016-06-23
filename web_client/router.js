@@ -20,11 +20,12 @@ const ListsQueries = {
 }
 
 const PoolQueries = {
-  pool: () => Relay.QL`
-    query {
-      pool(model_id: $poolId)
-    }
-  `
+  pool: () => Relay.QL`query { pool(model_id: $poolId) }`
+}
+
+const PoolLayoutQueries = {
+  pool: () => Relay.QL`query { pool(model_id: $poolId) }`,
+  current_user: () => Relay.QL`query { current_user }`
 }
 
 export default function() {
@@ -34,7 +35,7 @@ export default function() {
         <Route component={Layout}>
           <Route path="pools" component={PoolList} queries={ListsQueries}/>
         </Route>
-        <Route path="pools/:poolId" component={PoolLayout} queries={PoolQueries}>
+        <Route path="pools/:poolId" component={PoolLayout} queries={PoolLayoutQueries}>
           <IndexRoute component={Pool} queries={PoolQueries} />
           <Route path="brackets" component={BracketList} queries={PoolQueries}/>
           <Route path="my_brackets" component={UserBracketList} queries={PoolQueries}/>

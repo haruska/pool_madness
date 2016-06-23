@@ -5,7 +5,7 @@ import Layout from './layout'
 let Component = React.createClass({
   render() {
     return (
-      <Layout pool={this.props.pool}>
+      <Layout {...this.props}>
         {this.props.children}
       </Layout>
     )
@@ -22,6 +22,7 @@ export default Relay.createContainer(Component, {
           games_remaining
         }
       }
-    `
+    `,
+    current_user: () => Relay.QL`fragment on CurrentUser { admin }`
   }
 })
