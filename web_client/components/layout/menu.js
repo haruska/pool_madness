@@ -28,7 +28,7 @@ export default React.createClass({
 
     links.push(<a href={`/pools/${pool.model_id}/rules`}>Rules and Scoring</a>)
 
-    if(current_user.admin) {
+    if(current_user.admin || this.currentUserIsPoolAdmin()) {
       links.push(<a href={`/admin/pools/${pool.model_id}/brackets`}>Pool Admin</a>)
     }
 
@@ -65,6 +65,13 @@ export default React.createClass({
         </nav>
       </div>
     )
+  },
+
+  currentUserIsPoolAdmin() {
+    let { pool, current_user } = this.props
+    let adminIds = pool.admins.edges.map(edge => edge.node.model_id)
+
+    return adminIds.includes(current_user.model_id)
   },
 
   render() {

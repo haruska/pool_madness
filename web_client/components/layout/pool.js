@@ -21,8 +21,20 @@ export default Relay.createContainer(Component, {
         tournament {
           games_remaining
         }
+        admins(first: 1000) {
+          edges {
+            node {
+              model_id
+            }
+          }  
+        }
       }
     `,
-    current_user: () => Relay.QL`fragment on CurrentUser { admin }`
+    current_user: () => Relay.QL`
+      fragment on CurrentUser {
+        model_id
+        admin 
+      }
+    `
   }
 })

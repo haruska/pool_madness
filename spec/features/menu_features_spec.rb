@@ -117,11 +117,17 @@ RSpec.describe "Menu", js: true do
         end
 
         context "as a pool admin" do
-          let(:user) { create(:pool_user, pool: pool, role: :admin).user }
+          let!(:pool_admin) { create(:pool_user, pool: pool, role: :admin).user }
 
-          it "has a link to the pool admin page"
-          #     expect(page).to have_link("Pool Admin", href: admin_pool_brackets_path(pool))
-          #  end
+          before do
+            sign_in pool_admin
+            visit "/pools/#{pool.id}"
+            find(".fa-bars").click
+          end
+
+          it "has a link to the pool admin page" do
+            expect(page).to have_link("Pool Admin", href: admin_pool_brackets_path(pool))
+          end
         end
 
         context "as a site admin" do
