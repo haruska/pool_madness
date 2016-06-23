@@ -98,6 +98,8 @@ RSpec.describe "Bracket Lists", js: true do
   context "when a pool has started" do
     let(:tournament) { create(:tournament, :started) }
     let!(:brackets) { create_list(:bracket, 3, :completed, pool: pool) }
+    let(:bracket) { brackets.sample }
+    let(:user) { bracket.user }
 
     before { visit "/pools/#{pool.id}/brackets" }
 
@@ -130,7 +132,9 @@ RSpec.describe "Bracket Lists", js: true do
       end
     end
 
-    it "highlights the current user's brackets"
+    it "highlights the current user's brackets" do
+      expect(page).to have_selector(".bracket-#{bracket.id}.current-user-bracket")
+    end
 
     context "and eliminations are not calculated" do
       it "does not show best possible finish" do

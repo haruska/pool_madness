@@ -50,7 +50,12 @@ var Component = React.createClass({
       return props.showEliminated ? <td className="best-possible">{bracket.best_possible_finish}</td> : false
     }
 
-    return <tr className={`bracket-row bracket-${bracket.model_id}`}>
+    var rowClass = `bracket-row bracket-${bracket.model_id}`
+    if (bracket.owner.model_id == this.props.current_user.model_id) {
+      rowClass += " current-user-bracket"
+    }
+
+    return <tr className={rowClass}>
       <td className="position">{place}</td>
       <td className="name"><a href={bracketPath}>{bracket.name}</a></td>
       <td className="points">{bracket.points}</td>
@@ -76,8 +81,13 @@ var Component = React.createClass({
       }
     }
 
+    var rowClass = `bracket-row bracket-${bracket.model_id}`
+    if (bracket.owner.model_id == this.props.current_user.model_id) {
+      rowClass += " current-user-bracket"
+    }
+
     return <a href={bracketPath}>
-      <div className={`bracket-row bracket-${bracket.model_id}`}>
+      <div className={rowClass}>
         <div className='bracket-attributes'>
           <div className='position'>{place}</div>
           <div className='bracket-details'>
@@ -139,9 +149,17 @@ export default Relay.createContainer(Component, {
                 id
                 name
               }
+              owner {
+                model_id
+              }
             }
           }
         }
+      }
+    `,
+    current_user: () => Relay.QL`
+      fragment on CurrentUser {
+        model_id
       }
     `
   }
