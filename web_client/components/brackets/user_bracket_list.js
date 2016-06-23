@@ -30,7 +30,7 @@ function BracketStatus(props) {
 
 function BracketRow(props) {
   let bracket = props.bracket
-  let finalFourTeams = bracket.final_four.edges.map(edge => edge.node)
+  let finalFourTeams = bracket.final_four
   let bracketPath = `/brackets/${bracket.model_id}`
   let emptyTeamsSize = 4 - finalFourTeams.length
 
@@ -45,7 +45,7 @@ function BracketRow(props) {
 
 function SmallBracket(props) {
   let bracket = props.bracket
-  let finalFourTeams = bracket.final_four.edges.map(edge => edge.node)
+  let finalFourTeams = bracket.final_four
   let bracketPath = `/brackets/${bracket.model_id}`
   let emptyTeamsSize = 4 - finalFourTeams.length
 
@@ -134,13 +134,9 @@ export default Relay.createContainer(Component, {
               name
               tie_breaker
               status
-              final_four(first: 4) {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
+              final_four {
+                id
+                name
               }
             }
           }

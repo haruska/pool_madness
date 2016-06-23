@@ -89,10 +89,10 @@ RSpec.describe Queries::BracketType do
     subject { Queries::BracketType.fields["final_four"] }
 
     let!(:bracket) { create(:bracket, :completed) }
-    let(:resolved_obj) { subject.resolve(bracket, nil, nil).object }
+    let(:resolved) { subject.resolve(bracket, nil, nil) }
 
     it "is a list of the final four teams for the bracket" do
-      expect(resolved_obj).to eq(bracket.sorted_four)
+      expect(resolved).to eq(bracket.sorted_four)
     end
   end
 end

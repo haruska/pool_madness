@@ -40,7 +40,7 @@ var Component = React.createClass({
 
   BracketRow(props) {
     let bracket = props.bracket
-    let finalFourTeams = bracket.final_four.edges.map(edge => edge.node)
+    let finalFourTeams = bracket.final_four
     let bracketPath = `/brackets/${bracket.model_id}`
 
     var place = `${props.index}.`
@@ -62,7 +62,7 @@ var Component = React.createClass({
 
   SmallBracket(props) {
     let bracket = props.bracket
-    let finalFourTeams = bracket.final_four.edges.map(edge => edge.node)
+    let finalFourTeams = bracket.final_four
     let bracketName = this.showEliminated() && bracket.eliminated ? `* ${bracket.name}` : bracket.name
     let bracketPath = `/brackets/${bracket.model_id}`
     var place = `${props.index}.`
@@ -135,13 +135,9 @@ export default Relay.createContainer(Component, {
               possible_points
               best_possible_finish
               eliminated
-              final_four(first: 4) {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
+              final_four {
+                id
+                name
               }
             }
           }
