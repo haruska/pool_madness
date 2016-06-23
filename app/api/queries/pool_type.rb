@@ -13,6 +13,8 @@ module Queries
     field :entry_fee, !types.Int
     field :started, !types.Boolean, property: :started?
     field :display_best, !types.Boolean, property: :display_best?
+    field :admins, types[!UserType]
+
     connection :brackets, BracketType.connection_type do
       resolve lambda { |pool, _args, context|
         if pool.started?
@@ -23,8 +25,6 @@ module Queries
         end
       }
     end
-    connection :admins, UserType.connection_type do
-      resolve ->(pool, _args, _context) { pool.admins }
-    end
+
   end
 end

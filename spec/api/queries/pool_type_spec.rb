@@ -25,10 +25,10 @@ RSpec.describe Queries::PoolType do
 
       let!(:pool) { create(:pool) }
       let!(:admins) { create_list(:pool_user, 2, pool: pool, role: :admin).map(&:user) }
-      let(:resolved_obj) { subject.resolve(pool, nil, current_user: create(:user)).object }
+      let(:resolved) { subject.resolve(pool, nil, current_user: create(:user)) }
 
       it "is a list of admin users for the pool" do
-        expect(resolved_obj).to match_array(admins)
+        expect(resolved).to match_array(admins)
       end
     end
 

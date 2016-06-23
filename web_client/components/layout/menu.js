@@ -69,7 +69,7 @@ export default React.createClass({
 
   currentUserIsPoolAdmin() {
     let { pool, current_user } = this.props
-    let adminIds = pool.admins.edges.map(edge => edge.node.model_id)
+    let adminIds = pool.admins.map(admin => admin.model_id)
 
     return adminIds.includes(current_user.model_id)
   },

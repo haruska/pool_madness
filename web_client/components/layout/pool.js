@@ -21,12 +21,8 @@ export default Relay.createContainer(Component, {
         tournament {
           games_remaining
         }
-        admins(first: 1000) {
-          edges {
-            node {
-              model_id
-            }
-          }  
+        admins {
+          model_id
         }
       }
     `,
