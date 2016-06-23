@@ -4,7 +4,7 @@ RSpec.describe Queries::PoolType do
   subject { Queries::PoolType }
 
   context "fields" do
-    let(:fields) { %w(id model_id tournament name invite_code entry_fee brackets display_best started) }
+    let(:fields) { %w(id model_id tournament name invite_code entry_fee brackets admins display_best started) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)
@@ -17,6 +17,18 @@ RSpec.describe Queries::PoolType do
 
       it "is the DB id of the object" do
         expect(subject.resolve(pool, nil, nil)).to eq(pool.id)
+      end
+    end
+
+    describe "admins" do
+      subject { Queries::PoolType.fields["admins"] }
+
+      let!(:pool) { create(:pool) }
+      let!(:admins) { create_list(:pool_user, 2, pool: pool, role: :admin).map(&:user) }
+      let(:resolved_obj) { subject.resolve(pool, nil, current_user: create(:user)).object }
+
+      it "is a list of admin users for the pool" do
+        expect(resolved_obj).to match_array(admins)
       end
     end
 

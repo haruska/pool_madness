@@ -23,5 +23,8 @@ module Queries
         end
       }
     end
+    connection :admins, UserType.connection_type do
+      resolve ->(pool, _args, _context) { pool.admins }
+    end
   end
 end
