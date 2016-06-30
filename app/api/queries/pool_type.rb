@@ -11,6 +11,7 @@ module Queries
     field :name, !types.String
     field :invite_code, !types.String
     field :entry_fee, !types.Int
+    field :total_collected, !types.Int
     field :started, !types.Boolean, property: :started?
     field :display_best, !types.Boolean, property: :display_best?
     field :admins, types[!UserType]
