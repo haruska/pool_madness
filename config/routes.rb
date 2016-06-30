@@ -16,7 +16,6 @@ PoolMadness::Application.routes.draw do
   resource :user, only: [:show, :edit, :update], as: :profile
 
   match "pools/join", to: "pools#join", via: :post, as: "join_pool"
-  match "pools/invite_code", to: "pools#invite_code", via: :get, as: "invite_code"
 
   resources :pools, only: [] do
     resources :brackets, only: [:create]
@@ -49,6 +48,7 @@ PoolMadness::Application.routes.draw do
   get "/pools/:pool_id" => "pages#home", as: :pool
   get "/pools/:pool_id/rules" => "pages#home", as: :rules_pool
   get "/pools/:pool_id/payments" => "pages#home", as: :payments_pool
+  get "/pools/invite_code" => "pages#home", as: :invite_code
 
   get "/*path" => "pages#home"
 end

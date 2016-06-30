@@ -58,7 +58,7 @@ export default React.createClass({
             {this.buildLinks().map((link, i) => <li key={`link-${i}`}>{link}</li>)}
           </ul>
           <ul>
-            <li><a href="/pools/invite_code">Enter Invite Code</a></li>
+            <li><Link to="/pools/invite_code" onClick={this.handleToggleMenuClick}>Enter Invite Code</Link></li>
             <li><a href="/user">Profile</a></li>
             <li><a href="/auth/sign_out">Logout</a></li>
           </ul>

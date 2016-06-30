@@ -72,16 +72,13 @@
   }
 }
 
-.pools-controller {
-  &.invite_code-action {
-    #content {
-      text-align: center;
-    }
+.invite-code {
+  padding: $gutter 0;
+  text-align: center;
 
-    .wrapper {
-      display: inline-block;
-      text-align: center;
-      width: 200px;
-    }
+  form {
+    display: inline-block;
+    text-align: center;
+    width: 200px;
   }
 }

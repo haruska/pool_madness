@@ -1,9 +1,6 @@
 class PoolsController < ApplicationController
   before_action :authenticate_user!
 
-  def invite_code
-  end
-
   def join
     @pool = Pool.find_by(invite_code: params[:invite_code].to_s.upcase)
 
