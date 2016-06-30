@@ -33,8 +33,6 @@ PoolMadness::Application.routes.draw do
     resources :picks, only: [:update]
   end
 
-  resources :charges, only: [:create]
-
   resources :tournaments, only: [:edit, :update] do
     resources :games, only: [:index]
   end

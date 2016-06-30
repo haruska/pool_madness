@@ -1,5 +1,6 @@
 import React from 'react'
 import Relay from 'react-relay'
+import PaymentButton from '../payments/payment_button'
 import { times } from 'lodash'
 
 function TableHeader(props) {
@@ -98,6 +99,10 @@ var Component = React.createClass({
     return this.props.pool.brackets.edges.map(edge => edge.node)
   },
 
+  unpaidBrackets() {
+    return this.brackets().filter(bracket => bracket.status == 'unpaid')
+  },
+
   render() {
     let pool = this.props.pool
     let brackets = this.brackets()
@@ -115,6 +120,7 @@ var Component = React.createClass({
         </table>
       </div>
       <div className='actions'>
+        <PaymentButton pool={pool} unpaidBrackets={this.unpaidBrackets()} emailAddress={this.props.current_user.email} />
         <NewBracketButton pool={pool} brackets={brackets} />
       </div>
     </div>
@@ -126,6 +132,7 @@ export default Relay.createContainer(Component, {
     pool: () => Relay.QL`
       fragment on Pool {
         model_id
+        entry_fee
         brackets(first: 1000) {
           edges {
             node {
@@ -141,6 +148,12 @@ export default Relay.createContainer(Component, {
             }
           }
         }
+        ${PaymentButton.getFragment('pool')}
+      }
+    `,
+    current_user: () => Relay.QL`
+      fragment on CurrentUser {
+        email
       }
     `
   }

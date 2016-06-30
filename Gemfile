@@ -83,6 +83,6 @@ group :test do
   gem "fuubar"
   gem "shoulda-matchers"
   gem "simplecov", require: false
-  gem "stripe-ruby-mock"
+  gem "stripe-ruby-mock", "~> 2.3.0", require: "stripe_mock"
   gem "webmock"
 end

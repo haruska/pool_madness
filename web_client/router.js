@@ -38,7 +38,7 @@ export default function() {
         <Route path="pools/:poolId" component={PoolLayout} queries={PoolCurrentUserQueries}>
           <IndexRoute component={Pool} queries={PoolQueries} />
           <Route path="brackets" component={BracketList} queries={PoolCurrentUserQueries}/>
-          <Route path="my_brackets" component={UserBracketList} queries={PoolQueries}/>
+          <Route path="my_brackets" component={UserBracketList} queries={PoolCurrentUserQueries}/>
         </Route>
         <Route path='*' component={NoMatch}/>
       </Route>

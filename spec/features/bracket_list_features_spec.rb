@@ -81,7 +81,9 @@ RSpec.describe "Bracket Lists", js: true do
         expect(page).to have_selector(".bracket-status span", text: "Unpaid")
       end
 
-      it "has an action to pay for brackets"
+      it "has an action to pay for brackets" do
+        expect(page).to have_button("Pay Now")
+      end
     end
 
     context "with a paid bracket" do
@@ -91,7 +93,10 @@ RSpec.describe "Bracket Lists", js: true do
         expect(page).to have_selector(".bracket-status span", text: "OK")
       end
 
-      it "does not have a payment action"
+      it "does not have a payment action" do
+        expect(page).to have_button("Another Bracket")
+        expect(page).to_not have_button("Pay Now")
+      end
     end
   end
 
