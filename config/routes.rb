@@ -20,7 +20,6 @@ PoolMadness::Application.routes.draw do
 
   resources :pools, only: [] do
     member do
-      get :rules
       get :payments
     end
 
@@ -52,6 +51,7 @@ PoolMadness::Application.routes.draw do
 
   get "/pools" => "pages#home", as: :pools
   get "/pools/:pool_id" => "pages#home", as: :pool
+  get "/pools/:pool_id/rules" => "pages#home", as: :rules_pool
 
   get "/*path" => "pages#home"
 end

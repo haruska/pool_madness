@@ -4,10 +4,6 @@ class PoolsController < ApplicationController
   def invite_code
   end
 
-  def rules
-    @pool = Pool.accessible_by(current_ability).find(params[:id])
-  end
-
   def payments
     @pool = Pool.accessible_by(current_ability).find(params[:id])
   end

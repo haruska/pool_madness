@@ -10,6 +10,7 @@ import Pool from './components/pools/pool'
 import PoolLayout from './components/layout/pool'
 import BracketList from './components/brackets/bracket_list'
 import UserBracketList from './components/brackets/user_bracket_list'
+import RulesAndScoring from './components/pages/rules_and_scoring'
 
 function NoMatch() {
   return <Layout>The page you are looking for could not be found :(</Layout>
@@ -39,6 +40,7 @@ export default function() {
           <IndexRoute component={Pool} queries={PoolQueries} />
           <Route path="brackets" component={BracketList} queries={PoolCurrentUserQueries}/>
           <Route path="my_brackets" component={UserBracketList} queries={PoolCurrentUserQueries}/>
+          <Route path="rules" component={RulesAndScoring} queries={PoolQueries}/>
         </Route>
         <Route path='*' component={NoMatch}/>
       </Route>

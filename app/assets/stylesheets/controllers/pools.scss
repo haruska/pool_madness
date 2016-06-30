@@ -3,6 +3,7 @@
     padding-top: $gutter;
   }
 }
+
 .pools {
   a {
     color: $dark-gray;
@@ -49,6 +50,28 @@
   }
 }
 
+.pool-rules-scoring {
+  padding: $gutter 0;
+
+  h2 {
+    font-size: $base-font-size * 2;
+  }
+
+  h3 {
+    font-size: $base-font-size * 1.5;
+    padding-top: 35px;
+
+    &.first {
+      padding-top: 0;
+    }
+  }
+
+  ol {
+    padding: 15px 0 0 50px;
+    @extend %default-ol;
+  }
+}
+
 .pools-controller {
   &.invite_code-action {
     #content {
@@ -62,7 +85,7 @@
     }
   }
 
-  &.rules-action, &.payments-action {
+  &.payments-action {
     h2 {
       font-size: $base-font-size * 2;
     }

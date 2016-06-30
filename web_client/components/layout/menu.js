@@ -26,7 +26,7 @@ export default React.createClass({
       links.push(<a href={`/pools/${pool.model_id}/payments`}>Types of Payment</a>)
     }
 
-    links.push(<a href={`/pools/${pool.model_id}/rules`}>Rules and Scoring</a>)
+    links.push(<Link to={`/pools/${pool.model_id}/rules`} onClick={this.handleToggleMenuClick}>Rules and Scoring</Link>)
 
     if(current_user.admin || this.currentUserIsPoolAdmin()) {
       links.push(<a href={`/admin/pools/${pool.model_id}/brackets`}>Pool Admin</a>)
