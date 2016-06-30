@@ -27,7 +27,7 @@ let Component = React.createClass({
           </tr>
         </thead>
         <tbody>
-          {times(pool.tournament.num_rounds, i => <ScoreRow round={i+1}/>)}
+          {times(pool.tournament.num_rounds, i => <ScoreRow key={i} round={i+1}/>)}
         </tbody>
       </table>
       <div>
