@@ -4,10 +4,6 @@ class PoolsController < ApplicationController
   def invite_code
   end
 
-  def payments
-    @pool = Pool.accessible_by(current_ability).find(params[:id])
-  end
-
   def join
     @pool = Pool.find_by(invite_code: params[:invite_code].to_s.upcase)
 
