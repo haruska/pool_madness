@@ -4,5 +4,6 @@ module Mutations
     description "The mutation root of this schema"
 
     field :create_charge, field: CreateCharge.field
+    field :accept_invitation, field: AcceptInvitation.field
   end
 end
