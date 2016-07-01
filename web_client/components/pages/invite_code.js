@@ -14,7 +14,7 @@ export default React.createClass({
   },
 
   render() {
-    return <div className="invite-code">
+    return <div className="invite-code-page">
       <form method="post" action="/pools/join">
         <label htmlFor="invite_code">Invite code</label>
         <input type="text" name="invite_code" id="invite_code" />
