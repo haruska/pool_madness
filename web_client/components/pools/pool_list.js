@@ -52,6 +52,10 @@ var Component = React.createClass({
     this.context.setPageTitle()
   },
 
+  componentDidMount() {
+    this.props.relay.forceFetch()
+  },
+
   currentPools() {
     return filter(this.props.lists.pools, pool => { return !pool.tournament.archived })
   },

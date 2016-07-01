@@ -15,8 +15,6 @@ PoolMadness::Application.routes.draw do
 
   resource :user, only: [:show, :edit, :update], as: :profile
 
-  match "pools/join", to: "pools#join", via: :post, as: "join_pool"
-
   resources :pools, only: [] do
     resources :brackets, only: [:create]
     resources :games, only: [:index]
