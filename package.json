@@ -9,8 +9,8 @@
     "postinstall": "./node_modules/.bin/webpack"
   },
   "engines": {
-    "node": "6.2.2",
-    "npm": "3.9.5"
+    "node": "6.5.0",
+    "npm": "3.10.3"
   },
   "dependencies": {
     "babel-core": "6.14.0",
