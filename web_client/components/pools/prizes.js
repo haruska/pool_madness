@@ -20,7 +20,7 @@ let Component = React.createClass({
       <h3>Prizes</h3>
       <table>
         <tbody>
-        {[0.7, 0.2, 0.1].map((percent, i) => <PrizeRow key={`prizerow-${i}`} pool={pool} place={i+1} percent={percent}/>)}
+          {[0.7, 0.2, 0.1].map((percent, i) => <PrizeRow key={`prizerow-${i}`} pool={pool} place={i+1} percent={percent}/>)}
         </tbody>
       </table>
     </div>

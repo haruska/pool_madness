@@ -83,7 +83,7 @@ export default React.createClass({
     return (
       <div className="menu">
         {links}
-        <div className={panelClass} onClick={this.handleToggleMenuClick}></div>
+        <div className={panelClass} onClick={this.handleToggleMenuClick} />
       </div>
     )
   }

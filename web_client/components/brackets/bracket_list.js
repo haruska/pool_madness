@@ -118,7 +118,7 @@ var Component = React.createClass({
         <table className='tables'>
           <TableHeader />
           <tbody>
-          {brackets.map((bracket, i) => <BracketRow key={bracket.id} index={i+1} bracket={bracket} />)}
+            {brackets.map((bracket, i) => <BracketRow key={bracket.id} index={i+1} bracket={bracket} />)}
           </tbody>
         </table>
       </div>

@@ -38,7 +38,7 @@ function BracketRow(props) {
   return <tr className={`bracket-row bracket-${bracket.model_id}`}>
     <td className='bracket-name'><a href={bracketPath}>{bracket.name}</a></td>
     {finalFourTeams.map(team => <td className='bracket-final-four' key={team.id}>{team.name}</td>)}
-    {times(emptyTeamsSize, x => <td className='bracket-final-four' key={`bracket-${bracket.id}-empty-${x}`}> </td>)}
+    {times(emptyTeamsSize, x => <td className='bracket-final-four' key={`bracket-${bracket.id}-empty-${x}`}>&nbsp;</td>)}
     <td className='bracket-tie-breaker'>{bracket.tie_breaker}</td>
     <td className='bracket-status'><BracketStatus status={bracket.status} /></td>
   </tr>
@@ -58,7 +58,7 @@ function SmallBracket(props) {
           <div className="name">{bracket.name}</div>
           <div className="final-four-teams">
             {finalFourTeams.map((team, i) => <div key={team.id} className={`final-four-team final-four-team${i}`}>{team.name}</div>)}
-            {times(emptyTeamsSize, x => <div className='bracket-final-four' key={`bracket-${bracket.id}-empty-${x}`}> </div>)}
+            {times(emptyTeamsSize, x => <div className='bracket-final-four' key={`bracket-${bracket.id}-empty-${x}`}>&nbsp;</div>)}
           </div>
           <div className="tie-breaker">{bracket.tie_breaker}</div>
           <div className="status"><BracketStatus status={bracket.status} /></div>
@@ -115,7 +115,7 @@ var Component = React.createClass({
         <table className='table-minimal'>
           <TableHeader brackets={brackets} />
           <tbody>
-          {brackets.map(bracket => <BracketRow key={bracket.id} bracket={bracket} />)}
+            {brackets.map(bracket => <BracketRow key={bracket.id} bracket={bracket} />)}
           </tbody>
         </table>
       </div>

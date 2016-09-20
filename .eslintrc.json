@@ -1,6 +1,6 @@
 {
   "parser": "babel-eslint",
-  "plugins": ["react"],
+  "plugins": ["react", "import"],
   "rules": {
     "indent": [2, 2],
     "quotes": [2, "single"],
@@ -36,6 +36,7 @@
   },
   "extends": "eslint:recommended",
   "rules": {
+    "import/extensions": 1,
     "react/display-name": 0,
     "react/forbid-prop-types": 0,
     "react/jsx-boolean-value": 1,
@@ -68,7 +69,6 @@
     "react/prefer-es6-class": 0,
     "react/prop-types": 0,
     "react/react-in-jsx-scope": 1,
-    "react/require-extension": 1,
     "react/self-closing-comp": 1,
     "react/sort-comp": 0,
     "react/wrap-multilines": 0
