@@ -1,5 +1,5 @@
 {
   "sourceMaps": "both",
-  "plugins": ["babel-relay-plugin-loader", "transform-class-properties", "transform-object-rest-spread"],
+  "plugins": ["react-relay", "transform-class-properties", "transform-object-rest-spread"],
   "presets": ["react", "es2015"]
 }
