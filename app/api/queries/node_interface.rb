@@ -1,12 +1,16 @@
 module Queries
   NodeInterface = GraphQL::Relay::GlobalNodeIdentification.define do
-    object_from_id lambda { |id, _context|
+    # Given a UUID & the query context,
+    # return the corresponding application object
+    object_from_id lambda { |id, _config|
       type_name, id = NodeInterface.from_global_id(id)
-      Object.const_get(type_name).find(id)
+      type_name.constantize.find(id)
     }
 
-    type_from_object lambda { |object|
-      Queries.const_get("#{object.class.name}Type")
-    }
+    # Given an application object,
+    # return a GraphQL ObjectType to expose that object
+    type_from_object ->(object) { GraphqlSchema.types[object.class.name] }
   end
 end
+
+GraphqlSchema.node_identification = Queries::NodeInterface

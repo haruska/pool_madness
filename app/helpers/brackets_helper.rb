@@ -13,16 +13,13 @@ module BracketsHelper
   end
 
   def status_to_label(status)
-    out = '<span class="badge-'
     case status
     when :ok
-      out += 'success">OK'
+      content_tag(:span, "OK", class: "badge-success")
     when :unpaid
-      out += 'alert">Unpaid'
+      content_tag(:span, "Unpaid", class: "badge-alert")
     when :incomplete
-      out += 'error">Incomplete'
+      content_tag(:span, "Incomplete", class: "badge-error")
     end
-    out += "</span>"
-    out.html_safe
   end
 end

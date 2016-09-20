@@ -16,7 +16,7 @@ Tournament.current.each do |tournament|
 
       final_four_str = winners.uniq.reverse.join(", ")
 
-      brackets = outcome.get_best_possible(pool).select { |_, rank| rank == 0 }.map { |bracket, _| bracket.name }
+      brackets = outcome.get_best_possible(pool).select { |_, rank| rank.zero? }.map { |bracket, _| bracket.name }
 
       bracket_str = brackets.sort.join(", ")
 

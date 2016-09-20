@@ -38,7 +38,7 @@ RSpec.describe Queries::PoolType do
       context "pool has started" do
         let!(:pool) { create(:pool) }
         let!(:brackets) { create_list(:bracket, 3, pool: pool) }
-        let(:resolved_obj) { subject.resolve(pool, nil, current_user: create(:user)).object }
+        let(:resolved_obj) { subject.resolve(pool, nil, current_user: create(:user)).nodes }
 
         it "is a list of brackets for the pool" do
           expect(resolved_obj).to match_array(brackets)
@@ -90,7 +90,7 @@ RSpec.describe Queries::PoolType do
         let(:user) { bracket.user }
 
         it "is a list of the current user's brackets" do
-          resolved_obj = subject.resolve(pool, nil, current_user: user).object
+          resolved_obj = subject.resolve(pool, nil, current_user: user).nodes
 
           expect(resolved_obj).to eq([bracket])
         end

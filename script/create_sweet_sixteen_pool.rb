@@ -22,7 +22,7 @@ sixty_four_tournament.round_for(3).each do |game|
       seed: team.seed,
       name: team.name,
       score_team_id: team.score_team_id,
-      starting_slot: i == 0 ? game.left_position : game.right_position
+      starting_slot: i.zero? ? game.left_position : game.right_position
     )
   end
 end

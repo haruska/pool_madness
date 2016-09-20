@@ -10,7 +10,7 @@ class Game < BinaryDecisionTree::Node
   end
 
   def championship?
-    parent_position == 0
+    parent_position.zero?
   end
 
   def tournament_game

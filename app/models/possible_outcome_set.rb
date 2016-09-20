@@ -40,7 +40,7 @@ class PossibleOutcomeSet
       self.variable_slots_attr ||= []
       tournament.num_games.times do |i|
         slot = 1 << i
-        self.variable_slots_attr << i if fixed_slot_mask & slot == 0 # if not already played
+        self.variable_slots_attr << i if (fixed_slot_mask & slot).zero? # if not already played
       end
     end
 

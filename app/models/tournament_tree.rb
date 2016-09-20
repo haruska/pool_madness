@@ -46,7 +46,7 @@ class TournamentTree < BinaryDecisionTree::Tree
 
   def game_ids_for(round_number)
     depth_for = (1..depth).to_a.reverse.index(round_number) + 1
-    depth_for == 0 ? [1] : (2**(depth_for - 1)..(2**depth_for - 1)).to_a
+    depth_for.zero? ? [1] : (2**(depth_for - 1)..(2**depth_for - 1)).to_a
   end
 
   def select_games(game_ids = [])

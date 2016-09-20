@@ -13,7 +13,7 @@ RSpec.describe Mutations::CreateCharge do
 
   let(:tournament) { create(:tournament, :not_started) }
   let(:pool) { create(:pool, tournament: tournament) }
-  let(:pool_id) { GraphQL::Relay::GlobalNodeIdentification.to_global_id("Pool", pool.id) }
+  let(:pool_id) { GraphQL::Relay::GlobalNodeIdentification.new.to_global_id("Pool", pool.id) }
   let!(:brackets) { create_list(:bracket, 2, :completed, user: user, pool: pool) }
   let!(:incomplete_bracket) { create(:bracket, user: user, pool: pool) }
 
@@ -58,7 +58,7 @@ RSpec.describe Mutations::CreateCharge do
   end
 
   context "user outside of pool" do
-    let(:pool_id) { GraphQL::Relay::GlobalNodeIdentification.to_global_id("Pool", create(:pool).id) }
+    let(:pool_id) { GraphQL::Relay::GlobalNodeIdentification.new.to_global_id("Pool", create(:pool).id) }
     let(:args) { { pool_id: pool_id, token: stripe_helper.generate_card_token } }
 
     it "is not found" do

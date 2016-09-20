@@ -17,6 +17,9 @@ Rails:
 Rails/Output:
   Enabled: false
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Style/AlignParameters:
   Enabled: false
 
