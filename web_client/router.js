@@ -13,6 +13,7 @@ import UserBracketList from 'components/brackets/user_bracket_list'
 import RulesAndScoring from 'components/pages/rules_and_scoring'
 import Payments from 'components/pages/payments'
 import InviteCode from 'components/pages/invite_code'
+import Profile from 'components/profile/profile'
 
 class NoMatch extends Component {
   render() {
@@ -28,6 +29,10 @@ const PoolQueries = {
   pool: () => Relay.QL`query { pool(model_id: $poolId) }`
 }
 
+const CurrentUserQueries = {
+  current_user: () => Relay.QL`query { current_user }`
+}
+
 const PoolCurrentUserQueries = {
   pool: () => Relay.QL`query { pool(model_id: $poolId) }`,
   current_user: () => Relay.QL`query { current_user }`
@@ -40,6 +45,7 @@ export default () => {
         <Route component={Layout}>
           <Route path="pools" component={PoolList} queries={ListsQueries}/>
           <Route path="pools/invite_code" component={InviteCode}/>
+          <Route path="user" component={Profile} queries={CurrentUserQueries}/>
         </Route>
         <Route path="pools/:poolId" component={PoolLayout} queries={PoolCurrentUserQueries}>
           <IndexRoute component={Pool} queries={PoolQueries} />

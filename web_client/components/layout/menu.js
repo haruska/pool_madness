@@ -57,7 +57,7 @@ export default class Menu extends Component {
           </ul>
           <ul>
             <li><Link to="/pools/invite_code" onClick={this.handleToggleMenuClick}>Enter Invite Code</Link></li>
-            <li><a href="/user">Profile</a></li>
+            <li><Link to="/user">Profile</Link></li>
             <li><a href="/auth/sign_out">Logout</a></li>
           </ul>
         </nav>

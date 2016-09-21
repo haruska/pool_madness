@@ -14,11 +14,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
-    @user = params[:id] ? User.find(params[:id]) : current_user
-    authorize! :read, @user
-  end
-
   private
 
   def user_params

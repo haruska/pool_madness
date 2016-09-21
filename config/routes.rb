@@ -13,8 +13,6 @@ PoolMadness::Application.routes.draw do
 
   root to: "home#index"
 
-  resource :user, only: [:show, :edit, :update], as: :profile
-
   resources :pools, only: [] do
     resources :brackets, only: [:create]
     resources :games, only: [:index]
@@ -47,6 +45,10 @@ PoolMadness::Application.routes.draw do
   get "/pools/:pool_id/rules" => "pages#home", as: :rules_pool
   get "/pools/:pool_id/payments" => "pages#home", as: :payments_pool
   get "/pools/invite_code" => "pages#home", as: :invite_code
+
+  get "/user" => "pages#home", as: :profile
+  get "/user/edit" => "users#edit", as: :edit_profile
+  patch "/user" => "users#update"
 
   get "/*path" => "pages#home"
 end

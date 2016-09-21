@@ -1,3 +1,8 @@
-.users-controller
-{
+main#outer-container .profile {
+  padding-top: $gutter;
+  .actions {
+    a {
+      display: block;
+    }
+  }
 }
