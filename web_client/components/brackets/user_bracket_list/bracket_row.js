@@ -12,8 +12,7 @@ export default class BracketRow extends Component {
     return <tr className={`bracket-row bracket-${bracket.model_id}`}>
       <td className='bracket-name'><a href={bracketPath}>{bracket.name}</a></td>
       {finalFourTeams.map(team => <td className='bracket-final-four' key={team.id}>{team.name}</td>)}
-      {times(emptyTeamsSize, x => <td className='bracket-final-four'
-                                      key={`bracket-${bracket.id}-empty-${x}`}>&nbsp;</td>)}
+      {times(emptyTeamsSize, x => <td className='bracket-final-four' key={`bracket-${bracket.id}-empty-${x}`}>&nbsp;</td>)}
       <td className='bracket-tie-breaker'>{bracket.tie_breaker}</td>
       <td className='bracket-status'><BracketStatus status={bracket.status}/></td>
     </tr>

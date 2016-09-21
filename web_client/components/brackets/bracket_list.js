@@ -35,15 +35,15 @@ class BracketList extends Component {
         <table className='tables'>
           <TableHeader showEliminated={this.showEliminated()}/>
           <tbody>
-          {brackets.map((bracket, i) =>
-            <BracketRow
-              key={bracket.id}
-              index={i+1}
-              bracket={bracket}
-              showEliminated={this.showEliminated()}
-              current_user={current_user}
-            />
-          )}
+            {brackets.map((bracket, i) =>
+              <BracketRow
+                key={bracket.id}
+                index={i+1}
+                bracket={bracket}
+                showEliminated={this.showEliminated()}
+                current_user={current_user}
+              />
+            )}
           </tbody>
         </table>
       </div>

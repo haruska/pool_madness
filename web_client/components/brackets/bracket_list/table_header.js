@@ -13,9 +13,9 @@ export default class TableHeader extends Component {
     }
 
     return <thead>
-    <tr>
-      {headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>)}
-    </tr>
+      <tr>
+        {headings.map((heading, i) => <th key={`heading-${i}`}>{heading}</th>)}
+      </tr>
     </thead>
   }
 }

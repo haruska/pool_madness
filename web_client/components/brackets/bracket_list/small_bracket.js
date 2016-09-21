@@ -39,8 +39,9 @@ export default class SmallBracket extends Component {
             <BestPossible {...this.props}/>
             <div className="final-four-teams">
               {finalFourTeams.map((team, i) =>
-                <div key={team.id}
-                     className={`final-four-team final-four-team${i}`}>{team.name}</div>
+                <div key={team.id} className={`final-four-team final-four-team${i}`}>
+                  {team.name}
+                </div>
               )}
             </div>
           </div>
