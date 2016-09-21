@@ -2934,6 +2934,11 @@
       "from": "react-addons-css-transition-group@15.3.2",
       "resolved": "https://registry.npmjs.org/react-addons-css-transition-group/-/react-addons-css-transition-group-15.3.2.tgz"
     },
+    "react-async-script-loader": {
+      "version": "0.2.1",
+      "from": "react-async-script-loader@latest",
+      "resolved": "https://registry.npmjs.org/react-async-script-loader/-/react-async-script-loader-0.2.1.tgz"
+    },
     "react-dom": {
       "version": "15.3.2",
       "from": "react-dom@15.3.2",
@@ -2953,11 +2958,6 @@
       "version": "0.13.3",
       "from": "react-router-relay@0.13.3",
       "resolved": "https://registry.npmjs.org/react-router-relay/-/react-router-relay-0.13.3.tgz"
-    },
-    "react-script-loader": {
-      "version": "0.0.1",
-      "from": "react-script-loader@0.0.1",
-      "resolved": "https://registry.npmjs.org/react-script-loader/-/react-script-loader-0.0.1.tgz"
     },
     "react-static-container": {
       "version": "1.0.1",

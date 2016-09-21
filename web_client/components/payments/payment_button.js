@@ -1,23 +1,13 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
-import { ReactScriptLoaderMixin } from 'react-script-loader'
 import CreateChargeMutation from 'mutations/create_charge'
 import pluralize from 'pluralize'
+import LoadStripe from 'components/payments/load_stripe'
 
-let PaymentButton = React.createClass({
-  mixins: [ ReactScriptLoaderMixin ],
+class PaymentButton extends Component {
+  state = { stripeCheckout: null }
 
-  getInitialState() {
-    return {
-      stripeCheckout: null
-    }
-  },
-
-  getScriptURL() {
-    return 'https://checkout.stripe.com/checkout.js'
-  },
-
-  onScriptLoaded() {
+  onScriptLoaded = () => {
     let handler = StripeCheckout.configure({
       key: 'pk_test_fQOiDeixudLD4YxlJa0jXxYh',
       image: '/favicon.png',
@@ -26,25 +16,20 @@ let PaymentButton = React.createClass({
     })
 
     this.setState({stripeCheckout: handler})
-  },
+  }
 
-  onScriptError() {
-    // if script does not load?
-  },
-
-  handleStripeToken(token) {
+  handleStripeToken = (token) => {
     Relay.Store.commitUpdate(
       new CreateChargeMutation({pool: this.props.pool, token: token.id})
     )
-  },
+  }
 
-  handlePaymentClick(e) {
-    var {pool, unpaidBrackets, emailAddress} = this.props
-    let entryFee = pool.entry_fee
-
-    let bracketCount = unpaidBrackets.length
-    let amount = bracketCount * entryFee
-    let description = `${bracketCount} ${pluralize('bracket', bracketCount)}`
+  handlePaymentClick = (e) => {
+    const {pool, unpaidBrackets, emailAddress} = this.props
+    const entryFee = pool.entry_fee
+    const bracketCount = unpaidBrackets.length
+    const amount = bracketCount * entryFee
+    const description = `${bracketCount} ${pluralize('bracket', bracketCount)}`
 
     this.state.stripeCheckout.open({
       name: 'Pool Madness',
@@ -55,19 +40,30 @@ let PaymentButton = React.createClass({
     })
 
     e.preventDefault()
-  },
+  }
 
-  render() {
-    var { unpaidBrackets } = this.props
-
-    if(unpaidBrackets && unpaidBrackets.length > 0 && this.state.stripeCheckout) {
+  renderButton = () => {
+    if(this.state.stripeCheckout) {
       return <button onClick={this.handlePaymentClick}>Pay Now</button>
     }
     else {
       return false
     }
   }
-})
+
+  render() {
+    const { unpaidBrackets } = this.props
+    if(unpaidBrackets && unpaidBrackets.length > 0) {
+      return <div className='payment-button'>
+        <LoadStripe onScriptLoaded={this.onScriptLoaded} />
+        {this.renderButton()}
+      </div>
+    }
+    else {
+      return false
+    }
+  }
+}
 
 export default Relay.createContainer(PaymentButton, {
   fragments: {

@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 import Layout from './layout'
 
-let Component = React.createClass({
+class PoolLayout extends Component {
   render() {
     return (
       <Layout {...this.props}>
@@ -10,9 +10,9 @@ let Component = React.createClass({
       </Layout>
     )
   }
-})
+}
 
-export default Relay.createContainer(Component, {
+export default Relay.createContainer(PoolLayout, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {

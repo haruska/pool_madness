@@ -1,27 +1,23 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Header from './header'
 
-export default React.createClass({
-  childContextTypes: {
+export default class Layout extends Component {
+  static childContextTypes = {
     setPageTitle: React.PropTypes.func.isRequired
-  },
+  }
+
+  state = { title: "Pool Madness" }
 
   getChildContext() {
     return {
       setPageTitle: this.setPageTitle
     }
-  },
+  }
 
-  setPageTitle(title) {
-    let newTitle = title || "Pool Madness"
+  setPageTitle = (title) => {
+    const newTitle = title || "Pool Madness"
     this.setState({title: newTitle})
-  },
-
-   getInitialState() {
-    return {
-      title: "Pool Madness"
-    }
-  },
+  }
 
   render() {
     return (
@@ -34,4 +30,4 @@ export default React.createClass({
       </div>
     )
   }
-})
+}

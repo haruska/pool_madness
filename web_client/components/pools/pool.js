@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 
-let Component = React.createClass({
-  contextTypes: {
+class Pool extends Component {
+  static contextTypes = {
     router: React.PropTypes.object.isRequired
-  },
+  }
 
   componentWillMount() {
     this.redirectToBracketList()
-  },
+  }
 
-  redirectToBracketList() {
-    let pool = this.props.pool
+  redirectToBracketList = () => {
+    const { pool } = this.props
 
     if(pool.started) {
       this.context.router.push(`/pools/${pool.model_id}/brackets`)
@@ -19,14 +19,14 @@ let Component = React.createClass({
     else {
       this.context.router.push(`/pools/${pool.model_id}/my_brackets`)
     }
-  },
+  }
 
   render() {
     return this.props.children
   }
-})
+}
 
-export default Relay.createContainer(Component, {
+export default Relay.createContainer(Pool, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {

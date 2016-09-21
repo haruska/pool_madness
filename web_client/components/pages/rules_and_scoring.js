@@ -1,23 +1,23 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 
-import PoolSettings from '../pools/settings'
-import PoolPrizes from '../pools/prizes'
-import PoolScoring from '../pools/scoring'
-import PoolAdminList from '../pools/admin_list'
+import PoolSettings from 'components/pools/settings'
+import PoolPrizes from 'components/pools/prizes'
+import PoolScoring from 'components/pools/scoring'
+import PoolAdminList from 'components/pools/admin_list'
 
-let Component = React.createClass({
-  contextTypes: {
+class RulesAndScoring extends Component {
+  static contextTypes = {
     setPageTitle: React.PropTypes.func.isRequired
-  },
+  }
 
   componentWillMount() {
     this.context.setPageTitle("Rules and Scoring")
-  },
+  }
 
   componentWillUnmount() {
     this.context.setPageTitle()
-  },
+  }
 
   render() {
     let { pool } = this.props
@@ -29,9 +29,9 @@ let Component = React.createClass({
       <PoolAdminList pool={pool}/>
     </div>
   }
-})
+}
 
-export default Relay.createContainer(Component, {
+export default Relay.createContainer(RulesAndScoring, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {

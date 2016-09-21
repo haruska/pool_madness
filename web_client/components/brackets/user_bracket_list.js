@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Relay from 'react-relay'
-import PaymentButton from 'components/payments/payment_button'
 
+import PaymentButton from 'components/payments/payment_button'
 import TableHeader from './user_bracket_list/table_header'
 import BracketRow from './user_bracket_list/bracket_row'
 import SmallBracket from './user_bracket_list/small_bracket'

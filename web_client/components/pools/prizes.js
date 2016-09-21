@@ -1,18 +1,20 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 import { ordinalInWord } from 'utils/ordinals'
 
-let PrizeRow = props => {
-  let {pool, place, percent} = props
+class PrizeRow extends Component {
+  render() {
+    const {pool, place, percent} = this.props
 
-  return <tr>
-    <td>{ordinalInWord(place)} Place</td>
-    <td>{Math.round(percent * 100)}%</td>
-    {pool.started ? <td>${Math.floor(pool.total_collected * percent)}</td> : false}
-  </tr>
+    return <tr>
+      <td>{ordinalInWord(place)} Place</td>
+      <td>{Math.round(percent * 100)}%</td>
+      {pool.started ? <td>${Math.floor(pool.total_collected * percent)}</td> : false}
+    </tr>
+  }
 }
 
-let Component = React.createClass({
+class Prizes extends Component {
   render() {
     let { pool } = this.props
 
@@ -25,9 +27,9 @@ let Component = React.createClass({
       </table>
     </div>
   }
-})
+}
 
-export default Relay.createContainer(Component, {
+export default Relay.createContainer(Prizes, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {

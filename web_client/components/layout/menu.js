@@ -1,18 +1,16 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router'
 import classNames from 'classnames'
 
-export default React.createClass({
-  getInitialState() {
-    return { isVisible: false }
-  },
+export default class Menu extends Component {
+  state = { isVisible: false }
 
-  handleToggleMenuClick() {
-    this.setState({ isVisible: !this.state.isVisible })
-  },
+  handleToggleMenuClick = () => {
+    this.setState({isVisible: !this.state.isVisible})
+  }
 
-  poolLinks() {
-    let { pool, current_user } = this.props
+  poolLinks = () => {
+    const { pool, current_user } = this.props
     let links = []
 
     links.push(<Link to={`/pools/${pool.model_id}`} onClick={this.handleToggleMenuClick}>Brackets</Link>)
@@ -35,19 +33,19 @@ export default React.createClass({
     links.push(<Link to="/pools" onClick={this.handleToggleMenuClick}>Other Pools</Link>)
 
     return links
-  },
+  }
 
-  buildLinks() {
-    let pool = this.props.pool
+  buildLinks = () => {
+    const { pool } = this.props
 
     if(pool) {
       return this.poolLinks()
     } else {
       return [<Link key='all-pools-link' to="/pools" onClick={this.handleToggleMenuClick}>All Pools</Link>]
     }
-  },
+  }
 
-  signedInLinks(contentClass) {
+  signedInLinks = (contentClass) => {
     return (
       <div>
         <a className="js-menu-trigger sliding-panel-button" onClick={this.handleToggleMenuClick}>
@@ -65,20 +63,20 @@ export default React.createClass({
         </nav>
       </div>
     )
-  },
+  }
 
-  currentUserIsPoolAdmin() {
-    let { pool, current_user } = this.props
-    let adminIds = pool.admins.map(admin => admin.model_id)
+  currentUserIsPoolAdmin = () => {
+    const { pool, current_user } = this.props
+    const adminIds = pool.admins.map(admin => admin.model_id)
 
     return adminIds.includes(current_user.model_id)
-  },
+  }
 
   render() {
-    let isVisible = this.state.isVisible
-    let contentClass = classNames('js-menu', 'sliding-panel-content', {'is-visible': isVisible})
-    let panelClass = classNames('js-menu-screen', 'sliding-panel-fade-screen', {'is-visible': isVisible})
-    let links = this.signedInLinks(contentClass)
+    const isVisible = this.state.isVisible
+    const contentClass = classNames('js-menu', 'sliding-panel-content', {'is-visible': isVisible})
+    const panelClass = classNames('js-menu-screen', 'sliding-panel-fade-screen', {'is-visible': isVisible})
+    const links = this.signedInLinks(contentClass)
 
     return (
       <div className="menu">
@@ -87,4 +85,4 @@ export default React.createClass({
       </div>
     )
   }
-})
+}

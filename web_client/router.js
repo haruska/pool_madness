@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 import { Router, Route, IndexRoute, browserHistory, applyRouterMiddleware } from 'react-router'
 import useRelay from 'react-router-relay'
@@ -14,8 +14,10 @@ import RulesAndScoring from 'components/pages/rules_and_scoring'
 import Payments from 'components/pages/payments'
 import InviteCode from 'components/pages/invite_code'
 
-function NoMatch() {
-  return <Layout>The page you are looking for could not be found :(</Layout>
+class NoMatch extends Component {
+  render() {
+    return <Layout>The page you are looking for could not be found :(</Layout>
+  }
 }
 
 const ListsQueries = {
@@ -31,7 +33,7 @@ const PoolCurrentUserQueries = {
   current_user: () => Relay.QL`query { current_user }`
 }
 
-export default function() {
+export default () => {
   return (
     <Router history={browserHistory} render={applyRouterMiddleware(useRelay)} environment={Relay.Store}>
       <Route path="/" component={App}>

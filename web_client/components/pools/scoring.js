@@ -1,19 +1,21 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 import { times } from 'lodash'
 import fibonacci from 'utils/fibonacci'
 import { ordinalInWord } from 'utils/ordinals'
 
-let ScoreRow = props => {
-  let { round } = props
+class ScoreRow extends Component {
+  render() {
+    let {round} = this.props
 
-  return <tr>
-    <td>{ordinalInWord(round)}</td>
-    <td>{fibonacci(round + 1)} + Seed Number</td>
-  </tr>
+    return <tr>
+      <td>{ordinalInWord(round)}</td>
+      <td>{fibonacci(round + 1)} + Seed Number</td>
+    </tr>
+  }
 }
 
-let Component = React.createClass({
+class Scoring extends Component {
   render() {
     let { pool } = this.props
 
@@ -51,9 +53,9 @@ let Component = React.createClass({
     </div>
 
   }
-})
+}
 
-export default Relay.createContainer(Component, {
+export default Relay.createContainer(Scoring, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {

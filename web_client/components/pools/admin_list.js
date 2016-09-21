@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 
-let Component = React.createClass({
+class AdminList extends Component {
   render() {
-    let { pool } = this.props
+    const { pool } = this.props
 
     return <div className="pool-admin-list">
       <h3>Administrators</h3>
@@ -12,9 +12,9 @@ let Component = React.createClass({
       </ul>
     </div>
   }
-})
+}
 
-export default Relay.createContainer(Component, {
+export default Relay.createContainer(AdminList, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {

@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 import moment from 'moment-timezone'
 
-let Component = React.createClass({
-  formattedTipOffTime() {
+class Settings extends Component {
+  formattedTipOffTime = () => {
     let tipOff = moment(this.props.pool.tournament.tip_off).tz("America/New_York")
     return `${tipOff.format("dddd	MMMM D, Y")} at ${tipOff.format("h:mma z")}`
-  },
+  }
 
   render() {
     let { pool } = this.props
@@ -35,9 +35,9 @@ let Component = React.createClass({
       </table>
     </div>
   }
-})
+}
 
-export default Relay.createContainer(Component, {
+export default Relay.createContainer(Settings, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {

@@ -1,19 +1,19 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router'
 import Relay from 'react-relay'
 
-let Component = React.createClass({
-  contextTypes: {
+class Payments extends Component {
+  static contextTypes = {
     setPageTitle: React.PropTypes.func.isRequired
-  },
+  }
 
   componentWillMount() {
     this.context.setPageTitle("Types of Payment")
-  },
+  }
 
   componentWillUnmount() {
     this.context.setPageTitle()
-  },
+  }
 
   render() {
     let { pool } = this.props
@@ -41,9 +41,9 @@ let Component = React.createClass({
       </section>
     </div>
   }
-})
+}
 
-export default Relay.createContainer(Component, {
+export default Relay.createContainer(Payments, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {

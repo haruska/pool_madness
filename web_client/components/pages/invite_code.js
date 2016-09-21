@@ -1,34 +1,28 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 import AcceptInvitationMutation from 'mutations/accept_invitation'
 
-export default React.createClass({
-  contextTypes: {
+export default class InviteCode extends Component {
+  static contextTypes = {
     setPageTitle: React.PropTypes.func.isRequired,
     router: React.PropTypes.object.isRequired
-  },
+  }
 
-  getInitialState() {
-    return {
-      value: '',
-      error: ''
-    }
-  },
+  state = {value: '', error: ''}
 
   componentWillMount() {
     this.context.setPageTitle("Join Pool")
-  },
+  }
 
   componentWillUnmount() {
     this.context.setPageTitle()
-  },
+  }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({value: event.target.value})
-  },
+  }
 
-
-  handleJoinPool() {
+  handleJoinPool = () => {
     let mutation = new AcceptInvitationMutation({invite_code: this.state.value})
     var onSuccess = () => {
       this.context.router.push(`/pools`)
@@ -40,10 +34,9 @@ export default React.createClass({
     }
 
     Relay.Store.commitUpdate(mutation, {onFailure, onSuccess})
-  },
+  }
 
   render() {
-
     return <div className="invite-code-page">
       <div className='invite-code-page-wrapper'>
         <h3>Invite code</h3>
@@ -52,4 +45,4 @@ export default React.createClass({
       </div>
     </div>
   }
-})
+}

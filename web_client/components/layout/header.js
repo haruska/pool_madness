@@ -1,21 +1,23 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Menu from './menu'
 
-function Title(props) {
-  return (
-    <div className='title-wrapper'>
-      <div className='title'>{props.title || "Pool Madness"}</div>
-    </div>
-  )
+class Title extends Component {
+  render() {
+    return (
+      <div className='title-wrapper'>
+        <div className='title'>{this.props.title || "Pool Madness"}</div>
+      </div>
+    )
+  }
 }
-
-export default function Header(props) {
-  let { title, ...other } = props;
-
-  return (
-    <header>
-      <Title title={title}/>
-      <Menu {...other}/>
-    </header>
-  )
+export default class Header extends Component {
+  render() {
+    const {title, ...other} = this.props
+    return (
+      <header>
+        <Title title={title}/>
+        <Menu {...other}/>
+      </header>
+    )
+  }
 }
