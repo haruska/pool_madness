@@ -14,6 +14,7 @@ import RulesAndScoring from 'components/pages/rules_and_scoring'
 import Payments from 'components/pages/payments'
 import InviteCode from 'components/pages/invite_code'
 import Profile from 'components/profile/profile'
+import EditProfile from 'components/profile/edit_profile'
 
 class NoMatch extends Component {
   render() {
@@ -46,6 +47,7 @@ export default () => {
           <Route path="pools" component={PoolList} queries={ListsQueries}/>
           <Route path="pools/invite_code" component={InviteCode}/>
           <Route path="user" component={Profile} queries={CurrentUserQueries}/>
+          <Route path="user/edit" component={EditProfile} queries={CurrentUserQueries}/>
         </Route>
         <Route path="pools/:poolId" component={PoolLayout} queries={PoolCurrentUserQueries}>
           <IndexRoute component={Pool} queries={PoolQueries} />

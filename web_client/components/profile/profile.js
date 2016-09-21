@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Relay from 'react-relay'
+import { Link } from 'react-router'
 
 class Profile extends Component {
   static contextTypes = {
@@ -21,7 +22,7 @@ class Profile extends Component {
       <div className="name">{current_user.name}</div>
       <div className="email">{current_user.email}</div>
       <div className="actions">
-        <a href="/user/edit" className="button">Edit Profile</a>
+        <Link to="/user/edit" className="button">Edit Profile</Link>
         <a href="/auth/edit" className="button minor">Change Password</a>
       </div>
     </div>

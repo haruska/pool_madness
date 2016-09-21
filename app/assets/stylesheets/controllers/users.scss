@@ -1,8 +1,10 @@
-main#outer-container .profile {
-  padding-top: $gutter;
-  .actions {
-    a {
-      display: block;
+main#outer-container {
+  .edit-profile, .profile {
+    padding-top: $gutter;
+    .actions {
+      a {
+        display: block;
+      }
     }
   }
 }

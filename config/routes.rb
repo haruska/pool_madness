@@ -47,7 +47,7 @@ PoolMadness::Application.routes.draw do
   get "/pools/invite_code" => "pages#home", as: :invite_code
 
   get "/user" => "pages#home", as: :profile
-  get "/user/edit" => "users#edit", as: :edit_profile
+  get "/user/edit" => "pages#home", as: :edit_profile
   patch "/user" => "users#update"
 
   get "/*path" => "pages#home"
