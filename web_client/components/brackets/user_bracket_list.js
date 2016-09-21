@@ -1,6 +1,6 @@
 import React from 'react'
 import Relay from 'react-relay'
-import PaymentButton from '../payments/payment_button'
+import PaymentButton from 'components/payments/payment_button'
 import { times } from 'lodash'
 
 function TableHeader(props) {

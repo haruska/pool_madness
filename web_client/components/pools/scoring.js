@@ -1,8 +1,8 @@
 import React from 'react'
 import Relay from 'react-relay'
 import { times } from 'lodash'
-import fibonacci from '../../utils/fibonacci'
-import { ordinalInWord } from '../../utils/ordinals'
+import fibonacci from 'utils/fibonacci'
+import { ordinalInWord } from 'utils/ordinals'
 
 let ScoreRow = props => {
   let { round } = props

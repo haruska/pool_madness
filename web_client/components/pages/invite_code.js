@@ -1,6 +1,6 @@
 import React from 'react'
 import Relay from 'react-relay'
-import AcceptInvitationMutation from '../../mutations/accept_invitation'
+import AcceptInvitationMutation from 'mutations/accept_invitation'
 
 export default React.createClass({
   contextTypes: {

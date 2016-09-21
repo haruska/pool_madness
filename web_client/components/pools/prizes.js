@@ -1,6 +1,6 @@
 import React from 'react'
 import Relay from 'react-relay'
-import { ordinalInWord } from '../../utils/ordinals'
+import { ordinalInWord } from 'utils/ordinals'
 
 let PrizeRow = props => {
   let {pool, place, percent} = props

@@ -1,7 +1,7 @@
 import React from 'react'
 import Relay from 'react-relay'
 import { ReactScriptLoaderMixin } from 'react-script-loader'
-import CreateChargeMutation from '../../mutations/create_charge'
+import CreateChargeMutation from 'mutations/create_charge'
 import pluralize from 'pluralize'
 
 let PaymentButton = React.createClass({
