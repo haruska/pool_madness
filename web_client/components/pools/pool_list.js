@@ -1,84 +1,83 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Relay from 'react-relay'
 import { Link } from 'react-router'
 import { size, filter } from 'lodash'
 
-function InviteCode(props) {
-  let pool = props.pool
-  let now = new Date()
-  let tip_off = new Date(pool.tournament.tip_off)
+class InviteCode extends Component {
+  render() {
+    const { pool } = this.props
+    const now = new Date()
+    const tip_off = new Date(pool.tournament.tip_off)
 
-
-  if (tip_off > now) {
-    return <li className='invite-code'>Invite Code: {pool.invite_code}</li>
-  } else {
-    return <li className='invite-code'/>
+    if (tip_off > now) {
+      return <li className='invite-code'>Invite Code: {pool.invite_code}</li>
+    } else {
+      return <li className='invite-code'/>
+    }
   }
 }
 
-function Pool(props) {
-  let pool = props.pool
-  let poolPath = `/pools/${pool.model_id}`
+class Pool extends Component {
+  render() {
+    const { pool } = this.props
+    const poolPath = `/pools/${pool.model_id}`
 
-  return (
-    <div className='pool'>
-      <Link to={poolPath}>
-        <ul>
-          <li className='name'>{pool.name} Pool</li>
-          <li className='tournament-name'>{pool.tournament.name}</li>
-          <InviteCode pool={pool} />
-        </ul>
-      </Link>
-    </div>
-  )
+    return (
+      <div className='pool'>
+        <Link to={poolPath}>
+          <ul>
+            <li className='name'>{pool.name} Pool</li>
+            <li className='tournament-name'>{pool.tournament.name}</li>
+            <InviteCode pool={pool}/>
+          </ul>
+        </Link>
+      </div>
+    )
+  }
 }
 
-var Component = React.createClass({
-  contextTypes: {
+class PoolList extends Component {
+  static contextTypes = {
     setPageTitle: React.PropTypes.func.isRequired
-  },
+  }
 
-  getInitialState() {
-    return {
-      archived: false
-    }
-  },
+  state = { archived: false }
 
   componentWillMount() {
     this.context.setPageTitle("Pools")
-  },
+  }
 
   componentWillUnmount() {
     this.context.setPageTitle()
-  },
+  }
 
   componentDidMount() {
     this.props.relay.forceFetch()
-  },
+  }
 
-  currentPools() {
+  currentPools = () => {
     return filter(this.props.lists.pools, pool => { return !pool.tournament.archived })
-  },
+  }
 
-  archivedPools() {
+  archivedPools = () => {
     return filter(this.props.lists.pools, pool => { return pool.tournament.archived })
-  },
+  }
 
-  hasArchivedPools() {
+  hasArchivedPools = () => {
     return size(this.archivedPools()) > 0
-  },
+  }
 
-  handlePreviousYearsClick() {
+  handlePreviousYearsClick = () => {
     this.setState({archived: true})
     this.context.setPageTitle("Archived Pools")
-  },
+  }
 
-  handleCurrentPoolsClick() {
+  handleCurrentPoolsClick = () => {
     this.setState({archived: false})
     this.context.setPageTitle("Pools")
-  },
+  }
 
-  poolListButton() {
+  poolListButton = () => {
     if(this.state.archived) {
       return (
         <div className='button' onClick={this.handleCurrentPoolsClick}>
@@ -90,7 +89,7 @@ var Component = React.createClass({
     } else if(this.hasArchivedPools()) {
       return <div className='button minor' onClick={this.handlePreviousYearsClick}>Previous Years</div>
     }
-  },
+  }
 
   render() {
     let pools = this.state.archived ? this.archivedPools() : this.currentPools()
@@ -113,9 +112,9 @@ var Component = React.createClass({
       </div>
     }
   }
-})
+}
 
-export default Relay.createContainer(Component, {
+export default Relay.createContainer(PoolList, {
   fragments: {
     lists: () => Relay.QL`
       fragment on Lists {
