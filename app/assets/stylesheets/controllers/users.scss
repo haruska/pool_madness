@@ -1,4 +1,8 @@
 main#outer-container {
+  label.error {
+    color: red;
+  }
+
   .edit-profile, .profile {
     padding-top: $gutter;
     .actions {

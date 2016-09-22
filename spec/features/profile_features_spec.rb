@@ -33,8 +33,8 @@ RSpec.describe "User Profiles", js: true do
 
       expect(page).to have_css(".title", text: "Edit Profile")
 
-      fill_in "user[name]", with: new_name
-      fill_in "user[email]", with: new_email
+      fill_in "name", with: new_name
+      fill_in "email", with: new_email
     end
 
     context "with valid data" do

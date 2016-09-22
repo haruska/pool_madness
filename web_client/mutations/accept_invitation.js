@@ -1,5 +1,4 @@
-import { Mutation } from 'react-relay'
-import Relay from 'react-relay'
+import Relay, { Mutation } from 'react-relay'
 
 export default class AcceptInvitationMutation extends Mutation {
   getMutation() {
