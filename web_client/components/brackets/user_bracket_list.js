@@ -46,7 +46,7 @@ class UserBracketList extends Component {
       </div>
       <div className='actions'>
         <PaymentButton pool={pool} unpaidBrackets={this.unpaidBrackets()} emailAddress={this.props.current_user.email} />
-        <NewBracketButton poolId={pool.model_id} bracketCount={brackets.length} />
+        <NewBracketButton pool={pool} bracketCount={brackets.length} />
       </div>
     </div>
   }
@@ -73,6 +73,7 @@ export default Relay.createContainer(UserBracketList, {
             }
           }
         }
+        ${NewBracketButton.getFragment('pool')}
         ${PaymentButton.getFragment('pool')}
       }
     `,

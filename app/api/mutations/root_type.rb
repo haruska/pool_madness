@@ -6,5 +6,6 @@ module Mutations
     field :create_charge, field: CreateCharge.field
     field :accept_invitation, field: AcceptInvitation.field
     field :update_profile, field: UpdateProfile.field
+    field :create_bracket, field: CreateBracket.field
   end
 end

@@ -14,7 +14,6 @@ PoolMadness::Application.routes.draw do
   root to: "home#index"
 
   resources :pools, only: [] do
-    resources :brackets, only: [:create]
     resources :games, only: [:index]
     resource :possibilities, only: [:show]
   end

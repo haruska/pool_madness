@@ -1,11 +1,7 @@
 class BracketsController < ApplicationController
   before_action :authenticate_user!
-
-  load_and_authorize_resource :pool, only: [:create]
-  load_and_authorize_resource :bracket, through: :pool, only: [:create]
-  load_and_authorize_resource :bracket, except: [:create]
-
-  before_action :load_pool_and_tournament, except: [:create]
+  load_and_authorize_resource :bracket
+  before_action :load_pool_and_tournament
 
   def show
     if !@pool.started? && current_user == @bracket.user
@@ -17,17 +13,6 @@ class BracketsController < ApplicationController
 
   def edit
     set_jskit_edit_payload
-  end
-
-  def create
-    @bracket.pool = @pool
-    @bracket.user = current_user
-
-    if @bracket.save
-      redirect_to edit_bracket_path(@bracket)
-    else
-      redirect_to pool_path(@pool), alert: "Problem creating a new bracket. Please try again."
-    end
   end
 
   def update

@@ -42,7 +42,7 @@ RSpec.describe Mutations::UpdateProfile do
     end
   end
 
-  context "not logged it" do
+  context "not logged in" do
     let(:user) { nil }
     let(:name) { Faker::Name.name }
     let(:email) { Faker::Internet.email }
