@@ -21,6 +21,26 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe "#id" do
+    let(:slot) { rand(tournament_tree.size / 2 - 1) + 1 }
+    subject { tournament_tree.at(slot) }
+
+    it "is a global id for the graph" do
+      expect(subject.id).to eq("#{tournament.id}~#{slot}")
+    end
+  end
+
+  describe ".find" do
+    let(:slot) { rand(tournament_tree.size / 2 - 1) + 1 }
+    subject { tournament_tree.at(slot) }
+
+    it "builds reference from the tournament and slot" do
+      game = Game.find(subject.id)
+      expect(game.tree.tournament).to eq(subject.tree.tournament)
+      expect(game.slot).to eq(subject.slot)
+    end
+  end
+
   describe "#round" do
     it "is the current round of the game" do
       (1..6).to_a.each do |round_num|

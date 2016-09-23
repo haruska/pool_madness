@@ -44,8 +44,8 @@ class Tournament < ActiveRecord::Base
     @team_seeds[starting_slot]
   end
 
-  def game_ids_for(round_number, region = nil)
-    game_ids = tree.game_ids_for(round_number)
+  def game_slots_for(round_number, region = nil)
+    game_ids = tree.game_slots_for(round_number)
 
     if region.present? && game_ids.size >= Team::REGIONS.size
       slice_size = game_ids.size / Team::REGIONS.size
@@ -64,7 +64,7 @@ class Tournament < ActiveRecord::Base
   end
 
   def round_for(round_number, region = nil)
-    tree.select_games(game_ids_for(round_number, region))
+    tree.select_games(game_slots_for(round_number, region))
   end
 
   def tree
@@ -85,12 +85,15 @@ class Tournament < ActiveRecord::Base
     save!
   end
 
-  def games_hash
+  def games
     working_tree = tree
-    (1..num_games).map do |game_id|
-      node = working_tree.at(game_id)
+    (1..num_games).map { |slot| working_tree.at(slot) }
+  end
+
+  def games_hash
+    games.map do |node|
       {
-        id: game_id,
+        slot: node.slot,
         teamOne: team_hash(node.team_one),
         teamTwo: team_hash(node.team_two),
         winningTeam: team_hash(node.team),

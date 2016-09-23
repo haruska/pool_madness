@@ -5,6 +5,6 @@
         - if round_num == 1
           %div{:class => "region-label region#{region_num + 1}"}
             = region
-        = render partial: 'brackets/game_set', locals: {game_ids: @tournament.game_ids_for(round_num, region)}
+        = render partial: 'brackets/game_set', locals: {game_slots: @tournament.game_slots_for(round_num, region)}
   - else
-    = render partial: 'brackets/game_set', locals: {game_ids: @tournament.game_ids_for(round_num)}
+    = render partial: 'brackets/game_set', locals: {game_slots: @tournament.game_slots_for(round_num)}

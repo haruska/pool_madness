@@ -52,7 +52,7 @@ App.createController("Brackets", {
     this.fillInPicks();
 
     $.ajax({
-      url: '/brackets/' + this.bracketId + '/picks/' + currentGame.id,
+      url: '/brackets/' + this.bracketId + '/picks/' + currentGame.slot,
       type: 'PATCH',
       data: { choice: currentGame.choice }
     });
@@ -76,7 +76,7 @@ App.createController("Brackets", {
     if (game.nextGameId != null) {
       var pickedTeam = this.pickTeam(game);
       var nextGame = this.findGame(game.nextGameId);
-      var slotDiv = $("#match" + nextGame.id).find(".slot" + game.nextSlot);
+      var slotDiv = $("#match" + nextGame.slot).find(".slot" + game.nextSlot);
 
       if (game.winningTeam != null && game.winningTeam.id == pickedTeam.id) {
         slotDiv.addClass("correct-pick");

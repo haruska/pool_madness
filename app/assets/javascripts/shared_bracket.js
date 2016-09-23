@@ -9,11 +9,11 @@ App.SharedBracket = {
   },
 
   isChampionshipGame: function(game) {
-    return this.championshipGame.id === game.id;
+    return this.championshipGame.slot === game.slot;
   },
 
-  findGame: function(id) {
-    return _.find(this.games, { "id": id });
+  findGame: function(slot) {
+    return _.find(this.games, { "slot": slot });
   },
 
   fillInTeams: function() {
@@ -22,8 +22,8 @@ App.SharedBracket = {
 
   fillInTeam: function(game) {
     if (game.teamOne && game.teamTwo) {
-      this.fillTeam(game.id, 1, game.teamOne);
-      this.fillTeam(game.id, 2, game.teamTwo);
+      this.fillTeam(game.slot, 1, game.teamOne);
+      this.fillTeam(game.slot, 2, game.teamTwo);
     }
   },
 

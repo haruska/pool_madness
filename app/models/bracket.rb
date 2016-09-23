@@ -83,7 +83,7 @@ class Bracket < ActiveRecord::Base
     working_tree = tree
     games_hash = tournament.games_hash
     games_hash.each do |game_hash|
-      game_hash[:choice] = working_tree.at(game_hash[:id]).decision
+      game_hash[:choice] = working_tree.at(game_hash[:slot]).decision
     end
     games_hash
   end

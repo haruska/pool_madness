@@ -2,7 +2,15 @@ class Game < BinaryDecisionTree::Node
   alias game_one left
   alias game_two right
   alias next_game parent
-  alias id slot
+
+  def self.find(graph_id)
+    tournament_id, slot = graph_id.split("~").map(&:to_i)
+    Tournament.find(tournament_id).tree.at(slot)
+  end
+
+  def id
+    "#{tournament.id}~#{slot}"
+  end
 
   def round
     rounds = (1..tournament_tree.depth).to_a.reverse

@@ -77,4 +77,14 @@ RSpec.describe Tournament, type: :model do
       end
     end
   end
+
+  describe "games" do
+    let(:games) { subject.games }
+
+    it "is a list of all games in the tournament" do
+      expect(games.size).to eq(subject.num_games)
+      expect(games.map(&:slot)).to eq((1..subject.num_games).to_a)
+      expect(games.map(&:tree).uniq.size).to eq(1)
+    end
+  end
 end

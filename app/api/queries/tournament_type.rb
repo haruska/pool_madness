@@ -12,5 +12,7 @@ module Queries
     field :tip_off, !types.String do
       resolve -> (tournament, _args, _context) { tournament.tip_off.as_json }
     end
+
+    field :games, !types[GameType]
   end
 end
