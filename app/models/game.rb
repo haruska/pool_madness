@@ -17,6 +17,15 @@ class Game < BinaryDecisionTree::Node
     rounds[current_depth - 1]
   end
 
+  def region
+    game_slots = tree.game_slots_for(round)
+    return nil if game_slots.size < Team::REGIONS.size
+
+    slice_size = game_slots.size / Team::REGIONS.size
+    slices = game_slots.each_slice(slice_size).to_a
+    Team::REGIONS.find { |region| slices[Team::REGIONS.index(region)].include?(slot) }
+  end
+
   def championship?
     parent_position.zero?
   end
