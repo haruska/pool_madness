@@ -15,6 +15,7 @@ import Payments from 'components/pages/payments'
 import InviteCode from 'components/pages/invite_code'
 import Profile from 'components/profile/profile'
 import EditProfile from 'components/profile/edit_profile'
+import PoolGames from 'components/pools/games'
 
 class NoMatch extends Component {
   render() {
@@ -55,6 +56,7 @@ export default () => {
           <Route path="my_brackets" component={UserBracketList} queries={PoolCurrentUserQueries}/>
           <Route path="rules" component={RulesAndScoring} queries={PoolQueries}/>
           <Route path="payments" component={Payments} queries={PoolQueries}/>
+          <Route path="games" component={PoolGames} queries={PoolQueries}/>
         </Route>
         <Route path='*' component={NoMatch}/>
       </Route>
