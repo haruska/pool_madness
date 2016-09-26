@@ -2,33 +2,43 @@ import React, { Component } from 'react'
 import Relay from 'react-relay'
 import { groupBy } from 'lodash'
 
-import Region from 'components/bracket/region'
+import Round from 'components/bracket/round'
 import Game from 'components/bracket/game'
+import Championship from 'components/bracket/championship'
 
 class Tournament extends Component {
-  gamesByRegion = () => {
-    return groupBy(this.props.tournament.games, 'region')
+  gamesByRound = () => {
+    return groupBy(this.games(), 'round')
   }
 
-  gamesFromRegion = (region) => {
-    return this.gamesByRegion()[region]
+  gamesFromRound = (round) => {
+    return this.gamesByRound()[round]
   }
 
-  regions = () => {
-    return [...new Set(this.props.tournament.games.map(g => g.region))].filter(r => r)
+  rounds = () => {
+    return [...new Set(this.games().map(g => g.round))].sort()
   }
 
-  interRegionGames = () => {
-    return this.gamesFromRegion(null)
+  games = () => {
+    return this.props.tournament.games
+  }
+
+  champion = () => {
+    const maxRound = this.rounds().reverse()[0]
+    const team = this.gamesFromRound(maxRound)[0].winning_team
+    if (team) {
+      return team.name
+    }
+    else {
+      return null
+    }
   }
 
   render() {
     return <div className='bracket'>
       <div className='bracket-body field-64'>
-        {this.regions().map((r, i) => <Region key={`${r}${i}`} index={i+1} region={r} games={this.gamesFromRegion(r)} />)}
-        <div className="final-games">
-          {this.interRegionGames().map((game, i) => <Game key={i} game={game} index={i} />)}
-        </div>
+        {this.rounds().map((r, i) => <Round key={r} roundNumber={r} games={this.gamesFromRound(r)} />)}
+        <Championship champion={this.champion()} />
       </div>
     </div>
   }
@@ -41,6 +51,9 @@ export default Relay.createContainer(Tournament, {
         games {
           round
           region
+          winning_team {
+            name
+          }
           ${Game.getFragment('game')}
         }
       }

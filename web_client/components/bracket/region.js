@@ -1,26 +1,15 @@
 import React, { Component } from 'react'
-import Round from 'components/bracket/round'
 import { groupBy } from 'lodash'
 
+import Game from 'components/bracket/game'
+
 export default class Region extends Component {
-  gamesByRound = () => {
-    return groupBy(this.props.games, 'round')
-  }
-
-  gamesFromRound = (round) => {
-    return this.gamesByRound()[round]
-  }
-
-  rounds = () => {
-    return [...new Set(this.props.games.map(g => g.round))].sort()
-  }
-
   render() {
-    const { region, index } = this.props
+    const { games, index, region, roundNumber } = this.props
 
     return <div className={`region region${index}`}>
-      <div className='region-label'>{region}</div>
-      {this.rounds().map(r => <Round key={r} roundNumber={r} games={this.gamesFromRound(r)} />)}
+      {roundNumber == 1 ? <div className={`region-label region${index}`}>{region}</div> : null}
+      {games.map((game, i) => <Game key={i} game={game} index={i+1} />)}
     </div>
   }
 }

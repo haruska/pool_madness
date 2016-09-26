@@ -11,7 +11,7 @@ class Game extends Component {
 
   render() {
     const { game, index } = this.props
-    return <div className={`match match${index}`}>
+    return <div className={`match m${index}`}>
       {this.renderTeam(game.team_one, 1)}
       {this.renderTeam(game.team_two, 2)}
     </div>
