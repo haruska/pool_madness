@@ -17,8 +17,8 @@ module Queries
     field :round, !types.Int
     field :region, types.String
 
-    field :team_one, TeamType
-    field :team_two, TeamType
+    field :first_team, TeamType
+    field :second_team, TeamType
     field :winning_team, TeamType, property: :team
 
     field :choice, types.Int, property: :decision # 0 or 1

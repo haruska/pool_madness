@@ -35,9 +35,10 @@ class Tournament extends Component {
   }
 
   render() {
+    const fieldClass = this.games().length == 63 ? 'field-64' : 'sweet-16'
     return <div className='bracket'>
-      <div className='bracket-body field-64'>
-        {this.rounds().map((r, i) => <Round key={r} roundNumber={r} games={this.gamesFromRound(r)} />)}
+      <div className={`bracket-body ${fieldClass}`}>
+        {this.rounds().map((r, i) => <Round key={i} roundNumber={r} games={this.gamesFromRound(r)} />)}
         <Championship champion={this.champion()} />
       </div>
     </div>

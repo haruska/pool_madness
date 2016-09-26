@@ -12,8 +12,8 @@ class Game extends Component {
   render() {
     const { game, index } = this.props
     return <div className={`match m${index}`}>
-      {this.renderTeam(game.team_one, 1)}
-      {this.renderTeam(game.team_two, 2)}
+      {this.renderTeam(game.first_team, 1)}
+      {this.renderTeam(game.second_team, 2)}
     </div>
   }
 }
@@ -22,11 +22,11 @@ export default Relay.createContainer(Game, {
   fragments: {
     game: () => Relay.QL`
       fragment on Game {
-        team_one {
+        first_team {
           seed
           name
         }
-        team_two {
+        second_team {
           seed
           name
         }

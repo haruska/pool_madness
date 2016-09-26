@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { groupBy } from 'lodash'
-
 import Game from 'components/bracket/game'
 
 export default class Region extends Component {

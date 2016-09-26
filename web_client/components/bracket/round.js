@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { values, groupBy } from 'lodash'
+import { groupBy } from 'lodash'
 
 import Region from 'components/bracket/region'
 import Game from 'components/bracket/game'
