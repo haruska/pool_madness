@@ -1,5 +1,3 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
 FactoryGirl.define do
   factory :tournament do
     tip_off { 1.week.ago }
@@ -151,6 +149,10 @@ FactoryGirl.define do
 
     trait :archived do
       tip_off { 7.months.ago }
+    end
+
+    trait :sweet_16 do
+      num_rounds 4
     end
   end
 end
