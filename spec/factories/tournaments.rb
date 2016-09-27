@@ -88,48 +88,6 @@ FactoryGirl.define do
         end
       end
 
-      tournament.rounds.create(
-        name: "1st ROUND",
-        start_date: Date.parse("2015-03-19"),
-        end_date: Date.parse("2015-03-20"),
-        number: 1
-      )
-
-      tournament.rounds.create(
-        name: "2nd ROUND",
-        start_date: Date.parse("2015-03-21"),
-        end_date: Date.parse("2015-03-22"),
-        number: 2
-      )
-
-      tournament.rounds.create(
-        name: "SWEET 16",
-        start_date: Date.parse("2015-03-26"),
-        end_date: Date.parse("2015-03-27"),
-        number: 3
-      )
-
-      tournament.rounds.create(
-        name: "ELITE EIGHT",
-        start_date: Date.parse("2015-03-28"),
-        end_date: Date.parse("2015-03-29"),
-        number: 4
-      )
-
-      tournament.rounds.create(
-        name: "FINAL FOUR",
-        start_date: Date.parse("2015-04-04"),
-        end_date: Date.parse("2015-04-04"),
-        number: 5
-      )
-
-      tournament.rounds.create(
-        name: "CHAMPION",
-        start_date: Date.parse("2015-04-06"),
-        end_date: Date.parse("2015-04-06"),
-        number: 6
-      )
-
       team_slot = tournament.teams.count
 
       sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]

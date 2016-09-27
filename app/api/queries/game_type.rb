@@ -14,7 +14,7 @@ module Queries
     field :next_game_slot, types.Int
     field :next_game_position, types.Int, property: :next_slot # 1 or 2
 
-    field :round, !types.Int
+    field :round, !RoundType
     field :region, types.String
 
     field :first_team, TeamType

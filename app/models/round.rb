@@ -1,16 +1,55 @@
-class Round < ActiveRecord::Base
-  belongs_to :tournament
+class Round
+  include ActiveAttr::Model
 
-  validates :tournament, presence: true
-  validates :name, presence: true, uniqueness: { scope: :tournament_id }
-  validates :number, presence: true, uniqueness: { scope: :tournament_id }
-  validates :start_date, presence: true
-  validates :end_date, presence: true
+  NAMES = ["1st Round", "2nd Round", "Sweet 16", "Elite Eight", "Final Four", "Champion"].freeze
 
-  def date_range_string
-    date_range_string = start_date.strftime("%B %e")
-    date_range_string += "-#{end_date.strftime('%e')}" if start_date != end_date
+  attribute :tournament
+  attribute :number, type: Integer
 
-    date_range_string
+  validates :tournament, :number, presence: true
+
+  def self.find(graph_id)
+    tournament_id, round_number = graph_id.split("~").map(&:to_i)
+    new(tournament: Tournament.find(tournament_id), number: round_number)
+  end
+
+  def id
+    "#{tournament.id}~#{number}"
+  end
+
+  def name
+    names = NAMES.last(tournament.num_rounds)
+    names[number - 1]
+  end
+
+  def start_date
+    start_date_for(number)
+  end
+
+  def end_date
+    if NAMES.last(2).include?(name)
+      start_date
+    else
+      start_date + 1.day
+    end
+  end
+
+  def games
+    tournament.round_for(number)
+  end
+
+  private
+
+  def start_date_for(round_number)
+    case round_number
+    when 1
+      tournament.tip_off.to_date
+    when 2, 4, 6
+      start_date_for(round_number - 1) + 2.days
+    else
+      day = start_date_for(round_number - 1) + 5.days
+      day += tournament.num_rounds > 4 ? (round_number - 3).days : (round_number - 1).days
+      day
+    end
   end
 end

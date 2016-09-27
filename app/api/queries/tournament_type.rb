@@ -10,9 +10,10 @@ module Queries
     field :archived, !types.Boolean, property: :archived?
     field :games_remaining, !types.Int, property: :num_games_remaining
     field :tip_off, !types.String do
-      resolve -> (tournament, _args, _context) { tournament.tip_off.as_json }
+      resolve -> (tournament, _args, _context) { tournament.tip_off.iso8601 }
     end
 
+    field :rounds, !types[RoundType]
     field :games, !types[GameType]
   end
 end

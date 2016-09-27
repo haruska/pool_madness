@@ -4,7 +4,6 @@ RSpec.describe Tournament, type: :model do
   before(:all) { @tournament = create(:tournament) }
   subject { @tournament }
 
-  it { is_expected.to have_many(:rounds) }
   it { is_expected.to have_many(:pools) }
   it { is_expected.to have_many(:teams) }
 

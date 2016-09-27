@@ -57,9 +57,15 @@ class Tournament < ActiveRecord::Base
     end
   end
 
+  def rounds
+    (1..num_rounds).to_a.map { |n| Round.new number: n, tournament: self }
+  end
+
   def round_name_date_pairs
-    rounds.order(:number).map do |round|
-      [round.name, round.date_range_string]
+    rounds.map do |round|
+      date_range_string = round.start_date.strftime("%b %e")
+      date_range_string += "-#{round.end_date.strftime('%e')}" if round.start_date != round.end_date
+      [round.name, date_range_string]
     end
   end
 

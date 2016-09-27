@@ -5,8 +5,11 @@ import Region from 'components/bracket/region'
 import Game from 'components/bracket/game'
 
 export default class Round extends Component {
+  games = () => {
+    return this.props.round.games
+  }
   gamesByRegion = () => {
-    return groupBy(this.props.games, 'region')
+    return groupBy(this.games(), 'region')
   }
 
   gamesFromRegion = (region) => {
@@ -14,7 +17,7 @@ export default class Round extends Component {
   }
 
   regions = () => {
-    return [...new Set(this.props.games.map(g => g.region))].filter(r => r)
+    return [...new Set(this.games().map(g => g.region))].filter(r => r)
   }
 
   interRegionGames = () => {
@@ -28,9 +31,9 @@ export default class Round extends Component {
   }
 
   render() {
-    const { roundNumber } = this.props
-    return <div className={`round round${roundNumber}`}>
-      {this.regions().map((r, i) => <Region key={r} index={i+1} games={this.gamesFromRegion(r)} roundNumber={roundNumber} region={r}/>)}
+    const { round } = this.props
+    return <div className={`round round${round.number}`}>
+      {this.regions().map((r, i) => <Region key={r} index={i+1} games={this.gamesFromRegion(r)} roundNumber={round.number} region={r}/>)}
       {this.interRegionGames()}
     </div>
   }

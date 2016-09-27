@@ -4,7 +4,7 @@ RSpec.describe Queries::TournamentType do
   subject { Queries::TournamentType }
 
   context "fields" do
-    let(:fields) { %w(id name num_rounds games_remaining archived tip_off games) }
+    let(:fields) { %w(id name num_rounds games_remaining archived tip_off rounds games) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)
@@ -18,7 +18,7 @@ RSpec.describe Queries::TournamentType do
 
       it "is the string representation of the tip_off Time (iso8601)" do
         result = subject.resolve(tournament, nil, nil)
-        expect(result).to eq(tip_off.as_json)
+        expect(result).to eq(tip_off.iso8601)
         expect(Time.iso8601(result)).to eq(tip_off)
       end
     end

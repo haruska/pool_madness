@@ -12,13 +12,17 @@ class Game < BinaryDecisionTree::Node
     "#{tournament.id}~#{slot}"
   end
 
-  def round
+  def round_number
     rounds = (1..tournament_tree.depth).to_a.reverse
     rounds[current_depth - 1]
   end
 
+  def round
+    Round.new tournament: tournament, number: round_number
+  end
+
   def region
-    game_slots = tree.game_slots_for(round)
+    game_slots = tree.game_slots_for(round_number)
     return nil if game_slots.size < Team::REGIONS.size
 
     slice_size = game_slots.size / Team::REGIONS.size
@@ -74,7 +78,7 @@ class Game < BinaryDecisionTree::Node
     working_game = possible_game || tournament_game
 
     if value.present? && working_game.value == value
-      BracketPoint::POINTS_PER_ROUND[round] + team_seed
+      BracketPoint::POINTS_PER_ROUND[round_number] + team_seed
     else
       0
     end
@@ -82,7 +86,7 @@ class Game < BinaryDecisionTree::Node
 
   def possible_points
     if tournament_game.value.blank? && team.try(:still_playing?)
-      BracketPoint::POINTS_PER_ROUND[round] + team_seed
+      BracketPoint::POINTS_PER_ROUND[round_number] + team_seed
     else
       points
     end

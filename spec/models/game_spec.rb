@@ -41,11 +41,22 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  describe "#round" do
+  describe "#round_number" do
     it "is the current round of the game" do
       (1..6).to_a.each do |round_num|
         game = tournament_tree.round_for(round_num).sample
-        expect(game.round).to eq(round_num)
+        expect(game.round_number).to eq(round_num)
+      end
+    end
+  end
+
+  describe "#round" do
+    it "is the round of the game" do
+      (1..6).to_a.each do |round_num|
+        game = tournament_tree.round_for(round_num).sample
+        expect(game.round).to be_a(Round)
+        expect(game.round.number).to eq(round_num)
+        expect(game.round.tournament).to eq(tournament)
       end
     end
   end
