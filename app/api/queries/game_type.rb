@@ -20,7 +20,5 @@ module Queries
     field :first_team, TeamType
     field :second_team, TeamType
     field :winning_team, TeamType, property: :team
-
-    field :choice, types.Int, property: :decision # 0 or 1
   end
 end

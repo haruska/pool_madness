@@ -668,20 +668,6 @@
           "description": "A game in a tournament",
           "fields": [
             {
-              "name": "choice",
-              "description": null,
-              "args": [
-
-              ],
-              "type": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
               "name": "first_team",
               "description": null,
               "args": [
