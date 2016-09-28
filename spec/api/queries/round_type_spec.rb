@@ -13,7 +13,7 @@ RSpec.describe Queries::RoundType do
   end
 
   describe "start_date" do
-    subject { Queries::RoundType.fields["start_date"]}
+    subject { Queries::RoundType.fields["start_date"] }
 
     it "is an iso 8601 string representing the round start date" do
       expect(subject.resolve(round, nil, nil)).to eq(round.start_date.iso8601)
@@ -21,7 +21,7 @@ RSpec.describe Queries::RoundType do
   end
 
   describe "end_date" do
-    subject { Queries::RoundType.fields["end_date"]}
+    subject { Queries::RoundType.fields["end_date"] }
 
     it "is an iso 8601 string representing the round end date" do
       expect(subject.resolve(round, nil, nil)).to eq(round.end_date.iso8601)

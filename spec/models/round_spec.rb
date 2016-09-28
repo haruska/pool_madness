@@ -107,7 +107,7 @@ RSpec.describe Round do
       let(:tournament) { create(:tournament, :sweet_16) }
 
       context "first rounds" do
-        let(:round_numbers) { [1,2] }
+        let(:round_numbers) { [1, 2] }
 
         it "is a day after the start_date" do
           round_numbers.each do |number|
