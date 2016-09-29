@@ -3,14 +3,6 @@ class BracketsController < ApplicationController
   load_and_authorize_resource :bracket
   before_action :load_pool_and_tournament
 
-  def show
-    if !@pool.started? && current_user == @bracket.user
-      redirect_to edit_bracket_path(@bracket)
-    end
-
-    set_jskit_show_payload
-  end
-
   def edit
     set_jskit_edit_payload
   end
@@ -38,10 +30,6 @@ class BracketsController < ApplicationController
 
   def update_params
     params.require(:bracket).permit(:tie_breaker, :name, :points, :possible_points)
-  end
-
-  def set_jskit_show_payload
-    set_action_payload(@bracket.id, @bracket.games_hash, @bracket.tie_breaker)
   end
 
   def set_jskit_edit_payload

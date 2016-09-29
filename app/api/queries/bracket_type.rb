@@ -8,6 +8,9 @@ module Queries
     field :model_id, !types.ID, property: :id
     field :name, !types.String
     field :owner, !UserType, property: :user
+    field :editable, !types.Boolean do
+      resolve ->(bracket, _args, context) { context[:current_ability].can?(:edit, bracket) }
+    end
     field :tie_breaker, types.Int
     field :status, !types.String
     field :points, !types.Int
@@ -21,5 +24,8 @@ module Queries
     field :eliminated, !types.Boolean do
       resolve ->(bracket, _args, _context) { bracket.best_possible > 2 }
     end
+
+    field :pool, !PoolType
+    field :picks, !types[GameType]
   end
 end

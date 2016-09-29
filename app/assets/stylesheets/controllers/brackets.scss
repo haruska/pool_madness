@@ -396,29 +396,6 @@
     }
   }
 
-  &.show-action {
-    .wrapper {
-      margin: 0 !important;
-    }
-
-    .eliminated {
-      text-decoration: line-through;
-      color: $middark-gray;
-    }
-
-    .correct-pick {
-      //background-color: lightyellow;
-      font-weight: 500;
-      background-color: $light-blue;
-    }
-    .round1 {
-      .eliminated {
-        text-decoration: none;
-        color: $dark-gray;
-      }
-    }
-  }
-
   &.edit-action {
     .wrapper {
       margin: 0 !important;
@@ -452,4 +429,24 @@
       }
     }
   }
+}
+
+.bracket-details {
+    padding-top: $gutter * 2;
+
+    .eliminated {
+      text-decoration: line-through;
+      color: $middark-gray;
+    }
+
+    .correct-pick {
+      font-weight: 500;
+      background-color: $light-blue;
+    }
+    .round1 {
+      .eliminated {
+        text-decoration: none;
+        color: $dark-gray;
+      }
+    }
 }

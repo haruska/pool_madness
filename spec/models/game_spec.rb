@@ -23,21 +23,47 @@ RSpec.describe Game, type: :model do
 
   describe "#id" do
     let(:slot) { rand(tournament_tree.size / 2 - 1) + 1 }
-    subject { tournament_tree.at(slot) }
 
-    it "is a global id for the graph" do
-      expect(subject.id).to eq("#{tournament.id}~#{slot}")
+    context "in a tournament" do
+      subject { tournament_tree.at(slot) }
+
+      it "is a global id for the graph" do
+        expect(subject.id).to eq("Tournament~#{tournament.id}~#{slot}")
+      end
+    end
+
+    context "in a bracket" do
+      let(:bracket) { create(:bracket, pool: create(:pool, tournament: tournament)) }
+      subject { bracket.tree.at(slot) }
+
+      it "is a global id for the graph" do
+        expect(subject.id).to eq("Bracket~#{bracket.id}~#{slot}")
+      end
     end
   end
 
   describe ".find" do
     let(:slot) { rand(tournament_tree.size / 2 - 1) + 1 }
-    subject { tournament_tree.at(slot) }
 
-    it "builds reference from the tournament and slot" do
-      game = Game.find(subject.id)
-      expect(game.tree.tournament).to eq(subject.tree.tournament)
-      expect(game.slot).to eq(subject.slot)
+    context "in a tournament" do
+      subject { tournament_tree.at(slot) }
+
+      it "builds reference from the tournament and slot" do
+        game = Game.find(subject.id)
+        expect(game.tree.tournament).to eq(subject.tree.tournament)
+        expect(game.slot).to eq(subject.slot)
+      end
+    end
+
+    context "in a bracket" do
+      let(:bracket) { create(:bracket, pool: create(:pool, tournament: tournament)) }
+      subject { bracket.tree.at(slot) }
+
+      it "builds reference from the bracket and slot" do
+        game = Game.find(subject.id)
+        expect(game.bracket).to eq(bracket)
+        expect(game.slot).to eq(subject.slot)
+      end
     end
   end
 

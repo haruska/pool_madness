@@ -4,7 +4,7 @@ RSpec.describe Queries::RootType do
   subject { Queries::RootType }
 
   context "fields" do
-    let(:fields) { %w(node lists pool current_user) }
+    let(:fields) { %w(node lists pool bracket current_user) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)
@@ -43,6 +43,41 @@ RSpec.describe Queries::RootType do
       context "as a user with Pool access" do
         it "is the pool" do
           expect(subject.resolve(nil, args, current_user: user, current_ability: ability)).to eq(pool)
+        end
+      end
+
+      context "as a user without access" do
+        let(:another_user) { create(:user) }
+        let(:another_ability) { Ability.new(another_user) }
+
+        it "is an error" do
+          expect do
+            subject.resolve(nil, args, current_user: another_user, current_ability: another_ability)
+          end.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
+
+    context "not signed in" do
+      it "is a graphql execution error" do
+        result = subject.resolve(nil, args, {})
+        expect(result).to be_a(GraphQL::ExecutionError)
+        expect(result.message).to match(/must be signed in/i)
+      end
+    end
+  end
+
+  context "bracket" do
+    subject { Queries::RootType.fields["bracket"] }
+    let(:bracket) { create(:bracket) }
+    let(:user) { bracket.user }
+    let(:ability) { Ability.new(user) }
+    let(:args) { { "model_id" => bracket.id } }
+
+    context "signed in" do
+      context "as the bracket owner" do
+        it "is the bracket" do
+          expect(subject.resolve(nil, args, current_user: user, current_ability: ability)).to eq(bracket)
         end
       end
 

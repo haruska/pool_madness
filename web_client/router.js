@@ -16,6 +16,8 @@ import InviteCode from 'components/pages/invite_code'
 import Profile from 'components/profile/profile'
 import EditProfile from 'components/profile/edit_profile'
 import PoolGames from 'components/pools/games'
+import Bracket from 'components/brackets/bracket'
+import BracketLayout from 'components/layout/bracket'
 
 class NoMatch extends Component {
   render() {
@@ -29,6 +31,15 @@ const ListsQueries = {
 
 const PoolQueries = {
   pool: () => Relay.QL`query { pool(model_id: $poolId) }`
+}
+
+const BracketQueries = {
+  bracket: () => Relay.QL`query { bracket(model_id: $bracketId) }`
+}
+
+const BracketCurrentUserQueries = {
+  bracket: () => Relay.QL`query { bracket(model_id: $bracketId) }`,
+  current_user: () => Relay.QL`query { current_user }`
 }
 
 const CurrentUserQueries = {
@@ -57,6 +68,9 @@ export default () => {
           <Route path="rules" component={RulesAndScoring} queries={PoolQueries}/>
           <Route path="payments" component={Payments} queries={PoolQueries}/>
           <Route path="games" component={PoolGames} queries={PoolQueries}/>
+        </Route>
+        <Route path="brackets/:bracketId" component={BracketLayout} queries={BracketCurrentUserQueries}>
+          <IndexRoute component={Bracket} queries={BracketQueries}/>
         </Route>
         <Route path='*' component={NoMatch}/>
       </Route>

@@ -17,7 +17,7 @@ PoolMadness::Application.routes.draw do
     resource :possibilities, only: [:show]
   end
 
-  resources :brackets, except: [:index, :create] do
+  resources :brackets, only: [:edit, :update, :destroy] do
     resources :picks, only: [:update]
   end
 

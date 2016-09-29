@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 import BracketStatus from './bracket_status'
 import { times } from 'lodash'
 
@@ -9,7 +10,7 @@ export default class SmallBracket extends Component {
     const bracketPath = `/brackets/${bracket.model_id}`
     const emptyTeamsSize = 4 - finalFourTeams.length
 
-    return <a href={bracketPath}>
+    return <Link to={bracketPath}>
       <div className='bracket-row'>
         <div className='bracket-attributes'>
           <div className='position'>&nbsp;</div>
@@ -28,6 +29,6 @@ export default class SmallBracket extends Component {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   }
 }

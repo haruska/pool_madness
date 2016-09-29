@@ -194,4 +194,20 @@ RSpec.describe Bracket, type: :model do
       expect([champ_pick.first_team, champ_pick.second_team]).to include(subject.sorted_four.third)
     end
   end
+
+  describe "#tree / #picks" do
+    let(:tree) { subject.tree }
+    let(:picks) { subject. picks }
+
+    it "is a tournament tree" do
+      expect(tree).to be_a(TournamentTree)
+    end
+
+    it "has Game nodes with references to the bracket" do
+      picks.each do |pick|
+        expect(pick).to be_a(Game)
+        expect(pick.bracket).to eq(subject)
+      end
+    end
+  end
 end

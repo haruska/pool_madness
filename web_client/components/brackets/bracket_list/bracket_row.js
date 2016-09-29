@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 
 class BestPossible extends Component {
   render() {
@@ -25,7 +26,7 @@ export default class BracketRow extends Component {
 
     return <tr className={rowClass}>
       <td className="position">{place}</td>
-      <td className="name"><a href={bracketPath}>{bracket.name}</a></td>
+      <td className="name"><Link to={bracketPath}>{bracket.name}</Link></td>
       <td className="points">{bracket.points}</td>
       <td className="possible">{bracket.possible_points}</td>
       <BestPossible {...this.props}/>

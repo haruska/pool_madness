@@ -1,15 +1,10 @@
 App.createController("Brackets", {
-  actions: ["index", "edit", "show"],
+  actions: ["index", "edit"],
 
   elements: {
     edit: {
       slots: ['.slot', {click: "handleSlotClick"}],
       championshipBox: ".champion-box"
-    },
-    show: {
-      slots: '.slot',
-      championshipBox: '.champion-box',
-      tieBreakerValue: '.tie-breaker-value'
     }
   },
 
@@ -20,19 +15,6 @@ App.createController("Brackets", {
   edit: function(bracketId, games) {
     this.mixinSharedBracket();
     this.populateBracket(bracketId, games);
-  },
-
-  show: function(bracketId, games, tieBreaker) {
-    this.mixinSharedBracket();
-    this.populateBracket(bracketId, games);
-
-    this.updateEliminatedFlags();
-    this.highlightCorrectPicks();
-    this.fillInTieBreaker(tieBreaker);
-  },
-
-  fillInTieBreaker: function(value) {
-    this.$tieBreakerValue.text(value);
   },
 
   mixinSharedBracket: function() {
@@ -65,38 +47,5 @@ App.createController("Brackets", {
 
   highlightBracketRow: function(bracketId) {
     $('.bracket-row-' + bracketId).addClass("current-user-bracket");
-  },
-
-  highlightCorrectPicks: function() {
-    _.each(this.games, this.highlightCorrectPick);
-    this.highlightChampionship();
-  },
-
-  highlightCorrectPick: function(game) {
-    if (game.nextGameId != null) {
-      var pickedTeam = this.pickTeam(game);
-      var nextGame = this.findGame(game.nextGameId);
-      var slotDiv = $("#match" + nextGame.slot).find(".slot" + game.nextSlot);
-
-      if (game.winningTeam != null && game.winningTeam.id == pickedTeam.id) {
-        slotDiv.addClass("correct-pick");
-      }
-      else if (pickedTeam.eliminated === true) {
-        slotDiv.addClass("eliminated");
-      }
-    }
-  },
-
-  highlightChampionship: function() {
-    var pickedTeam = this.pickTeam(this.championshipGame);
-
-    if (pickedTeam) {
-      if (this.championshipGame.winningTeam && this.championshipGame.winningTeam.id == pickedTeam.id) {
-        this.$championshipBox.addClass("correct-pick");
-      }
-      else if (pickedTeam.eliminated) {
-        this.$championshipBox.addClass("eliminated");
-      }
-    }
   }
 });

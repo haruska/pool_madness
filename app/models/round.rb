@@ -1,7 +1,7 @@
 class Round
   include ActiveAttr::Model
 
-  NAMES = ["1st Round", "2nd Round", "Sweet 16", "Elite Eight", "Final Four", "Champion"].freeze
+  NAMES = ["Field 64", "Field 32", "Sweet 16", "Elite Eight", "Final Four", "Champion"].freeze
 
   attribute :tournament
   attribute :number, type: Integer

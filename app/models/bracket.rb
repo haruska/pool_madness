@@ -62,7 +62,9 @@ class Bracket < ActiveRecord::Base
   end
 
   def tree
-    TournamentTree.unmarshal(tournament, tree_decisions, tree_mask)
+    working_tree = TournamentTree.unmarshal(tournament, tree_decisions, tree_mask)
+    (1..tournament.num_games).map { |slot| working_tree.at(slot).bracket = self }
+    working_tree
   end
 
   def update_choice(position, choice)
@@ -77,6 +79,11 @@ class Bracket < ActiveRecord::Base
   def update_choice!(position, choice)
     update_choice(position, choice)
     save!
+  end
+
+  def picks
+    working_tree = tree
+    (1..tournament.num_games).map { |slot| working_tree.at(slot) }
   end
 
   def games_hash

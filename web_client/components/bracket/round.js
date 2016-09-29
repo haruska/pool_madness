@@ -16,6 +16,13 @@ export default class Round extends Component {
     return this.gamesByRegion()[region]
   }
 
+  pickForGame = (game) => {
+    const picks = this.props.picks
+    if (picks) {
+      return picks.find(pick => pick.slot == game.slot)
+    }
+  }
+
   regions = () => {
     return [...new Set(this.games().map(g => g.region))].filter(r => r)
   }
@@ -23,7 +30,7 @@ export default class Round extends Component {
   interRegionGames = () => {
     const games = this.gamesFromRegion(null)
     if (games) {
-      return games.map((game, i) => <Game key={i} game={game} index={i+1} />)
+      return games.map((game, i) => <Game key={i} game={game} pick={this.pickForGame(game)} index={i+1} />)
     }
     else {
       return null
@@ -31,9 +38,9 @@ export default class Round extends Component {
   }
 
   render() {
-    const { round } = this.props
+    const { round, picks } = this.props
     return <div className={`round round${round.number}`}>
-      {this.regions().map((r, i) => <Region key={r} index={i+1} games={this.gamesFromRegion(r)} roundNumber={round.number} region={r}/>)}
+      {this.regions().map((r, i) => <Region key={r} index={i+1} games={this.gamesFromRegion(r)} picks={picks} roundNumber={round.number} region={r}/>)}
       {this.interRegionGames()}
     </div>
   }

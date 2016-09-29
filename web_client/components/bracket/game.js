@@ -1,36 +1,58 @@
 import React, { Component } from 'react'
-import Relay from 'react-relay'
 
-class Game extends Component {
-  renderTeam = (team, slot) => {
-    if(team) {
-      return <p className={`slot slot${slot}`}><span className="seed">{team.seed}</span> {team.name}</p>
+export default class Game extends Component {
+  renderTeam = (game, pick, slot) => {
+    let team = null
+    let pickClass = ''
+
+    if (slot == 1) {
+      if (pick) {
+        team = pick.first_team
+        const game_team = game.first_team
+        if (team && (!team.still_playing || game_team) && game.round_number != 1) {
+          if (game_team && team.name == game_team.name) {
+            pickClass = 'correct-pick'
+          }
+          else {
+            pickClass = 'eliminated'
+          }
+        }
+      }
+      else {
+        team = game.first_team
+      }
+    }
+    else { // slot == 2
+      if (pick) {
+        team = pick.second_team
+        const game_team = game.second_team
+        if (team && (!team.still_playing || game_team) && game.round_number != 1) {
+          if (game_team && team.name == game_team.name) {
+            pickClass = 'correct-pick'
+          }
+          else {
+            pickClass = 'eliminated'
+          }
+        }
+      }
+      else {
+        team = game.second_team
+      }
+    }
+
+    if (team) {
+      return <p className={`slot slot${slot} ${pickClass}`.trim()}><span className="seed">{team.seed}</span> {team.name}
+      </p>
     }
     return <p className={`slot slot${slot}`}/>
   }
 
   render() {
-    const { game, index } = this.props
+    const {game, index, pick} = this.props
+
     return <div className={`match m${index}`}>
-      {this.renderTeam(game.first_team, 1)}
-      {this.renderTeam(game.second_team, 2)}
+      {this.renderTeam(game, pick, 1)}
+      {this.renderTeam(game, pick, 2)}
     </div>
   }
 }
-
-export default Relay.createContainer(Game, {
-  fragments: {
-    game: () => Relay.QL`
-      fragment on Game {
-        first_team {
-          seed
-          name
-        }
-        second_team {
-          seed
-          name
-        }
-      }
-    `
-  }
-})

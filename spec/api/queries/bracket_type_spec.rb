@@ -4,7 +4,7 @@ RSpec.describe Queries::BracketType do
   subject { Queries::BracketType }
 
   context "fields" do
-    let(:fields) { %w(id model_id name owner tie_breaker status points possible_points best_possible_finish eliminated final_four) }
+    let(:fields) { %w(id model_id name owner pool editable picks tie_breaker status points possible_points best_possible_finish eliminated final_four) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)
@@ -93,6 +93,37 @@ RSpec.describe Queries::BracketType do
 
     it "is a list of the final four teams for the bracket" do
       expect(resolved).to eq(bracket.sorted_four)
+    end
+  end
+
+  describe "editable" do
+    subject { Queries::BracketType.fields["editable"] }
+    let!(:bracket) { create(:bracket) }
+    let(:context) { { current_user: user, current_ability: Ability.new(user) } }
+    let(:resolved) { subject.resolve(bracket, nil, context) }
+
+    context "not logged in" do
+      let(:user) { nil }
+
+      it "is not editable" do
+        expect(resolved).to eq(false)
+      end
+    end
+
+    context "as someone who cannot edit the bracket" do
+      let(:user) { create(:user) }
+
+      it "is not editable" do
+        expect(resolved).to eq(false)
+      end
+    end
+
+    context "as someone who can edit the bracket" do
+      let(:user) { create(:admin_user) }
+
+      it "is editable" do
+        expect(resolved).to eq(true)
+      end
     end
   end
 end

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 
 class BestPossible extends Component {
   render() {
@@ -26,7 +27,7 @@ export default class SmallBracket extends Component {
       rowClass += " current-user-bracket"
     }
 
-    return <a href={bracketPath}>
+    return <Link to={bracketPath}>
       <div className={rowClass}>
         <div className='bracket-attributes'>
           <div className='position'>{place}</div>
@@ -47,6 +48,6 @@ export default class SmallBracket extends Component {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   }
 }

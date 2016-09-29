@@ -3,13 +3,19 @@ class Game < BinaryDecisionTree::Node
   alias game_two right
   alias next_game parent
 
+  attr_accessor :bracket
+
   def self.find(graph_id)
-    tournament_id, slot = graph_id.split("~").map(&:to_i)
-    Tournament.find(tournament_id).tree.at(slot)
+    type, tournament_id, slot = graph_id.split("~")
+    type.constantize.find(tournament_id.to_i).tree.at(slot.to_i)
   end
 
   def id
-    "#{tournament.id}~#{slot}"
+    if bracket
+      "Bracket~#{bracket.id}~#{slot}"
+    else
+      "Tournament~#{tournament.id}~#{slot}"
+    end
   end
 
   def round_number
