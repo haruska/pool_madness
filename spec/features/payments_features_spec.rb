@@ -15,9 +15,9 @@ RSpec.describe "Payments", js: true do
 
   it "shows a form to pay for all unpaid completed brackets" do
     within_frame(find(".stripe_checkout_app")) do
-      expect(page).to have_selector(".title h1", text: "Pool Madness")
-      expect(page).to have_selector(".title h2", text: "3 brackets")
-      expect(page).to have_selector(".loggedBarContent span", text: user.email)
+      expect(page).to have_selector("h1", text: "Pool Madness")
+      expect(page).to have_selector("h2", text: "3 brackets")
+      expect(page).to have_selector("span", text: user.email)
       expect(page).to_not have_link("Log out")
       expect(page).to have_button("Pay $30.00")
     end

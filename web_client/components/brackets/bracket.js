@@ -49,6 +49,8 @@ export default Relay.createContainer(Bracket, {
         model_id
         name
         tie_breaker
+        game_decisions
+        game_mask
         editable
         owner {
           name
@@ -58,23 +60,6 @@ export default Relay.createContainer(Bracket, {
           tournament {
             ${Tournament.getFragment('tournament')}
           }
-        }
-        picks {
-          slot
-          first_team {
-            seed
-            name
-            still_playing
-          }
-          second_team {
-            seed
-            name
-            still_playing
-          }
-          winning_team {
-            name
-            still_playing
-          }  
         }
       }
     `

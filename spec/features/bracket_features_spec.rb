@@ -1,13 +1,13 @@
 require "rails_helper"
 
 RSpec.describe "Viewing a bracket", js: true do
-  let(:bracket) { create(:bracket, :completed) }
+  let!(:bracket) { create(:bracket, :completed) }
   let(:pool) { bracket.pool }
   let(:user) { bracket.user }
 
   before do
     sign_in user
-    visit bracket_path(bracket)
+    visit "/brackets/#{bracket.id}"
   end
 
   it "fills in the bracket with the user's picks" do

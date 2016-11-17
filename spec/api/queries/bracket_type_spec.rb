@@ -4,7 +4,7 @@ RSpec.describe Queries::BracketType do
   subject { Queries::BracketType }
 
   context "fields" do
-    let(:fields) { %w(id model_id name owner pool editable picks tie_breaker status points possible_points best_possible_finish eliminated final_four) }
+    let(:fields) { %w(id model_id name owner pool editable tie_breaker status points possible_points best_possible_finish eliminated final_four game_decisions game_mask) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)
@@ -123,6 +123,28 @@ RSpec.describe Queries::BracketType do
 
       it "is editable" do
         expect(resolved).to eq(true)
+      end
+    end
+  end
+
+  context "bitmasks" do
+    let(:bracket) { create(:bracket, :completed) }
+    let(:context) { { current_user: bracket.user, current_ability: Ability.new(bracket.user) } }
+    let(:resolved) { subject.resolve(bracket, nil, context) }
+
+    describe "game_decisions" do
+      subject { Queries::BracketType.fields["game_decisions"] }
+
+      it "is a string of zeros and ones representing the bracket decisions" do
+        expect(resolved).to eq(Array.new(2**bracket.tournament.num_rounds) { |i| (bracket.tree_decisions & (1 << i)).zero? ? "0" : "1" }.join)
+      end
+    end
+
+    describe "game_mask" do
+      subject { Queries::BracketType.fields["game_mask"] }
+
+      it "is a string of zeros and ones representing the bracket bitmask" do
+        expect(resolved).to eq(Array.new(2**bracket.tournament.num_rounds) { |i| (bracket.tree_mask & (1 << i)).zero? ? "0" : "1" }.join)
       end
     end
   end

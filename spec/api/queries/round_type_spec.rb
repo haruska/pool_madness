@@ -5,7 +5,7 @@ RSpec.describe Queries::RoundType do
   let(:round) { build(:round) }
 
   context "fields" do
-    let(:fields) { %w(id name number start_date end_date games) }
+    let(:fields) { %w(id name number start_date end_date regions) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)

@@ -1,7 +1,6 @@
 class Tournament < ActiveRecord::Base
   has_many :pools, dependent: :destroy
   has_many :teams, dependent: :destroy
-  has_many :rounds, dependent: :destroy
 
   accepts_nested_attributes_for :teams
 

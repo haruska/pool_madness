@@ -8,6 +8,6 @@ module Queries
     field :model_id, !types.Int
     field :seed, !types.Int
     field :name, !types.String
-    field :still_playing, !types.Boolean, property: :still_playing?
+    field :starting_slot, !types.Int
   end
 end

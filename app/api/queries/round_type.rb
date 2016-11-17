@@ -15,6 +15,6 @@ module Queries
       resolve -> (round, _args, _context) { round.end_date.to_date.iso8601 }
     end
 
-    field :games, !types[GameType]
+    field :regions, types[types.String]
   end
 end

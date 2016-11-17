@@ -29,7 +29,7 @@ class Scoring extends Component {
           </tr>
         </thead>
         <tbody>
-          {times(pool.tournament.num_rounds, i => <ScoreRow key={i} round={i+1}/>)}
+          {times(pool.tournament.rounds.length, i => <ScoreRow key={i} round={i+1}/>)}
         </tbody>
       </table>
       <div>
@@ -60,7 +60,9 @@ export default Relay.createContainer(Scoring, {
     pool: () => Relay.QL`
       fragment on Pool {
         tournament {
-          num_rounds
+          rounds {
+            id
+          }
         }
       }
     `
