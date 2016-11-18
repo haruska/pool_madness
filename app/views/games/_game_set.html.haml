@@ -1,8 +1,0 @@
-- games.each_with_index do |game, i|
-  %div{id: "match#{game.slot}", class: "match m#{i+1}"}
-    %p.slot.slot1
-      %span.seed= game.first_team.try(:seed)
-      = game.first_team.try(:name)
-    %p.slot.slot2
-      %span.seed= game.second_team.try(:seed)
-      = game.second_team.try(:name)
