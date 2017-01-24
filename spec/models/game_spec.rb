@@ -229,6 +229,19 @@ RSpec.describe Game, type: :model do
     it "is the team with the current starting slot" do
       expect(subject.team).to eq(tournament.teams.find_by(starting_slot: subject.value))
     end
+
+    it "is aliased to winner" do
+      expect(subject.winner).to eq(tournament.teams.find_by(starting_slot: subject.value))
+    end
+  end
+
+  describe "#loser" do
+    subject { tournament_tree.round_for(1).sample }
+    let(:loser) { subject.first_team == subject.winner ? subject.second_team : subject.first_team }
+
+    it "is the losing team" do
+      expect(subject.loser).to eq(loser)
+    end
   end
 
   describe "#points" do
