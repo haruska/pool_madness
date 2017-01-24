@@ -4,7 +4,7 @@ RSpec.describe Queries::PoolType do
   subject { Queries::PoolType }
 
   context "fields" do
-    let(:fields) { %w(id model_id tournament name invite_code entry_fee total_collected brackets admins display_best started) }
+    let(:fields) { %w(id model_id tournament name invite_code entry_fee total_collected brackets possibilities admins display_best started) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)

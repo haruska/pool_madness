@@ -1,10 +1,7 @@
 module Queries
-  GameType = GraphQL::ObjectType.define do
-    name "Game"
-    description "A game in a tournament"
-
-    interfaces [NodeInterface.interface]
-    global_id_field :id
+  PossibleGameType = GraphQL::ObjectType.define do
+    name "PossibleGame"
+    description "A possible outcome of a game"
 
     field :slot, !types.Int
 

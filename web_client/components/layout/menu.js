@@ -17,7 +17,7 @@ export default class Menu extends Component {
 
     if(pool.started) {
       if(pool.tournament.games_remaining > 0 && pool.tournament.games_remaining < 4) {
-        links.push(<a href={`/pools/${pool.model_id}/possibilities`}>Possible Outcomes</a>)
+        links.push(<Link to={`/pools/${pool.model_id}/possibilities`} onClick={this.handleToggleMenuClick}>Possible Outcomes</Link>)
       }
       links.push(<a href={`/pools/${pool.model_id}/games`}>Game Results</a>)
     } else {

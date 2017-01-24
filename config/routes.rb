@@ -13,10 +13,6 @@ PoolMadness::Application.routes.draw do
 
   root to: "home#index"
 
-  resources :pools, only: [] do
-    resource :possibilities, only: [:show]
-  end
-
   resources :brackets, only: [:edit, :update, :destroy] do
     resources :picks, only: [:update]
   end
@@ -41,6 +37,7 @@ PoolMadness::Application.routes.draw do
   get "/pools/:pool_id/rules" => "pages#home", as: :rules_pool
   get "/pools/:pool_id/payments" => "pages#home", as: :payments_pool
   get "/pools/:pool_id/games" => "pages#home", as: :pool_games
+  get "/pools/:pool_id/possibilities" => "pages#home", as: :pool_possibilities
   get "/pools/invite_code" => "pages#home", as: :invite_code
   get "/user" => "pages#home", as: :profile
 

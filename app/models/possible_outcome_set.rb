@@ -68,6 +68,20 @@ class PossibleOutcomeSet
     PossibleOutcome.new possible_outcome_set: self, game_decisions: to_game_decisions(slot_bits)
   end
 
+  def all_outcomes_by_winners(pool)
+    all_outcomes_hash = all_outcomes.each_with_object({}) do |outcome, winners_champ_hash|
+      championship = outcome.tree.championship
+      best_possible = outcome.best_possible_by_rank(pool)
+
+      winners_champ_hash[best_possible] ||= []
+      winners_champ_hash[best_possible] << championship
+    end
+
+    all_outcomes_hash.sort_by { |_, championships| championships.size }.reverse.map do |best_brackets, championships|
+      Possibility.new championships: championships, best_brackets: best_brackets
+    end
+  end
+
   def pool_brackets_cache(pool)
     self.pool_brackets_cache_attr ||= {}
     if pool_brackets_cache_attr[pool.id].nil?

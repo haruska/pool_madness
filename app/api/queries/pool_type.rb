@@ -16,6 +16,15 @@ module Queries
     field :display_best, !types.Boolean, property: :display_best?
     field :admins, types[!UserType]
 
+    field :possibilities, types[PossibilityType] do
+      resolve lambda { |pool, _args, _context|
+        if (1..4).cover?(pool.tournament.num_games_remaining)
+          outcome_set = PossibleOutcomeSet.new(tournament: pool.tournament, exclude_eliminated: true)
+          outcome_set.all_outcomes_by_winners(pool)
+        end
+      }
+    end
+
     connection :brackets, BracketType.connection_type do
       resolve lambda { |pool, _args, context|
         if pool.started?

@@ -1,17 +1,14 @@
-.possibilities-controller {
-  &.show-action {
-    .wrapper {
-      h1 {
-        margin-bottom: $gutter;
-      }
-      
-      h3 {
-        margin-bottom: 0px;
-      }
+.possibilities-page {
+  padding-top: $gutter;
+  h1 {
+    margin-bottom: $gutter;
+  }
 
-      ul {
-        padding: $gutter;
-      }
-    }
+  h3 {
+    margin-bottom: 0px;
+  }
+
+  ul {
+    padding: $gutter;
   }
 }
