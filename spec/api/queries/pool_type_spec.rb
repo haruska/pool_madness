@@ -96,5 +96,66 @@ RSpec.describe Queries::PoolType do
         end
       end
     end
+
+    describe "#possibilities" do
+      subject { Queries::PoolType.fields["possibilities"] }
+
+      let(:pool) { create(:pool, tournament: tournament) }
+      let!(:brackets) do
+        Array.new(3) do
+          bracket = create(:bracket, :completed, pool: pool)
+          bracket.tree_decisions = tournament.game_decisions
+          3.times { |i| bracket.update_choice(i + 1, [0, 1].sample) }
+          bracket.save!
+          bracket.paid!
+          bracket.calculate_points
+          bracket.calculate_possible_points
+          bracket.bracket_point.update(best_possible: 0)
+          bracket
+        end
+      end
+
+      let(:resolved_field) { subject.resolve(pool, nil, nil) }
+
+      context "with zero games remaining" do
+        let(:tournament) { create(:tournament, :completed) }
+
+        it "is nil" do
+          expect(resolved_field).to be_nil
+        end
+      end
+
+      context "before the final four" do
+        let(:tournament) { create(:tournament) }
+
+        before do
+          (1..3).each do |round|
+            tournament.round_for(round).each do |game|
+              tournament.update_game(game.slot, [0, 1].sample)
+            end
+          end
+
+          # fill out all round of eight except for one game
+          tournament.round_for(4)[0...-1].each do |game|
+            tournament.update_game(game.slot, [0, 1].sample)
+          end
+
+          tournament.save
+        end
+
+        it "is nil" do
+          expect(resolved_field).to be_nil
+        end
+      end
+
+      context "in the final four" do
+        let(:tournament) { create(:tournament, :in_final_four) }
+        let(:outcome_set) { PossibleOutcomeSet.new(tournament: pool.tournament) }
+
+        it "is all outcomes by winners for the pool" do
+          expect(resolved_field).to match_array(outcome_set.all_outcomes_by_winners(pool))
+        end
+      end
+    end
   end
 end

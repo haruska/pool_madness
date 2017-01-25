@@ -58,8 +58,14 @@ class TournamentTree < BinaryDecisionTree::Tree
   end
 
   def ==(other)
-    other.class == self.class && other.depth == depth && other.tournament == tournament && other.marshal == marshal
+    other.class == self.class && other.state == state
   end
 
   alias eql? ==
+
+  protected
+
+  def state
+    [depth, tournament, marshal]
+  end
 end

@@ -99,10 +99,18 @@ class Game < BinaryDecisionTree::Node
   end
 
   def ==(other)
-    other.class == self.class && other.tree == tree && other.slot == slot && other.value == value
+    other.class == self.class && other.state == state
   end
 
   alias eql? ==
+
+  delegate :hash, to: :state
+
+  protected
+
+  def state
+    [tree, slot, value]
+  end
 
   private
 
