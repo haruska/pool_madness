@@ -27,7 +27,7 @@ RSpec.describe PossibleOutcomeSet, type: :model do
       outcomes.each do |possibility|
         expect(possibility.championships.map(&:class).uniq).to eq([Game])
         expect(possibility.best_brackets.size).to be > 1
-        expect(possibility.best_brackets.reduce(&:+)).to match_array(brackets)
+        expect(possibility.best_brackets.map(&:to_a).reduce(&:+)).to match_array(brackets)
       end
     end
   end
