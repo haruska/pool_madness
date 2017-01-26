@@ -3,19 +3,7 @@ require "rails_helper"
 RSpec.describe PossibleOutcomeSet, type: :model do
   let(:tournament) { create(:tournament, :in_final_four) }
   let(:pool) { create(:pool, tournament: tournament) }
-  let!(:brackets) do
-    Array.new(3) do
-      bracket = create(:bracket, :completed, pool: pool)
-      bracket.tree_decisions = tournament.game_decisions
-      3.times { |i| bracket.update_choice(i + 1, [0, 1].sample) }
-      bracket.save!
-      bracket.paid!
-      bracket.calculate_points
-      bracket.calculate_possible_points
-      bracket.bracket_point.update(best_possible: 0)
-      bracket
-    end
-  end
+  let!(:brackets) { create_list(:bracket, 3, :winning, pool: pool) }
 
   subject { PossibleOutcomeSet.new(tournament: tournament, exclude_eliminated: true) }
 

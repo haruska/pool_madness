@@ -46,13 +46,7 @@ end
 
 puts "creating championship brackets"
 final_four.pools.each do |pool|
-  pool.users.each do |user|
-    bracket = FactoryGirl.create(:bracket, :completed, user: user, pool: pool)
-    bracket.tree_decisions = final_four.game_decisions
-    bracket.bracket_point.update(best_possible: 0)
-    3.times { |i| bracket.update_choice(i+1, [0,1].sample) }
-    bracket.save!
-  end
+  pool.users.each { |user| FactoryGirl.create(:bracket, :winning, user: user, pool: pool) }
 end
 
 Bracket.find_each do |bracket|
