@@ -13,14 +13,16 @@ export default class Menu extends Component {
     const { pool, current_user } = this.props
     let links = []
 
-    links.push(<Link to={`/pools/${pool.model_id}`} onClick={this.handleToggleMenuClick}>Brackets</Link>)
 
     if(pool.started) {
+      links.push(<Link to={`/pools/${pool.model_id}/brackets`} onClick={this.handleToggleMenuClick}>Brackets</Link>)
+
       if(pool.tournament.games_remaining > 0 && pool.tournament.games_remaining < 4) {
         links.push(<Link to={`/pools/${pool.model_id}/possibilities`} onClick={this.handleToggleMenuClick}>Possible Outcomes</Link>)
       }
-      links.push(<a href={`/pools/${pool.model_id}/games`}>Game Results</a>)
+      links.push(<Link to={`/pools/${pool.model_id}/games`} onClick={this.handleToggleMenuClick}>Game Results</Link>)
     } else {
+      links.push(<Link to={`/pools/${pool.model_id}/my_brackets`} onClick={this.handleToggleMenuClick}>My Brackets</Link>)
       links.push(<Link to={`/pools/${pool.model_id}/payments`} onClick={this.handleToggleMenuClick}>Types of Payment</Link>)
     }
 

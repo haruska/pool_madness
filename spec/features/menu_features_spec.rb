@@ -47,7 +47,7 @@ RSpec.describe "Menu", js: true do
         let(:tournament) { create(:tournament, :not_started) }
 
         it "has links pertaining to the current pool" do
-          expect(page).to have_link("Brackets", href: pool_path(pool))
+          expect(page).to have_link("My Brackets", href: "/pools/#{pool.id}/my_brackets")
           expect(page).to have_link("Rules and Scoring", href: rules_pool_path(pool))
           expect(page).to have_link("Other Pools", href: pools_path)
           expect(page).to_not have_link("All Pools")
@@ -78,7 +78,7 @@ RSpec.describe "Menu", js: true do
         context "and the tournament is in the final four" do
           let(:tournament) { create(:tournament, :in_final_four) }
 
-          it "has a link to possible outcomes" do
+          xit "has a link to possible outcomes" do
             expect(page).to have_link("Possible Outcomes", href: pool_possibilities_path(pool))
           end
         end

@@ -13,7 +13,10 @@ class Pool extends Component {
   redirectToBracketList = () => {
     const { pool } = this.props
 
-    if(pool.started) {
+    if(pool.possibilities) {
+      this.context.router.push(`/pools/${pool.model_id}/possibilities`)
+    }
+    else if(pool.started) {
       this.context.router.push(`/pools/${pool.model_id}/brackets`)
     }
     else {
@@ -32,6 +35,11 @@ export default Relay.createContainer(Pool, {
       fragment on Pool {
         model_id
         started
+        possibilities {
+          championships {
+            slot
+          }
+        }
       }
     `
   }
