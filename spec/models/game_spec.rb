@@ -17,7 +17,7 @@ RSpec.describe Game, type: :model do
     it "has a game_one, game_two, and next_game" do
       expect(subject.game_one).to be_present
       expect(subject.game_two).to be_present
-      expect(subject.next_game).to be_present
+      expect(subject.next_game).to be_present unless slot == 1
     end
   end
 
