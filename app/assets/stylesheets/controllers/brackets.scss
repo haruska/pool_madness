@@ -431,7 +431,7 @@
   }
 }
 
-.bracket-details {
+.bracket-details, .bracket-edit {
     padding-top: $gutter * 2;
 
     .eliminated {
@@ -449,4 +449,11 @@
         color: $dark-gray;
       }
     }
+}
+
+.bracket-edit {
+  .slot {
+    cursor: pointer;
+    &:hover { background-color: #D6F5FF; }
+  }
 }

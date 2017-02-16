@@ -7,7 +7,7 @@ import TieBreaker from 'components/bracket/tie_breaker'
 
 class Tournament extends Component {
   render() {
-    const { tournament, bracket } = this.props
+    const { tournament, bracket, onSlotClick, editing } = this.props
     const { rounds } = tournament
     const fieldClass = rounds.length >= 6 ? 'field-64' : 'sweet-16'
     const tieBreaker = bracket ? bracket.tie_breaker : null
@@ -17,9 +17,9 @@ class Tournament extends Component {
         <RoundsBanner rounds={rounds} />
       </div>
       <div className={`bracket-body ${fieldClass}`}>
-        {rounds.map(r => <Round key={r.number} round={r} tournament={tournament} bracket={bracket}/>)}
-        <Championship tournament={tournament} bracket={bracket} />
-        <TieBreaker tieBreaker={tieBreaker} />
+        {rounds.map(r => <Round key={r.number} round={r} tournament={tournament} bracket={bracket} onSlotClick={onSlotClick}/>)}
+        <Championship tournament={tournament} bracket={bracket} editing={editing}/>
+        <TieBreaker tieBreaker={tieBreaker} editing={editing} />
       </div>
     </div>
   }

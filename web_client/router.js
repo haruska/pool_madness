@@ -17,6 +17,7 @@ import Profile from 'components/profile/profile'
 import EditProfile from 'components/profile/edit_profile'
 import PoolGames from 'components/pools/games'
 import Bracket from 'components/brackets/bracket'
+import EditBracket from 'components/brackets/edit_bracket'
 import BracketLayout from 'components/layout/bracket'
 import Possibilities from 'components/pools/possibilities'
 
@@ -74,6 +75,7 @@ export default () => {
         </Route>
         <Route path="brackets/:bracketId" component={BracketLayout} queries={BracketCurrentUserQueries}>
           <IndexRoute component={Bracket} queries={BracketQueries}/>
+          <Route path="edit_new" component={EditBracket} queries={BracketQueries}/>
         </Route>
         <Route path='*' component={NoMatch}/>
       </Route>
