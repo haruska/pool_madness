@@ -456,4 +456,21 @@
     cursor: pointer;
     &:hover { background-color: #D6F5FF; }
   }
+
+  .tie-breaker {
+    display: none;
+  }
+
+  .edit-bracket-form {
+    margin: 0 auto;
+    width: 300px;
+  }
+
+  input.button {
+    margin-right: 10px;
+  }
+
+  .button {
+    width: 142px;
+  }
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Relay from 'react-relay'
+import { Link } from 'react-router'
 
 import PoolLayout from 'components/layout/pool'
 import Tournament from 'components/bracket/tournament'
@@ -9,7 +10,7 @@ class BracketActions extends Component {
     const bracket = this.props.bracket
     if (bracket.editable) {
       return <div className="bracket-actions">
-        <a href={`/brackets/${bracket.model_id}/edit`}>Edit Bracket</a>
+        <Link to={`/brackets/${bracket.model_id}/edit`}>Edit Bracket</Link>
       </div>
     }
     return null

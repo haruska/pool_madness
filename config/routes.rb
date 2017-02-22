@@ -13,10 +13,6 @@ PoolMadness::Application.routes.draw do
 
   root to: "home#index"
 
-  resources :brackets, only: [:edit, :update, :destroy] do
-    resources :picks, only: [:update]
-  end
-
   resources :tournaments, only: [:edit, :update]
 
   namespace :admin do
@@ -39,6 +35,7 @@ PoolMadness::Application.routes.draw do
   get "/pools/:pool_id/games" => "pages#home", as: :pool_games
   get "/pools/:pool_id/possibilities" => "pages#home", as: :pool_possibilities
   get "/pools/invite_code" => "pages#home", as: :invite_code
+  get "/brackets/:bracket_id" => "pages#home", as: :bracket
   get "/user" => "pages#home", as: :profile
 
   get "/*path" => "pages#home"

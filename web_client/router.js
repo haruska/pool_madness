@@ -75,7 +75,7 @@ export default () => {
         </Route>
         <Route path="brackets/:bracketId" component={BracketLayout} queries={BracketCurrentUserQueries}>
           <IndexRoute component={Bracket} queries={BracketQueries}/>
-          <Route path="edit_new" component={EditBracket} queries={BracketQueries}/>
+          <Route path="edit" component={EditBracket} queries={BracketQueries}/>
         </Route>
         <Route path='*' component={NoMatch}/>
       </Route>

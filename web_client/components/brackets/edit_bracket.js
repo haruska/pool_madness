@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import Relay from 'react-relay'
 
 import { cloneDeep } from 'lodash'
@@ -7,12 +7,27 @@ import PoolLayout from 'components/layout/pool'
 import Tournament from 'components/bracket/tournament'
 
 class Bracket extends Component {
+  static contextTypes = {
+    router: PropTypes.object.isRequired,
+    setPageTitle: PropTypes.func.isRequired
+  }
+
   constructor(props) {
     super(props)
 
     this.state = {
-      bracket: cloneDeep(props.bracket)
+      bracket: cloneDeep(props.bracket),
+      name: props.bracket.name,
+      tie_breaker: props.bracket.tie_breaker
     }
+  }
+
+  componentWillMount() {
+    this.context.setPageTitle("Editing Bracket")
+  }
+
+  componentWillUnmount() {
+    this.context.setPageTitle()
   }
 
   title = () => {
@@ -41,6 +56,19 @@ class Bracket extends Component {
     this.setState({bracket: bracket})
   }
 
+  handleNameChange = (event) => {
+    this.setState({name: event.target.value})
+  }
+
+  handleTieBreakerChange = (event) => {
+    this.setState({tie_breaker: event.target.value})
+  }
+
+  handleDone = (event) => {
+    event.preventDefault()
+    this.context.router.push(`/brackets/${this.props.bracket.model_id}`)
+  }
+
   render() {
     const { bracket } = this.state
     const pool = bracket.pool
@@ -49,6 +77,14 @@ class Bracket extends Component {
     return <div className="bracket-edit">
       <h2>{this.title()}</h2>
       <Tournament tournament={tournament} bracket={bracket} onSlotClick={this.handleSlotClick}/>
+      <form className="edit-bracket-form" onSubmit={this.handleDone}>
+        <label htmlFor="bracket_name">Bracket Name</label>
+        <input id="bracket_name" type="text" name="bracket_name" value={this.state.name} onChange={this.handleNameChange} />
+        <label htmlFor="tie_breaker">Tie Breaker</label>
+        <input id="tie_breaker" name="tie_breaker" placeholder="Final Score of Championship Game Added Together (ex: 147)" type="text" value={this.state.tie_breaker} onChange={this.handleTieBreakerChange} />
+        <input className="button" type="submit" name="commit" value="Done" />
+        <div className="button danger">Delete Bracket</div>
+      </form>
     </div>
   }
 }
