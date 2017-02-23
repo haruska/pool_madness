@@ -12,6 +12,10 @@ class UserBracketList extends Component {
     setPageTitle: React.PropTypes.func.isRequired
   }
 
+  state = {
+    generatingBracket: false
+  }
+
   componentWillMount() {
     this.context.setPageTitle("My Brackets")
   }
@@ -26,6 +30,14 @@ class UserBracketList extends Component {
 
   unpaidBrackets = () => {
     return this.brackets().filter(bracket => bracket.status == 'unpaid')
+  }
+
+  handleNewBracketClick = () => {
+    this.setState({generatingBracket: true})
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !nextState.generatingBracket
   }
 
   render() {
@@ -46,7 +58,7 @@ class UserBracketList extends Component {
       </div>
       <div className='actions'>
         <PaymentButton pool={pool} unpaidBrackets={this.unpaidBrackets()} emailAddress={this.props.current_user.email} />
-        <NewBracketButton pool={pool} bracketCount={brackets.length} />
+        <NewBracketButton pool={pool} bracketCount={brackets.length} clickHandler={this.handleNewBracketClick} />
       </div>
     </div>
   }

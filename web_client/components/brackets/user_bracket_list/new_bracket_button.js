@@ -9,17 +9,22 @@ class NewBracketButton extends Component {
 
   handleCreateSuccess = (transaction) => {
     const bracketId = transaction.create_bracket.bracket_edge.node.model_id
-    window.location = `/brackets/${bracketId}/edit`
+    this.context.router.push(`/brackets/${bracketId}/edit`)
   }
 
   handleCreate = () => {
     const { pool, relay } = this.props
 
-    const mutation = new CreateBracketMutation({
-      pool: pool
-    })
+    const mutation = new CreateBracketMutation({pool})
+    const transaction = relay.applyUpdate(mutation, {onSuccess: this.handleCreateSuccess})
 
-    relay.commitUpdate(mutation, {onSuccess: this.handleCreateSuccess})
+    this.props.clickHandler && this.props.clickHandler()
+
+    transaction.commit()
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return false
   }
 
   render() {

@@ -3,6 +3,13 @@ import Relay from 'react-relay'
 import PoolLayout from './pool'
 
 class BracketLayout extends Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.bracket) {
+      return true
+    }
+    return false
+  }
+
   render() {
     const { bracket, current_user } = this.props
     return (

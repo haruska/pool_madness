@@ -3,8 +3,10 @@ import Relay from 'react-relay'
 
 import { cloneDeep } from 'lodash'
 
+import Dialog from 'components/dialog'
 import PoolLayout from 'components/layout/pool'
 import Tournament from 'components/bracket/tournament'
+import DeleteBracketMutation from 'mutations/delete_bracket'
 
 class Bracket extends Component {
   static contextTypes = {
@@ -18,7 +20,9 @@ class Bracket extends Component {
     this.state = {
       bracket: cloneDeep(props.bracket),
       name: props.bracket.name,
-      tie_breaker: props.bracket.tie_breaker
+      tie_breaker: props.bracket.tie_breaker || '0',
+      errors: null,
+      showsDeletionDialog: false
     }
   }
 
@@ -69,12 +73,53 @@ class Bracket extends Component {
     this.context.router.push(`/brackets/${this.props.bracket.model_id}`)
   }
 
+  // deletion
+  handleDelete = () => {
+    this.setState({ showsDeletionDialog: true })
+  }
+
+  handleCancelDeletion = () => {
+    this.setState({ showsDeletionDialog: false })
+  }
+
+  handleConfirmDeletion = () => {
+    this.setState({ showsDeletionDialog: false })
+
+    const { router } = this.context
+    const { bracket, relay } = this.props
+
+    const mutation = new DeleteBracketMutation({ bracket })
+
+    relay.commitUpdate(mutation, {
+      onSuccess () {
+        router.push(`/pools/${bracket.pool.model_id}`)
+      },
+      onFailure (error) {
+        console.error(`commit failed: ${error}`)
+      }
+    })
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.bracket) {
+      return true
+    }
+    return false
+  }
+
   render() {
     const { bracket } = this.state
     const pool = bracket.pool
     const tournament = pool.tournament
 
     return <div className="bracket-edit">
+      <Dialog
+        className='deletion'
+        isOpen={this.state.showsDeletionDialog}
+        message='This will delete this bracket. Are you sure you want to proceed?'
+        onConfirm={this.handleConfirmDeletion}
+        onCancel={this.handleCancelDeletion}
+      />
       <h2>{this.title()}</h2>
       <Tournament tournament={tournament} bracket={bracket} onSlotClick={this.handleSlotClick}/>
       <form className="edit-bracket-form" onSubmit={this.handleDone}>
@@ -83,7 +128,7 @@ class Bracket extends Component {
         <label htmlFor="tie_breaker">Tie Breaker</label>
         <input id="tie_breaker" name="tie_breaker" placeholder="Final Score of Championship Game Added Together (ex: 147)" type="text" value={this.state.tie_breaker} onChange={this.handleTieBreakerChange} />
         <input className="button" type="submit" name="commit" value="Done" />
-        <div className="button danger">Delete Bracket</div>
+        <div className="button danger" onClick={this.handleDelete}>Delete Bracket</div>
       </form>
     </div>
   }
@@ -103,11 +148,13 @@ export default Relay.createContainer(Bracket, {
           name
         }  
         pool {
+          model_id
           ${PoolLayout.getFragment('pool')}
           tournament {
             ${Tournament.getFragment('tournament')}
           }
         }
+        ${DeleteBracketMutation.getFragment('bracket')}
       }
     `
   }

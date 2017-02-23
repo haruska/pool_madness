@@ -7,5 +7,6 @@ module Mutations
     field :accept_invitation, field: AcceptInvitation.field
     field :update_profile, field: UpdateProfile.field
     field :create_bracket, field: CreateBracket.field
+    field :delete_bracket, field: DeleteBracket.field
   end
 end
