@@ -3,7 +3,7 @@ import Relay from 'react-relay'
 import PoolLayout from './pool'
 
 class BracketLayout extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (nextProps.bracket) {
       return true
     }

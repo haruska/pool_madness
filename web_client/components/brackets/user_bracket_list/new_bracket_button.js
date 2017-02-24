@@ -23,7 +23,7 @@ class NewBracketButton extends Component {
     transaction.commit()
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate() {
     return false
   }
 

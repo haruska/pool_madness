@@ -95,12 +95,12 @@ class Bracket extends Component {
         router.push(`/pools/${bracket.pool.model_id}`)
       },
       onFailure (error) {
-        console.error(`commit failed: ${error}`)
+        console.error(`commit failed: ${error}`) // eslint-disable-line
       }
     })
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (nextProps.bracket) {
       return true
     }

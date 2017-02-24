@@ -32,7 +32,7 @@ class UserBracketList extends Component {
     return this.brackets().filter(bracket => bracket.status == 'unpaid')
   }
 
-  handleNewBracketClick = () => {
+  trackNewBracketClick = () => {
     this.setState({generatingBracket: true})
   }
 
@@ -58,7 +58,7 @@ class UserBracketList extends Component {
       </div>
       <div className='actions'>
         <PaymentButton pool={pool} unpaidBrackets={this.unpaidBrackets()} emailAddress={this.props.current_user.email} />
-        <NewBracketButton pool={pool} bracketCount={brackets.length} clickHandler={this.handleNewBracketClick} />
+        <NewBracketButton pool={pool} bracketCount={brackets.length} clickHandler={this.trackNewBracketClick} />
       </div>
     </div>
   }
