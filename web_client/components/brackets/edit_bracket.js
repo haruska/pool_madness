@@ -6,6 +6,7 @@ import { cloneDeep } from 'lodash'
 import Dialog from 'components/dialog'
 import PoolLayout from 'components/layout/pool'
 import Tournament from 'components/bracket/tournament'
+import UpdateBracketMutation from 'mutations/update_bracket'
 import DeleteBracketMutation from 'mutations/delete_bracket'
 
 class Bracket extends Component {
@@ -65,12 +66,38 @@ class Bracket extends Component {
   }
 
   handleTieBreakerChange = (event) => {
-    this.setState({tie_breaker: event.target.value})
+    const intValue = event.target.value ? parseInt(event.target.value) : ""
+    this.setState({tie_breaker: intValue})
+  }
+
+  handleUpdateSuccess = () => {
+    this.context.router.push(`/brackets/${this.props.bracket.model_id}`)
+  }
+
+  handleUpdateFailure = (mutationTransaction) => {
+    const errors = mutationTransaction.getError()
+    this.setState({errors: errors})
   }
 
   handleDone = (event) => {
     event.preventDefault()
-    this.context.router.push(`/brackets/${this.props.bracket.model_id}`)
+
+    const {bracket, relay} = this.props
+    const {name, tie_breaker} = this.state
+    const {game_decisions, game_mask} = this.state.bracket
+
+    const mutation = new UpdateBracketMutation({
+      bracket,
+      name,
+      tie_breaker,
+      game_decisions,
+      game_mask
+    })
+
+    relay.commitUpdate(mutation, {
+      onSuccess: this.handleUpdateSuccess,
+      onFailure: this.handleUpdateFailure
+    })
   }
 
   // deletion
@@ -154,6 +181,7 @@ export default Relay.createContainer(Bracket, {
             ${Tournament.getFragment('tournament')}
           }
         }
+        ${UpdateBracketMutation.getFragment('bracket')}
         ${DeleteBracketMutation.getFragment('bracket')}
       }
     `
