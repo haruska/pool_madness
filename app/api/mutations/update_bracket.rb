@@ -11,9 +11,11 @@ module Mutations
   UPDATE_BRACKET_LAMBDA = lambda do |inputs, context|
     user = context[:current_user]
     ability = context[:current_ability]
-    bracket = Queries::NodeInterface.object_from_id(inputs[:bracket_id], {})
 
     raise GraphQL::ExecutionError, "You must be signed in to update this information" if user.blank?
+
+    bracket = Queries::NodeInterface.object_from_id(inputs[:bracket_id], {})
+
     raise GraphQL::ExecutionError, "You cannot update this bracket" unless ability.can?(:edit, bracket)
 
     game_decisions = inputs[:game_decisions] ? bitstring_to_int(inputs[:game_decisions]) : bracket.game_decisions
