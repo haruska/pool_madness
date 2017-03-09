@@ -3,7 +3,7 @@ module Queries
     name "Charge"
     description "A stripe credit card charge"
 
-    interfaces [NodeInterface.interface]
+    interfaces [GraphQL::Relay::Node.interface]
     global_id_field :id
 
     field :stripe_id, !types.ID, property: :id

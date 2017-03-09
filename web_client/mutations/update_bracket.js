@@ -25,12 +25,27 @@ export default class UpdateBracketMutation extends Mutation {
   }
 
   getConfigs() {
-    return [{
-      type: 'FIELDS_CHANGE',
-      fieldIDs: {
-        bracket: this.props.bracket.id
+    return [
+      {
+        type: 'FIELDS_CHANGE',
+        fieldIDs: {
+          bracket: this.props.bracket.id
+        }
+      },
+      {
+        type: 'REQUIRED_CHILDREN',
+        children: [
+          Relay.QL`
+            fragment on UpdateBracketPayload {
+              errors {
+                key
+                messages
+              }
+            }
+          `
+        ]
       }
-    }]
+    ]
   }
 
   getOptimisticResponse() {

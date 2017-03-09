@@ -16,7 +16,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { current_user } = this.props
+    const { current_user } = this.props.viewer
 
     return <div className="profile">
       <div className="name">{current_user.name}</div>
@@ -31,10 +31,12 @@ class Profile extends Component {
 
 export default Relay.createContainer(Profile, {
   fragments: {
-    current_user: () => Relay.QL`
-      fragment on CurrentUser {
-        name
-        email
+    viewer: () => Relay.QL`
+      fragment on Viewer {
+        current_user {
+          name
+          email
+        }
       }
     `
   }

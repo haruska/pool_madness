@@ -1,11 +1,11 @@
 require "rails_helper"
 
 RSpec.describe Mutations::UpdateProfile do
-  subject { Mutations::UpdateProfile.field }
+  subject { Mutations::UPDATE_PROFILE_LAMBDA }
   let(:user) { create(:user) }
-  let(:graphql_args) { GraphQL::Query::Arguments.new(input: args.merge(clientMutationId: "0")) }
+  let(:graphql_args) { args.deep_stringify_keys }
   let(:graphql_context) { { current_user: user, current_ability: Ability.new(user) } }
-  let(:graphql_result) { subject.resolve(nil, graphql_args, graphql_context) }
+  let(:graphql_result) { subject.call(nil, graphql_args, graphql_context) }
 
   context "with valid data" do
     let(:name) { Faker::Name.name }
@@ -23,7 +23,7 @@ RSpec.describe Mutations::UpdateProfile do
     end
 
     it "includes the updated user in result" do
-      expect(graphql_result.result[:current_user]).to eq(user)
+      expect(graphql_result[:viewer].id).to eq(Viewer::ID)
     end
   end
 
@@ -33,8 +33,13 @@ RSpec.describe Mutations::UpdateProfile do
     let(:args) { { email: email } }
 
     before do
-      expect { graphql_result }.to raise_error(ActiveRecord::RecordInvalid)
+      graphql_result
       user.reload
+    end
+
+    it "has the validation errors" do
+      expect(graphql_result[:viewer]).to be_nil
+      expect(graphql_result[:errors][:email]).to include("is invalid")
     end
 
     it "does not update the profile" do

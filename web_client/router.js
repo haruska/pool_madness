@@ -39,18 +39,18 @@ const BracketQueries = {
   bracket: () => Relay.QL`query { bracket(model_id: $bracketId) }`
 }
 
-const BracketCurrentUserQueries = {
+const BracketViewerQueries = {
   bracket: () => Relay.QL`query { bracket(model_id: $bracketId) }`,
-  current_user: () => Relay.QL`query { current_user }`
+  viewer: () => Relay.QL`query { viewer }`
 }
 
-const CurrentUserQueries = {
-  current_user: () => Relay.QL`query { current_user }`
+const ViewerQueries = {
+  viewer: () => Relay.QL`query { viewer }`
 }
 
-const PoolCurrentUserQueries = {
+const PoolViewerQueries = {
   pool: () => Relay.QL`query { pool(model_id: $poolId) }`,
-  current_user: () => Relay.QL`query { current_user }`
+  viewer: () => Relay.QL`query { viewer }`
 }
 
 
@@ -61,19 +61,19 @@ export default () => {
         <Route component={Layout}>
           <Route path="pools" component={PoolList} queries={ListsQueries}/>
           <Route path="pools/invite_code" component={InviteCode}/>
-          <Route path="user" component={Profile} queries={CurrentUserQueries}/>
-          <Route path="user/edit" component={EditProfile} queries={CurrentUserQueries}/>
+          <Route path="user" component={Profile} queries={ViewerQueries}/>
+          <Route path="user/edit" component={EditProfile} queries={ViewerQueries}/>
         </Route>
-        <Route path="pools/:poolId" component={PoolLayout} queries={PoolCurrentUserQueries}>
+        <Route path="pools/:poolId" component={PoolLayout} queries={PoolViewerQueries}>
           <IndexRoute component={Pool} queries={PoolQueries} />
-          <Route path="brackets" component={BracketList} queries={PoolCurrentUserQueries}/>
-          <Route path="my_brackets" component={UserBracketList} queries={PoolCurrentUserQueries}/>
+          <Route path="brackets" component={BracketList} queries={PoolViewerQueries}/>
+          <Route path="my_brackets" component={UserBracketList} queries={PoolViewerQueries}/>
           <Route path="rules" component={RulesAndScoring} queries={PoolQueries}/>
           <Route path="payments" component={Payments} queries={PoolQueries}/>
           <Route path="games" component={PoolGames} queries={PoolQueries}/>
           <Route path="possibilities" component={Possibilities} queries={PoolQueries}/>
         </Route>
-        <Route path="brackets/:bracketId" component={BracketLayout} queries={BracketCurrentUserQueries}>
+        <Route path="brackets/:bracketId" component={BracketLayout} queries={BracketViewerQueries}>
           <IndexRoute component={Bracket} queries={BracketQueries}/>
           <Route path="edit" component={EditBracket} queries={BracketQueries}/>
         </Route>

@@ -10,7 +10,8 @@ class BestPossible extends Component {
 
 export default class BracketRow extends Component {
   render() {
-    const { bracket, index, showEliminated, current_user } = this.props
+    const { bracket, index, showEliminated, viewer } = this.props
+    const { current_user } = viewer
     const finalFourTeams = bracket.final_four
     const bracketPath = `/brackets/${bracket.model_id}`
 

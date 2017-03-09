@@ -16,7 +16,8 @@ class BestPossible extends Component {
 
 export default class SmallBracket extends Component {
   render() {
-    const { bracket, showEliminated, index, current_user } = this.props
+    const { bracket, showEliminated, index, viewer } = this.props
+    const { current_user } = viewer
     const finalFourTeams = bracket.final_four
     const bracketName = showEliminated && bracket.eliminated ? `* ${bracket.name}` : bracket.name
     const bracketPath = `/brackets/${bracket.model_id}`

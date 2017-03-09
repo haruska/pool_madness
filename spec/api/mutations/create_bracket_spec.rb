@@ -1,11 +1,11 @@
 require "rails_helper"
 
 RSpec.describe Mutations::CreateBracket do
-  subject { Mutations::CreateBracket.field }
+  subject { Mutations::CREATE_BRACKET_LAMBDA }
   let(:user) { create(:user) }
-  let(:graphql_args) { GraphQL::Query::Arguments.new(input: args.merge(clientMutationId: "0")) }
+  let(:graphql_args) { args.deep_stringify_keys }
   let(:graphql_context) { { current_user: user, current_ability: Ability.new(user) } }
-  let(:graphql_result) { subject.resolve(nil, graphql_args, graphql_context) }
+  let(:graphql_result) { subject.call(nil, graphql_args, graphql_context) }
 
   context "not logged in" do
     let(:user) { nil }
@@ -18,7 +18,7 @@ RSpec.describe Mutations::CreateBracket do
 
   context "logged in" do
     let(:pool) { create(:pool) }
-    let(:pool_graph_id) { GraphQL::Relay::GlobalNodeIdentification.new.to_global_id("Pool", pool.id) }
+    let(:pool_graph_id) { GraphqlSchema.id_from_object(pool, nil, nil) }
     let(:args) { { pool_id: pool_graph_id } }
 
     context "user is not a member of the pool" do

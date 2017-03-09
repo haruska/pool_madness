@@ -3,7 +3,7 @@ module Queries
     name "Round"
     description "A round of games in a tournament"
 
-    interfaces [NodeInterface.interface]
+    interfaces [GraphQL::Relay::Node.interface]
     global_id_field :id
 
     field :name, !types.String

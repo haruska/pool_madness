@@ -10,7 +10,8 @@ export default class Menu extends Component {
   }
 
   poolLinks = () => {
-    const { pool, current_user } = this.props
+    const { pool, viewer } = this.props
+    const { current_user } = viewer
     let links = []
 
 
@@ -68,7 +69,8 @@ export default class Menu extends Component {
   }
 
   currentUserIsPoolAdmin = () => {
-    const { pool, current_user } = this.props
+    const { pool, viewer } = this.props
+    const { current_user } = viewer
     const adminIds = pool.admins.map(admin => admin.model_id)
 
     return adminIds.includes(current_user.model_id)

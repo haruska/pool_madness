@@ -1,11 +1,11 @@
 require "rails_helper"
 
 RSpec.describe Mutations::DeleteBracket do
-  subject { Mutations::DeleteBracket.field }
+  subject { Mutations::DELETE_BRACKET_LAMBDA }
   let(:user) { create(:user) }
-  let(:graphql_args) { GraphQL::Query::Arguments.new(input: args.merge(clientMutationId: "0")) }
+  let(:graphql_args) { args.deep_stringify_keys }
   let(:graphql_context) { { current_user: user, current_ability: Ability.new(user) } }
-  let(:graphql_result) { subject.resolve(nil, graphql_args, graphql_context) }
+  let(:graphql_result) { subject.call(nil, graphql_args, graphql_context) }
 
   context "not logged in" do
     let(:user) { nil }
@@ -18,7 +18,7 @@ RSpec.describe Mutations::DeleteBracket do
 
   context "logged in" do
     let(:bracket) { create(:bracket) }
-    let(:bracket_graph_id) { GraphQL::Relay::GlobalNodeIdentification.new.to_global_id("Bracket", bracket.id) }
+    let(:bracket_graph_id) { GraphqlSchema.id_from_object(bracket, nil, nil) }
     let(:args) { { bracket_id: bracket_graph_id } }
 
     context "user who cannot destroy the bracket" do

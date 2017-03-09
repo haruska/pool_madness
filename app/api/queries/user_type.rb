@@ -3,7 +3,7 @@ module Queries
     name "User"
     description "User's details"
 
-    interfaces [NodeInterface.interface]
+    interfaces [GraphQL::Relay::Node.interface]
     global_id_field :id
 
     field :model_id, !types.Int, property: :id

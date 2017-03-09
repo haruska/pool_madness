@@ -27,7 +27,7 @@ class BracketList extends Component {
   }
 
   render() {
-    const { current_user } = this.props
+    const { viewer } = this.props
     const brackets = this.brackets()
 
     return <div className='bracket-list'>
@@ -41,7 +41,7 @@ class BracketList extends Component {
                 index={i+1}
                 bracket={bracket}
                 showEliminated={this.showEliminated()}
-                current_user={current_user}
+                viewer={viewer}
               />
             )}
           </tbody>
@@ -55,7 +55,7 @@ class BracketList extends Component {
             index={i+1}
             bracket={bracket}
             showEliminated={this.showEliminated()}
-            current_user={current_user}
+            viewer={viewer}
           />
         )}
       </div>
@@ -90,9 +90,11 @@ export default Relay.createContainer(BracketList, {
         }
       }
     `,
-    current_user: () => Relay.QL`
-      fragment on CurrentUser {
-        model_id
+    viewer: () => Relay.QL`
+      fragment on Viewer {
+        current_user {
+          model_id
+        }
       }
     `
   }

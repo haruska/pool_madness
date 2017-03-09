@@ -11,39 +11,51 @@ export default class UpdateProfileMutation extends Mutation {
 
   getFatQuery() {
     return Relay.QL`
-      fragment on UpdateProfilePayload {
-        current_user {
-          name
-          email
-        }
-      }
+      fragment on UpdateProfilePayload { viewer }
     `
   }
 
   getConfigs() {
-    return [{
-      type: 'FIELDS_CHANGE',
-      fieldIDs: {
-        current_user: this.props.current_user.id
+    return [
+      {
+        type: 'FIELDS_CHANGE',
+        fieldIDs: {
+          viewer: this.props.viewer.id
+        }
+      },
+      {
+        type: 'REQUIRED_CHILDREN',
+        children: [
+          Relay.QL`
+            fragment on UpdateProfilePayload {
+              errors {
+                key
+                messages
+              }
+            }
+          `
+        ]
       }
-    }]
+    ]
   }
 
   getOptimisticResponse() {
-    const { current_user, name, email } = this.props
+    const { viewer, name, email } = this.props
 
     return {
-      current_user: {
-        id: current_user.id,
-        name: name,
-        email: email
+      viewer: {
+        id: viewer.id,
+        current_user: {
+          name: name,
+          email: email
+        }
       }
     }
   }
 
   static fragments = {
-    current_user: () => Relay.QL`
-      fragment on CurrentUser {
+    viewer: () => Relay.QL`
+      fragment on Viewer {
         id
       }
     `

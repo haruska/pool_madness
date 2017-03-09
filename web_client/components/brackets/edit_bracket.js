@@ -4,6 +4,8 @@ import Relay from 'react-relay'
 import { cloneDeep } from 'lodash'
 
 import Dialog from 'components/dialog'
+import ErrorFlash from 'components/forms/error_flash'
+import Label from 'components/forms/label'
 import PoolLayout from 'components/layout/pool'
 import Tournament from 'components/bracket/tournament'
 import UpdateBracketMutation from 'mutations/update_bracket'
@@ -70,13 +72,17 @@ class Bracket extends Component {
     this.setState({tie_breaker: intValue})
   }
 
-  handleUpdateSuccess = () => {
-    this.context.router.push(`/brackets/${this.props.bracket.model_id}`)
+  handleUpdateSuccess = (transaction) => {
+    let { errors } = transaction.update_bracket
+    if (errors) {
+      this.setState({ errors })
+    } else {
+      this.context.router.push(`/brackets/${this.props.bracket.model_id}`)
+    }
   }
 
-  handleUpdateFailure = (mutationTransaction) => {
-    const errors = mutationTransaction.getError()
-    this.setState({errors: errors})
+  handleUpdateFailure = (error) => {
+    console.log(error.getError().toString()) // eslint-disable-line
   }
 
   handleDone = (event) => {
@@ -135,7 +141,7 @@ class Bracket extends Component {
   }
 
   render() {
-    const { bracket } = this.state
+    const { bracket, errors } = this.state
     const pool = bracket.pool
     const tournament = pool.tournament
 
@@ -150,10 +156,13 @@ class Bracket extends Component {
       <h2>{this.title()}</h2>
       <Tournament tournament={tournament} bracket={bracket} onSlotClick={this.handleSlotClick}/>
       <form className="edit-bracket-form" onSubmit={this.handleDone}>
-        <label htmlFor="bracket_name">Bracket Name</label>
-        <input id="bracket_name" type="text" name="bracket_name" value={this.state.name} onChange={this.handleNameChange} />
-        <label htmlFor="tie_breaker">Tie Breaker</label>
-        <input id="tie_breaker" name="tie_breaker" placeholder="Final Score of Championship Game Added Together (ex: 147)" type="text" value={this.state.tie_breaker} onChange={this.handleTieBreakerChange} />
+        <ErrorFlash errors={errors} />
+        <Label attr="name" text="Bracket Name" errors={errors} />
+        <input id="name" type="text" name="name" required value={this.state.name} onChange={this.handleNameChange} />
+
+        <Label attr="tie_breaker" text="Tie Breaker" errors={errors} />
+        <input id="tie_breaker" name="tie_breaker" required placeholder="Final Score of Championship Game Added Together (ex: 147)" type="number" value={this.state.tie_breaker} onChange={this.handleTieBreakerChange} />
+
         <input className="button" type="submit" name="commit" value="Done" />
         <div className="button danger" onClick={this.handleDelete}>Delete Bracket</div>
       </form>

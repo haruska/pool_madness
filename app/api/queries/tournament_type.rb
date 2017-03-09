@@ -2,7 +2,7 @@ module Queries
   TournamentType = GraphQL::ObjectType.define do
     name "Tournament"
     description "Single elimination bracket tournament"
-    interfaces [NodeInterface.interface]
+    interfaces [GraphQL::Relay::Node.interface]
 
     global_id_field :id
     field :name, !types.String

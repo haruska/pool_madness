@@ -3,7 +3,8 @@ module Queries
     name "RootType"
     description "The query root of this schema"
 
-    field :node, field: NodeInterface.field
+    field :node, GraphQL::Relay::Node.field
+    field :nodes, GraphQL::Relay::Node.plural_field
 
     field :lists do
       type !ListsType
@@ -34,11 +35,9 @@ module Queries
       }
     end
 
-    field :current_user do
-      type !CurrentUserType
-      resolve lambda { |_object, _args, context|
-        context[:current_user] || GraphQL::ExecutionError.new("You must be signed in to view this information")
-      }
+    field :viewer do
+      type !ViewerType
+      resolve ->(_object, _args, _context) { Viewer.new }
     end
   end
 end

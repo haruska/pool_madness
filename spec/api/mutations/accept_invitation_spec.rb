@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe Mutations::AcceptInvitation do
-  subject { Mutations::AcceptInvitation.field }
+  subject { Mutations::ACCEPT_INVITATION_LAMBDA }
   let(:user) { create(:user) }
   let(:pool) { create(:pool) }
-  let(:graphql_args) { GraphQL::Query::Arguments.new(input: args.merge(clientMutationId: "0")) }
+  let(:graphql_args) { args.deep_stringify_keys }
   let(:graphql_context) { { current_user: user, current_ability: Ability.new(user) } }
-  let(:graphql_result) { subject.resolve(nil, graphql_args, graphql_context) }
+  let(:graphql_result) { subject.call(nil, graphql_args, graphql_context) }
 
   context "with a valid code" do
     let(:args) { { invite_code: pool.invite_code } }
@@ -18,7 +18,7 @@ RSpec.describe Mutations::AcceptInvitation do
       end
 
       it "includes the pool in result" do
-        expect(graphql_result.result[:pool]).to eq(pool)
+        expect(graphql_result[:pool]).to eq(pool)
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe Mutations::AcceptInvitation do
       end
 
       it "includes the pool in result" do
-        expect(graphql_result.result[:pool]).to eq(pool)
+        expect(graphql_result[:pool]).to eq(pool)
       end
     end
   end

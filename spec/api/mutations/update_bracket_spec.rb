@@ -1,17 +1,17 @@
 require "rails_helper"
 
 RSpec.describe Mutations::UpdateBracket do
-  subject { Mutations::UpdateBracket.field }
+  subject { Mutations::UPDATE_BRACKET_LAMBDA }
 
   let(:tournament) { create(:tournament, :not_started) }
   let(:pool) { create(:pool, tournament: tournament) }
   let(:bracket) { create(:bracket, pool: pool) }
-  let(:bracket_graph_id) { GraphQL::Relay::GlobalNodeIdentification.new.to_global_id("Bracket", bracket.id) }
+  let(:bracket_graph_id) { GraphqlSchema.id_from_object(bracket, nil, nil) }
   let(:user) { bracket.user }
 
-  let(:graphql_args) { GraphQL::Query::Arguments.new(input: args.merge(clientMutationId: "0")) }
+  let(:graphql_args) { args.deep_stringify_keys }
   let(:graphql_context) { { current_user: user, current_ability: Ability.new(user) } }
-  let(:graphql_result) { subject.resolve(nil, graphql_args, graphql_context) }
+  let(:graphql_result) { subject.call(nil, graphql_args, graphql_context) }
 
   let(:completed_bracket) { create(:bracket, :completed, pool: pool) }
   let(:name) { Faker::Lorem.words(2).join(" ") }
@@ -43,7 +43,7 @@ RSpec.describe Mutations::UpdateBracket do
     end
 
     it "includes the updated bracket in the result" do
-      expect(graphql_result.result[:bracket]).to eq(bracket)
+      expect(graphql_result[:bracket]).to eq(bracket)
     end
   end
 
@@ -52,8 +52,12 @@ RSpec.describe Mutations::UpdateBracket do
     let(:name) { completed_bracket.name }
 
     before do
-      expect { graphql_result }.to raise_error(ActiveRecord::RecordInvalid)
+      graphql_result
       bracket.reload
+    end
+
+    it "has the validation errors" do
+      expect(graphql_result[:errors][:name]).to include("has already been taken")
     end
 
     it "does not update the bracket" do

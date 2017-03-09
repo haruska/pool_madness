@@ -2,7 +2,7 @@ module Queries
   BracketType = GraphQL::ObjectType.define do
     name "Bracket"
     description "A bracket"
-    interfaces [NodeInterface.interface]
+    interfaces [GraphQL::Relay::Node.interface]
     global_id_field :id
 
     field :model_id, !types.ID, property: :id

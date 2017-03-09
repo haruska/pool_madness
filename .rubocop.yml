@@ -23,6 +23,9 @@ Style/FrozenStringLiteralComment:
 Style/AlignParameters:
   Enabled: false
 
+Style/BlockDelimiters:
+  Enabled: false
+
 Style/SpaceBeforeFirstArg:
   Enabled: false
 

@@ -1,11 +1,11 @@
 require "rails_helper"
 
 RSpec.describe Mutations::CreateCharge do
-  subject { Mutations::CreateCharge.field }
+  subject { Mutations::CREATE_CHARGE_LAMBDA }
   let(:user) { create(:user) }
-  let(:graphql_args) { GraphQL::Query::Arguments.new(input: args.merge(clientMutationId: "0")) }
+  let(:graphql_args) { args.deep_stringify_keys }
   let(:graphql_context) { { current_user: user, current_ability: Ability.new(user) } }
-  let(:graphql_result) { subject.resolve(nil, graphql_args, graphql_context) }
+  let(:graphql_result) { subject.call(nil, graphql_args, graphql_context) }
 
   let(:stripe_helper) { StripeMock.create_test_helper }
   before { StripeMock.start }
@@ -13,13 +13,13 @@ RSpec.describe Mutations::CreateCharge do
 
   let(:tournament) { create(:tournament, :not_started) }
   let(:pool) { create(:pool, tournament: tournament) }
-  let(:pool_id) { GraphQL::Relay::GlobalNodeIdentification.new.to_global_id("Pool", pool.id) }
+  let(:pool_id) { GraphqlSchema.id_from_object(pool, nil, nil) }
   let!(:brackets) { create_list(:bracket, 2, :completed, user: user, pool: pool) }
   let!(:incomplete_bracket) { create(:bracket, user: user, pool: pool) }
 
   context "valid" do
     let(:args) { { pool_id: pool_id, token: stripe_helper.generate_card_token } }
-    let(:charge) { graphql_result.result[:charge] }
+    let(:charge) { graphql_result[:charge] }
 
     it "charges the credit card" do
       expect(charge["paid"]).to eq(true)
@@ -38,7 +38,7 @@ RSpec.describe Mutations::CreateCharge do
     end
 
     it "includes the pool in result" do
-      expect(graphql_result.result[:pool]).to eq(pool)
+      expect(graphql_result[:pool]).to eq(pool)
     end
   end
 
@@ -58,7 +58,7 @@ RSpec.describe Mutations::CreateCharge do
   end
 
   context "user outside of pool" do
-    let(:pool_id) { GraphQL::Relay::GlobalNodeIdentification.new.to_global_id("Pool", create(:pool).id) }
+    let(:pool_id) { GraphqlSchema.id_from_object(create(:pool), nil, nil) }
     let(:args) { { pool_id: pool_id, token: stripe_helper.generate_card_token } }
 
     it "is not found" do

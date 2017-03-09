@@ -1,11 +1,11 @@
 module Mutations
-  DELETE_BRACKET_LAMBDA = lambda do |inputs, context|
+  DELETE_BRACKET_LAMBDA = lambda do |_object, inputs, context|
     user = context[:current_user]
     ability = context[:current_ability]
 
     raise GraphQL::ExecutionError, "You must be signed in to update this information" if user.blank?
 
-    bracket = Queries::NodeInterface.object_from_id(inputs[:bracket_id], {})
+    bracket = GraphqlSchema.object_from_id(inputs["bracket_id"], {})
     pool = bracket.pool
 
     if ability.can?(:destroy, bracket)
@@ -15,7 +15,7 @@ module Mutations
     end
 
     {
-      deleted_bracket_id: inputs[:bracket_id],
+      deleted_bracket_id: inputs["bracket_id"],
       pool: pool
     }
   end

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import Relay from 'react-relay'
 import { Link } from 'react-router'
+import ErrorFlash from 'components/forms/error_flash'
 import Label from 'components/forms/label'
 import UpdateProfileMutation from 'mutations/update_profile'
 
@@ -11,12 +12,9 @@ class EditProfile extends Component {
   }
 
   state = {
-    name: this.props.current_user.name,
-    email: this.props.current_user.email,
-    errors: {
-      name: null,
-      email: null
-    }
+    name: this.props.viewer.current_user.name,
+    email: this.props.viewer.current_user.email,
+    errors: null
   }
 
   componentWillMount() {
@@ -35,24 +33,25 @@ class EditProfile extends Component {
     this.setState({email: event.target.value})
   }
 
-  handleUpdateSuccess = () => {
-    this.context.router.push('/user')
+  handleUpdateSuccess = (transaction) => {
+    let { errors } = transaction.update_profile
+    if (errors) {
+      this.setState({ errors })
+    } else {
+      this.context.router.push(`/user`)
+    }
   }
 
-  handleUpdateFailure = (mutationTransaction) => {
-    const errors = JSON.parse(mutationTransaction.getError().source.errors[0].message)
-    this.setState({errors: errors})
+  handleUpdateFailure = (error) => {
+    console.log(error.getError().toString()) // eslint-disable-line
   }
 
-  handleUpdate = () => {
-    const {current_user, relay} = this.props
+  handleUpdate = (e) => {
+    e.preventDefault()
+    const {viewer, relay} = this.props
     const {name, email} = this.state
 
-    const mutation = new UpdateProfileMutation({
-      current_user: current_user,
-      name: name,
-      email: email
-    })
+    const mutation = new UpdateProfileMutation({ viewer, name, email })
 
     relay.commitUpdate(mutation, {
       onSuccess: this.handleUpdateSuccess,
@@ -64,29 +63,34 @@ class EditProfile extends Component {
     const { name, email, errors } = this.state
 
     return <div className="edit-profile">
-      <div className="form-inputs">
-        <Label attrName='name' text='Full Name' errors={errors.name} />
-        <input required="required" name='name' type="text" value={name} onChange={this.handleNameChange} />
-        <Label attrName='email' text='Email Address' errors={errors.email} />
-        <input required="required" name='email' type="email" value={email} onChange={this.handleEmailChange} />
-      </div>
-      <div className="form-actions">
-        <input type="submit" name="commit" defaultValue="Update" onClick={this.handleUpdate} />
-      </div>
-      <div className="other-actions">
-        <Link to="/user" className="button minor">Cancel</Link>
-      </div>
+      <form className="edit-profile-form" onSubmit={this.handleUpdate}>
+        <div className="form-inputs">
+          <ErrorFlash errors={errors} />
+          <Label attr='name' text='Full Name' errors={errors} />
+          <input name='name' type="text" value={name} onChange={this.handleNameChange} />
+          <Label attr='email' text='Email Address' errors={errors} />
+          <input required name='email' type="email" value={email} onChange={this.handleEmailChange} />
+        </div>
+        <div className="form-actions">
+          <input type="submit" name="commit" defaultValue="Update" />
+        </div>
+        <div className="other-actions">
+          <Link to="/user" className="button minor">Cancel</Link>
+        </div>
+      </form>
     </div>
   }
 }
 
 export default Relay.createContainer(EditProfile, {
   fragments: {
-    current_user: () => Relay.QL`
-      fragment on CurrentUser {
-        name
-        email
-        ${UpdateProfileMutation.getFragment('current_user')}
+    viewer: () => Relay.QL`
+      fragment on Viewer {
+        current_user {
+          name
+          email
+        }
+        ${UpdateProfileMutation.getFragment('viewer')}
       }
     `
   }

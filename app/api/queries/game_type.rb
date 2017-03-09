@@ -3,7 +3,7 @@ module Queries
     name "Game"
     description "A game in a tournament"
 
-    interfaces [NodeInterface.interface]
+    interfaces [GraphQL::Relay::Node.interface]
     global_id_field :id
 
     field :slot, !types.Int

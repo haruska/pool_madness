@@ -11,9 +11,9 @@ class BracketLayout extends Component {
   }
 
   render() {
-    const { bracket, current_user } = this.props
+    const { bracket, viewer } = this.props
     return (
-      <PoolLayout pool={bracket.pool} current_user={current_user}>
+      <PoolLayout pool={bracket.pool} viewer={viewer}>
         {this.props.children}
       </PoolLayout>
     )
@@ -29,9 +29,9 @@ export default Relay.createContainer(BracketLayout, {
         }
       }
     `,
-    current_user: () => Relay.QL`
-      fragment on CurrentUser {
-        ${PoolLayout.getFragment('current_user')}
+    viewer: () => Relay.QL`
+      fragment on Viewer {
+        ${PoolLayout.getFragment('viewer')}
       }
     `
   }

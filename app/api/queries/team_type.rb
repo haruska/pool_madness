@@ -2,7 +2,7 @@ module Queries
   TeamType = GraphQL::ObjectType.define do
     name "Team"
     description "A team"
-    interfaces [NodeInterface.interface]
+    interfaces [GraphQL::Relay::Node.interface]
     global_id_field :id
 
     field :model_id, !types.Int

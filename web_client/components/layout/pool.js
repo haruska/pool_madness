@@ -26,10 +26,12 @@ export default Relay.createContainer(PoolLayout, {
         }
       }
     `,
-    current_user: () => Relay.QL`
-      fragment on CurrentUser {
-        model_id
-        admin 
+    viewer: () => Relay.QL`
+      fragment on Viewer {
+        current_user {
+          model_id
+          admin
+        }
       }
     `
   }

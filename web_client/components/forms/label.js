@@ -1,12 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
+import InputError from 'components/forms/input_error'
 
-export default class Label extends Component {
-  render() {
-    const {attrName, text, errors} = this.props
+function Label (props) {
+  let { attr, text, errors } = props
 
-    if (errors && errors.length > 0) {
-      return <label htmlFor={attrName} className="error">{text} {errors[0]}</label>
-    }
-    return <label htmlFor={attrName}>{text}</label>
-  }
+  return (
+    <label name={attr} htmlFor={attr}>
+      {text}
+      <InputError attr={attr} errors={errors} />
+    </label>
+  )
 }
+
+export default Label

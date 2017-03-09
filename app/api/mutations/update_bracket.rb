@@ -8,28 +8,32 @@ def bitstring_to_int(bitstring)
 end
 
 module Mutations
-  UPDATE_BRACKET_LAMBDA = lambda do |inputs, context|
+  UPDATE_BRACKET_LAMBDA = lambda do |_object, inputs, context|
     user = context[:current_user]
     ability = context[:current_ability]
 
     raise GraphQL::ExecutionError, "You must be signed in to update this information" if user.blank?
 
-    bracket = Queries::NodeInterface.object_from_id(inputs[:bracket_id], {})
+    bracket = GraphqlSchema.object_from_id(inputs["bracket_id"], {})
 
     raise GraphQL::ExecutionError, "You cannot update this bracket" unless ability.can?(:edit, bracket)
 
-    game_decisions = inputs[:game_decisions] ? bitstring_to_int(inputs[:game_decisions]) : bracket.game_decisions
-    game_mask = inputs[:game_mask] ? bitstring_to_int(inputs[:game_mask]) : bracket.game_mask
-    bracket.update!(
+    game_decisions = inputs["game_decisions"] ? bitstring_to_int(inputs["game_decisions"]) : bracket.game_decisions
+    game_mask = inputs["game_mask"] ? bitstring_to_int(inputs["game_mask"]) : bracket.game_mask
+    bracket.update(
       {
-        name: inputs[:name],
-        tie_breaker: inputs[:tie_breaker],
+        name: inputs["name"],
+        tie_breaker: inputs["tie_breaker"],
         tree_decisions: game_decisions,
         tree_mask: game_mask
       }.compact
     )
 
-    { bracket: bracket }
+    if bracket.valid?
+      { bracket: bracket }
+    else
+      { errors: bracket.errors.messages }
+    end
   end
 
   UpdateBracket = GraphQL::Relay::Mutation.define do
@@ -43,6 +47,7 @@ module Mutations
     input_field :game_mask, types.String
 
     return_field :bracket, Queries::BracketType
+    return_field :errors, ValidationErrorList
 
     resolve UPDATE_BRACKET_LAMBDA
   end

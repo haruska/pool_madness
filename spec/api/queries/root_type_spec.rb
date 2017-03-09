@@ -1,37 +1,26 @@
 require "rails_helper"
 
 RSpec.describe Queries::RootType do
-  subject { Queries::RootType }
+  subject { described_class }
 
   context "fields" do
-    let(:fields) { %w(node lists pool bracket current_user) }
+    let(:fields) { %w(node nodes viewer lists pool bracket) }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)
     end
   end
 
-  context "current_user" do
-    subject { Queries::RootType.fields["current_user"] }
+  context "viewer" do
+    subject { described_class.fields["viewer"] }
 
-    context "signed in" do
-      let(:user) { create(:user) }
-
-      it "is the signed in user" do
-        expect(subject.resolve(nil, nil, current_user: user, current_ability: Ability.new(user))).to eq(user)
-      end
-    end
-    context "not signed in" do
-      it "is a graphql execution error" do
-        result = subject.resolve(nil, nil, {})
-        expect(result).to be_a(GraphQL::ExecutionError)
-        expect(result.message).to match(/must be signed in/i)
-      end
+    it "is the viewer singleton" do
+      expect(subject.resolve(nil, nil, {}).id).to eq(Viewer::ID)
     end
   end
 
   context "pool" do
-    subject { Queries::RootType.fields["pool"] }
+    subject { described_class.fields["pool"] }
     let!(:user) { create :user }
     let(:ability) { Ability.new(user) }
     let!(:pool_users) { create_list :pool_user, 3, user: user }
@@ -68,7 +57,7 @@ RSpec.describe Queries::RootType do
   end
 
   context "bracket" do
-    subject { Queries::RootType.fields["bracket"] }
+    subject { described_class.fields["bracket"] }
     let(:bracket) { create(:bracket) }
     let(:user) { bracket.user }
     let(:ability) { Ability.new(user) }

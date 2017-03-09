@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Queries::PoolType do
-  subject { Queries::PoolType }
+  subject { described_class }
 
   context "fields" do
     let(:fields) { %w(id model_id tournament name invite_code entry_fee total_collected brackets possibilities admins display_best started) }
@@ -11,7 +11,7 @@ RSpec.describe Queries::PoolType do
     end
 
     describe "model_id" do
-      subject { Queries::PoolType.fields["model_id"] }
+      subject { described_class.fields["model_id"] }
 
       let!(:pool) { create(:pool) }
 
@@ -21,7 +21,7 @@ RSpec.describe Queries::PoolType do
     end
 
     describe "admins" do
-      subject { Queries::PoolType.fields["admins"] }
+      subject { described_class.fields["admins"] }
 
       let!(:pool) { create(:pool) }
       let!(:admins) { create_list(:pool_user, 2, pool: pool, role: :admin).map(&:user) }
@@ -32,16 +32,16 @@ RSpec.describe Queries::PoolType do
       end
     end
 
-    describe "brackets" do
-      subject { Queries::PoolType.fields["brackets"] }
+    describe "brackets connection" do
+      subject { Queries::POOL_BRACKETS_LAMBDA }
 
       context "pool has started" do
         let!(:pool) { create(:pool) }
         let!(:brackets) { create_list(:bracket, 3, pool: pool) }
-        let(:resolved_obj) { subject.resolve(pool, nil, current_user: create(:user)).nodes }
+        let(:results) { subject.call(pool, nil, current_user: create(:user)) }
 
         it "is a list of brackets for the pool" do
-          expect(resolved_obj).to match_array(brackets)
+          expect(results).to match_array(brackets)
         end
 
         describe "sorting" do
@@ -53,7 +53,7 @@ RSpec.describe Queries::PoolType do
             end
 
             it "is primarily sorted by best_possible" do
-              expect(resolved_obj).to eq([brackets.third, brackets.first, brackets.second])
+              expect(results).to eq([brackets.third, brackets.first, brackets.second])
             end
           end
 
@@ -65,7 +65,7 @@ RSpec.describe Queries::PoolType do
             end
 
             it "is then sorted by actual points" do
-              expect(resolved_obj).to eq([brackets.third, brackets.first, brackets.second])
+              expect(results).to eq([brackets.third, brackets.first, brackets.second])
             end
           end
 
@@ -77,7 +77,7 @@ RSpec.describe Queries::PoolType do
             end
 
             it "is finally sorted by possible_points" do
-              expect(resolved_obj).to eq([brackets.third, brackets.first, brackets.second])
+              expect(results).to eq([brackets.third, brackets.first, brackets.second])
             end
           end
         end
@@ -90,15 +90,15 @@ RSpec.describe Queries::PoolType do
         let(:user) { bracket.user }
 
         it "is a list of the current user's brackets" do
-          resolved_obj = subject.resolve(pool, nil, current_user: user).nodes
+          results = subject.call(pool, nil, current_user: user)
 
-          expect(resolved_obj).to eq([bracket])
+          expect(results).to eq([bracket])
         end
       end
     end
 
     describe "#possibilities" do
-      subject { Queries::PoolType.fields["possibilities"] }
+      subject { described_class.fields["possibilities"] }
 
       let(:pool) { create(:pool, tournament: tournament) }
       let!(:brackets) { create_list(:bracket, 3, :winning, pool: pool) }
