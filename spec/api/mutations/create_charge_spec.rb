@@ -15,7 +15,6 @@ RSpec.describe Mutations::CreateCharge do
   let(:pool) { create(:pool, tournament: tournament) }
   let(:pool_id) { GraphqlSchema.id_from_object(pool, nil, nil) }
   let!(:brackets) { create_list(:bracket, 2, :completed, user: user, pool: pool) }
-  let!(:incomplete_bracket) { create(:bracket, user: user, pool: pool) }
 
   context "valid" do
     let(:args) { { pool_id: pool_id, token: stripe_helper.generate_card_token } }
@@ -30,11 +29,6 @@ RSpec.describe Mutations::CreateCharge do
       brackets.each do |bracket|
         expect(bracket.reload).to be_paid
       end
-    end
-
-    it "does not pay for incomplete brackets" do
-      graphql_result
-      expect(incomplete_bracket.reload).to be_unpaid
     end
 
     it "includes the pool in result" do

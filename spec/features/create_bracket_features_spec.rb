@@ -12,10 +12,7 @@ RSpec.describe "Creating a Bracket", js: true do
 
   it "creates a new bracket in the pool for the current user" do
     click_button "New Bracket Entry"
-    expect(page).to have_css(".title", text: "Editing Bracket")
-    expect(page).to have_css("h2", text: "#{user.name} Bracket")
-
-    expect(pool.reload.brackets.count).to eq(1)
-    expect(pool.brackets.first.user).to eq(user)
+    expect(page).to have_css(".title", text: "New Bracket")
+    expect(page).to have_css("h2", text: "New Bracket Entry")
   end
 end

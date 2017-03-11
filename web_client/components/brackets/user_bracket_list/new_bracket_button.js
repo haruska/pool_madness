@@ -1,26 +1,26 @@
 import React, { Component, PropTypes } from 'react'
 import Relay from 'react-relay'
-import CreateBracketMutation from 'mutations/create_bracket'
 
 class NewBracketButton extends Component {
   static contextTypes = {
     router: PropTypes.object.isRequired
   }
 
-  handleCreateSuccess = (transaction) => {
-    const bracketId = transaction.create_bracket.bracket_edge.node.model_id
-    this.context.router.push(`/brackets/${bracketId}/edit`)
+  handleCreateSuccess = () => {
+    // const bracketId = transaction.create_bracket.bracket_edge.node.model_id
+    this.context.router.push(`/pools/${this.props.pool.model_id}/new_bracket`)
   }
 
   handleCreate = () => {
-    const { pool, relay } = this.props
-
-    const mutation = new CreateBracketMutation({pool})
-    const transaction = relay.applyUpdate(mutation, {onSuccess: this.handleCreateSuccess})
-
-    this.props.clickHandler && this.props.clickHandler()
-
-    transaction.commit()
+    this.handleCreateSuccess()
+    // const { pool, relay } = this.props
+    //
+    // const mutation = new CreateBracketMutation({pool})
+    // const transaction = relay.applyUpdate(mutation, {onSuccess: this.handleCreateSuccess})
+    //
+    // this.props.clickHandler && this.props.clickHandler()
+    //
+    // transaction.commit()
   }
 
   shouldComponentUpdate() {
@@ -43,7 +43,7 @@ export default Relay.createContainer(NewBracketButton, {
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {
-        ${CreateBracketMutation.getFragment('pool')}
+        model_id
       }
     `
   }

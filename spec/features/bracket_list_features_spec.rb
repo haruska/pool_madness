@@ -60,20 +60,6 @@ RSpec.describe "Bracket Lists", js: true do
       end
     end
 
-    context "with an incomplete bracket" do
-      let!(:bracket) { create(:bracket, user: user, pool: pool) }
-
-      before do
-        visit "/pools/#{pool.id}"
-      end
-
-      it "indicates the bracket is incomplete" do
-        within(".bracket-#{bracket.id}") do
-          expect(page).to have_selector(".bracket-status span", text: "Incomplete")
-        end
-      end
-    end
-
     context "with an unpaid bracket" do
       let!(:bracket) { create(:bracket, :completed, user: user, pool: pool) }
 

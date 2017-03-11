@@ -4,11 +4,12 @@ FactoryGirl.define do
   factory :bracket do
     user
     pool
+    tie_breaker { Faker::Number.between(100, 200) }
+    tree_decisions 0
+    tree_mask 0b1111111111111111111111111111111111111111111111111111111111111110
 
     trait :completed do
-      tie_breaker { Faker::Number.between(100, 200) }
-
-      before(:create) do |bracket|
+      after(:build) do |bracket|
         bracket.tournament.num_games.times do |i|
           bracket.update_choice(i + 1, [0, 1].sample)
         end
@@ -17,15 +18,7 @@ FactoryGirl.define do
 
     trait :winning do
       tree_decisions { pool.tournament.game_decisions }
-      tree_mask { pool.tournament.game_mask }
-      tie_breaker { Faker::Number.between(100, 200) }
-      payment_state { "paid" }
-
-      after(:build) do |bracket|
-        bracket.pool.tournament.num_games_remaining.times do |i|
-          bracket.update_choice(i + 1, [0, 1].sample)
-        end
-      end
+      payment_state { Bracket.payment_states[:paid] }
 
       after(:create) do |bracket|
         bracket.calculate_points

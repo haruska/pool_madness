@@ -13,22 +13,17 @@ class Bracket < ActiveRecord::Base
 
   before_validation do |bracket|
     bracket.tie_breaker = nil if bracket.tie_breaker.to_i <= 0
-    bracket.name = bracket.default_name if bracket.name.blank?
+    bracket.name = bracket.default_name if bracket.name.blank? && bracket.user.present? && bracket.pool.present?
   end
 
   validates :name, uniqueness: { scope: :pool_id }, presence: true
-  validates :user, presence: true
+  validates :user, :tie_breaker, :pool, :user, presence: true
+  validate :filled_out
 
   enum payment_state: %i(unpaid promised paid)
 
   def status
-    if incomplete?
-      :incomplete
-    elsif unpaid?
-      :unpaid
-    else
-      :ok
-    end
+    unpaid? ? :unpaid : :ok
   end
 
   def only_bracket_for_user?
@@ -93,5 +88,11 @@ class Bracket < ActiveRecord::Base
       game_hash[:choice] = working_tree.at(game_hash[:slot]).decision
     end
     games_hash
+  end
+
+  protected
+
+  def filled_out
+    errors.add(:base, "is not completed") unless tournament.present? && tree.complete?
   end
 end

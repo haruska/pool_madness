@@ -5,7 +5,7 @@ RSpec.describe "Payments", js: true do
   let(:tournament) { create(:tournament, :not_started) }
   let(:pool) { create(:pool, tournament: tournament) }
   let!(:brackets) { create_list(:bracket, 3, :completed, user: user, pool: pool) }
-  let!(:unfinished_bracket) { create(:bracket, user: user, pool: pool) }
+  let!(:paid_bracket) { create(:bracket, :paid, user: user, pool: pool) }
 
   before do
     sign_in user

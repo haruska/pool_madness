@@ -17,6 +17,7 @@ import Profile from 'components/profile/profile'
 import EditProfile from 'components/profile/edit_profile'
 import PoolGames from 'components/pools/games'
 import Bracket from 'components/brackets/bracket'
+import NewBracket from 'components/brackets/new_bracket'
 import EditBracket from 'components/brackets/edit_bracket'
 import BracketLayout from 'components/layout/bracket'
 import Possibilities from 'components/pools/possibilities'
@@ -68,6 +69,7 @@ export default () => {
           <IndexRoute component={Pool} queries={PoolQueries} />
           <Route path="brackets" component={BracketList} queries={PoolViewerQueries}/>
           <Route path="my_brackets" component={UserBracketList} queries={PoolViewerQueries}/>
+          <Route path="new_bracket" component={NewBracket} queries={PoolViewerQueries}/>
           <Route path="rules" component={RulesAndScoring} queries={PoolQueries}/>
           <Route path="payments" component={Payments} queries={PoolQueries}/>
           <Route path="games" component={PoolGames} queries={PoolQueries}/>

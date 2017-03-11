@@ -19,7 +19,21 @@ RSpec.describe Mutations::CreateBracket do
   context "logged in" do
     let(:pool) { create(:pool) }
     let(:pool_graph_id) { GraphqlSchema.id_from_object(pool, nil, nil) }
-    let(:args) { { pool_id: pool_graph_id } }
+    let!(:completed_bracket) { create(:bracket, :completed, pool: pool) }
+    let(:name) { Faker::Lorem.words(2).join(" ") }
+    let(:tie_breaker) { Faker::Number.between(50, 120) }
+    let(:game_decisions) { Array.new(2**pool.tournament.num_rounds) { |i| (completed_bracket.tree_decisions & (1 << i)).zero? ? "0" : "1" }.join("") }
+    let(:game_mask) { Array.new(2**pool.tournament.num_rounds) { |i| (completed_bracket.tree_mask & (1 << i)).zero? ? "0" : "1" }.join("") }
+
+    let(:args) do
+      {
+        pool_id: pool_graph_id,
+        name: name,
+        tie_breaker: tie_breaker,
+        game_decisions: game_decisions,
+        game_mask: game_mask
+      }
+    end
 
     context "user is not a member of the pool" do
       it "raises an auth error" do

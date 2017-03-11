@@ -8,32 +8,43 @@ RSpec.describe Bracket, type: :model do
 
   subject { create(:bracket, pool: pool) }
 
-  it "has a valid factory" do
-    expect(subject).to be_valid
-  end
+  context "validations" do
+    subject { build(:bracket, pool: pool) }
 
-  it { is_expected.to belong_to(:user) }
-  it { is_expected.to belong_to(:payment_collector) }
-
-  it { is_expected.to validate_presence_of(:user) }
-  it { is_expected.to validate_uniqueness_of(:name).scoped_to(:pool_id) }
-
-  context "before validation" do
-    it "resets tie_breaker to nil if it is <= 0" do
-      subject.tie_breaker = 0
+    it "has a valid factory" do
       expect(subject).to be_valid
-      expect(subject.tie_breaker).to be_nil
     end
 
-    it "gives the bracket a default name if the name is blank" do
-      user = create(:user)
-      bracket = build(:bracket, pool: pool, user: user)
+    it { is_expected.to belong_to(:user) }
+    it { is_expected.to belong_to(:payment_collector) }
 
-      expected_name = bracket.default_name
+    it { is_expected.to validate_presence_of(:user) }
+    it { is_expected.to validate_presence_of(:pool) }
+    it { is_expected.to validate_presence_of(:user) }
+    it { is_expected.to validate_presence_of(:tie_breaker) }
 
-      bracket.save!
+    context "when an object is required" do
+      before { subject.save! }
+      it { is_expected.to validate_uniqueness_of(:name).scoped_to(:pool_id) }
+    end
 
-      expect(bracket.name).to eq(expected_name)
+    context "before validation" do
+      it "resets tie_breaker to nil if it is <= 0" do
+        subject.tie_breaker = 0
+        expect(subject).to_not be_valid
+        expect(subject.tie_breaker).to be_nil
+      end
+
+      it "gives the bracket a default name if the name is blank" do
+        user = create(:user)
+        bracket = build(:bracket, pool: pool, user: user)
+
+        expected_name = bracket.default_name
+
+        bracket.save!
+
+        expect(bracket.name).to eq(expected_name)
+      end
     end
   end
 
@@ -86,12 +97,6 @@ RSpec.describe Bracket, type: :model do
   end
 
   context "#status" do
-    context "with an incomplete bracket" do
-      it "is :incomplete" do
-        expect(subject.status).to eq(:incomplete)
-      end
-    end
-
     context "with a complete bracket" do
       subject { create(:bracket, :completed, pool: pool) }
 
@@ -161,7 +166,7 @@ RSpec.describe Bracket, type: :model do
     end
 
     context "when a pick is not made" do
-      subject { create(:bracket, pool: pool) }
+      subject { build(:bracket, tree_mask: 0, pool: pool) }
 
       it "is incomplete" do
         expect(subject).to be_incomplete

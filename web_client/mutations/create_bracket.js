@@ -6,7 +6,8 @@ export default class CreateBracketMutation extends Mutation {
   }
 
   getVariables() {
-    return {pool_id: this.props.pool.id}
+    const { name, tie_breaker, game_decisions, game_mask } = this.props
+    return {pool_id: this.props.pool.id, name, tie_breaker, game_decisions, game_mask}
   }
 
   getFatQuery() {
@@ -29,6 +30,19 @@ export default class CreateBracketMutation extends Mutation {
         rangeBehaviors: {
           '': 'append'
         }
+      },
+      {
+        type: 'REQUIRED_CHILDREN',
+        children: [
+          Relay.QL`
+            fragment on CreateBracketPayload {
+              errors {
+                key
+                messages
+              }
+            }
+          `
+        ]
       }
     ]
   }

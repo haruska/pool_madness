@@ -1,12 +1,3 @@
-def bitstring_to_int(bitstring)
-  memo = 0
-  bitstring.chars.each_with_index do |bit, i|
-    bit = bit.to_i
-    memo |= bit << i unless bit.zero?
-  end
-  memo
-end
-
 module Mutations
   UPDATE_BRACKET_LAMBDA = lambda do |_object, inputs, context|
     user = context[:current_user]
