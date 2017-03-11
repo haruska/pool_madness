@@ -5,24 +5,8 @@ previous_tournament = Tournament.find_by name: previous_tournament_name
 tournament = Tournament.create(
   name: Time.current.year.to_s + name_suffix,
   num_rounds: 6,
-  tip_off: Time.parse("March 17, #{Time.current.year} 16:00 UTC").utc
+  tip_off: Time.parse("March 16, #{Time.current.year} 16:00 UTC").utc
 )
-
-[
-  { name: "FIELD 64", start: "March 17", end: "March 18" },
-  { name: "FIELD 32", start: "March 19", end: "March 20" },
-  { name: "SWEET 16", start: "March 24", end: "March 25" },
-  { name: "ELITE EIGHT", start: "March 26", end: "March 27" },
-  { name: "FINAL FOUR", start: "April 2", end: "April 2" },
-  { name: "CHAMPION", start: "April 4", end: "April 4" }
-].each_with_index do |round, i|
-  tournament.rounds.create(
-    number: i + 1,
-    name: round[:name],
-    start_date: Time.parse("#{round[:start]}, #{Time.current.year} 12:00 UTC").utc,
-    end_date: Time.parse("#{round[:end]}, #{Time.current.year} 12:00 UTC").utc
-  )
-end
 
 team_name_hash = {
   Team::SOUTH => [

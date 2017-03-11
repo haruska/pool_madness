@@ -6,15 +6,6 @@ tournament = Tournament.create(
   num_rounds: 4
 )
 
-sixty_four_tournament.rounds.where("number > ?", 2).order(:number).each_with_index do |sf_round, i|
-  tournament.rounds.create(
-    number: i + 1,
-    name: sf_round.name,
-    start_date: sf_round.start_date,
-    end_date: sf_round.end_date
-  )
-end
-
 sixty_four_tournament.round_for(3).each do |game|
   [game.first_team, game.second_team].each_with_index do |team, i|
     tournament.teams.create(
