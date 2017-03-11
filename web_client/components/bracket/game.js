@@ -17,7 +17,7 @@ class GameSlot extends Component {
     if (team) {
       return <p className={`slot slot${decision} ${pickClass}`.trim()} onClick={this.handleClick}><span className="seed">{team.seed}</span> {team.name}</p>
     }
-    return <p className={`slot slot${decision} ${highlightClass}`.trim()}>&nbsp;</p>
+    return <p className={`slot slot${decision} ${highlightClass}`.trim()}>{highlightEmpty ? <span>&nbsp;</span> : ''}</p>
   }
 }
 

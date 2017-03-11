@@ -98,6 +98,7 @@ class PoolList extends Component {
       return <div className='pool-list'>
         <p className='no-pools'>You are not a member of any tournament pools.</p>
         <div className='actions'>
+          <Link to="/pools/invite_code" className="button">Enter Invite Code</Link>
           {this.poolListButton()}
         </div>
       </div>
