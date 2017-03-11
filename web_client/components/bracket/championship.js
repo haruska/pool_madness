@@ -64,8 +64,10 @@ export default class Championship extends Component {
   }
 
   render() {
+    const { highlightEmpty } = this.props
+    const highlightClass = highlightEmpty && !this.championName() ? 'empty-pick' : ''
     return <div className="championship">
-      <div className={`champion-box ${this.pickLabel()}`.trim()}>{this.championName()}</div>
+      <div className={`champion-box ${this.pickLabel()} ${highlightClass}`.trim()}>{this.championName()}</div>
       <div className="champion-label">CHAMPION</div>
     </div>
   }

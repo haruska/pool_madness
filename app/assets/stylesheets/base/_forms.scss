@@ -71,6 +71,10 @@ input[type="file"] {
   width: 100%;
 }
 
+.input-error {
+  color: red;
+}
+
 select {
   margin-bottom: $base-spacing;
   max-width: 100%;

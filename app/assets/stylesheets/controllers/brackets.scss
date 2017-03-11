@@ -190,248 +190,7 @@
   }
 }
 
-.brackets-controller {
-
-  //admin
-  &.index-action {
-    .tables {
-      min-width: 600px;
-    }
-  }
-
-  &.index-action {
-
-    .large-screen { display: none; }
-    .small-screen { display: block; }
-
-    @include media($large-screen) {
-      .large-screen { display: block; }
-      .small-screen { display: none; }
-    }
-
-    .large-screen {
-      table {
-        font-size: 0.9em;
-        table-layout: auto;
-      }
-
-      h3 {
-        font-size: small;
-        padding-bottom: 25px;
-
-      }
-
-      .actions {
-        padding-top: 25px;
-
-        .payment {
-          display: inline-block;
-          float: right;
-        }
-      }
-
-      .current-user-bracket {
-        background-color: $light-blue;
-      }
-    }
-
-    #content {
-      margin-top: $gutter;
-    }
-
-    .wrapper {
-      margin: 0 !important;
-      min-width: 220px;
-    }
-
-    .small-screen {
-      a {
-        display: block;
-        color: $base-font-color;
-        border-top: 1px solid $medium-gray;
-        &:last-child {
-          border-bottom: 1px solid $medium-gray;
-        }
-      }
-
-      .bracket-attributes {
-        .position {
-          display: inline-block;
-          margin: 0 $gutter/2;
-          vertical-align: top;
-        }
-
-        .bracket-details {
-          display: inline-block;
-          width: calc(100% - 65px);
-        }
-      }
-
-      .bracket-list-header {
-        display: none;
-      }
-
-      .bracket-row {
-        margin: ($gutter/2) 0;
-
-        .name {
-          font-weight: bold;
-        }
-
-        .points {
-          display: block;
-          font-size: 0.9em;
-
-          div {
-            display: inline-block;
-          }
-
-          .total::after {
-            content: " points /";
-          }
-
-          .possible::after {
-            content: " possible";
-          }
-
-        }
-
-        .best-possible {
-          font-size: 0.9em;
-        }
-
-        .final-four-teams {
-          display: block;
-
-          .final-four-team {
-            display: inline-block;
-            font-size: 0.9em;
-            white-space: nowrap;
-
-            &:empty {
-              display: none;
-            }
-
-            &:after {
-              content: ", ";
-              margin-left: -4px;
-            }
-
-            &:last-of-type {
-              &:after {
-                display: none;
-              }
-            }
-          }
-        }
-
-        .bracket-details {
-          position: relative;
-        }
-
-        .tie-breaker {
-          font-size: 0.9em;
-          &:before {
-            content: "Tie Breaker: ";
-          }
-
-          &:empty {
-            display: none;
-          }
-        }
-
-        .status {
-          position: absolute;
-          top: 0px;
-          right: 0px;
-        }
-      }
-
-    }
-
-    .current-user-bracket {
-      background-color: $light-blue;
-    }
-
-    button.stripe-button-el {
-      @include appearance(none);
-      -webkit-font-smoothing: antialiased;
-      background-color: $action-color;
-      border-radius: $base-border-radius;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      display: inline-block;
-      padding: 0.75em 1em !important;
-      text-decoration: none;
-      user-select: none;
-      vertical-align: middle;
-      white-space: nowrap;
-
-      //mobile
-      width: 100%;
-      max-width: 350px;
-      text-align: center;
-
-      span {
-        display: inline !important;
-        min-height: auto !important;
-        font-size: $base-font-size;
-        font-weight: 600;
-        line-height: 1;
-        background-color: transparent !important;
-        background-image: none !important;
-        box-shadow: none !important;
-      }
-
-      &:hover,
-      &:focus {
-        background-color: darken($action-color, 15%);
-        color: #fff;
-      }
-    }
-
-    .actions {
-      margin: 0 25px;
-    }
-  }
-
-  &.edit-action {
-    .wrapper {
-      margin: 0 !important;
-    }
-
-    .slot {
-      cursor: pointer;
-      &:hover { background-color: #D6F5FF; }
-    }
-
-    .tie-breaker { display: none; }
-    .champion-box .seed { display: none; }
-
-    .actions {
-      margin: {
-        top: -50px;
-        bottom: 20px;
-        left: auto;
-        right: auto;
-      }
-
-      .button, input[type='submit'] {
-        margin-top: $gutter;
-        width: 48% !important;
-      }
-
-      width: 300px;
-
-      label {
-        text-align: left;
-      }
-    }
-  }
-}
-
-.bracket-details, .bracket-edit {
+.bracket-details, .bracket-edit, .bracket-new {
     padding-top: $gutter * 2;
 
     .eliminated {
@@ -451,7 +210,7 @@
     }
 }
 
-.bracket-edit {
+.bracket-edit, .bracket-new {
   .slot {
     cursor: pointer;
     &:hover { background-color: #D6F5FF; }
@@ -472,5 +231,11 @@
 
   .button {
     width: 142px;
+  }
+}
+
+.bracket-new {
+  .empty-pick {
+    background-color: #fbe3e4;
   }
 }

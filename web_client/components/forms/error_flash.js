@@ -3,11 +3,13 @@ import React, { Component, PropTypes } from 'react'
 export default class ErrorFlash extends Component {
   static propTypes = {
     errors: PropTypes.any,
-    message: PropTypes.string
+    message: PropTypes.string,
+    objectType: PropTypes.string
   }
 
   static defaultProps = {
-    message: 'There was an issue. See below.'
+    message: 'There was an issue. See below.',
+    objectType: 'Below'
   }
 
   state = {
@@ -49,11 +51,20 @@ export default class ErrorFlash extends Component {
     clearTimeout(this.timer)
   }
 
-  render () {
-    const { message } = this.props
+  message = () => {
+    const { errors, message } = this.props
+    if (errors) {
+      const baseError = errors.find(error => error.key == 'base')
+      if (baseError) {
+        return `${this.props.objectType} ${baseError.messages[0]}`
+      }
+    }
+    return message
+  }
 
+  render () {
     if (this.state.visible) {
-      return <div className='flash-error'>{message}</div>
+      return <div className='flash-error'>{this.message()}</div>
     }
 
     return null

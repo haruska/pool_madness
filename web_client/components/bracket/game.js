@@ -11,11 +11,13 @@ class GameSlot extends Component {
   }
 
   render() {
-    const { team, decision, pickClass } = this.props
+    const { team, decision, pickClass, highlightEmpty } = this.props
+    const highlightClass = highlightEmpty ? 'empty-pick' : ''
+
     if (team) {
       return <p className={`slot slot${decision} ${pickClass}`.trim()} onClick={this.handleClick}><span className="seed">{team.seed}</span> {team.name}</p>
     }
-    return <p className={`slot slot${decision}`}/>
+    return <p className={`slot slot${decision} ${highlightClass}`.trim()}>&nbsp;</p>
   }
 }
 
@@ -81,7 +83,16 @@ export default class Game extends Component {
       }
     }
 
-    return <GameSlot gameSlot={game.slot} decision={slot} team={team} pickClass={pickClass} onSlotClick={this.props.onSlotClick} />
+    return (
+      <GameSlot
+        gameSlot={game.slot}
+        decision={slot}
+        team={team}
+        pickClass={pickClass}
+        highlightEmpty={this.props.highlightEmpty}
+        onSlotClick={this.props.onSlotClick}
+      />
+    )
   }
 
   render() {

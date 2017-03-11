@@ -18,7 +18,7 @@ class NewBracket extends Component {
     super(props)
 
     this.state = {
-      name: props.viewer.current_user.name,
+      name: '',
       decisions: props.pool.tournament.game_decisions,
       mask: props.pool.tournament.game_mask,
       tie_breaker: '',
@@ -70,9 +70,7 @@ class NewBracket extends Component {
     console.log(error.getError().toString()) // eslint-disable-line
   }
 
-  handleDone = (event) => {
-    event.preventDefault()
-
+  commitMutation = () => {
     const {pool, relay} = this.props
     const {name, tie_breaker, decisions, mask} = this.state
 
@@ -88,6 +86,27 @@ class NewBracket extends Component {
       onSuccess: this.handleSuccess,
       onFailure: this.handleFailure
     })
+  }
+
+  isFilledIn = () => {
+    const maskValues = new Set(this.state.mask.slice(1).split(''))
+    return maskValues.size === 1 && maskValues.has('1')
+  }
+
+  highlightMissingPicks = () => {
+
+  }
+
+  handleDone = (event) => {
+    event.preventDefault()
+
+    if (this.isFilledIn()) {
+      this.commitMutation()
+    }
+    else {
+      this.highlightMissingPicks()
+      this.setState({errors: [{key: 'base', messages: ['is not complete']}]})
+    }
   }
 
   // cancel
@@ -116,7 +135,7 @@ class NewBracket extends Component {
       game_mask: mask
     }
 
-    return <div className="bracket-edit">
+    return <div className="bracket-new">
       <Dialog
         className='deletion'
         isOpen={this.state.showsDiscardDialog}
@@ -125,17 +144,17 @@ class NewBracket extends Component {
         onCancel={this.handleCancelDiscard}
       />
       <h2>New Bracket Entry</h2>
-      <Tournament tournament={tournament} bracket={bracket} onSlotClick={this.handleSlotClick}/>
+      <ErrorFlash errors={errors} objectType={"Bracket"} />
+      <Tournament tournament={tournament} bracket={bracket} onSlotClick={this.handleSlotClick} highlightEmpty={!!this.state.errors}/>
       <form className="edit-bracket-form" onSubmit={this.handleDone}>
-        <ErrorFlash errors={errors} />
         <Label attr="name" text="Bracket Name" errors={errors} />
         <input id="name" type="text" name="name" required value={this.state.name} onChange={this.handleNameChange} />
 
         <Label attr="tie_breaker" text="Tie Breaker" errors={errors} />
         <input id="tie_breaker" name="tie_breaker" required placeholder="Final Score of Championship Game Added Together (ex: 147)" type="number" value={this.state.tie_breaker} onChange={this.handleTieBreakerChange} />
 
-        <input className="button" type="submit" name="commit" value="Done" />
-        <div className="button danger" onClick={this.handleDiscard}>Discard Bracket</div>
+        <input className="button" type="submit" name="commit" value="Create" />
+        <div className="button danger" onClick={this.handleDiscard}>Discard</div>
       </form>
     </div>
   }
