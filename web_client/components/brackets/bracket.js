@@ -35,7 +35,7 @@ class Bracket extends Component {
     const pool = bracket.pool
     const tournament = pool.tournament
 
-    return <div className="bracket-details">
+    return <div className="bracket-show">
       <h2>{this.title()}</h2>
       <BracketActions bracket={bracket}/>
       <Tournament tournament={tournament} bracket={bracket}/>

@@ -190,7 +190,7 @@
   }
 }
 
-.bracket-details, .bracket-edit, .bracket-new {
+.bracket-show, .bracket-edit, .bracket-new {
     padding-top: $gutter * 2;
 
     .eliminated {
@@ -242,7 +242,7 @@
   }
 }
 
-.bracket-details {
+.bracket-show {
     .bracket-actions {
       .button {
         width: inherit;
