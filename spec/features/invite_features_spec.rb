@@ -15,12 +15,12 @@ RSpec.describe "Using invite codes", js: true do
       fill_in "user_password", with: password
       fill_in "user_password_confirmation", with: password
       click_button "Sign Up"
+      expect(page).to have_text(/any tournament pools/i)
     end
 
     context "with a valid invite code" do
       it "joins the user to the pool and shows a list of pools" do
-        find(".fa-bars").click
-        click_link "Enter Invite Code"
+        first("a.button").click
         fill_in "invite_code", with: pool.invite_code
         click_button "Join Pool"
         expect(page).to have_css(".name", text: pool.name)
@@ -29,8 +29,7 @@ RSpec.describe "Using invite codes", js: true do
 
     context "with an invalid invite code" do
       it "shows an error" do
-        find(".fa-bars").click
-        click_link "Enter Invite Code"
+        first("a.button").click
         fill_in "invite_code", with: "invalidcode"
         click_button "Join Pool"
         # expect(page).to have_text(/Invalid code entered/i)

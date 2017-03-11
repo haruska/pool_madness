@@ -44,7 +44,7 @@ RSpec.describe "Editing a Bracket", js: true do
     fill_in("tie_breaker", with: "100")
 
     click_button "Done"
-    expect(find(".bracket-details h2").text).to eq(bracket.name)
+    expect(find(".bracket-show h2").text).to eq(bracket.name)
 
     expect(first(".round2 .match.m1 .slot1").text).to eq(first(".round1 .match.m1 .slot1").text)
     expect(first(".round3 .match.m1 .slot1").text).to eq(first(".round1 .match.m1 .slot1").text)

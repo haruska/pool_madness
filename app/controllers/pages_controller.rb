@@ -12,12 +12,12 @@ class PagesController < ApplicationController
     query_variables = params[:variables]
 
     result = GraphqlSchema.execute(
-        query_string,
+      query_string,
         variables: query_variables,
         context: {
-            current_user: current_user,
-            current_ability: current_ability,
-            optics_agent: env[:optics_agent].with_document(query_string)
+          current_user: current_user,
+          current_ability: current_ability,
+          optics_agent: env[:optics_agent].with_document(query_string)
         }
     )
 
@@ -27,7 +27,7 @@ class PagesController < ApplicationController
   if Rails.env.development?
     def authed_graphql
       render json: GraphqlSchema.execute(
-          params[:query],
+        params[:query],
           variables: params[:variables],
           context: { current_user: current_user || User.last }
       )
