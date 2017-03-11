@@ -10,7 +10,7 @@ class BracketActions extends Component {
     const bracket = this.props.bracket
     if (bracket.editable) {
       return <div className="bracket-actions">
-        <Link to={`/brackets/${bracket.model_id}/edit`}>Edit Bracket</Link>
+        <Link to={`/brackets/${bracket.model_id}/edit`} className="button">Edit Bracket</Link>
       </div>
     }
     return null
@@ -36,10 +36,12 @@ class Bracket extends Component {
     const tournament = pool.tournament
 
     return <div className="bracket-details">
-      <h2>{this.title()}</h2>
-      <BracketActions bracket={bracket}/>
-      <Tournament tournament={tournament} bracket={bracket}/>
-    </div>
+        <h2>{this.title()}</h2>
+        <BracketActions bracket={bracket}/>
+        <Tournament tournament={tournament} bracket={bracket}/>
+      </div>
+
+
   }
 }
 

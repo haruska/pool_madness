@@ -37,18 +37,6 @@ class Bracket extends Component {
     this.context.setPageTitle()
   }
 
-  title = () => {
-    const { bracket } = this.props
-    const { owner } = bracket
-
-    if (bracket.name.startsWith(owner.name)) {
-      return `${bracket.name} Bracket`
-    }
-    else {
-      return `${bracket.name} (${owner.name}) Bracket`
-    }
-  }
-
   handleSlotClick = (slotId, choice) => {
     let bracket = cloneDeep(this.state.bracket)
     let gameDecisions = bracket.game_decisions.split('')
@@ -153,7 +141,7 @@ class Bracket extends Component {
         onConfirm={this.handleConfirmDeletion}
         onCancel={this.handleCancelDeletion}
       />
-      <h2>{this.title()}</h2>
+      <h2 className="edit-title">Editing Bracket</h2>
       <Tournament tournament={tournament} bracket={bracket} onSlotClick={this.handleSlotClick}/>
       <form className="edit-bracket-form" onSubmit={this.handleDone}>
         <ErrorFlash errors={errors} />
