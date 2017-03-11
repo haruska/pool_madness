@@ -18,7 +18,7 @@ class Tournament < ActiveRecord::Base
   end
 
   def start_eliminating?
-    num_games_remaining < 16
+    num_games_remaining < 16 && num_games_remaining > 0
   end
 
   delegate :championship, to: :tree

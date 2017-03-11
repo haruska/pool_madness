@@ -14,13 +14,13 @@ class Pool extends Component {
     const { pool } = this.props
 
     if(pool.possibilities) {
-      this.context.router.push(`/pools/${pool.model_id}/possibilities`)
+      this.context.router.replace(`/pools/${pool.model_id}/possibilities`)
     }
     else if(pool.started) {
-      this.context.router.push(`/pools/${pool.model_id}/brackets`)
+      this.context.router.replace(`/pools/${pool.model_id}/brackets`)
     }
     else {
-      this.context.router.push(`/pools/${pool.model_id}/my_brackets`)
+      this.context.router.replace(`/pools/${pool.model_id}/my_brackets`)
     }
   }
 
