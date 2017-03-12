@@ -11,6 +11,10 @@ class Bracket < ActiveRecord::Base
 
   after_create :create_bracket_point
 
+  after_save do |bracket|
+    BracketScoreJob.perform_later(bracket.id)
+  end
+
   before_validation do |bracket|
     bracket.tie_breaker = nil if bracket.tie_breaker.to_i <= 0
     bracket.name = bracket.default_name if bracket.name.blank? && bracket.user.present? && bracket.pool.present?
