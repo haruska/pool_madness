@@ -4,7 +4,7 @@ class Team < ActiveRecord::Base
   EAST = "East".freeze
   MIDWEST = "Midwest".freeze
 
-  REGIONS = [SOUTH, WEST, EAST, MIDWEST].freeze
+  REGIONS = [EAST, WEST, MIDWEST, SOUTH].freeze
 
   belongs_to :tournament
 
