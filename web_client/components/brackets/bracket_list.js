@@ -18,6 +18,10 @@ class BracketList extends Component {
     this.context.setPageTitle()
   }
 
+  componentDidMount() {
+    this.props.relay.forceFetch()
+  }
+
   brackets = () => {
     return this.props.pool.brackets.edges.map(edge => edge.node)
   }

@@ -53,11 +53,14 @@ class Bracket < ActiveRecord::Base
   end
 
   def sorted_four
-    working_tree = tree
-    slot_count = 2**3 - 1
-    values = (1..slot_count).map { |slot| working_tree.at(slot).value }.uniq.compact
+    cache_key = "bracket-#{id}-sortedfour-#{updated_at.to_i}"
+    Rails.cache.fetch(cache_key) do
+      working_tree = tree
+      slot_count = 2**3 - 1
+      values = (1..slot_count).map { |slot| working_tree.at(slot).value }.uniq.compact
 
-    tournament.teams.where(starting_slot: values).sort_by { |x| values.index(x.starting_slot) * -1 }
+      tournament.teams.where(starting_slot: values).sort_by { |x| values.index(x.starting_slot) * -1 }
+    end
   end
 
   def tree
