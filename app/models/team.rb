@@ -1,8 +1,8 @@
 class Team < ActiveRecord::Base
-  SOUTH = "South".freeze
-  WEST = "West".freeze
   EAST = "East".freeze
+  WEST = "West".freeze
   MIDWEST = "Midwest".freeze
+  SOUTH = "South".freeze
 
   REGIONS = [EAST, WEST, MIDWEST, SOUTH].freeze
 
@@ -10,7 +10,7 @@ class Team < ActiveRecord::Base
 
   validates :name, uniqueness: { scope: :tournament_id }, length: { maximum: 15 }
 
-  validates :region, inclusion: { in: [SOUTH, WEST, EAST, MIDWEST] }
+  validates :region, inclusion: { in: REGIONS }
 
   validates :seed,
             numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 16 },

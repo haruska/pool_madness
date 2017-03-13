@@ -8,77 +8,77 @@ FactoryGirl.define do
 
     after(:create) do |tournament|
       {
-        Team::MIDWEST => [
-          "Wichita St",
-          "Michigan",
+        Team::EAST => [
+          "Villanova",
           "Duke",
-          "Louisville",
-          "St Louis",
-          "UMass",
-          "Texas",
-          "Kentucky",
-          "Kansas St",
-          "Arizona St",
-          "Play-In MW11",
-          "Play-In MW12",
-          "Manhattan",
-          "Mercer",
-          "Wofford",
-          "Play-In MW16"
+          "Baylor",
+          "Florida",
+          "Virginia",
+          "SMU",
+          "S Carolina",
+          "Wisconsin",
+          "Va Tech",
+          "Marquette",
+          "PlayIn E11",
+          "UNC-Wilm",
+          "ETSU",
+          "New Mex St",
+          "Troy",
+          "PlayIn E16"
         ],
         Team::WEST => [
-          "Arizona",
-          "Wisconsin",
-          "Creighton",
-          "San Diego St",
-          "Oklahoma",
-          "Baylor",
-          "Oregon",
           "Gonzaga",
+          "Arizona",
+          "Florida St",
+          "W Virginia",
+          "Notre Dame",
+          "Maryland",
+          "St Mary's",
+          "NWestern",
+          "Vanderbilt",
+          "VCU",
+          "Xavier",
+          "Princeton",
+          "Bucknell",
+          "FGCU",
+          "N Dakota",
+          "S Dak St"
+        ],
+        Team::MIDWEST => [
+          "Kansas",
+          "Louisville",
+          "Oregon",
+          "Purdue",
+          "Iowa St",
+          "Creighton",
+          "Michigan",
+          "Miami",
+          "Michigan St",
           "Oklahoma St",
-          "BYU",
-          "Nebraska",
-          "N Dakota St",
-          "New Mex St",
-          "UL-Lafayette",
-          "American",
-          "Weber St"
+          "Rhode Island",
+          "Nevada",
+          "Vermont",
+          "Iona",
+          "Jax St",
+          "PlayIn MW16"
         ],
         Team::SOUTH => [
-          "Florida",
-          "Kansas",
-          "Syracuse",
-          "UCLA",
-          "VCU",
-          "Ohio St",
-          "New Mexico",
-          "Colorado",
-          "Pittsburgh",
-          "Stanford",
-          "Dayton",
-          "SF Austin",
-          "Tulsa",
-          "W Michigan",
-          "E Kentucky",
-          "Play-In S16"
-        ],
-        Team::EAST => [
-          "Virginia",
-          "Villanova",
-          "Iowa St",
-          "Michigan St",
-          "Cincinnati",
           "N Carolina",
-          "Connecticut",
-          "Memphis",
-          "George Wash",
-          "St Joes",
-          "Providence",
-          "Harvard",
-          "Delaware",
-          "NC Central",
-          "UW Milwaukee",
-          "Coast Car"
+          "Kentucky",
+          "UCLA",
+          "Butler",
+          "Minnesota",
+          "Cincinnati",
+          "Dayton",
+          "Arkansas",
+          "Seton Hall",
+          "Wichita St",
+          "PlayIn S11",
+          "Middle Tenn",
+          "Winthrop",
+          "Kent St",
+          "N Kentucky",
+          "Texas So"
         ]
       }.each do |region, team_names|
         team_names.each_with_index do |name, i|
@@ -89,7 +89,7 @@ FactoryGirl.define do
       team_slot = tournament.teams.count
 
       sort_order = [1, 16, 8, 9, 5, 12, 4, 13, 6, 11, 3, 14, 7, 10, 2, 15]
-      %w(South East West Midwest).each do |region|
+      Team::REGIONS.each do |region|
         sort_order.each_slice(2) do |i, j|
           team_one = tournament.teams.find_by(region: region, seed: i)
           team_two = tournament.teams.find_by(region: region, seed: j)
