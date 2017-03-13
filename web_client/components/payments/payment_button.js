@@ -9,7 +9,7 @@ class PaymentButton extends Component {
 
   onScriptLoaded = () => {
     let handler = StripeCheckout.configure({
-      key: 'pk_test_fQOiDeixudLD4YxlJa0jXxYh',
+      key: 'pk_live_zkts04HcHkzLExcpUgG41Huk',
       image: '/favicon.png',
       locale: 'auto',
       token: this.handleStripeToken
