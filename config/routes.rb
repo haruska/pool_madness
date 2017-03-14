@@ -5,7 +5,7 @@ PoolMadness::Application.routes.draw do
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
   end
 
-  devise_for :users, path: "auth", path_names: { sign_in: "login", sign_up: "signup" }
+  devise_for :users, path: "auth", remember_for: 2.months, path_names: { sign_in: "login", sign_up: "signup" }
 
   authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => "/sidekiq"
