@@ -5,8 +5,8 @@
   .form-inputs
     = f.text_field :name, required: true, placeholder: "Full Name"
     = f.email_field :email, required: true, placeholder: "Email"
-    = f.password_field :password, required: true, placeholder: "Password", pattern: (".{#{@minimum_password_length},}" if @minimum_password_length)
-    = f.password_field :password_confirmation, required: true, placeholder: "Password Confirmation", pattern: (".{#{@minimum_password_length},}" if @minimum_password_length)
+    = f.password_field :password, required: true, placeholder: "Password"
+    = f.password_field :password_confirmation, required: true, placeholder: "Password Confirmation"
   .form-actions
     = f.submit "Sign Up"
 = render "devise/shared/links"
