@@ -3,7 +3,7 @@ var path = require('path')
 
 module.exports = {
   devtool: "source-map",
-  entry: "./web_client/main.js",
+  entry: ["babel-polyfill", "./web_client/main.js"],
   output: {
     path: "./app/assets/javascripts/build",
     filename: "bundle.js"
