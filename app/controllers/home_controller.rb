@@ -1,8 +1,6 @@
 class HomeController < ApplicationController
   before_action :check_authentication, only: :index
 
-  caches_action :index
-
   def index
   end
 
