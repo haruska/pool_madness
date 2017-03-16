@@ -9,7 +9,8 @@ import NewBracketButton from './user_bracket_list/new_bracket_button'
 
 class UserBracketList extends Component {
   static contextTypes = {
-    setPageTitle: React.PropTypes.func.isRequired
+    setPageTitle: React.PropTypes.func.isRequired,
+    router: React.PropTypes.object.isRequired
   }
 
   state = {
@@ -18,6 +19,11 @@ class UserBracketList extends Component {
 
   componentWillMount() {
     this.context.setPageTitle("My Brackets")
+
+    const { started, model_id } = this.props.pool
+    if (started) {
+      this.context.router.replace(`/pools/${model_id}/brackets`)
+    }
   }
 
   componentWillUnmount() {
@@ -70,6 +76,7 @@ export default Relay.createContainer(UserBracketList, {
     pool: () => Relay.QL`
       fragment on Pool {
         model_id
+        started
         entry_fee
         brackets(first: 1000) {
           edges {
