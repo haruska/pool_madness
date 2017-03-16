@@ -6,6 +6,10 @@ import RoundsBanner from 'components/bracket/rounds_banner'
 import TieBreaker from 'components/bracket/tie_breaker'
 
 class Tournament extends Component {
+  componentDidMount() {
+    this.props.relay.forceFetch()
+  }
+
   render() {
     const { tournament, bracket, onSlotClick, editing, highlightEmpty } = this.props
     const { rounds } = tournament
