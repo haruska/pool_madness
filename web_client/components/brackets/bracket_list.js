@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Relay from 'react-relay'
-
+import moment from 'moment'
 import TableHeader from './bracket_list/table_header'
 import BracketRow from './bracket_list/bracket_row'
 import SmallBracket from './bracket_list/small_bracket'
@@ -9,6 +9,12 @@ class BracketList extends Component {
   static contextTypes = {
     setPageTitle: React.PropTypes.func.isRequired
   }
+
+  constructor(props) {
+    super(props)
+    this.state = {lastUpdate: null}
+  }
+
 
   componentWillMount() {
     this.context.setPageTitle(`Brackets (${this.brackets().length} total)`)
@@ -19,7 +25,19 @@ class BracketList extends Component {
   }
 
   componentDidMount() {
-    this.props.relay.forceFetch()
+    this.updateData()
+  }
+
+  updateData = () => {
+    const { lastUpdate } = this.state
+    if (!lastUpdate || moment().subtract(10, 'seconds').isAfter(lastUpdate)) {
+      this.props.relay.forceFetch()
+      this.setState({lastUpdate: moment()})
+    }
+  }
+
+  handleRefresh = () => {
+    this.updateData()
   }
 
   brackets = () => {
@@ -35,7 +53,16 @@ class BracketList extends Component {
     const brackets = this.brackets()
 
     return <div className='bracket-list'>
+      <div className='refresh-wrapper'>
+        <div className='refresh-time'>
+          Last updated {this.state.lastUpdate && this.state.lastUpdate.format('h:mm a')}
+        </div>
+        <div className='refresh-link'>
+          [<a onClick={this.handleRefresh}>Refresh</a>]
+        </div>
+      </div>
       <div className='large-screen'>
+
         <table className='tables'>
           <TableHeader showEliminated={this.showEliminated()}/>
           <tbody>

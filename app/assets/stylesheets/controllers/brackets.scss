@@ -2,12 +2,25 @@
   padding-top: $gutter;
   min-width: 220px;
 
+
+  .refresh-wrapper {
+    width: 100%;
+    text-align: center;
+    div {
+      display: inline-block;
+    }
+    .refresh-link {
+      padding-left: 5px;
+    }
+  }
+
   .large-screen { display: none; }
   .small-screen { display: block; }
 
   @include media($large-screen) {
     .large-screen { display: block; }
     .small-screen { display: none; }
+    .refresh-wrapper { text-align: right; }
   }
 
   .large-screen {
@@ -34,6 +47,7 @@
     .current-user-bracket {
       background-color: $light-blue;
     }
+
   }
 
   .small-screen {
