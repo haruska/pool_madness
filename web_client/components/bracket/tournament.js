@@ -1,13 +1,35 @@
 import React, { Component } from 'react'
 import Relay from 'react-relay'
+import moment from 'moment'
+
 import Round from 'components/bracket/round'
 import Championship from 'components/bracket/championship'
 import RoundsBanner from 'components/bracket/rounds_banner'
 import TieBreaker from 'components/bracket/tie_breaker'
 
 class Tournament extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      lastUpdate: null
+    }
+  }
+
   componentDidMount() {
-    this.props.relay.forceFetch()
+    this.updateData()
+  }
+
+  updateData = () => {
+    const {lastUpdate} = this.state
+    if (lastUpdate) {
+      if (moment().subtract(10, 'seconds').isAfter(lastUpdate)) {
+        this.props.relay.forceFetch()
+        this.setState({lastUpdate: moment()})
+      }
+    }
+    else {
+      this.setState({lastUpdate: moment()})
+    }
   }
 
   render() {

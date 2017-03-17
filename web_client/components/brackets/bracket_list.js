@@ -29,9 +29,14 @@ class BracketList extends Component {
   }
 
   updateData = () => {
-    const { lastUpdate } = this.state
-    if (!lastUpdate || moment().subtract(10, 'seconds').isAfter(lastUpdate)) {
-      this.props.relay.forceFetch()
+    const {lastUpdate} = this.state
+    if (lastUpdate) {
+      if (moment().subtract(10, 'seconds').isAfter(lastUpdate)) {
+        this.props.relay.forceFetch()
+        this.setState({lastUpdate: moment()})
+      }
+    }
+    else {
       this.setState({lastUpdate: moment()})
     }
   }
