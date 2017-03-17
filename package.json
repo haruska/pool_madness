@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "postinstall": "./node_modules/.bin/webpack"
+    "postinstall": "if [ \"$NODE_ENV\" = 'production' ]; then ./node_modules/.bin/webpack -p; else ./node_modules/.bin/webpack; fi"
   },
   "engines": {
     "node": "6.5.0",
