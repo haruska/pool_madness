@@ -51,6 +51,12 @@
       background-color: $light-blue;
     }
 
+    td.name {
+      width: 210px;
+    }
+    td.position {
+      width: 70px;
+    }
   }
 
   .small-screen {

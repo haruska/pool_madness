@@ -37,6 +37,7 @@ class BracketList extends Component {
       }
     }
     else {
+      this.props.relay.setVariables({bracketSize: 1000})
       this.setState({lastUpdate: moment()})
     }
   }
@@ -100,11 +101,12 @@ class BracketList extends Component {
 }
 
 export default Relay.createContainer(BracketList, {
+  initialVariables: {bracketSize: 30},
   fragments: {
     pool: () => Relay.QL`
       fragment on Pool {
         display_best
-        brackets(first: 1000) {
+        brackets(first: $bracketSize) {
           edges {
             node {
               id
