@@ -30,13 +30,11 @@ class Pool < ActiveRecord::Base
     start_eliminating? && bracket_points.minimum(:best_possible).zero?
   end
 
-  private
-
   def set_invite_code
-    self.invite_code = generate_unique_code if invite_code.blank?
+    self.invite_code = Pool.generate_unique_code if invite_code.blank?
   end
 
-  def generate_unique_code
+  def self.generate_unique_code
     code = nil
 
     loop do

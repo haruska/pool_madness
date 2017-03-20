@@ -19,7 +19,9 @@ sixty_four_tournament.round_for(3).each do |game|
 end
 
 sixty_four_tournament.pools.each do |previous_pool|
-  pool = tournament.pools.create(name: previous_pool.name + " Sweet 16")
+  invite_code = previous_pool.invite_code
+  previous_pool.update!(invite_code: Pool.generate_unique_code)
+  pool = tournament.pools.create(name: previous_pool.name + " Sweet 16", invite_code: invite_code)
 
   previous_pool.pool_users.each do |pool_user|
     pool.pool_users.create(user_id: pool_user.user_id, role: pool_user.role)
