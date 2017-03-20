@@ -36,6 +36,11 @@ module Queries
       resolve POOL_POSSIBILITIES_LAMBDA
     end
 
+    field :bracket_count do
+      type !types.Int
+      resolve ->(pool, _args, _context) { pool.brackets.count }
+    end
+
     connection :brackets, -> { BracketType.connection_type } do
       resolve POOL_BRACKETS_LAMBDA
     end

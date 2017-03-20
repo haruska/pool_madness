@@ -15,29 +15,29 @@ class BracketList extends Component {
     this.state = {lastUpdate: null}
   }
 
-
-  componentWillMount() {
-    this.context.setPageTitle(`Brackets (${this.brackets().length} total)`)
-  }
-
   componentWillUnmount() {
     this.context.setPageTitle()
   }
 
+  componentWillMount() {
+    this.context.setPageTitle(`Brackets (${this.props.pool.bracket_count} total)`)
+  }
   componentDidMount() {
     this.updateData()
   }
 
   updateData = () => {
     const {lastUpdate} = this.state
+    const {relay, pool} = this.props
+
     if (lastUpdate) {
       if (moment().subtract(10, 'seconds').isAfter(lastUpdate)) {
-        this.props.relay.forceFetch()
+        relay.forceFetch()
         this.setState({lastUpdate: moment()})
       }
     }
     else {
-      this.props.relay.setVariables({bracketSize: 1000})
+      relay.setVariables({bracketSize: pool.bracket_count})
       this.setState({lastUpdate: moment()})
     }
   }
@@ -106,6 +106,7 @@ export default Relay.createContainer(BracketList, {
     pool: () => Relay.QL`
       fragment on Pool {
         display_best
+        bracket_count
         brackets(first: $bracketSize) {
           edges {
             node {
