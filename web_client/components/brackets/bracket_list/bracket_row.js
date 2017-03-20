@@ -9,6 +9,22 @@ class BestPossible extends Component {
 }
 
 export default class BracketRow extends Component {
+  truncatedBracketName = (maxSize) => {
+    maxSize = maxSize || 25
+    const bracketName = this.props.bracket.name
+
+    if (bracketName.length < maxSize) {
+      return bracketName
+    }
+
+    const subString = bracketName.substr(0, maxSize-1)
+    const onWordBoundry = subString.substr(0, subString.lastIndexOf(' '))
+
+    const truncatedName = onWordBoundry === '' ? subString : onWordBoundry
+
+    return truncatedName + '...'
+  }
+
   render() {
     const { bracket, index, showEliminated, viewer } = this.props
     const { current_user } = viewer
@@ -27,7 +43,7 @@ export default class BracketRow extends Component {
 
     return <tr className={rowClass}>
       <td className="position">{place}</td>
-      <td className="name"><Link to={bracketPath}>{bracket.name}</Link></td>
+      <td className="name"><Link to={bracketPath}>{this.truncatedBracketName()}</Link></td>
       <td className="points">{bracket.points}</td>
       <td className="possible">{bracket.possible_points}</td>
       <BestPossible {...this.props}/>
