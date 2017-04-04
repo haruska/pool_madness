@@ -26,17 +26,20 @@ export default class BracketRow extends Component {
   }
 
   render() {
-    const { bracket, index, showEliminated, viewer } = this.props
+    const { bracket, index, showEliminated, viewer, tied } = this.props
     const { current_user } = viewer
     const finalFourTeams = bracket.final_four
     const bracketPath = `/brackets/${bracket.model_id}`
 
-    var place = `${index}.`
+    let place = `${index}.`
+    if (tied) {
+      place = `T${place}`
+    }
     if (showEliminated && bracket.eliminated) {
       place = `* ${place}`
     }
 
-    var rowClass = `bracket-row bracket-${bracket.model_id}`
+    let rowClass = `bracket-row bracket-${bracket.model_id}`
     if (bracket.owner.model_id == current_user.model_id) {
       rowClass += " current-user-bracket"
     }

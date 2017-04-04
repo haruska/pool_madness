@@ -50,13 +50,31 @@ class BracketList extends Component {
     return this.props.pool.brackets.edges.map(edge => edge.node)
   }
 
+  bracketsWithPlace = () => {
+    let brackets = this.brackets()
+    let placeBrackets = {}
+
+    let currentPlace = 1
+    brackets.forEach((b, i) => {
+      if(i != 0 && b.points != brackets[i-1].points) {
+        currentPlace = i+1
+      }
+      placeBrackets[currentPlace] = placeBrackets[currentPlace] || []
+      placeBrackets[currentPlace].push(b)
+    })
+
+    return placeBrackets
+  }
+
   showEliminated = () => {
     return this.props.pool.display_best
   }
 
+
+
   render() {
     const { viewer } = this.props
-    const brackets = this.brackets()
+    const bracketsWithPlace = this.bracketsWithPlace()
 
     return <div className='bracket-list'>
       <div className='refresh-wrapper'>
@@ -72,29 +90,39 @@ class BracketList extends Component {
         <table className='tables'>
           <TableHeader showEliminated={this.showEliminated()}/>
           <tbody>
-            {brackets.map((bracket, i) =>
-              <BracketRow
-                key={bracket.id}
-                index={i+1}
-                bracket={bracket}
-                showEliminated={this.showEliminated()}
-                viewer={viewer}
-              />
-            )}
+          {
+            Object.keys(bracketsWithPlace).map(place =>
+              bracketsWithPlace[place].map(bracket =>
+                <BracketRow
+                  key={bracket.id}
+                  index={place}
+                  tied={bracketsWithPlace[place].length > 1}
+                  bracket={bracket}
+                  showEliminated={this.showEliminated()}
+                  viewer={viewer}
+                />
+              )
+            ).reduce((acc, val) => acc.concat(val), [])
+          }
           </tbody>
         </table>
       </div>
 
       <div className='small-screen'>
-        {brackets.map((bracket, i) =>
-          <SmallBracket
-            key={bracket.id}
-            index={i+1}
-            bracket={bracket}
-            showEliminated={this.showEliminated()}
-            viewer={viewer}
-          />
-        )}
+        {
+          Object.keys(bracketsWithPlace).map(place =>
+            bracketsWithPlace[place].map(bracket =>
+              <SmallBracket
+                key={bracket.id}
+                index={place}
+                tied={bracketsWithPlace[place].length > 1}
+                bracket={bracket}
+                showEliminated={this.showEliminated()}
+                viewer={viewer}
+              />
+            )
+          ).reduce((acc, val) => acc.concat(val), [])
+        }
       </div>
     </div>
   }

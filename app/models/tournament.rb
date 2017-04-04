@@ -14,7 +14,7 @@ class Tournament < ActiveRecord::Base
   end
 
   def finished?
-    num_games_remaining == 0
+    num_games_remaining.zero?
   end
 
   def archived?

@@ -16,12 +16,16 @@ class BestPossible extends Component {
 
 export default class SmallBracket extends Component {
   render() {
-    const { bracket, showEliminated, index, viewer } = this.props
+    const { bracket, showEliminated, index, viewer, tied } = this.props
     const { current_user } = viewer
     const finalFourTeams = bracket.final_four
     const bracketName = showEliminated && bracket.eliminated ? `* ${bracket.name}` : bracket.name
     const bracketPath = `/brackets/${bracket.model_id}`
-    const place = `${index}.`
+
+    let place = `${index}.`
+    if (tied) {
+      place = `T${place}`
+    }
 
     var rowClass = `bracket-row bracket-${bracket.model_id}`
     if (bracket.owner.model_id == current_user.model_id) {
