@@ -13,6 +13,10 @@ class Tournament < ActiveRecord::Base
     DateTime.current > tip_off
   end
 
+  def finished?
+    num_games_remaining == 0
+  end
+
   def archived?
     tip_off < 6.months.ago
   end

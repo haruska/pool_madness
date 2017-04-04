@@ -5,7 +5,7 @@ class Pool < ActiveRecord::Base
   has_many :pool_users, dependent: :destroy
   has_many :users, through: :pool_users
 
-  delegate :tip_off, :started?, :start_eliminating?, to: :tournament
+  delegate :tip_off, :started?, :finished?, :start_eliminating?, to: :tournament
 
   validates :invite_code, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: { scope: :tournament_id }

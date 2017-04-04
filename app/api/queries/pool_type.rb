@@ -1,6 +1,8 @@
 module Queries
   POOL_BRACKETS_LAMBDA = lambda { |pool, _args, context|
-    if pool.started?
+    if pool.finished?
+      pool.brackets.includes(:bracket_point, :user).joins(:bracket_point).order("points desc")
+    elsif pool.started?
       pool.brackets.includes(:bracket_point, :user).joins(:bracket_point).order("best_possible asc", "points desc", "possible_points desc")
     else
       pool.brackets.where(user_id: context[:current_user]).order(:payment_state)
