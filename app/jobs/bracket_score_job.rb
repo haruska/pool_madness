@@ -1,4 +1,4 @@
-class BracketScoreJob < ActiveJob::Base
+class BracketScoreJob < ApplicationJob
   queue_as :scores
 
   def perform(bracket_id)

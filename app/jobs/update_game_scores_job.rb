@@ -1,4 +1,4 @@
-class UpdateGameScoresJob < ActiveJob::Base
+class UpdateGameScoresJob < ApplicationJob
   queue_as :scores
 
   def perform

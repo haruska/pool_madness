@@ -1,4 +1,4 @@
-class CalculatePossibleOutcomeJob < ActiveJob::Base
+class CalculatePossibleOutcomeJob < ApplicationJob
   queue_as :elimination
 
   def perform(tournament_id, timestamp, opts={})

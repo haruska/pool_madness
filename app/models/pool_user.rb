@@ -1,4 +1,4 @@
-class PoolUser < ActiveRecord::Base
+class PoolUser < ApplicationRecord
   belongs_to :pool, inverse_of: :pool_users
   belongs_to :user, inverse_of: :pool_users
 

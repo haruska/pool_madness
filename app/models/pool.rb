@@ -1,4 +1,4 @@
-class Pool < ActiveRecord::Base
+class Pool < ApplicationRecord
   belongs_to :tournament
   has_many :brackets, dependent: :destroy
   has_many :bracket_points, through: :brackets

@@ -1,4 +1,4 @@
-class Tournament < ActiveRecord::Base
+class Tournament < ApplicationRecord
   has_many :pools, dependent: :destroy
   has_many :teams, dependent: :destroy
 

@@ -1,4 +1,4 @@
-class UpdatePossibleOutcomesJob < ActiveJob::Base
+class UpdatePossibleOutcomesJob < ApplicationJob
   queue_as :default
 
   def perform(tournament_id, opts = {})

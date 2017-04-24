@@ -1,4 +1,4 @@
-class Team < ActiveRecord::Base
+class Team < ApplicationRecord
   EAST = "East".freeze
   WEST = "West".freeze
   MIDWEST = "Midwest".freeze

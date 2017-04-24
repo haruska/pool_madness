@@ -1,4 +1,4 @@
-class Bracket < ActiveRecord::Base
+class Bracket < ApplicationRecord
   belongs_to :pool
   belongs_to :user
   belongs_to :payment_collector, class_name: "User"

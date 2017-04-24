@@ -1,4 +1,4 @@
-class BracketPoint < ActiveRecord::Base
+class BracketPoint < ApplicationRecord
   POINTS_PER_ROUND = [0, 1, 2, 3, 5, 8, 13].freeze
 
   belongs_to :bracket

@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+  protect_from_forgery except: :graphql
   before_action :authenticate_user!
 
   def home
@@ -16,7 +16,7 @@ class PagesController < ApplicationController
         context: {
           current_user: current_user,
           current_ability: current_ability,
-          optics_agent: env[:optics_agent].try(:with_document, query_string)
+          optics_agent: request.env[:optics_agent].try(:with_document, query_string)
         }
     )
 

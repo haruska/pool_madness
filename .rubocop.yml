@@ -20,9 +20,6 @@ Rails/Output:
 Rails/FilePath:
   Enabled: false
 
-Rails/HttpPositionalArguments:
-  Enabled: false
-
 Lint/AmbiguousBlockAssociation:
   Enabled: false
 

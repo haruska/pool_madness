@@ -20,7 +20,7 @@ RSpec.describe Admin::BracketsController, type: :controller do
 
     context "a regular user" do
       it "redirects home with an authorization message" do
-        get :index, pool_id: pool.id
+        get :index, params: { pool_id: pool.id }
         expect(response).to redirect_to(root_path)
         expect(subject).to set_flash
       end
@@ -30,7 +30,7 @@ RSpec.describe Admin::BracketsController, type: :controller do
       before { user.pool_users.first.admin! }
 
       it "is successful" do
-        get :index, pool_id: pool.id
+        get :index, params: { pool_id: pool.id }
 
         expect(response).to be_success
       end
@@ -44,7 +44,7 @@ RSpec.describe Admin::BracketsController, type: :controller do
         end
 
         it "renders a list of brackets" do
-          get :index, pool_id: pool.id
+          get :index, params: { pool_id: pool.id }
 
           brackets.each do |bracket|
             expect(response.body).to have_content(bracket.name)

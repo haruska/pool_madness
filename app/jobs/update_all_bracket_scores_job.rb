@@ -1,4 +1,4 @@
-class UpdateAllBracketScoresJob < ActiveJob::Base
+class UpdateAllBracketScoresJob < ApplicationJob
   queue_as :scores
 
   def perform(tournament_id)
