@@ -9,7 +9,7 @@
     "start": "webpack --watch",
     "lint": "standard | snazzy",
     "lint:fix": "standard --fix | snazzy",
-    "heroku-postbuild": "webpack -p --progress"
+    "postinstall": "if [ \"$NODE_ENV\" = 'production' ]; then ./node_modules/.bin/webpack -p; else ./node_modules/.bin/webpack; fi"
   },
   "engines": {
     "node": "6.5.0",
