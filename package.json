@@ -8,13 +8,13 @@
   "scripts": {
     "start": "webpack --watch",
     "lint": "standard | snazzy",
-    "lint:fix": "standard --fix | snazzy"
+    "lint:fix": "standard --fix | snazzy",
+    "heroku-postbuild": "webpack -p --progress"
   },
   "engines": {
     "node": "6.5.0",
     "npm": "3.10.3"
   },
-  "heroku-postbuild": "webpack -p --progress",
   "dependencies": {
     "classnames": "^2.2.5",
     "file-loader": "^0.11.1",
