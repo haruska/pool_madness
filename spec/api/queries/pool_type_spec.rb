@@ -45,40 +45,14 @@ RSpec.describe Queries::PoolType do
         end
 
         describe "sorting" do
-          context "with best_possible" do
-            before do
-              brackets.first.bracket_point.update(best_possible: 1)
-              brackets.second.bracket_point.update(best_possible: 2)
-              brackets.third.bracket_point.update(best_possible: 0)
-            end
-
-            it "is primarily sorted by best_possible" do
-              expect(results).to eq([brackets.third, brackets.first, brackets.second])
-            end
+          before do
+            brackets.first.bracket_point.update(best_possible: 0, points: 1, possible_points: 3)
+            brackets.second.bracket_point.update(best_possible: 2, points: 2, possible_points: 3)
+            brackets.third.bracket_point.update(best_possible: 0, points: 1, possible_points: 4)
           end
 
-          context "with more than one best_possible" do
-            before do
-              brackets.first.bracket_point.update(best_possible: 0, points: 0)
-              brackets.second.bracket_point.update(best_possible: 2, points: 2)
-              brackets.third.bracket_point.update(best_possible: 0, points: 1)
-            end
-
-            it "is then sorted by actual points" do
-              expect(results).to eq([brackets.third, brackets.first, brackets.second])
-            end
-          end
-
-          context "with more than one best_possible and equal points" do
-            before do
-              brackets.first.bracket_point.update(best_possible: 0, points: 1, possible_points: 3)
-              brackets.second.bracket_point.update(best_possible: 2, points: 2, possible_points: 3)
-              brackets.third.bracket_point.update(best_possible: 0, points: 1, possible_points: 4)
-            end
-
-            it "is finally sorted by possible_points" do
-              expect(results).to eq([brackets.third, brackets.first, brackets.second])
-            end
+          it "is always sorted by actual points, then possible points" do
+            expect(results).to eq([brackets.second, brackets.third, brackets.first])
           end
         end
       end

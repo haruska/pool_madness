@@ -90,20 +90,20 @@ class BracketList extends Component {
         <table className='tables'>
           <TableHeader showEliminated={this.showEliminated()}/>
           <tbody>
-          {
-            Object.keys(bracketsWithPlace).map(place =>
-              bracketsWithPlace[place].map(bracket =>
-                <BracketRow
-                  key={bracket.id}
-                  index={place}
-                  tied={bracketsWithPlace[place].length > 1}
-                  bracket={bracket}
-                  showEliminated={this.showEliminated()}
-                  viewer={viewer}
-                />
-              )
-            ).reduce((acc, val) => acc.concat(val), [])
-          }
+            {
+              Object.keys(bracketsWithPlace).map(place =>
+                bracketsWithPlace[place].map(bracket =>
+                  <BracketRow
+                    key={bracket.id}
+                    index={place}
+                    tied={bracketsWithPlace[place].length > 1}
+                    bracket={bracket}
+                    showEliminated={this.showEliminated()}
+                    viewer={viewer}
+                  />
+                )
+              ).reduce((acc, val) => acc.concat(val), [])
+            }
           </tbody>
         </table>
       </div>
