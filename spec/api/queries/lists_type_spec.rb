@@ -4,7 +4,7 @@ RSpec.describe Queries::ListsType do
   subject { Queries::ListsType }
 
   context "fields" do
-    let(:fields) { %w(pools) }
+    let(:fields) { %w[pools] }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)

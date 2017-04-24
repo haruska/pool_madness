@@ -13,7 +13,7 @@ PoolMadness::Application.routes.draw do
 
   root to: "home#index"
 
-  resources :tournaments, only: [:edit, :update]
+  resources :tournaments, only: %i[edit update]
 
   namespace :admin do
     resources :pools, only: [] do

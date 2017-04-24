@@ -5,5 +5,5 @@ class PoolUser < ActiveRecord::Base
   validates :user, presence: true, uniqueness: { scope: :pool_id }
   validates :pool, presence: true
 
-  enum role: %i(regular admin)
+  enum role: %i[regular admin]
 end

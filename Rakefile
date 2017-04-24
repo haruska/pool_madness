@@ -58,7 +58,7 @@ if Rails.env.development? || Rails.env.test?
     puts "Finished generating graphql schema json\n"
   end
 
-  task(:default).clear.enhance(%w(rubocop eslint graph webpack spec))
+  task(:default).clear.enhance(%w[rubocop eslint graph webpack spec])
 end
 
 if Rails.env.generator?

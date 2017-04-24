@@ -1,8 +1,7 @@
 class HomeController < ApplicationController
   before_action :check_authentication, only: :index
 
-  def index
-  end
+  def index; end
 
   def subscribe
     Newsletter.home_page_email(params[:email]).deliver_later

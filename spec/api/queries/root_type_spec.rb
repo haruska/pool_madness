@@ -4,7 +4,7 @@ RSpec.describe Queries::RootType do
   subject { described_class }
 
   context "fields" do
-    let(:fields) { %w(node nodes viewer lists pool bracket) }
+    let(:fields) { %w[node nodes viewer lists pool bracket] }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)

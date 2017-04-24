@@ -76,7 +76,7 @@ class Game < BinaryDecisionTree::Node
   alias winner team
 
   def loser
-    return nil unless winner.present?
+    return nil if winner.blank?
     ([first_team, second_team] - [winner]).first
   end
 

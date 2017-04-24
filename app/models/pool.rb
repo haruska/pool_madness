@@ -39,7 +39,7 @@ class Pool < ActiveRecord::Base
 
     loop do
       code = SecureRandom.urlsafe_base64(5).upcase.gsub(/[^A-Z0-9]/, "")
-      break unless Pool.find_by(invite_code: code).present?
+      break if Pool.find_by(invite_code: code).blank?
     end
 
     code

@@ -1,4 +1,5 @@
 # -*- encoding : utf-8 -*-
+
 module Spec
   module Helper
     def active_admin_titleize(string)

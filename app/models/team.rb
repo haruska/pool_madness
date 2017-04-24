@@ -14,7 +14,7 @@ class Team < ActiveRecord::Base
 
   validates :seed,
             numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 16 },
-            uniqueness: { scope: [:tournament_id, :region] }
+            uniqueness: { scope: %i[tournament_id region] }
 
   def first_game
     tournament.tree.at(starting_slot / 2)

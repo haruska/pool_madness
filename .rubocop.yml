@@ -17,6 +17,15 @@ Rails:
 Rails/Output:
   Enabled: false
 
+Rails/FilePath:
+  Enabled: false
+
+Rails/HttpPositionalArguments:
+  Enabled: false
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
@@ -40,6 +49,9 @@ Lint/UselessAssignment:
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+
+Metrics/BlockLength:
+  Enabled: false
 
 Metrics/AbcSize:
   Enabled: false

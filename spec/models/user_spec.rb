@@ -44,7 +44,7 @@ RSpec.describe User, type: :model do
 
     context "with a previous stripe id" do
       let(:stripe_customer) { Stripe::Customer.create(email: subject.email) }
-      before { subject.update_attribute(:stripe_customer_id, stripe_customer.id) }
+      before { subject.update(stripe_customer_id: stripe_customer.id) }
 
       it "reuses the same stripe customer" do
         expect(User.find_by(email: subject.email).stripe_customer.id).to eq(stripe_customer.id)

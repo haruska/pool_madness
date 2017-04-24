@@ -24,7 +24,7 @@ class Bracket < ActiveRecord::Base
   validates :user, :tie_breaker, :pool, :user, presence: true
   validate :filled_out
 
-  enum payment_state: %i(unpaid promised paid)
+  enum payment_state: %i[unpaid promised paid]
 
   def status
     unpaid? ? :unpaid : :ok

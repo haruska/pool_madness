@@ -8,7 +8,7 @@ module Queries
 
     field :lists do
       type !ListsType
-      resolve -> (_object, _args, _context) { {} }
+      resolve ->(_object, _args, _context) { {} }
     end
 
     field :pool do

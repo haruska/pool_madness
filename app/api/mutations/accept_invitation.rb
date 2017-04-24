@@ -5,7 +5,7 @@ module Mutations
     pool = Pool.find_by(invite_code: inputs["invite_code"].upcase)
     raise GraphQL::ExecutionError, "Invalid invite code" if pool.blank?
 
-    pool.users << context[:current_user] unless pool.users.find_by(id: context[:current_user]).present?
+    pool.users << context[:current_user] if pool.users.find_by(id: context[:current_user]).blank?
 
     { pool: pool }
   }

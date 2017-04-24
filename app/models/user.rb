@@ -9,10 +9,10 @@ class User < ActiveRecord::Base
   validates :email, format: { with: EmailValidator.regexp }
   validates :name, presence: true
 
-  enum role: %i(regular admin)
+  enum role: %i[regular admin]
 
   after_create do |user|
-    user.welcome_message unless user.invitation_token.present?
+    user.welcome_message if user.invitation_token.blank?
   end
 
   def stripe_customer

@@ -9,7 +9,7 @@ RSpec.describe Team, type: :model do
     it { is_expected.to validate_uniqueness_of(:name).scoped_to(:tournament_id) }
     it { is_expected.to validate_length_of(:name).is_at_most(15) }
     it { is_expected.to validate_inclusion_of(:region).in_array(Team::REGIONS) }
-    it { is_expected.to validate_uniqueness_of(:seed).scoped_to([:tournament_id, :region]) }
+    it { is_expected.to validate_uniqueness_of(:seed).scoped_to(%i[tournament_id region]) }
     it do
       is_expected.to validate_numericality_of(:seed)
         .only_integer

@@ -3,8 +3,7 @@ class TournamentsController < ApplicationController
 
   load_and_authorize_resource
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @tournament.update(tournament_params)
@@ -19,6 +18,6 @@ class TournamentsController < ApplicationController
   private
 
   def tournament_params
-    params.require(:tournament).permit(:name, teams_attributes: [:id, :name, :score_team_id])
+    params.require(:tournament).permit(:name, teams_attributes: %i[id name score_team_id])
   end
 end

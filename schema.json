@@ -1759,7 +1759,7 @@
           "fields": [
             {
               "name": "endCursor",
-              "description": "When paginating forwards, the cursor to continue",
+              "description": "When paginating forwards, the cursor to continue.",
               "args": [
 
               ],
@@ -1773,7 +1773,7 @@
             },
             {
               "name": "hasNextPage",
-              "description": "Indicates if there are more pages to fetch",
+              "description": "When paginating forwards, are there more items?",
               "args": [
 
               ],
@@ -1791,7 +1791,7 @@
             },
             {
               "name": "hasPreviousPage",
-              "description": "Indicates if there are any pages prior to the current page",
+              "description": "When paginating backwards, are there more items?",
               "args": [
 
               ],
@@ -1809,7 +1809,7 @@
             },
             {
               "name": "startCursor",
-              "description": "When paginating backwards, the cursor to continue",
+              "description": "When paginating backwards, the cursor to continue.",
               "args": [
 
               ],
