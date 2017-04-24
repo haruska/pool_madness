@@ -6,27 +6,27 @@ export default class Layout extends Component {
     setPageTitle: React.PropTypes.func.isRequired
   }
 
-  state = { title: "Pool Madness" }
+  state = { title: 'Pool Madness' }
 
-  getChildContext() {
+  getChildContext () {
     return {
       setPageTitle: this.setPageTitle
     }
   }
 
   setPageTitle = (title) => {
-    const newTitle = title || "Pool Madness"
+    const newTitle = title || 'Pool Madness'
     this.setState({title: newTitle})
   }
 
-  render() {
+  render () {
     return (
       <div className='layout'>
         <Header title={this.state.title} {...this.props} />
         <section className='container' id='content'>
           {this.props.children}
         </section>
-        <footer/>
+        <footer />
       </div>
     )
   }

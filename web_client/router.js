@@ -23,7 +23,7 @@ import BracketLayout from 'components/layout/bracket'
 import Possibilities from 'components/pools/possibilities'
 
 class NoMatch extends Component {
-  render() {
+  render () {
     return <Layout>The page you are looking for could not be found :(</Layout>
   }
 }
@@ -54,34 +54,32 @@ const PoolViewerQueries = {
   viewer: () => Relay.QL`query { viewer }`
 }
 
-
 export default () => {
   return (
     <Router history={browserHistory} render={applyRouterMiddleware(useRelay)} environment={Relay.Store}>
-      <Route path="/" component={App}>
+      <Route path='/' component={App}>
         <Route component={Layout}>
-          <Route path="pools" component={PoolList} queries={ListsQueries}/>
-          <Route path="pools/invite_code" component={InviteCode}/>
-          <Route path="user" component={Profile} queries={ViewerQueries}/>
-          <Route path="user/edit" component={EditProfile} queries={ViewerQueries}/>
+          <Route path='pools' component={PoolList} queries={ListsQueries} />
+          <Route path='pools/invite_code' component={InviteCode} />
+          <Route path='user' component={Profile} queries={ViewerQueries} />
+          <Route path='user/edit' component={EditProfile} queries={ViewerQueries} />
         </Route>
-        <Route path="pools/:poolId" component={PoolLayout} queries={PoolViewerQueries}>
+        <Route path='pools/:poolId' component={PoolLayout} queries={PoolViewerQueries}>
           <IndexRoute component={Pool} queries={PoolQueries} />
-          <Route path="brackets" component={BracketList} queries={PoolViewerQueries}/>
-          <Route path="my_brackets" component={UserBracketList} queries={PoolViewerQueries}/>
-          <Route path="new_bracket" component={NewBracket} queries={PoolViewerQueries}/>
-          <Route path="rules" component={RulesAndScoring} queries={PoolQueries}/>
-          <Route path="payments" component={Payments} queries={PoolQueries}/>
-          <Route path="games" component={PoolGames} queries={PoolQueries}/>
-          <Route path="possibilities" component={Possibilities} queries={PoolQueries}/>
+          <Route path='brackets' component={BracketList} queries={PoolViewerQueries} />
+          <Route path='my_brackets' component={UserBracketList} queries={PoolViewerQueries} />
+          <Route path='new_bracket' component={NewBracket} queries={PoolViewerQueries} />
+          <Route path='rules' component={RulesAndScoring} queries={PoolQueries} />
+          <Route path='payments' component={Payments} queries={PoolQueries} />
+          <Route path='games' component={PoolGames} queries={PoolQueries} />
+          <Route path='possibilities' component={Possibilities} queries={PoolQueries} />
         </Route>
-        <Route path="brackets/:bracketId" component={BracketLayout} queries={BracketViewerQueries}>
-          <IndexRoute component={Bracket} queries={BracketQueries}/>
-          <Route path="edit" component={EditBracket} queries={BracketQueries}/>
+        <Route path='brackets/:bracketId' component={BracketLayout} queries={BracketViewerQueries}>
+          <IndexRoute component={Bracket} queries={BracketQueries} />
+          <Route path='edit' component={EditBracket} queries={BracketQueries} />
         </Route>
-        <Route path='*' component={NoMatch}/>
+        <Route path='*' component={NoMatch} />
       </Route>
     </Router>
   )
 }
-

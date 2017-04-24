@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 
 class BestPossible extends Component {
-  render() {
+  render () {
     const { showEliminated, bracket } = this.props
 
     if (showEliminated) {
-      let bestPossible = bracket.eliminated ? "eliminated" : `possible ${bracket.best_possible_finish} place finish`
-      return <div className="best-possible">{bestPossible}</div>
+      let bestPossible = bracket.eliminated ? 'eliminated' : `possible ${bracket.best_possible_finish} place finish`
+      return <div className='best-possible'>{bestPossible}</div>
     } else {
       return false
     }
@@ -15,7 +15,7 @@ class BestPossible extends Component {
 }
 
 export default class SmallBracket extends Component {
-  render() {
+  render () {
     const { bracket, showEliminated, index, viewer, tied } = this.props
     const { current_user } = viewer
     const finalFourTeams = bracket.final_four
@@ -28,8 +28,8 @@ export default class SmallBracket extends Component {
     }
 
     var rowClass = `bracket-row bracket-${bracket.model_id}`
-    if (bracket.owner.model_id == current_user.model_id) {
-      rowClass += " current-user-bracket"
+    if (bracket.owner.model_id === current_user.model_id) {
+      rowClass += ' current-user-bracket'
     }
 
     return <Link to={bracketPath}>
@@ -37,13 +37,13 @@ export default class SmallBracket extends Component {
         <div className='bracket-attributes'>
           <div className='position'>{place}</div>
           <div className='bracket-details'>
-            <div className="name">{bracketName}</div>
-            <div className="points">
-              <div className="total">{bracket.points}</div>
-              <div className="possible">{bracket.possible_points}</div>
+            <div className='name'>{bracketName}</div>
+            <div className='points'>
+              <div className='total'>{bracket.points}</div>
+              <div className='possible'>{bracket.possible_points}</div>
             </div>
-            <BestPossible {...this.props}/>
-            <div className="final-four-teams">
+            <BestPossible {...this.props} />
+            <div className='final-four-teams'>
               {finalFourTeams.map((team, i) =>
                 <div key={team.id} className={`final-four-team final-four-team${i}`}>
                   {team.name}

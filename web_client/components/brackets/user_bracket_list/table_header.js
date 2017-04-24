@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 export default class TableHeader extends Component {
-  render() {
+  render () {
     const { bracketCount } = this.props
 
     if (bracketCount > 0) {

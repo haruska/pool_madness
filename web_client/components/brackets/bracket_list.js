@@ -10,19 +10,19 @@ class BracketList extends Component {
     setPageTitle: React.PropTypes.func.isRequired
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {lastUpdate: null}
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.context.setPageTitle()
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.context.setPageTitle(`Brackets (${this.props.pool.bracket_count} total)`)
   }
-  componentDidMount() {
+  componentDidMount () {
     this.updateData()
   }
 
@@ -35,8 +35,7 @@ class BracketList extends Component {
         relay.forceFetch()
         this.setState({lastUpdate: moment()})
       }
-    }
-    else {
+    } else {
       relay.setVariables({bracketSize: pool.bracket_count})
       this.setState({lastUpdate: moment()})
     }
@@ -56,8 +55,8 @@ class BracketList extends Component {
 
     let currentPlace = 1
     brackets.forEach((b, i) => {
-      if(i != 0 && b.points != brackets[i-1].points) {
-        currentPlace = i+1
+      if (i !== 0 && b.points !== brackets[i - 1].points) {
+        currentPlace = i + 1
       }
       placeBrackets[currentPlace] = placeBrackets[currentPlace] || []
       placeBrackets[currentPlace].push(b)
@@ -70,9 +69,7 @@ class BracketList extends Component {
     return this.props.pool.display_best
   }
 
-
-
-  render() {
+  render () {
     const { viewer } = this.props
     const bracketsWithPlace = this.bracketsWithPlace()
 
@@ -88,7 +85,7 @@ class BracketList extends Component {
       <div className='large-screen'>
 
         <table className='tables'>
-          <TableHeader showEliminated={this.showEliminated()}/>
+          <TableHeader showEliminated={this.showEliminated()} />
           <tbody>
             {
               Object.keys(bracketsWithPlace).map(place =>

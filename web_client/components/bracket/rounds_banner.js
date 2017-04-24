@@ -14,13 +14,13 @@ export default class RoundsBanner extends Component {
     return dateStr
   }
 
-  render() {
+  render () {
     let reverseRounds = Array.from(this.props.rounds).reverse()
     reverseRounds.shift()
 
     let rounds = this.props.rounds.concat(reverseRounds)
 
-    return <table className="gridtable">
+    return <table className='gridtable'>
       <tbody>
         <tr>
           {rounds.map((r, i) => <th key={i}>{r.name}</th>)}

@@ -1,19 +1,18 @@
-import { Mutation } from 'react-relay'
-import Relay from 'react-relay'
+import Relay, { Mutation } from 'react-relay'
 
 export default class CreateChargeMutation extends Mutation {
-  getMutation() {
+  getMutation () {
     return Relay.QL`mutation {create_charge}`
   }
 
-  getVariables() {
+  getVariables () {
     return {
       pool_id: this.props.pool.id,
       token: this.props.token
     }
   }
 
-  getFatQuery() {
+  getFatQuery () {
     return Relay.QL`
       fragment on CreateChargePayload {
         pool {
@@ -29,7 +28,7 @@ export default class CreateChargeMutation extends Mutation {
     `
   }
 
-  getConfigs() {
+  getConfigs () {
     return [
       {
         type: 'FIELDS_CHANGE',

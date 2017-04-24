@@ -20,7 +20,7 @@ if Rails.env.development? || Rails.env.test?
   task :eslint do
     puts
     puts "Running eslint..."
-    output = `./node_modules/.bin/eslint -c .eslintrc.json ./web_client`
+    output = `standard`
     if output.blank?
       puts "eslint complete"
     else

@@ -6,11 +6,11 @@ import PoolLayout from 'components/layout/pool'
 import Tournament from 'components/bracket/tournament'
 
 class BracketActions extends Component {
-  render() {
+  render () {
     const bracket = this.props.bracket
     if (bracket.editable) {
-      return <div className="bracket-actions">
-        <Link to={`/brackets/${bracket.model_id}/edit`} className="button">Edit Bracket</Link>
+      return <div className='bracket-actions'>
+        <Link to={`/brackets/${bracket.model_id}/edit`} className='button'>Edit Bracket</Link>
       </div>
     }
     return null
@@ -24,21 +24,20 @@ class Bracket extends Component {
 
     if (bracket.name.startsWith(owner.name)) {
       return `${bracket.name}`
-    }
-    else {
+    } else {
       return `${bracket.name} (${owner.name})`
     }
   }
 
-  render() {
+  render () {
     const { bracket } = this.props
     const pool = bracket.pool
     const tournament = pool.tournament
 
-    return <div className="bracket-show">
+    return <div className='bracket-show'>
       <h2>{this.title()}</h2>
-      <BracketActions bracket={bracket}/>
-      <Tournament tournament={tournament} bracket={bracket}/>
+      <BracketActions bracket={bracket} />
+      <Tournament tournament={tournament} bracket={bracket} />
     </div>
   }
 }

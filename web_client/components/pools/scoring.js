@@ -5,7 +5,7 @@ import fibonacci from 'utils/fibonacci'
 import { ordinalInWord } from 'utils/ordinals'
 
 class ScoreRow extends Component {
-  render() {
+  render () {
     let {round} = this.props
 
     return <tr>
@@ -16,10 +16,10 @@ class ScoreRow extends Component {
 }
 
 class Scoring extends Component {
-  render() {
+  render () {
     let { pool } = this.props
 
-    return <div className="pool-scoring">
+    return <div className='pool-scoring'>
       <h3>Scoring</h3>
       <table>
         <thead>
@@ -29,7 +29,7 @@ class Scoring extends Component {
           </tr>
         </thead>
         <tbody>
-          {times(pool.tournament.rounds.length, i => <ScoreRow key={i} round={i+1}/>)}
+          {times(pool.tournament.rounds.length, i => <ScoreRow key={i} round={i + 1} />)}
         </tbody>
       </table>
       <div>
@@ -51,7 +51,6 @@ class Scoring extends Component {
         If two brackets are still tied after this, they split the winnings.
       </div>
     </div>
-
   }
 }
 

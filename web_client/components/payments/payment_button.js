@@ -8,7 +8,7 @@ class PaymentButton extends Component {
   state = { stripeCheckout: null }
 
   onScriptLoaded = () => {
-    let handler = StripeCheckout.configure({
+    let handler = StripeCheckout.configure({ // eslint-disable-line
       key: 'pk_live_zkts04HcHkzLExcpUgG41Huk',
       image: '/favicon.png',
       locale: 'auto',
@@ -43,23 +43,21 @@ class PaymentButton extends Component {
   }
 
   renderButton = () => {
-    if(this.state.stripeCheckout) {
+    if (this.state.stripeCheckout) {
       return <button onClick={this.handlePaymentClick}>Pay Now</button>
-    }
-    else {
+    } else {
       return false
     }
   }
 
-  render() {
+  render () {
     const { unpaidBrackets } = this.props
-    if(unpaidBrackets && unpaidBrackets.length > 0) {
+    if (unpaidBrackets && unpaidBrackets.length > 0) {
       return <div className='payment-button'>
         <LoadStripe onScriptLoaded={this.onScriptLoaded} />
         {this.renderButton()}
       </div>
-    }
-    else {
+    } else {
       return false
     }
   }

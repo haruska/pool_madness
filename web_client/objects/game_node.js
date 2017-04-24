@@ -1,5 +1,5 @@
 export default class GameNode {
-  constructor(tree, slot, decision) {
+  constructor (tree, slot, decision) {
     this.tree = tree
     this.slot = slot
     this.decision = decision
@@ -8,8 +8,7 @@ export default class GameNode {
   firstTeamStartingSlot = () => {
     if (this.isRoundOne()) {
       return this.leftPosition()
-    }
-    else {
+    } else {
       const leftGame = this.leftGame()
       return leftGame ? leftGame.winningTeamStartingSlot() : null
     }
@@ -18,31 +17,26 @@ export default class GameNode {
   secondTeamStartingSlot = () => {
     if (this.isRoundOne()) {
       return this.rightPosition()
-    }
-    else {
+    } else {
       const rightGame = this.rightGame()
       return rightGame ? rightGame.winningTeamStartingSlot() : null
     }
   }
 
   winningTeamStartingSlot = () => {
-    if (this.decision == 0) {
+    if (this.decision === 0) {
       if (this.leftGame()) {
         return this.leftGame().winningTeamStartingSlot()
-      }
-      else {
+      } else {
         return this.leftPosition()
       }
-    }
-    else if (this.decision == 1) {
+    } else if (this.decision === 1) {
       if (this.rightGame()) {
         return this.rightGame().winningTeamStartingSlot()
-      }
-      else {
+      } else {
         return this.rightPosition()
       }
-    }
-    else {
+    } else {
       return null
     }
   }
@@ -56,7 +50,7 @@ export default class GameNode {
   }
 
   parentPosition = () => {
-    return parseInt((this.slot % 2 == 0 ? this.slot + 1 : this.slot) / 2)
+    return parseInt((this.slot % 2 === 0 ? this.slot + 1 : this.slot) / 2)
   }
 
   leftGame = () => {

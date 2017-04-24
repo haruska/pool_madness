@@ -6,25 +6,23 @@ class Pool extends Component {
     router: React.PropTypes.object.isRequired
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.redirectToBracketList()
   }
 
   redirectToBracketList = () => {
     const { pool } = this.props
 
-    if(pool.possibilities) {
+    if (pool.possibilities) {
       this.context.router.replace(`/pools/${pool.model_id}/possibilities`)
-    }
-    else if(pool.started) {
+    } else if (pool.started) {
       this.context.router.replace(`/pools/${pool.model_id}/brackets`)
-    }
-    else {
+    } else {
       this.context.router.replace(`/pools/${pool.model_id}/my_brackets`)
     }
   }
 
-  render() {
+  render () {
     return this.props.children
   }
 }

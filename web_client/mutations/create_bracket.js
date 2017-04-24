@@ -1,16 +1,16 @@
 import Relay, { Mutation } from 'react-relay'
 
 export default class CreateBracketMutation extends Mutation {
-  getMutation() {
+  getMutation () {
     return Relay.QL`mutation {create_bracket}`
   }
 
-  getVariables() {
+  getVariables () {
     const { name, tie_breaker, game_decisions, game_mask } = this.props
     return {pool_id: this.props.pool.id, name, tie_breaker, game_decisions, game_mask}
   }
 
-  getFatQuery() {
+  getFatQuery () {
     return Relay.QL`
       fragment on CreateBracketPayload {
         bracket_edge
@@ -19,7 +19,7 @@ export default class CreateBracketMutation extends Mutation {
     `
   }
 
-  getConfigs() {
+  getConfigs () {
     return [
       {
         type: 'RANGE_ADD',

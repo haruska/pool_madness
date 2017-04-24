@@ -7,23 +7,23 @@ class Profile extends Component {
     setPageTitle: React.PropTypes.func.isRequired
   }
 
-  componentWillMount() {
-    this.context.setPageTitle("Profile")
+  componentWillMount () {
+    this.context.setPageTitle('Profile')
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.context.setPageTitle()
   }
 
-  render() {
+  render () {
     const { current_user } = this.props.viewer
 
-    return <div className="profile">
-      <div className="name">{current_user.name}</div>
-      <div className="email">{current_user.email}</div>
-      <div className="actions">
-        <Link to="/user/edit" className="button">Edit Profile</Link>
-        <a href="/auth/edit" className="button minor">Change Password</a>
+    return <div className='profile'>
+      <div className='name'>{current_user.name}</div>
+      <div className='email'>{current_user.email}</div>
+      <div className='actions'>
+        <Link to='/user/edit' className='button'>Edit Profile</Link>
+        <a href='/auth/edit' className='button minor'>Change Password</a>
       </div>
     </div>
   }

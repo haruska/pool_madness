@@ -3,7 +3,7 @@ import Relay from 'react-relay'
 import Tournament from 'components/bracket/tournament'
 
 class Games extends Component {
-  render() {
+  render () {
     const tournament = this.props.pool.tournament
     return <div className='games'>
       <h2>{tournament.name}</h2>

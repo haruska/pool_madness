@@ -14,11 +14,10 @@ export default class Menu extends Component {
     const { current_user } = viewer
     let links = []
 
-
-    if(pool.started) {
+    if (pool.started) {
       links.push(<Link to={`/pools/${pool.model_id}/brackets`} onClick={this.handleToggleMenuClick}>Brackets</Link>)
 
-      if(pool.tournament.games_remaining > 0 && pool.tournament.games_remaining < 4) {
+      if (pool.tournament.games_remaining > 0 && pool.tournament.games_remaining < 4) {
         links.push(<Link to={`/pools/${pool.model_id}/possibilities`} onClick={this.handleToggleMenuClick}>Possible Outcomes</Link>)
       }
       links.push(<Link to={`/pools/${pool.model_id}/games`} onClick={this.handleToggleMenuClick}>Game Results</Link>)
@@ -29,11 +28,11 @@ export default class Menu extends Component {
 
     links.push(<Link to={`/pools/${pool.model_id}/rules`} onClick={this.handleToggleMenuClick}>Rules and Scoring</Link>)
 
-    if(current_user.admin || this.currentUserIsPoolAdmin()) {
+    if (current_user.admin || this.currentUserIsPoolAdmin()) {
       links.push(<a href={`/admin/pools/${pool.model_id}/brackets`}>Pool Admin</a>)
     }
 
-    links.push(<Link to="/pools" onClick={this.handleToggleMenuClick}>Other Pools</Link>)
+    links.push(<Link to='/pools' onClick={this.handleToggleMenuClick}>Other Pools</Link>)
 
     return links
   }
@@ -41,27 +40,27 @@ export default class Menu extends Component {
   buildLinks = () => {
     const { pool } = this.props
 
-    if(pool) {
+    if (pool) {
       return this.poolLinks()
     } else {
-      return [<Link key='all-pools-link' to="/pools" onClick={this.handleToggleMenuClick}>All Pools</Link>]
+      return [<Link key='all-pools-link' to='/pools' onClick={this.handleToggleMenuClick}>All Pools</Link>]
     }
   }
 
   signedInLinks = (contentClass) => {
     return (
       <div>
-        <a className="js-menu-trigger sliding-panel-button" onClick={this.handleToggleMenuClick}>
-          <i className="fa fa-bars" />
+        <a className='js-menu-trigger sliding-panel-button' onClick={this.handleToggleMenuClick}>
+          <i className='fa fa-bars' />
         </a>
         <nav className={contentClass}>
           <ul>
             {this.buildLinks().map((link, i) => <li key={`link-${i}`}>{link}</li>)}
           </ul>
           <ul>
-            <li><Link to="/pools/invite_code" onClick={this.handleToggleMenuClick}>Enter Invite Code</Link></li>
-            <li><Link to="/user" onClick={this.handleToggleMenuClick}>Profile</Link></li>
-            <li><a href="/auth/sign_out">Logout</a></li>
+            <li><Link to='/pools/invite_code' onClick={this.handleToggleMenuClick}>Enter Invite Code</Link></li>
+            <li><Link to='/user' onClick={this.handleToggleMenuClick}>Profile</Link></li>
+            <li><a href='/auth/sign_out'>Logout</a></li>
           </ul>
         </nav>
       </div>
@@ -76,14 +75,14 @@ export default class Menu extends Component {
     return adminIds.includes(current_user.model_id)
   }
 
-  render() {
+  render () {
     const isVisible = this.state.isVisible
     const contentClass = classNames('js-menu', 'sliding-panel-content', {'is-visible': isVisible})
     const panelClass = classNames('js-menu-screen', 'sliding-panel-fade-screen', {'is-visible': isVisible})
     const links = this.signedInLinks(contentClass)
 
     return (
-      <div className="menu">
+      <div className='menu'>
         {links}
         <div className={panelClass} onClick={this.handleToggleMenuClick} />
       </div>

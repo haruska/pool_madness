@@ -1,15 +1,15 @@
 import Relay, { Mutation } from 'react-relay'
 
 export default class DeleteBracketMutation extends Mutation {
-  getMutation() {
+  getMutation () {
     return Relay.QL`mutation {delete_bracket}`
   }
 
-  getVariables() {
+  getVariables () {
     return {bracket_id: this.props.bracket.id}
   }
 
-  getFatQuery() {
+  getFatQuery () {
     return Relay.QL`
       fragment on DeleteBracketPayload {
         deleted_bracket_id
@@ -18,7 +18,7 @@ export default class DeleteBracketMutation extends Mutation {
     `
   }
 
-  getConfigs() {
+  getConfigs () {
     return [{
       type: 'NODE_DELETE',
       parentName: 'pool',

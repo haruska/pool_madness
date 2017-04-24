@@ -1,21 +1,21 @@
 import Relay, { Mutation } from 'react-relay'
 
 export default class UpdateProfileMutation extends Mutation {
-  getMutation() {
+  getMutation () {
     return Relay.QL`mutation {update_profile}`
   }
 
-  getVariables() {
+  getVariables () {
     return {name: this.props.name, email: this.props.email}
   }
 
-  getFatQuery() {
+  getFatQuery () {
     return Relay.QL`
       fragment on UpdateProfilePayload { viewer }
     `
   }
 
-  getConfigs() {
+  getConfigs () {
     return [
       {
         type: 'FIELDS_CHANGE',
@@ -39,7 +39,7 @@ export default class UpdateProfileMutation extends Mutation {
     ]
   }
 
-  getOptimisticResponse() {
+  getOptimisticResponse () {
     const { viewer, name, email } = this.props
 
     return {

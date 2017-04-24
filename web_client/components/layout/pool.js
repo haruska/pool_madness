@@ -3,7 +3,7 @@ import Relay from 'react-relay'
 import Layout from './layout'
 
 class PoolLayout extends Component {
-  render() {
+  render () {
     return (
       <Layout {...this.props}>
         {this.props.children}

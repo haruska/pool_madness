@@ -13,8 +13,7 @@ export default class Championship extends Component {
       const { rounds } = this.props.tournament
       const { game_decisions, game_mask } = this.props.bracket
       return new TournamentTree(rounds.length, game_decisions, game_mask)
-    }
-    else {
+    } else {
       return null
     }
   }
@@ -49,12 +48,11 @@ export default class Championship extends Component {
 
     if (game && pick) {
       const team = this.teamByStartingSlot(pick.winningTeamStartingSlot())
-      const game_team = this.teamByStartingSlot(game.winningTeamStartingSlot())
-      if (team && (!team.stillPlaying() || game_team)) {
-        if (game_team && team.name == game_team.name) {
+      const gameTeam = this.teamByStartingSlot(game.winningTeamStartingSlot())
+      if (team && (!team.stillPlaying() || gameTeam)) {
+        if (gameTeam && team.name === gameTeam.name) {
           pickClass = 'correct-pick'
-        }
-        else {
+        } else {
           pickClass = 'eliminated'
         }
       }
@@ -63,12 +61,12 @@ export default class Championship extends Component {
     }
   }
 
-  render() {
+  render () {
     const { highlightEmpty } = this.props
     const highlightClass = highlightEmpty && !this.championName() ? 'empty-pick' : ''
-    return <div className="championship">
+    return <div className='championship'>
       <div className={`champion-box ${this.pickLabel()} ${highlightClass}`.trim()}>{this.championName()}</div>
-      <div className="champion-label">CHAMPION</div>
+      <div className='champion-label'>CHAMPION</div>
     </div>
   }
 }

@@ -8,14 +8,14 @@ import RoundsBanner from 'components/bracket/rounds_banner'
 import TieBreaker from 'components/bracket/tie_breaker'
 
 class Tournament extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       lastUpdate: null
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.updateData()
   }
 
@@ -26,13 +26,12 @@ class Tournament extends Component {
         this.props.relay.forceFetch()
         this.setState({lastUpdate: moment()})
       }
-    }
-    else {
+    } else {
       this.setState({lastUpdate: moment()})
     }
   }
 
-  render() {
+  render () {
     const { tournament, bracket, onSlotClick, editing, highlightEmpty } = this.props
     const { rounds } = tournament
     const fieldClass = rounds.length >= 6 ? 'field-64' : 'sweet-16'

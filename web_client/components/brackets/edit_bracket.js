@@ -17,7 +17,7 @@ class Bracket extends Component {
     setPageTitle: PropTypes.func.isRequired
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -29,11 +29,11 @@ class Bracket extends Component {
     }
   }
 
-  componentWillMount() {
-    this.context.setPageTitle("Editing Bracket")
+  componentWillMount () {
+    this.context.setPageTitle('Editing Bracket')
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.context.setPageTitle()
   }
 
@@ -56,7 +56,7 @@ class Bracket extends Component {
   }
 
   handleTieBreakerChange = (event) => {
-    const intValue = event.target.value ? parseInt(event.target.value) : ""
+    const intValue = event.target.value ? parseInt(event.target.value) : ''
     this.setState({tie_breaker: intValue})
   }
 
@@ -121,19 +121,19 @@ class Bracket extends Component {
     })
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate (nextProps) {
     if (nextProps.bracket) {
       return true
     }
     return false
   }
 
-  render() {
+  render () {
     const { bracket, errors } = this.state
     const pool = bracket.pool
     const tournament = pool.tournament
 
-    return <div className="bracket-edit">
+    return <div className='bracket-edit'>
       <Dialog
         className='deletion'
         isOpen={this.state.showsDeletionDialog}
@@ -141,18 +141,18 @@ class Bracket extends Component {
         onConfirm={this.handleConfirmDeletion}
         onCancel={this.handleCancelDeletion}
       />
-      <h2 className="edit-title">Editing Bracket</h2>
-      <Tournament tournament={tournament} bracket={bracket} onSlotClick={this.handleSlotClick}/>
-      <form className="edit-bracket-form" onSubmit={this.handleDone}>
+      <h2 className='edit-title'>Editing Bracket</h2>
+      <Tournament tournament={tournament} bracket={bracket} onSlotClick={this.handleSlotClick} />
+      <form className='edit-bracket-form' onSubmit={this.handleDone}>
         <ErrorFlash errors={errors} />
-        <Label attr="name" text="Bracket Name" errors={errors} />
-        <input id="name" type="text" name="name" required value={this.state.name} onChange={this.handleNameChange} />
+        <Label attr='name' text='Bracket Name' errors={errors} />
+        <input id='name' type='text' name='name' required value={this.state.name} onChange={this.handleNameChange} />
 
-        <Label attr="tie_breaker" text="Tie Breaker" errors={errors} />
-        <input id="tie_breaker" name="tie_breaker" required placeholder="Final Score of Championship Game Added Together (ex: 147)" type="number" value={this.state.tie_breaker} onChange={this.handleTieBreakerChange} />
+        <Label attr='tie_breaker' text='Tie Breaker' errors={errors} />
+        <input id='tie_breaker' name='tie_breaker' required placeholder='Final Score of Championship Game Added Together (ex: 147)' type='number' value={this.state.tie_breaker} onChange={this.handleTieBreakerChange} />
 
-        <input className="button" type="submit" name="commit" value="Done" />
-        <div className="button danger" onClick={this.handleDelete}>Delete Bracket</div>
+        <input className='button' type='submit' name='commit' value='Done' />
+        <div className='button danger' onClick={this.handleDelete}>Delete Bracket</div>
       </form>
     </div>
   }

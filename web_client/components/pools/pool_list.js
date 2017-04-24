@@ -4,21 +4,21 @@ import { Link } from 'react-router'
 import { size, filter } from 'lodash'
 
 class InviteCode extends Component {
-  render() {
+  render () {
     const { pool } = this.props
     const now = new Date()
-    const tip_off = new Date(pool.tournament.tip_off)
+    const tipOff = new Date(pool.tournament.tip_off)
 
-    if (tip_off > now) {
+    if (tipOff > now) {
       return <li className='invite-code'>Invite Code: {pool.invite_code}</li>
     } else {
-      return <li className='invite-code'/>
+      return <li className='invite-code' />
     }
   }
 }
 
 class Pool extends Component {
-  render() {
+  render () {
     const { pool } = this.props
     const poolPath = `/pools/${pool.model_id}`
 
@@ -28,7 +28,7 @@ class Pool extends Component {
           <ul>
             <li className='name'>{pool.name} Pool</li>
             <li className='tournament-name'>{pool.tournament.name}</li>
-            <InviteCode pool={pool}/>
+            <InviteCode pool={pool} />
           </ul>
         </Link>
       </div>
@@ -43,15 +43,15 @@ class PoolList extends Component {
 
   state = { archived: false }
 
-  componentWillMount() {
-    this.context.setPageTitle("Pools")
+  componentWillMount () {
+    this.context.setPageTitle('Pools')
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.context.setPageTitle()
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.props.relay.forceFetch()
   }
 
@@ -69,16 +69,16 @@ class PoolList extends Component {
 
   handlePreviousYearsClick = () => {
     this.setState({archived: true})
-    this.context.setPageTitle("Archived Pools")
+    this.context.setPageTitle('Archived Pools')
   }
 
   handleCurrentPoolsClick = () => {
     this.setState({archived: false})
-    this.context.setPageTitle("Pools")
+    this.context.setPageTitle('Pools')
   }
 
   poolListButton = () => {
-    if(this.state.archived) {
+    if (this.state.archived) {
       return (
         <div className='button' onClick={this.handleCurrentPoolsClick}>
           <i className='fa fa-arrow-left' />
@@ -86,26 +86,26 @@ class PoolList extends Component {
           Current Pools
         </div>
       )
-    } else if(this.hasArchivedPools()) {
+    } else if (this.hasArchivedPools()) {
       return <div className='button minor' onClick={this.handlePreviousYearsClick}>Previous Years</div>
     }
   }
 
-  render() {
+  render () {
     let pools = this.state.archived ? this.archivedPools() : this.currentPools()
 
-    if(size(pools) < 1) {
+    if (size(pools) < 1) {
       return <div className='pool-list'>
         <p className='no-pools'>You are not a member of any tournament pools.</p>
         <div className='actions'>
-          <Link to="/pools/invite_code" className="button">Enter Invite Code</Link>
+          <Link to='/pools/invite_code' className='button'>Enter Invite Code</Link>
           {this.poolListButton()}
         </div>
       </div>
     } else {
       return <div className='pool-list'>
         <div className='pools'>
-          {pools.map(pool => <Pool key={pool.id} pool={pool}/>)}
+          {pools.map(pool => <Pool key={pool.id} pool={pool} />)}
         </div>
         <div className='actions'>
           {this.poolListButton()}

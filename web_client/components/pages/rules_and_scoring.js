@@ -11,22 +11,22 @@ class RulesAndScoring extends Component {
     setPageTitle: React.PropTypes.func.isRequired
   }
 
-  componentWillMount() {
-    this.context.setPageTitle("Rules and Scoring")
+  componentWillMount () {
+    this.context.setPageTitle('Rules and Scoring')
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.context.setPageTitle()
   }
 
-  render() {
+  render () {
     let { pool } = this.props
 
-    return <div className="pool-rules-scoring">
-      <PoolSettings pool={pool}/>
-      <PoolPrizes pool={pool}/>
-      <PoolScoring pool={pool}/>
-      <PoolAdminList pool={pool}/>
+    return <div className='pool-rules-scoring'>
+      <PoolSettings pool={pool} />
+      <PoolPrizes pool={pool} />
+      <PoolScoring pool={pool} />
+      <PoolAdminList pool={pool} />
     </div>
   }
 }

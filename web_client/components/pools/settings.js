@@ -4,15 +4,15 @@ import moment from 'moment-timezone'
 
 class Settings extends Component {
   formattedTipOffTime = () => {
-    let tipOff = moment(this.props.pool.tournament.tip_off).tz("America/New_York")
-    return `${tipOff.format("dddd	MMMM D, Y")} at ${tipOff.format("h:mma z")}`
+    let tipOff = moment(this.props.pool.tournament.tip_off).tz('America/New_York')
+    return `${tipOff.format('dddd MMMM D, Y')} at ${tipOff.format('h:mma z')}`
   }
 
-  render() {
+  render () {
     let { pool } = this.props
 
-    return <div className="pool-settings">
-      <h3 className="first">Pool Settings</h3>
+    return <div className='pool-settings'>
+      <h3 className='first'>Pool Settings</h3>
       <table>
         <tbody>
           <tr>

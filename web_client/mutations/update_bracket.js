@@ -1,16 +1,16 @@
 import Relay, { Mutation } from 'react-relay'
 
 export default class UpdateBracketMutation extends Mutation {
-  getMutation() {
+  getMutation () {
     return Relay.QL`mutation {update_bracket}`
   }
 
-  getVariables() {
+  getVariables () {
     const { name, tie_breaker, game_decisions, game_mask } = this.props
     return { bracket_id: this.props.bracket.id, name, tie_breaker, game_decisions, game_mask }
   }
 
-  getFatQuery() {
+  getFatQuery () {
     return Relay.QL`
       fragment on UpdateBracketPayload {
         bracket {
@@ -24,7 +24,7 @@ export default class UpdateBracketMutation extends Mutation {
     `
   }
 
-  getConfigs() {
+  getConfigs () {
     return [
       {
         type: 'FIELDS_CHANGE',
@@ -48,7 +48,7 @@ export default class UpdateBracketMutation extends Mutation {
     ]
   }
 
-  getOptimisticResponse() {
+  getOptimisticResponse () {
     const { bracket, name, tie_breaker, game_decisions, game_mask } = this.props
     return {
       bracket: {

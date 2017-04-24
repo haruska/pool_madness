@@ -10,11 +10,11 @@ export default class InviteCode extends Component {
 
   state = {value: '', error: ''}
 
-  componentWillMount() {
-    this.context.setPageTitle("Join Pool")
+  componentWillMount () {
+    this.context.setPageTitle('Join Pool')
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.context.setPageTitle()
   }
 
@@ -29,18 +29,18 @@ export default class InviteCode extends Component {
     }
 
     var onFailure = (transaction) => {
-      var error = transaction.getError() || new Error('Mutation failed.');
+      var error = transaction.getError() || new Error('Mutation failed.')
       this.setState({error: error})
     }
 
     Relay.Store.commitUpdate(mutation, {onFailure, onSuccess})
   }
 
-  render() {
-    return <div className="invite-code-page">
+  render () {
+    return <div className='invite-code-page'>
       <div className='invite-code-page-wrapper'>
         <h3>Invite code</h3>
-        <input id="invite_code" type="text" value={this.state.value} onChange={this.handleChange} placeholder="Enter Invite Code" />
+        <input id='invite_code' type='text' value={this.state.value} onChange={this.handleChange} placeholder='Enter Invite Code' />
         <button onClick={this.handleJoinPool}>Join Pool</button>
       </div>
     </div>

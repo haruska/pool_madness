@@ -3,7 +3,7 @@ import Relay from 'react-relay'
 import { ordinalInWord } from 'utils/ordinals'
 
 class PrizeRow extends Component {
-  render() {
+  render () {
     const {pool, place, percent} = this.props
 
     return <tr>
@@ -15,14 +15,14 @@ class PrizeRow extends Component {
 }
 
 class Prizes extends Component {
-  render() {
+  render () {
     let { pool } = this.props
 
-    return <div className="pool-prizes">
+    return <div className='pool-prizes'>
       <h3>Prizes</h3>
       <table>
         <tbody>
-          {[0.7, 0.2, 0.1].map((percent, i) => <PrizeRow key={`prizerow-${i}`} pool={pool} place={i+1} percent={percent}/>)}
+          {[0.7, 0.2, 0.1].map((percent, i) => <PrizeRow key={`prizerow-${i}`} pool={pool} place={i + 1} percent={percent} />)}
         </tbody>
       </table>
     </div>

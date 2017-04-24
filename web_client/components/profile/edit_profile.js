@@ -17,11 +17,11 @@ class EditProfile extends Component {
     errors: null
   }
 
-  componentWillMount() {
-    this.context.setPageTitle("Edit Profile")
+  componentWillMount () {
+    this.context.setPageTitle('Edit Profile')
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.context.setPageTitle()
   }
 
@@ -59,23 +59,23 @@ class EditProfile extends Component {
     })
   }
 
-  render() {
+  render () {
     const { name, email, errors } = this.state
 
-    return <div className="edit-profile">
-      <form className="edit-profile-form" onSubmit={this.handleUpdate}>
-        <div className="form-inputs">
+    return <div className='edit-profile'>
+      <form className='edit-profile-form' onSubmit={this.handleUpdate}>
+        <div className='form-inputs'>
           <ErrorFlash errors={errors} />
           <Label attr='name' text='Full Name' errors={errors} />
-          <input name='name' type="text" value={name} onChange={this.handleNameChange} />
+          <input name='name' type='text' value={name} onChange={this.handleNameChange} />
           <Label attr='email' text='Email Address' errors={errors} />
-          <input required name='email' type="email" value={email} onChange={this.handleEmailChange} />
+          <input required name='email' type='email' value={email} onChange={this.handleEmailChange} />
         </div>
-        <div className="form-actions">
-          <input type="submit" name="commit" defaultValue="Update" />
+        <div className='form-actions'>
+          <input type='submit' name='commit' defaultValue='Update' />
         </div>
-        <div className="other-actions">
-          <Link to="/user" className="button minor">Cancel</Link>
+        <div className='other-actions'>
+          <Link to='/user' className='button minor'>Cancel</Link>
         </div>
       </form>
     </div>

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
 export default class TableHeader extends Component {
-  render() {
+  render () {
     const { showEliminated } = this.props
 
-    var headings;
+    var headings
 
     if (showEliminated) {
       headings = ['', 'Name', 'Score', 'Possible', 'Best', 'Final Four', 'Final Four', 'Second', 'Winner']

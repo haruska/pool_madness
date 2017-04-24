@@ -3,34 +3,33 @@ import Relay from 'react-relay'
 import {ordinalInWord} from 'utils/ordinals'
 
 class WinningBrackets extends Component {
-  render() {
+  render () {
     const { position, brackets } = this.props
     if (brackets) {
       return (
         <li>{ordinalInWord(position)}: {brackets.map(b => b.name).join(', ')}</li>
       )
-    }
-    else {
+    } else {
       return null
     }
   }
 }
 class Championship extends Component {
-  render() {
+  render () {
     const { winning_team, losing_team } = this.props.championship
     return <h3>{winning_team.name} BEATS {losing_team.name}</h3>
   }
 }
 
 class Possibility extends Component {
-  render() {
+  render () {
     const { championships, first_place, second_place, third_place } = this.props.possibility
-    const winningBrackets = [first_place, second_place, third_place]
-    return(
+    const winningBrackets = [first_place, second_place, third_place] // eslint-disable-line
+    return (
       <div className='possibility'>
-        {championships.map((c, i) => <Championship key={`championship-${i}`} championship={c}/>)}
+        {championships.map((c, i) => <Championship key={`championship-${i}`} championship={c} />)}
         <ul className='winning-brackets-list'>
-          {winningBrackets.map((bList, i) => <WinningBrackets key={`winningBracket-${i}`} position={i+1} brackets={bList}/>)}
+          {winningBrackets.map((bList, i) => <WinningBrackets key={`winningBracket-${i}`} position={i + 1} brackets={bList} />)}
         </ul>
       </div>
     )
@@ -42,20 +41,20 @@ class Possibilities extends Component {
     setPageTitle: React.PropTypes.func.isRequired
   }
 
-  componentWillMount() {
-    this.context.setPageTitle("Possible Winners")
+  componentWillMount () {
+    this.context.setPageTitle('Possible Winners')
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.context.setPageTitle()
   }
 
-  render() {
+  render () {
     const { possibilities, name } = this.props.pool
     return (
       <div className='possibilities-page'>
         <h1>{name} Pool Possibilities</h1>
-        {possibilities.map((possibility, i) => <Possibility key={`possibility-${i}`} possibility={possibility}/>)}
+        {possibilities.map((possibility, i) => <Possibility key={`possibility-${i}`} possibility={possibility} />)}
       </div>
     )
   }

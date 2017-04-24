@@ -10,12 +10,12 @@ class GameSlot extends Component {
     }
   }
 
-  render() {
+  render () {
     const { team, decision, pickClass, highlightEmpty } = this.props
     const highlightClass = highlightEmpty ? 'empty-pick' : ''
 
     if (team) {
-      return <p className={`slot slot${decision} ${pickClass}`.trim()} onClick={this.handleClick}><span className="seed">{team.seed}</span> {team.name}</p>
+      return <p className={`slot slot${decision} ${pickClass}`.trim()} onClick={this.handleClick}><span className='seed'>{team.seed}</span> {team.name}</p>
     }
     return <p className={`slot slot${decision} ${highlightClass}`.trim()}>{highlightEmpty ? <span>&nbsp;</span> : ''}</p>
   }
@@ -32,8 +32,7 @@ export default class Game extends Component {
       const { rounds } = this.props.tournament
       const { game_decisions, game_mask } = this.props.bracket
       return new TournamentTree(rounds.length, game_decisions, game_mask)
-    }
-    else {
+    } else {
       return null
     }
   }
@@ -48,37 +47,32 @@ export default class Game extends Component {
   renderTeam = (game, pick, slot) => {
     let team = null
     let pickClass = ''
-    if (slot == 1) {
+    if (slot === 1) {
       if (pick) {
         team = this.teamByStartingSlot(pick.firstTeamStartingSlot())
-        const game_team = this.teamByStartingSlot(game.firstTeamStartingSlot())
-        if (team && (!team.stillPlaying() || game_team) && !game.isRoundOne()) {
-          if (game_team && team.name == game_team.name) {
+        const gameTeam = this.teamByStartingSlot(game.firstTeamStartingSlot())
+        if (team && (!team.stillPlaying() || gameTeam) && !game.isRoundOne()) {
+          if (gameTeam && team.name === gameTeam.name) {
             pickClass = 'correct-pick'
-          }
-          else {
+          } else {
             pickClass = 'eliminated'
           }
         }
-      }
-      else {
+      } else {
         team = this.teamByStartingSlot(game.firstTeamStartingSlot())
       }
-    }
-    else { // slot == 2
+    } else { // slot == 2
       if (pick) {
         team = this.teamByStartingSlot(pick.secondTeamStartingSlot())
-        const game_team = this.teamByStartingSlot(game.secondTeamStartingSlot())
-        if (team && (!team.stillPlaying() || game_team) && !game.isRoundOne()) {
-          if (game_team && team.name == game_team.name) {
+        const gameTeam = this.teamByStartingSlot(game.secondTeamStartingSlot())
+        if (team && (!team.stillPlaying() || gameTeam) && !game.isRoundOne()) {
+          if (gameTeam && team.name === gameTeam.name) {
             pickClass = 'correct-pick'
-          }
-          else {
+          } else {
             pickClass = 'eliminated'
           }
         }
-      }
-      else {
+      } else {
         team = this.teamByStartingSlot(game.secondTeamStartingSlot())
       }
     }
@@ -95,7 +89,7 @@ export default class Game extends Component {
     )
   }
 
-  render() {
+  render () {
     const { index, slot } = this.props
     const game = this.tournamentTree().gameNodes[slot]
     const bracketTree = this.bracketTree()

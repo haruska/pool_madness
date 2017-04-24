@@ -23,16 +23,16 @@ class NewBracketButton extends Component {
     // transaction.commit()
   }
 
-  shouldComponentUpdate() {
+  shouldComponentUpdate () {
     return false
   }
 
-  render() {
+  render () {
     const { bracketCount } = this.props
     let button
 
     if (bracketCount > 0) {
-      return <button className="minor" onClick={this.handleCreate}>Another Bracket Entry</button>
+      return <button className='minor' onClick={this.handleCreate}>Another Bracket Entry</button>
     } else {
       return <button onClick={this.handleCreate}>New Bracket Entry</button>
     }

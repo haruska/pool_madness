@@ -54,7 +54,7 @@ export default class ErrorFlash extends Component {
   message = () => {
     const { errors, message } = this.props
     if (errors) {
-      const baseError = errors.find(error => error.key == 'base')
+      const baseError = errors.find(error => error.key === 'base')
       if (baseError) {
         return `${this.props.objectType} ${baseError.messages[0]}`
       }

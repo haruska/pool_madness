@@ -17,16 +17,16 @@ class UserBracketList extends Component {
     generatingBracket: false
   }
 
-  componentWillMount() {
-    this.context.setPageTitle("My Brackets")
+  componentWillMount () {
+    this.context.setPageTitle('My Brackets')
 
     const { started, model_id } = this.props.pool
     if (started) {
-      this.context.router.replace(`/pools/${model_id}/brackets`)
+      this.context.router.replace(`/pools/${model_id}/brackets`) // eslint-disable-line
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.context.setPageTitle()
   }
 
@@ -35,18 +35,18 @@ class UserBracketList extends Component {
   }
 
   unpaidBrackets = () => {
-    return this.brackets().filter(bracket => bracket.status == 'unpaid')
+    return this.brackets().filter(bracket => bracket.status === 'unpaid')
   }
 
   trackNewBracketClick = () => {
     this.setState({generatingBracket: true})
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     return !nextState.generatingBracket
   }
 
-  render() {
+  render () {
     const { pool, viewer } = this.props
     const { current_user } = viewer
     const brackets = this.brackets()

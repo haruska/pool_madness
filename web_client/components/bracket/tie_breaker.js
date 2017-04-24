@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
 export default class TieBreaker extends Component {
-  render() {
+  render () {
     if (this.props.tieBreaker && !this.props.editing) {
-      return <div className="tie-breaker">
+      return <div className='tie-breaker'>
         Tie Breaker:
-        <span className="tie-breaker-value"> {this.props.tieBreaker}</span>
+        <span className='tie-breaker-value'> {this.props.tieBreaker}</span>
       </div>
     }
     return null
