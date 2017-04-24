@@ -58,15 +58,15 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   config.cache_store = :dalli_store,
-      (ENV["MEMCACHIER_SERVERS"] || "").split(","),
-      { username: ENV["MEMCACHIER_USERNAME"],
-        password: ENV["MEMCACHIER_PASSWORD"],
-        failover: true,
-        socket_timeout: 1.5,
-        socket_failure_delay: 0.2 }
+                       (ENV["MEMCACHIER_SERVERS"] || "").split(","),
+                       { username: ENV["MEMCACHIER_USERNAME"],
+                         password: ENV["MEMCACHIER_PASSWORD"],
+                         failover: true,
+                         socket_timeout: 1.5,
+                         socket_failure_delay: 0.2 }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
-  config.active_job.queue_adapter     = :sidekiq
+  config.active_job.queue_adapter = :sidekiq
   # config.active_job.queue_name_prefix = "pool_madness_#{Rails.env}"
   config.action_mailer.perform_caching = false
 
@@ -80,12 +80,12 @@ Rails.application.configure do
   config.action_mailer.asset_host = "https://#{ENV['HOST']}"
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      user_name: first_inbox["username"],
-      password: first_inbox["password"],
-      address: first_inbox["domain"],
-      domain: first_inbox["domain"],
-      port: first_inbox["smtp_ports"][0],
-      authentication: :plain
+    user_name: first_inbox["username"],
+    password: first_inbox["password"],
+    address: first_inbox["domain"],
+    domain: first_inbox["domain"],
+    port: first_inbox["smtp_ports"][0],
+    authentication: :plain
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
