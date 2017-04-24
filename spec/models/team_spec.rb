@@ -52,7 +52,7 @@ RSpec.describe Team, type: :model do
         before { tournament.update_game!(game.parent.slot, 0) }
 
         it "is true" do
-          expect(subject).to be_still_playing
+          expect(subject.reload).to be_still_playing
           expect(subject).to_not be_eliminated
         end
       end

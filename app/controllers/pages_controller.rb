@@ -8,7 +8,7 @@ class PagesController < ApplicationController
 
   def graphql
     query_string = params[:query]
-    query_variables = params[:variables]
+    query_variables = params[:variables].to_unsafe_hash
 
     result = GraphqlSchema.execute(
       query_string,

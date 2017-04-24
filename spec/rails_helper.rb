@@ -15,8 +15,7 @@ Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 
-# Deprecated but must be called for screenshots - https://github.com/mattheworiordan/capybara-screenshot/issues/164
-Capybara.save_and_open_page_path = Rails.root.join("tmp").join("capybara")
+Capybara.save_path = Rails.root.join("tmp").join("capybara")
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|

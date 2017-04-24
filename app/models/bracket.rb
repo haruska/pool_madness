@@ -1,7 +1,7 @@
 class Bracket < ApplicationRecord
   belongs_to :pool
   belongs_to :user
-  belongs_to :payment_collector, class_name: "User"
+  belongs_to :payment_collector, class_name: "User", optional: true
 
   has_one :charge
   has_one :tournament, through: :pool
