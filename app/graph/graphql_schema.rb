@@ -1,6 +1,6 @@
 GraphqlSchema = GraphQL::Schema.define do
   query ::Types::RootType
-  mutation ::Mutations::RootType
+  mutation ::Mutations::RootMutation
 
   id_from_object lambda { |object, _type_definition, _query_ctx|
     GraphQL::Schema::UniqueWithinType.encode(object.class.name, object.id)
