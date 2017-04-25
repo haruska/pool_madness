@@ -1,4 +1,4 @@
-module Queries
+module Types
   ListsType = GraphQL::ObjectType.define do
     name "Lists"
     description "Top level lists"

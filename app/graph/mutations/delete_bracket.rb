@@ -26,7 +26,7 @@ module Mutations
     input_field :bracket_id, !types.ID
 
     return_field :deleted_bracket_id, !types.ID
-    return_field :pool, Queries::PoolType
+    return_field :pool, Types::PoolType
 
     resolve DELETE_BRACKET_LAMBDA
   end

@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe Queries::CurrentUserType do
-  subject { Queries::CurrentUserType }
+RSpec.describe Types::CurrentUserType do
+  subject { Types::CurrentUserType }
 
   context "fields" do
     let(:fields) { %w[model_id email name admin] }

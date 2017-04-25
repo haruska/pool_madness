@@ -1,5 +1,5 @@
 GraphqlSchema = GraphQL::Schema.define do
-  query ::Queries::RootType
+  query ::Types::RootType
   mutation ::Mutations::RootType
 
   id_from_object lambda { |object, _type_definition, _query_ctx|
@@ -13,7 +13,7 @@ GraphqlSchema = GraphQL::Schema.define do
 
   resolve_type lambda { |object, _context|
     class_name = object.class.name
-    "Queries::#{class_name}Type".constantize
+    "Types::#{class_name}Type".constantize
   }
 end
 

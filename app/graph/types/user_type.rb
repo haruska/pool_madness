@@ -1,4 +1,4 @@
-module Queries
+module Types
   UserType = GraphQL::ObjectType.define do
     name "User"
     description "User's details"

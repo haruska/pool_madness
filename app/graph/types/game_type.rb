@@ -1,4 +1,4 @@
-module Queries
+module Types
   GameType = GraphQL::ObjectType.define do
     name "Game"
     description "A game in a tournament"

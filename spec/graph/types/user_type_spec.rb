@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe Queries::UserType do
-  subject { Queries::UserType }
+RSpec.describe Types::UserType do
+  subject { Types::UserType }
 
   context "fields" do
     let(:fields) { %w[id model_id name] }

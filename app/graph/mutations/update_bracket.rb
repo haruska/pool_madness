@@ -37,7 +37,7 @@ module Mutations
     input_field :game_decisions, types.String
     input_field :game_mask, types.String
 
-    return_field :bracket, Queries::BracketType
+    return_field :bracket, Types::BracketType
     return_field :errors, ValidationErrorList
 
     resolve UPDATE_BRACKET_LAMBDA

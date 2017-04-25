@@ -38,8 +38,8 @@ module Mutations
     input_field :game_decisions, !types.String
     input_field :game_mask, !types.String
 
-    return_field :bracket_edge, Queries::BracketType.edge_type
-    return_field :pool, Queries::PoolType
+    return_field :bracket_edge, Types::BracketType.edge_type
+    return_field :pool, Types::PoolType
     return_field :errors, ValidationErrorList
 
     resolve CREATE_BRACKET_LAMBDA

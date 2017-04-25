@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe Queries::PossibilityType do
-  subject { Queries::PossibilityType }
+RSpec.describe Types::PossibilityType do
+  subject { Types::PossibilityType }
 
   context "fields" do
     let(:fields) { %w[championships first_place second_place third_place] }

@@ -1,4 +1,4 @@
-module Queries
+module Types
   ViewerType = GraphQL::ObjectType.define do
     name "Viewer"
     description "The top level view of the graph"

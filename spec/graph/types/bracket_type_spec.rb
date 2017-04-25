@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe Queries::BracketType do
-  subject { Queries::BracketType }
+RSpec.describe Types::BracketType do
+  subject { Types::BracketType }
 
   context "fields" do
     let(:fields) { %w[id model_id name owner pool editable tie_breaker status points possible_points best_possible_finish eliminated final_four game_decisions game_mask] }
@@ -11,7 +11,7 @@ RSpec.describe Queries::BracketType do
     end
 
     describe "model_id" do
-      subject { Queries::BracketType.fields["model_id"] }
+      subject { Types::BracketType.fields["model_id"] }
 
       let!(:bracket) { create(:bracket) }
 
@@ -22,7 +22,7 @@ RSpec.describe Queries::BracketType do
   end
 
   describe "best_possible_finish" do
-    subject { Queries::BracketType.fields["best_possible_finish"] }
+    subject { Types::BracketType.fields["best_possible_finish"] }
     let(:bracket) { create(:bracket) }
     let(:bracket_point) { bracket.bracket_point }
 
@@ -62,7 +62,7 @@ RSpec.describe Queries::BracketType do
   end
 
   describe "eliminated" do
-    subject { Queries::BracketType.fields["eliminated"] }
+    subject { Types::BracketType.fields["eliminated"] }
     let(:bracket) { create(:bracket) }
     let(:bracket_point) { bracket.bracket_point }
 
@@ -86,7 +86,7 @@ RSpec.describe Queries::BracketType do
   end
 
   describe "final_four" do
-    subject { Queries::BracketType.fields["final_four"] }
+    subject { Types::BracketType.fields["final_four"] }
 
     let!(:bracket) { create(:bracket, :completed) }
     let(:resolved) { subject.resolve(bracket, nil, nil) }
@@ -97,7 +97,7 @@ RSpec.describe Queries::BracketType do
   end
 
   describe "editable" do
-    subject { Queries::BracketType.fields["editable"] }
+    subject { Types::BracketType.fields["editable"] }
     let!(:bracket) { create(:bracket) }
     let(:context) { { current_user: user, current_ability: Ability.new(user) } }
     let(:resolved) { subject.resolve(bracket, nil, context) }
@@ -133,7 +133,7 @@ RSpec.describe Queries::BracketType do
     let(:resolved) { subject.resolve(bracket, nil, context) }
 
     describe "game_decisions" do
-      subject { Queries::BracketType.fields["game_decisions"] }
+      subject { Types::BracketType.fields["game_decisions"] }
 
       it "is a string of zeros and ones representing the bracket decisions" do
         expect(resolved).to eq(Array.new(2**bracket.tournament.num_rounds) { |i| (bracket.tree_decisions & (1 << i)).zero? ? "0" : "1" }.join)
@@ -141,7 +141,7 @@ RSpec.describe Queries::BracketType do
     end
 
     describe "game_mask" do
-      subject { Queries::BracketType.fields["game_mask"] }
+      subject { Types::BracketType.fields["game_mask"] }
 
       it "is a string of zeros and ones representing the bracket bitmask" do
         expect(resolved).to eq(Array.new(2**bracket.tournament.num_rounds) { |i| (bracket.tree_mask & (1 << i)).zero? ? "0" : "1" }.join)

@@ -1,4 +1,4 @@
-module Queries
+module Types
   BracketType = GraphQL::ObjectType.define do
     name "Bracket"
     description "A bracket"

@@ -1,4 +1,4 @@
-module Queries
+module Types
   POOL_BRACKETS_LAMBDA = lambda { |pool, _args, context|
     if pool.started?
       pool.brackets.includes(:bracket_point, :user).joins(:bracket_point).order("points desc", "possible_points desc")

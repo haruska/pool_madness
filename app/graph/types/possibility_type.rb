@@ -1,4 +1,4 @@
-module Queries
+module Types
   PossibilityType = GraphQL::ObjectType.define do
     name "Possibility"
     description "A possible result of a pool"

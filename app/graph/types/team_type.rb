@@ -1,4 +1,4 @@
-module Queries
+module Types
   TeamType = GraphQL::ObjectType.define do
     name "Team"
     description "A team"

@@ -1,4 +1,4 @@
-module Queries
+module Types
   ChargeType = GraphQL::ObjectType.define do
     name "Charge"
     description "A stripe credit card charge"

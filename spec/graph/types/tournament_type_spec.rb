@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe Queries::TournamentType do
-  subject { Queries::TournamentType }
+RSpec.describe Types::TournamentType do
+  subject { Types::TournamentType }
 
   context "fields" do
     let(:fields) { %w[id name games_remaining archived tip_off rounds teams game_mask game_decisions] }
@@ -11,7 +11,7 @@ RSpec.describe Queries::TournamentType do
     end
 
     describe "tip_off" do
-      subject { Queries::TournamentType.fields["tip_off"] }
+      subject { Types::TournamentType.fields["tip_off"] }
 
       let(:tip_off) { 2.days.ago.change(usec: 0) }
       let(:tournament) { create(:tournament, tip_off: tip_off) }
@@ -31,7 +31,7 @@ RSpec.describe Queries::TournamentType do
     let(:resolved) { subject.resolve(tournament, nil, context) }
 
     describe "game_decisions" do
-      subject { Queries::TournamentType.fields["game_decisions"] }
+      subject { Types::TournamentType.fields["game_decisions"] }
 
       it "is a string of zeros and ones representing the bracket decisions" do
         expect(resolved).to eq(Array.new(2**tournament.num_rounds) { |i| (tournament.game_decisions & (1 << i)).zero? ? "0" : "1" }.join)
@@ -39,7 +39,7 @@ RSpec.describe Queries::TournamentType do
     end
 
     describe "game_mask" do
-      subject { Queries::TournamentType.fields["game_mask"] }
+      subject { Types::TournamentType.fields["game_mask"] }
 
       it "is a string of zeros and ones representing the bracket bitmask" do
         expect(resolved).to eq(Array.new(2**tournament.num_rounds) { |i| (tournament.game_mask & (1 << i)).zero? ? "0" : "1" }.join)

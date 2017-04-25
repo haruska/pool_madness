@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe Queries::ListsType do
-  subject { Queries::ListsType }
+RSpec.describe Types::ListsType do
+  subject { Types::ListsType }
 
   context "fields" do
     let(:fields) { %w[pools] }
@@ -12,7 +12,7 @@ RSpec.describe Queries::ListsType do
   end
 
   context "pools" do
-    subject { Queries::ListsType.fields["pools"] }
+    subject { Types::ListsType.fields["pools"] }
     let!(:pools) { create_list(:pool, 3) }
 
     context "signed in" do

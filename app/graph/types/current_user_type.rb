@@ -1,4 +1,4 @@
-module Queries
+module Types
   CurrentUserType = GraphQL::ObjectType.define do
     name "CurrentUser"
     description "Current user's details"

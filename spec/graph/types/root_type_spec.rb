@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Queries::RootType do
+RSpec.describe Types::RootType do
   subject { described_class }
 
   context "fields" do

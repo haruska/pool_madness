@@ -1,4 +1,4 @@
-module Queries
+module Types
   RoundType = GraphQL::ObjectType.define do
     name "Round"
     description "A round of games in a tournament"

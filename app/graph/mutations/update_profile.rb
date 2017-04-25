@@ -24,7 +24,7 @@ module Mutations
     input_field :name, types.String
     input_field :email, types.String
 
-    return_field :viewer, Queries::ViewerType
+    return_field :viewer, Types::ViewerType
     return_field :errors, ValidationErrorList
 
     resolve UPDATE_PROFILE_LAMBDA

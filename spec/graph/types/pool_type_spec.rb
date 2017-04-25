@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Queries::PoolType do
+RSpec.describe Types::PoolType do
   subject { described_class }
 
   context "fields" do
@@ -33,7 +33,7 @@ RSpec.describe Queries::PoolType do
     end
 
     describe "brackets connection" do
-      subject { Queries::POOL_BRACKETS_LAMBDA }
+      subject { Types::POOL_BRACKETS_LAMBDA }
 
       context "pool has started" do
         let!(:pool) { create(:pool) }

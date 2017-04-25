@@ -16,7 +16,7 @@ module Mutations
 
     input_field :invite_code, !types.String
 
-    return_field :pool, Queries::PoolType
+    return_field :pool, Types::PoolType
 
     resolve ACCEPT_INVITATION_LAMBDA
   end

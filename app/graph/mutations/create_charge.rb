@@ -29,8 +29,8 @@ module Mutations
     input_field :pool_id, !types.ID
     input_field :token, !types.String
 
-    return_field :charge, Queries::ChargeType
-    return_field :pool, Queries::PoolType
+    return_field :charge, Types::ChargeType
+    return_field :pool, Types::PoolType
 
     resolve CREATE_CHARGE_LAMBDA
   end

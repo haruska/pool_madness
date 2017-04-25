@@ -1,4 +1,4 @@
-module Queries
+module Types
   TournamentType = GraphQL::ObjectType.define do
     name "Tournament"
     description "Single elimination bracket tournament"
