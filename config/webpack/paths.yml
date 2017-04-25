@@ -1,0 +1,11 @@
+config: config/webpack
+entry: packs
+output: public
+node_modules: node_modules
+source: app/javascript
+extensions:
+  - .js
+  - .png
+  - .svg
+  - .gif
+  - .jpg

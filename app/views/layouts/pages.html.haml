@@ -13,5 +13,5 @@
   %body
     %main#outer-container
       = yield
-    = javascript_include_tag "application"
+    = javascript_pack_tag "application"
     = render partial: "layouts/analytics_js" if Rails.env.production?

@@ -31,6 +31,7 @@ gem "sidekiq"
 gem "simple_form"
 gem "stripe"
 gem "uglifier"
+gem "webpacker"
 
 group :staging, :development, :test do
   gem "database_cleaner", github: "DatabaseCleaner/database_cleaner"
@@ -49,7 +50,6 @@ group :development, :test do
   gem "graphiql-rails"
   gem "letter_opener"
   gem "letter_opener_web"
-  gem "listen"
   gem "magic_lamp"
   gem "pry"
   gem "pry-nav"
@@ -57,7 +57,6 @@ group :development, :test do
   gem "rspec-rails"
   gem "rubocop"
   gem "selenium-webdriver"
-  gem "spring"
 end
 
 group :production, :staging do
@@ -74,7 +73,10 @@ end
 
 group :development do
   gem "bullet"
+  gem "listen"
   gem "lol_dba"
+  gem "spring"
+  gem "spring-watcher-listen"
   gem "web-console"
 end
 
