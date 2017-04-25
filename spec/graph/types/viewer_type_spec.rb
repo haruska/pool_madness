@@ -1,10 +1,10 @@
 require "rails_helper"
 
-RSpec.describe Types::ListsType do
-  subject { Types::ListsType }
+RSpec.describe Types::ViewerType do
+  subject { described_class }
 
   context "fields" do
-    let(:fields) { %w[pools] }
+    let(:fields) { %w[id current_user pools] }
 
     it "has the proper fields" do
       expect(subject.fields.keys).to match_array(fields)
@@ -12,7 +12,7 @@ RSpec.describe Types::ListsType do
   end
 
   context "pools" do
-    subject { Types::ListsType.fields["pools"] }
+    subject { described_class.fields["pools"] }
     let!(:pools) { create_list(:pool, 3) }
 
     context "signed in" do

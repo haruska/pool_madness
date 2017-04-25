@@ -28,8 +28,8 @@ class NoMatch extends Component {
   }
 }
 
-const ListsQueries = {
-  lists: () => Relay.QL`query { lists }`
+const ViewerQueries = {
+  viewer: () => Relay.QL`query { viewer }`
 }
 
 const PoolQueries = {
@@ -45,10 +45,6 @@ const BracketViewerQueries = {
   viewer: () => Relay.QL`query { viewer }`
 }
 
-const ViewerQueries = {
-  viewer: () => Relay.QL`query { viewer }`
-}
-
 const PoolViewerQueries = {
   pool: () => Relay.QL`query { pool(model_id: $poolId) }`,
   viewer: () => Relay.QL`query { viewer }`
@@ -59,7 +55,7 @@ export default () => {
     <Router history={browserHistory} render={applyRouterMiddleware(useRelay)} environment={Relay.Store}>
       <Route path='/' component={App}>
         <Route component={Layout}>
-          <Route path='pools' component={PoolList} queries={ListsQueries} />
+          <Route path='pools' component={PoolList} queries={ViewerQueries} />
           <Route path='pools/invite_code' component={InviteCode} />
           <Route path='user' component={Profile} queries={ViewerQueries} />
           <Route path='user/edit' component={EditProfile} queries={ViewerQueries} />

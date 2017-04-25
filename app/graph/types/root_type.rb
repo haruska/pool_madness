@@ -6,11 +6,6 @@ module Types
     field :node, GraphQL::Relay::Node.field
     field :nodes, GraphQL::Relay::Node.plural_field
 
-    field :lists do
-      type !ListsType
-      resolve ->(_object, _args, _context) { {} }
-    end
-
     field :pool do
       type !PoolType
       argument :model_id, !types.ID, "The ID of the Pool"

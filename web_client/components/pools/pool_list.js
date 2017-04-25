@@ -56,11 +56,11 @@ class PoolList extends Component {
   }
 
   currentPools = () => {
-    return filter(this.props.lists.pools, pool => { return !pool.tournament.archived })
+    return filter(this.props.viewer.pools, pool => { return !pool.tournament.archived })
   }
 
   archivedPools = () => {
-    return filter(this.props.lists.pools, pool => { return pool.tournament.archived })
+    return filter(this.props.viewer.pools, pool => { return pool.tournament.archived })
   }
 
   hasArchivedPools = () => {
@@ -117,8 +117,8 @@ class PoolList extends Component {
 
 export default Relay.createContainer(PoolList, {
   fragments: {
-    lists: () => Relay.QL`
-      fragment on Lists {
+    viewer: () => Relay.QL`
+      fragment on Viewer {
         pools {
           id
           model_id
